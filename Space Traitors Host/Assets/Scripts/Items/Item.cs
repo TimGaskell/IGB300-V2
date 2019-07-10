@@ -6,10 +6,10 @@ public class Item
 {
     public string itemName;
 
-    private int brawnChange;
-    private int skillChange;
-    private int techChange;
-    private int charmChange;
+    public int brawnChange;
+    public int skillChange;
+    public int techChange;
+    public int charmChange;
 
     //Need to add in inventory handling
 

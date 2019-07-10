@@ -28,10 +28,66 @@ public class Player
 
     public Character characterType;
 
-    public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn); } }
-    public int ScaledSkill { get { return ApplyScaling(characterType.baseSkill); } }
-    public int ScaledTech { get { return ApplyScaling(characterType.baseTech); } }
-    public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm); } }
+    #region Item Changes on Spec Scores
+    //Changes to spec scores which originate from the player's items
+    private int BrawnChange
+    {
+        get
+        {
+            int brawnScore = 0;
+            for (int itemID = 0; itemID < MAX_EQUIPPED_ITEMS; itemID++)
+            {
+                brawnScore += items[itemID].brawnChange;
+            }
+
+            return brawnScore;
+        }
+    }
+    private int SkillChange
+    {
+        get
+        {
+            int skillScore = 0;
+            for (int itemID = 0; itemID < MAX_EQUIPPED_ITEMS; itemID++)
+            {
+                skillScore += items[itemID].skillChange;
+            }
+
+            return skillScore;
+        }
+    }
+    private int TechChange
+    {
+        get
+        {
+            int techScore = 0;
+            for (int itemID = 0; itemID < MAX_EQUIPPED_ITEMS; itemID++)
+            {
+                techScore += items[itemID].techChange;
+            }
+
+            return techScore;
+        }
+    }
+    private int CharmChange
+    {
+        get
+        {
+            int charmScore = 0;
+            for (int itemID = 0; itemID < MAX_EQUIPPED_ITEMS; itemID++)
+            {
+                charmScore += items[itemID].charmChange;
+            }
+
+            return charmScore;
+        }
+    }
+    #endregion
+
+    public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn, BrawnChange); } }
+    public int ScaledSkill { get { return ApplyScaling(characterType.baseSkill, SkillChange); } }
+    public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
+    public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
 
     public Player(int PlayerID, string PlayerName, string CharacterType)
     {
@@ -62,9 +118,9 @@ public class Player
         characterType = new Character(CharacterType);
     }
 
-    private int ApplyScaling (int baseScore)
+    private int ApplyScaling (int baseScore, int itemModifier)
     {
-        return baseScore * (int) ((100 - 0.5 * corruption) / 100);
+        return baseScore * (int) ((100 - 0.5 * corruption) / 100) + itemModifier;
     }
 
     public bool GiveItem(Item item)
