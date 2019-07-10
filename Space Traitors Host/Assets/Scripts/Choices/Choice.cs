@@ -77,22 +77,32 @@ public class Choice
         inSleeping = true;
         inSpa = true;
     }
-
+    
+    /// <summary>
+    /// 
+    /// Check if the choice is avaialbe for the player which is attempting to select it. If this returns false, player should not
+    /// be able to select this choice
+    /// 
+    /// </summary>
+    /// <param name="playerID">The player which is attempting to select the choice</param>
+    /// <returns>If the player can select the choice returns true. False otherwise.</returns>
     private bool IsAvailable(int playerID)
     {
-        //Need to figure out how player data is going to be stored and accessed so it is possible to determine if choice can be selected or not by a specific player
-        //Below logic will work just have to find where the data is stored
+        Player checkedPlayer = GameManager.instance.players[playerID];
 
-        //bool hasComponent =  !(component && if player has component);
-        //bool hasScrap = playerScrap + scrapChange < 0;
-        //bool hasDamage = playerLifePoints + lifeChange < 0;
-        //bool hasCorruption = playerCorruption != 0;
-        //bool powerNotAtMax = AIPower != 100;
+        //Below statements check if the conditional is relevant to the choice, based on the changes which the choice causes. If the condition is not relevant will 
+        //return true due to the and
+        //Then checks the condition for each relevant change. Since the condition is met, then will overall return false, since the condition being met means the
+        //player cannot select the choice
+        bool hasComponent =  !(component && checkedPlayer.hasComponent);
+        bool hasDamage = !(lifeChange == 0 && checkedPlayer.lifePoints == checkedPlayer.maxLifePoints);
+        bool hasCorruption = !(corruptionChange == 0 && checkedPlayer.lifePoints == 0);
+        bool powerNotAtMax = !(powerChange == 0 && GameManager.instance.aiPower == GameManager.instance.MAX_POWER);
+
+        //If the choice reduces a players scrap, then they need to have enough scrap to pay for the choice, so will return false if this is not the case
+        bool hasScrap = checkedPlayer.scrap + scrapChange < 0;
 
         //If any of the above conditions are false, then needs to return false, since this means the choice is not availabe
-        // return hasComponent && hasScrap && hasDamage && hasCorruption && powerNotAtMax;
-
-        //Currently set at dummy variable
-        return true;
+        return hasComponent && hasScrap && hasDamage && hasCorruption && powerNotAtMax;
     }
 }

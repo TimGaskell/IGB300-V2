@@ -1678,7 +1678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beee44eb82cfb184497a46fcdd5c7504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  choiceListData: {fileID: 0}
+  choiceListData: {fileID: 4900000, guid: 717b6b12c74b2e9429f2851f3ad576f2, type: 3}
   rooms:
   - {fileID: 309839086}
   - {fileID: 1037434062}
@@ -2246,7 +2246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3515ae1e82e1d44a16e303abf16ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testVar: 0
 --- !u!4 &1535568071
 Transform:
   m_ObjectHideFlags: 0

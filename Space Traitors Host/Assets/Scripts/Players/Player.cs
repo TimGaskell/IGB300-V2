@@ -20,6 +20,7 @@ public class Player
     public int corruption;
     public Item[] items;
     public Item[] equippedItems;
+    public bool hasComponent;
     public int lifePoints;
     public int maxLifePoints;
 
@@ -52,6 +53,7 @@ public class Player
             equippedItems[itemIndex] = new Item();
         }
 
+        hasComponent = false;
         lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
