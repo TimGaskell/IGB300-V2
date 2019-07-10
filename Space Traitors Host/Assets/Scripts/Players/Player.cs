@@ -24,6 +24,8 @@ public class Player
     public int lifePoints;
     public int maxLifePoints;
 
+    public bool IsDead { get { return lifePoints == 0; } }
+
     public Character characterType;
 
     public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn); } }
@@ -63,5 +65,19 @@ public class Player
     private int ApplyScaling (int baseScore)
     {
         return baseScore * (int) ((100 - 0.5 * corruption) / 100);
+    }
+
+    public bool GiveItem(Item item)
+    {
+        for (int itemID = 0; itemID < MAX_ITEMS; itemID++)
+        {
+            if (items[itemID].itemName == "Default")
+            {
+                items[itemID] = item;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

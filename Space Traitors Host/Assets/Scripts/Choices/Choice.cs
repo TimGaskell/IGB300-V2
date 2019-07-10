@@ -20,6 +20,7 @@ public class Choice
 
     //Whether the choice is disabled after it has been selected. Disabled choices can be reselected if the item is discarded.
     public bool oneOff;
+    public bool disabled;
 
     //Whether choice is a spec challenge, what type of challenge it is and its associated target score.
     //Spec Challenge is "Null" if not a spec challenge and target score will be 0 (this will throw math errors if passed into spec challenge formula)
@@ -56,6 +57,7 @@ public class Choice
         unique = false;
         mandatory = 0;
         oneOff = false;
+        disabled = false;
 
         specChallenge = "Null";
         targetScore = 0;
@@ -77,7 +79,9 @@ public class Choice
         inSleeping = true;
         inSpa = true;
     }
-    
+
+    #region Check Availability
+
     /// <summary>
     /// 
     /// Check if the choice is avaialbe for the player which is attempting to select it. If this returns false, player should not
@@ -86,7 +90,7 @@ public class Choice
     /// </summary>
     /// <param name="playerID">The player which is attempting to select the choice</param>
     /// <returns>If the player can select the choice returns true. False otherwise.</returns>
-    private bool IsAvailable(int playerID)
+    public bool IsAvailable(int playerID)
     {
         Player checkedPlayer = GameManager.instance.players[playerID];
 
@@ -102,7 +106,121 @@ public class Choice
         //If the choice reduces a players scrap, then they need to have enough scrap to pay for the choice, so will return false if this is not the case
         bool hasScrap = checkedPlayer.scrap + scrapChange < 0;
 
-        //If any of the above conditions are false, then needs to return false, since this means the choice is not availabe
-        return hasComponent && hasScrap && hasDamage && hasCorruption && powerNotAtMax;
+        //If any of the above conditions are false, then needs to return false, since this means the choice is not available. Also if the choice has been disabled
+        //Then will also return false
+        return hasComponent && hasScrap && hasDamage && hasCorruption && powerNotAtMax && disabled;
+
+        //Note: this is a generalised test of the conditionals. In order to provide the player with more meaningful information about why they cannot select the
+        //choice, would need to split each statement into a seperate function and check each statement one by one.
     }
+    #endregion
+
+    #region Choice Selection
+
+    /// <summary>
+    /// 
+    /// Functionality of a particular player who selects the choice
+    /// 
+    /// </summary>
+    /// <param name="playerID">The player who is selecting the choice</param>
+    public void SelectChoice(int playerID)
+    {
+        //Obtain the relevant player information
+        Player currentPlayer = GameManager.instance.players[playerID];
+        
+        //Test whether the choice is a spec challenge and what type of spec challenge it is
+        //If the choice is not a spec challenge will simply apply the resource changes
+        switch (specChallenge)
+        {
+            case "Null":
+                currentPlayer = SuccessfulSelection(currentPlayer);
+                //Disable the choice if it can only be selected once
+                disabled = oneOff;
+                break;
+            case "Brawn":
+                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledBrawn);
+                break;
+            case "Skill":
+                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledSkill);
+                break;
+            case "Tech":
+                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledTech);
+                break;
+            case "Charm":
+                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledCharm);
+                break;
+            default:
+                Debug.Log("Failed Selection");
+                break;
+        }
+
+        //Reassign the updated player information
+        GameManager.instance.players[playerID] = currentPlayer;
+    }
+
+    /// <summary>
+    /// 
+    /// Test whether a player is successful or not in a spec challenge when they select the choice
+    /// 
+    /// </summary>
+    /// <param name="player">The relevant player's information</param>
+    /// <param name="specScore">The player's relevant spec score</param>
+    /// <returns>The updated player information</returns>
+    private Player ApplySpecChallenge(Player player, int specScore)
+    {
+        //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
+        float successFactor = Random.Range(0f, 100f);
+
+        //If the random number is less than or equal to the chance of succeeding in the spec challenge, then will assign
+        //the successful resource changes. Otherwise will apply the failed resource changes.
+        if (successFactor <= GameManager.instance.SpecChallengeChance(specScore, targetScore))
+        {
+            player = SuccessfulSelection(player);
+
+            //Disable the choice if it can only be selected once. Only functions if the player is successful in a spec challenge
+            disabled = oneOff;
+        }
+        else
+        {
+            player = FailedSelection(player);
+        }
+
+        return player;
+    }
+
+
+    /// <summary>
+    /// 
+    /// Update the player's resources if they are successful in a spec challenge. Also used if the choice is not a spec challenge
+    /// 
+    /// </summary>
+    /// <param name="player">The relevant player's information</param>
+    /// <returns>The updated player's information</returns>
+    private Player SuccessfulSelection(Player player)
+    {
+        player.scrap += scrapChange;
+        player.corruption += corruptionChange;
+        GameManager.instance.aiPowerChange += powerChange;
+        player.GiveItem(specItem);
+        player.hasComponent = component;
+        player.lifePoints += lifeChange;
+
+        return player;
+    }
+
+    /// <summary>
+    /// 
+    /// Update the player's resource if they failed a spec challenge
+    /// 
+    /// </summary>
+    /// <param name="player">The relevant player's information</param>
+    /// <returns>The updated player's information</returns>
+    private Player FailedSelection(Player player)
+    {
+        player.corruption += corruptionFail;
+        player.lifePoints += lifeFail;
+
+        return player;
+    }
+    #endregion
 }
