@@ -118,11 +118,26 @@ public class Player
         characterType = new Character(CharacterType);
     }
 
+    /// <summary>
+    /// 
+    /// Apply the scaling to a player's spec score based upon their corruption
+    /// 
+    /// </summary>
+    /// <param name="baseScore">The relevant spec score base</param>
+    /// <param name="itemModifier">The modifier to the relevant spec score based upon their items</param>
+    /// <returns>The scaled spec score</returns>
     private int ApplyScaling (int baseScore, int itemModifier)
     {
         return baseScore * (int) ((100 - 0.5 * corruption) / 100) + itemModifier;
     }
 
+    /// <summary>
+    /// 
+    /// Determines if the player can be given a new item into their inventory and assigns it if so
+    /// 
+    /// </summary>
+    /// <param name="item">The item to be assigned</param>
+    /// <returns>If the player's inventory is full, returns false</returns>
     public bool GiveItem(Item item)
     {
         for (int itemID = 0; itemID < MAX_ITEMS; itemID++)

@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public int aiPower;
     public int aiPowerChange;
 
+    private Ability[] corruptionAbilities = new Ability[4];
+
     #region Game Initialisation
 
     private void Awake()
@@ -40,6 +42,12 @@ public class GameManager : MonoBehaviour
     private void InitialiseGame()
     {
         //For initialising the Game when it is first opened
+
+        //Instantiate the corruption abilities
+        corruptionAbilities[0] = new SensorScan();
+        corruptionAbilities[1] = new CodeInspection();
+        corruptionAbilities[2] = new Sabotage();
+        corruptionAbilities[3] = new PowerUp();
     }
 
     private void InitialiseServer()
