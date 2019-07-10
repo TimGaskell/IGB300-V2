@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
 
-public class JoinGame : MonoBehaviour
-{
+public class JoinGame : MonoBehaviour {
     List<GameObject> RoomList = new List<GameObject>();
 
     [SerializeField]
@@ -24,7 +23,7 @@ public class JoinGame : MonoBehaviour
 
         networkManager = NetworkManager.singleton;
 
-        if(networkManager.matchMaker == null) {
+        if (networkManager.matchMaker == null) {
             networkManager.StartMatchMaker();
         }
 
@@ -34,7 +33,7 @@ public class JoinGame : MonoBehaviour
     public void RefreshRoomList() {
 
         ClearRoomList();
-        networkManager.matchMaker.ListMatches(0, 20,"", true, 0, 0, OnMatchList);
+        networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
         status.text = "Loading...";
 
     }
@@ -42,7 +41,7 @@ public class JoinGame : MonoBehaviour
     public void OnMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matchList) {
         status.text = "";
 
-        if(!success || matchList == null) {
+        if (!success || matchList == null) {
             status.text = "Couldn't get room list.";
             return;
         }
@@ -52,10 +51,10 @@ public class JoinGame : MonoBehaviour
         foreach (MatchInfoSnapshot match in matchList) {
 
             GameObject RoomListItemGO = Instantiate(roomListItemPrefab);
-            RoomListItemGO.transform.SetParent(roomListParent,false);
+            RoomListItemGO.transform.SetParent(roomListParent, false);
 
             RoomListItem roomListItem = RoomListItemGO.GetComponent<RoomListItem>();
-            if(roomListItem != null) {
+            if (roomListItem != null) {
                 roomListItem.setup(match, JoinRoom);
             }
 
@@ -64,7 +63,7 @@ public class JoinGame : MonoBehaviour
 
         }
 
-        if(RoomList.Count == 0) {
+        if (RoomList.Count == 0) {
 
             status.text = "No rooms at the moment";
 
@@ -73,7 +72,7 @@ public class JoinGame : MonoBehaviour
 
     void ClearRoomList() {
 
-        for(int i = 0; i<RoomList.Count; i++) {
+        for (int i = 0; i < RoomList.Count; i++) {
             Destroy(RoomList[i]);
         }
         RoomList.Clear();
@@ -89,6 +88,5 @@ public class JoinGame : MonoBehaviour
 
     }
 
-   
-
+    
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class HostGame : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class HostGame : MonoBehaviour
 
     public void CreateRoom() {
 
+        Debug.Log("help");
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + "with room for " + roomSize);
             //create room
