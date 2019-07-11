@@ -11,6 +11,11 @@ public class Ability
     public int scrapCost;
     public int corruptionRequirement;
 
+    /// <summary>
+    /// 
+    /// Define a default ability
+    /// 
+    /// </summary>
     public Ability()
     {
         abilityName = "Default";
@@ -20,6 +25,11 @@ public class Ability
         corruptionRequirement = 0;
     }
 
+    /// <summary>
+    /// 
+    /// Activate the ability. Default abilities should never be activated, so throws an exception
+    /// 
+    /// </summary>
     public virtual void Activate()
     {
         throw new NotImplementedException("Ability not Defined");
@@ -40,7 +50,7 @@ public class Shove : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Shove Activate");
     }
 }
 
@@ -57,7 +67,7 @@ public class SecretPaths : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Secret Paths Activate");
     }
 }
 
@@ -74,7 +84,7 @@ public class Preperation : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Preperation Activate");
     }
 }
 
@@ -91,7 +101,7 @@ public class QuickRepair : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Quick Repair Activate");
     }
 }
 
@@ -108,7 +118,7 @@ public class EncouragingSong : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Encouraging Song Activate");
     }
 }
 
@@ -125,7 +135,7 @@ public class MuddleSensors : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Muddle Sensors Activate");
     }
 }
 #endregion
@@ -144,7 +154,7 @@ public class SensorScan : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Sensor Scan Activate");
     }
 }
 
@@ -161,7 +171,7 @@ public class CodeInspection : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Code Inspection Activate");
     }
 }
 
@@ -178,7 +188,7 @@ public class Sabotage : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Sabotage Activate");
     }
 }
 
@@ -195,7 +205,7 @@ public class PowerUp : Ability
 
     public override void Activate()
     {
-
+        Debug.Log("Power Up Activate");
     }
 }
 #endregion

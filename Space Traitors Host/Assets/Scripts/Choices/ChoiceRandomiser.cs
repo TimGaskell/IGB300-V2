@@ -48,12 +48,16 @@ public class ChoiceRandomiser : MonoBehaviour
     /// </summary>
     private void OutputChoiceList()
     {
+        int counter = 0;
+
         foreach (GameObject room in rooms)
         {
+            Debug.Log(counter);
             for (int choicePos = 0; choicePos < CHOICES_PER_ROOM; choicePos++)
             {
                 Debug.Log(room.GetComponent<Room>().roomChoices[choicePos].choiceName);
             }
+            counter++;
         }
     }
 

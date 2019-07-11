@@ -14,6 +14,11 @@ public class Character
 
     Ability characterAbility;
 
+    /// <summary>
+    /// 
+    /// Define a default character
+    /// 
+    /// </summary>
     public Character ()
     {
         characterName = "Default";
@@ -26,6 +31,12 @@ public class Character
         characterAbility = new Ability();
     }
 
+    /// <summary>
+    /// 
+    /// Define a character of a particular type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The name of the character to be created</param>
     public Character (string characterType)
     {
         characterName = characterType;
@@ -33,6 +44,11 @@ public class Character
         AssignCharacterInfo();
     }
 
+    /// <summary>
+    /// 
+    /// Define the character stats based on their character name. If the character does not exist, then has default stats.
+    /// 
+    /// </summary>
     private void AssignCharacterInfo()
     {
         switch (characterName)

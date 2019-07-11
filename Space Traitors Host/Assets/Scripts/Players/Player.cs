@@ -16,6 +16,7 @@ public class Player
 
     public int roomPosition;
 
+    //Player Resources
     public int scrap;
     public int corruption;
     public Item[] items;
@@ -84,6 +85,7 @@ public class Player
     }
     #endregion
 
+    //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
     public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn, BrawnChange); } }
     public int ScaledSkill { get { return ApplyScaling(characterType.baseSkill, SkillChange); } }
     public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }

@@ -8,6 +8,12 @@ public class Room : MonoBehaviour
     public string roomType;
     public Choice[] roomChoices;
 
+    /// <summary>
+    /// 
+    /// Initialise the room with a default choice which is to be overwritten when choices are randomised
+    /// 
+    /// </summary>
+    /// <param name="choicesPerRoom">The number of choices which are to be initialised in the room</param>
     public void InitialiseRoom(int choicesPerRoom)
     {
         roomChoices = new Choice[choicesPerRoom];

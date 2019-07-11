@@ -39,10 +39,13 @@ public class GameManager : MonoBehaviour
         InitialiseGame();
     }
 
+    /// <summary>
+    /// 
+    /// Initialise the game when it first opened
+    /// 
+    /// </summary>
     private void InitialiseGame()
     {
-        //For initialising the Game when it is first opened
-
         //Instantiate the corruption abilities
         corruptionAbilities[0] = new SensorScan();
         corruptionAbilities[1] = new CodeInspection();
@@ -50,15 +53,23 @@ public class GameManager : MonoBehaviour
         corruptionAbilities[3] = new PowerUp();
     }
 
+    /// <summary>
+    /// 
+    /// Initialise the server when the game is started
+    /// 
+    /// </summary>
     private void InitialiseServer()
     {
-        //For initialising the server when the game is started
+        
     }
 
+    /// <summary>
+    /// 
+    /// Start the game when all players have connected and the players start the game
+    /// 
+    /// </summary>
     private void StartGame()
     {
-        //For starting the game when game is started after all players connected
-
         // For debugging when not utilising server
         // Initialises all players in the players array
         players = new Player[NUM_PLAYERS];
@@ -86,9 +97,15 @@ public class GameManager : MonoBehaviour
     {
         if (targetScore == 0)
         {
-            throw new DivideByZeroException("Target Score Cannot be zero in a Spec Challenge.");
+            throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
         return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
     }
+
+    #region Traitor Handling
+
+
+
+    #endregion
 }

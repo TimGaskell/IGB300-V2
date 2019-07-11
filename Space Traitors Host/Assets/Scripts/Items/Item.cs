@@ -13,6 +13,11 @@ public class Item
 
     //Need to add in inventory handling
 
+    /// <summary>
+    /// 
+    /// Define a default item
+    /// 
+    /// </summary>
     public Item()
     {
         itemName = "Default";
@@ -23,6 +28,12 @@ public class Item
         charmChange = 0;
     }
 
+    /// <summary>
+    /// 
+    /// Define an item of a particular type
+    /// 
+    /// </summary>
+    /// <param name="newItemName">The name of the particular item</param>
     public Item(string newItemName)
     {
         itemName = newItemName;
