@@ -2,23 +2,90 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
+    public bool serverActive = false;
+
     //For hardcode debugging, when wanting to test without server functionality
-    private const int NUM_PLAYERS = 4; 
     private static readonly string[] CHARACTER_TYPES = { "Brute", "Butler", "Chef", "Engineer", "Singer", "Techie" };
 
     public readonly int MAX_POWER = 100;
 
     public static GameManager instance = null;
 
-    public Player[] players;
+    public int numPlayers;
+    public List<Player> players;
+    private List<int> playerOrder;
 
     public int aiPower;
     public int aiPowerChange;
 
-    private Ability[] corruptionAbilities = new Ability[4];
+    public List<Ability> corruptionAbilities;
+
+    private void Update()
+    {
+        
+    }
+
+    #region Scene Transition Handling
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += NewSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= NewSceneLoaded;
+    }
+
+    private void NewSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (serverActive)
+        {
+            throw new NotImplementedException("Server Functionality not Implemented");
+            if (scene.name == "Main Menu")
+            {
+
+            }
+            else if (scene.name == "Lobby")
+            {
+
+            }
+            else if (scene.name == "Character Selection")
+            {
+
+            }
+            else if (scene.name == "Game Level")
+            {
+
+            }
+        }
+        else
+        {
+            //Need to put UI enablers in here- talk to UI Managers
+            if (scene.name == "Main Menu")
+            {
+                InitialiseGame();
+            }
+            else if (scene.name == "Lobby")
+            {
+                
+            }
+            else if (scene.name == "Character Selection")
+            {
+                RandomiseOrder();
+            }
+            else if (scene.name == "Game Level")
+            {
+                StartGame();
+            }
+        }
+    }
+
+    #endregion
 
     #region Game Initialisation
 
@@ -41,16 +108,20 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Initialise the game when it first opened
+    /// Initialise the game when it first opened or returns to the main menu
     /// 
     /// </summary>
     private void InitialiseGame()
     {
+        players = new List<Player>();
+        playerOrder = new List<int>();
+
         //Instantiate the corruption abilities
-        corruptionAbilities[0] = new SensorScan();
-        corruptionAbilities[1] = new CodeInspection();
-        corruptionAbilities[2] = new Sabotage();
-        corruptionAbilities[3] = new PowerUp();
+        corruptionAbilities = new List<Ability>();
+        corruptionAbilities.Add(new SensorScan());
+        corruptionAbilities.Add(new CodeInspection());
+        corruptionAbilities.Add(new Sabotage());
+        corruptionAbilities.Add(new PowerUp());
     }
 
     /// <summary>
@@ -65,18 +136,12 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Start the game when all players have connected and the players start the game
+    /// Start the game when all players have chosen their characters and the players start the game
     /// 
     /// </summary>
     private void StartGame()
     {
-        // For debugging when not utilising server
-        // Initialises all players in the players array
-        players = new Player[NUM_PLAYERS];
-        for (int playerID = 0; playerID < NUM_PLAYERS; playerID++)
-        {
-            players[playerID] = new Player(playerID, string.Format("Player{0}", playerID), CHARACTER_TYPES[playerID]);
-        }
+        
     }
 
     #endregion
@@ -102,6 +167,37 @@ public class GameManager : MonoBehaviour
 
         return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
     }
+
+    #region Character Selection
+
+    /// <summary>
+    /// 
+    /// Determines a random order for the players to play the game in. Places these values in an ordered list of player IDs.
+    /// 
+    /// </summary>
+    private void RandomiseOrder()
+    {
+        int randomPlayer;
+
+        for (int playerID = 0; playerID < numPlayers; playerID++)
+        {
+            //do-while loop checks if the ordered list already contains the random player ID. If it does, then obtains a new random ID.
+            do
+            {
+                randomPlayer = UnityEngine.Random.Range(0, numPlayers);
+
+            } while (playerOrder.Contains(randomPlayer));
+
+            playerOrder.Add(randomPlayer);
+        }
+    }
+
+    private void SelectCharacter(int playerID, string playerName, string characterType)
+    {
+
+    }
+
+    #endregion
 
     #region Traitor Handling
 

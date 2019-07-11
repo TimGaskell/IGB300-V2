@@ -11,7 +11,9 @@ public class Player
 
     public const int BASE_LIFE_POINTS = 3;
 
+    //playerID should mirror the connection ID of the player to know which client information needs to be passed to
     public int playerID;
+    //The name the player inputs when they start the game
     public string playerName;
 
     public int roomPosition;
