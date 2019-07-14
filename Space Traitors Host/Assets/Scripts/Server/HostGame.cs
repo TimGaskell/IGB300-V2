@@ -20,6 +20,8 @@ public class HostGame : MonoBehaviour
         if(networkManager.matchMaker == null) {
             networkManager.StartMatchMaker();
         }
+
+      
     }
 
     public void setRoomName(string name) {
@@ -30,7 +32,6 @@ public class HostGame : MonoBehaviour
 
     public void CreateRoom() {
 
-        Debug.Log("help");
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + "with room for " + roomSize);
             //create room
