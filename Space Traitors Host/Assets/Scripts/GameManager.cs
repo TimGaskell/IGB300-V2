@@ -14,11 +14,17 @@ public class GameManager : MonoBehaviour
 
     public readonly int MAX_POWER = 100;
 
+    public readonly int MIN_PLAYERS = 2;
+    public readonly int MAX_PLAYERS = 6;
+
     public static GameManager instance = null;
 
     public int numPlayers;
     public List<Player> players;
-    private List<int> playerOrder;
+    public List<int> playerOrder;
+    //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
+    //instead the index in the player order list
+    public int activePlayer = 0;
 
     public int aiPower;
     public int aiPowerChange;
@@ -27,7 +33,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+
+    }
+
+    /// <summary>
+    /// 
+    /// Return the information about the player which is currently active
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Player ActivePlayer()
+    {
+        return players.Find(x => x.playerID == playerOrder[activePlayer]);
     }
 
     #region Scene Transition Handling
@@ -50,11 +67,11 @@ public class GameManager : MonoBehaviour
             {
 
             }
-            else if (scene.name == "Lobby")
+            else if (scene.name == "LobbyV2")
             {
 
             }
-            else if (scene.name == "Character Selection")
+            else if (scene.name == "Character SelectionV2")
             {
 
             }
@@ -65,17 +82,19 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //Need to put UI enablers in here- talk to UI Managers
             if (scene.name == "Main Menu")
             {
                 InitialiseGame();
             }
-            else if (scene.name == "Lobby")
+            else if (scene.name == "LobbyV2")
             {
-                
+                numPlayers = 0;
+                ResetPlayers();
             }
-            else if (scene.name == "Character Selection")
+            else if (scene.name == "Character SelectionV2")
             {
+                //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
+                activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
             else if (scene.name == "Game Level")
@@ -113,7 +132,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InitialiseGame()
     {
-        players = new List<Player>();
+        ResetPlayers();
         playerOrder = new List<int>();
 
         //Instantiate the corruption abilities
@@ -141,10 +160,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartGame()
     {
-        
+        activePlayer = 0;
     }
 
     #endregion
+
+    #region Spec Challenge
 
     /// <summary>
     /// 
@@ -168,7 +189,31 @@ public class GameManager : MonoBehaviour
         return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
     }
 
-    #region Character Selection
+    #endregion
+
+    #region Character and Name Selection
+
+    /// <summary>
+    /// 
+    /// Adds a new player to the players list
+    /// 
+    /// </summary>
+    /// <param name="playerID">The connection ID of the player</param>
+    /// <param name="playerName">The custom name of the player</param>
+    public void GeneratePlayer(int playerID, string playerName)
+    {
+        players.Add(new Player(playerID, playerName));
+    }
+
+    /// <summary>
+    /// 
+    /// Resets the player list to be a new list
+    /// 
+    /// </summary>
+    public void ResetPlayers()
+    {
+        players = new List<Player>();
+    }
 
     /// <summary>
     /// 
@@ -192,9 +237,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SelectCharacter(int playerID, string playerName, string characterType)
+    /// <summary>
+    /// 
+    /// Returns if the character has already been selected in the character list. If it has returns true, otherwise false
+    /// 
+    /// </summary>
+    /// <param name="characterType">The type of character to be checked</param>
+    /// <returns>Whether the character has already been selected or not</returns>
+    public bool CheckCharacterSelected(string characterType)
     {
+        return players.Exists(x => x.CharacterType == characterType);
+    }
 
+    public void SelectCharacter(string characterType)
+    {
+        players[playerOrder[activePlayer]].CharacterType = characterType;
+        //Character Selection is in the reverse player order, so works backward through the player order list
+        activePlayer--;
     }
 
     #endregion

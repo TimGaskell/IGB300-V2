@@ -29,6 +29,7 @@ public class Player
 
     public bool IsDead { get { return lifePoints == 0; } }
 
+    public string CharacterType { get { return characterType.characterName; } set { characterType = new Character(value); } }
     public Character characterType;
 
     #region Item Changes on Spec Scores
@@ -93,12 +94,12 @@ public class Player
     public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
     public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
 
-    public Player(int PlayerID, string PlayerName, string CharacterType)
+    public Player(int PlayerID, string PlayerName)
     {
         playerID = PlayerID;
         playerName = PlayerName;
 
-        roomPosition = STARTING_ROOM_ID; 
+        roomPosition = STARTING_ROOM_ID;
 
         scrap = 0;
         corruption = 0;
@@ -119,6 +120,11 @@ public class Player
         lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
+        characterType = new Character();
+    }
+
+    public Player(int PlayerID, string PlayerName, string CharacterType) : this(PlayerID, PlayerName)
+    {
         characterType = new Character(CharacterType);
     }
 
