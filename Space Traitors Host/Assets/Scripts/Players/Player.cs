@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Player
+public class Player : NetworkBehaviour
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -12,7 +13,7 @@ public class Player
     public const int BASE_LIFE_POINTS = 3;
 
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
-    public int playerID;
+    public NetworkConnection playerID;
     //The name the player inputs when they start the game
     public string playerName;
 
@@ -30,6 +31,12 @@ public class Player
     public bool IsDead { get { return lifePoints == 0; } }
 
     public Character characterType;
+
+    private void Start() {
+
+        playerID = this.GetComponent<NetworkIdentity>().connectionToClient;
+
+    }
 
     #region Item Changes on Spec Scores
     //Changes to spec scores which originate from the player's items
@@ -93,7 +100,7 @@ public class Player
     public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
     public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
 
-    public Player(int PlayerID, string PlayerName, string CharacterType)
+    public Player(NetworkConnection PlayerID, string PlayerName, string CharacterType)
     {
         playerID = PlayerID;
         playerName = PlayerName;
