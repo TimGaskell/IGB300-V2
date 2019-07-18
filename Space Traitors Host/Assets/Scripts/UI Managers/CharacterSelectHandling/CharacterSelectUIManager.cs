@@ -39,7 +39,7 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Setups the player list side bar to take the character names from the player array. Also disables any unused players in the list so they are not visible
+    /// Setups the player list to take the player names from the player array. Also disables any unused players in the list so they are not visible
     /// 
     /// </summary>
     private void SetupPlayerList()
@@ -52,10 +52,9 @@ public class CharacterSelectUIManager : MonoBehaviour
             if (counter >= 0)
             {
                 playerPanels.gameObject.SetActive(true);
-                //Since the order of the character selection is randomised, need to obtain the relevant player ID from the player order array, then find that relevant players information
-                int playerPointer = GameManager.instance.playerOrder[counter];
-                string playerID = GameManager.instance.players[playerPointer].playerID.ToString();
-                string playerName = GameManager.instance.players[playerPointer].playerName;
+                //Since the order of the character selection is randomised, need to obtain the relevant player ID from the player order array, then obtains the relevant players name
+                int playerID = GameManager.instance.playerOrder[counter];
+                string playerName = GameManager.instance.GetPlayer(playerID).playerName;
 
                 //Set the player name to be their ID and their name
                 playerPanels.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);
@@ -80,8 +79,10 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     private void DisplayActivePlayer()
     {
-        string playerID = GameManager.instance.ActivePlayer().playerID.ToString();
-        string playerName = GameManager.instance.ActivePlayer().playerName;
+        //Find the active player in the game manager and displays its information
+        Player activePlayer = GameManager.instance.GetOrderedPlayer(GameManager.instance.activePlayer);
+        string playerID = activePlayer.playerID.ToString();
+        string playerName = activePlayer.playerName;
 
         activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);
     }

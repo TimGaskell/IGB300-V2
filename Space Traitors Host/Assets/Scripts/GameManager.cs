@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
 
-    //For hardcode debugging, when wanting to test without server functionality
+    //Used for generating default player information if loading into a scene later than the lobby
+    private const int DEFAULT_NUM_PLAYERS = 4;
+    private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
     private static readonly string[] CHARACTER_TYPES = { "Brute", "Butler", "Chef", "Engineer", "Singer", "Techie" };
 
     public readonly int MAX_POWER = 100;
@@ -38,13 +40,26 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Return the information about the player which is currently active
+    /// Returns the player information for a player of a particular ID
     /// 
     /// </summary>
-    /// <returns></returns>
-    public Player ActivePlayer()
+    /// <param name="playerID">The ID of the player</param>
+    /// <returns>The relevant player</returns>
+    public Player GetPlayer(int playerID)
     {
-        return players.Find(x => x.playerID == playerOrder[activePlayer]);
+        return players[playerID];
+    }
+
+    /// <summary>
+    /// 
+    /// Returns the player information for a player based on its position in the turn order. 
+    /// 
+    /// </summary>
+    /// <param name="orderID">The index of the player in the player order list</param>
+    /// <returns>The relevant player</returns>
+    public Player GetOrderedPlayer(int orderID)
+    {
+        return players.Find(x => x.playerID == playerOrder[orderID]);
     }
 
     #region Scene Transition Handling
@@ -93,12 +108,24 @@ public class GameManager : MonoBehaviour
             }
             else if (scene.name == "Character SelectionV2")
             {
+                //For debugging if wanting to go into character selection immediately, generates a default player list without characters
+                if(players.Count == 0)
+                {
+                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
+                }
+
                 //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
                 activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
             else if (scene.name == "Game Level")
             {
+                //For debugging if wanting to go into game level immediately, generates a default player list with characters
+                if (players.Count == 0)
+                {
+                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                }
+
                 StartGame();
             }
         }
@@ -207,7 +234,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Resets the player list to be a new list
+    /// Resets the player list to be a new list. Used when starting a new game
     /// 
     /// </summary>
     public void ResetPlayers()
@@ -254,6 +281,30 @@ public class GameManager : MonoBehaviour
         players[playerOrder[activePlayer]].CharacterType = characterType;
         //Character Selection is in the reverse player order, so works backward through the player order list
         activePlayer--;
+    }
+
+    /// <summary>
+    /// 
+    /// Generates a Default Player list based on the constants defined above
+    /// 
+    /// </summary>
+    /// <param name="NumPlayers">The number of players to generate. Should be between 1 and 6</param>
+    /// <param name="giveCharacters">Whether or not to define characters for the players</param>
+    private void GenerateDefaultPlayers(int NumPlayers, bool giveCharacters)
+    {
+        numPlayers = NumPlayers;
+
+        for (int playerID = 0; playerID < numPlayers; playerID++)
+        {
+            if (giveCharacters)
+            {
+                players.Add(new Player(playerID, DEFAULT_NAMES[playerID], CHARACTER_TYPES[playerID]));
+            }
+            else
+            {
+                players.Add(new Player(playerID, DEFAULT_NAMES[playerID]));
+            }
+        }
     }
 
     #endregion
