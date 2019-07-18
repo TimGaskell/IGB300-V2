@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
 
+    //Used to detect if the game has been initialised or not. This is to prevent InitialiseGame being called twice when the game begins
+    //(i.e. in awake and loading into main menu). Should be set true after initialisation is complete and false after leaving the main menu
+    private bool gameInit = false;
+
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
     private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
@@ -38,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+    #region Player Retrieval
+
     /// <summary>
     /// 
     /// Returns the player information for a player of a particular ID
@@ -62,17 +68,104 @@ public class GameManager : MonoBehaviour
         return players.Find(x => x.playerID == playerOrder[orderID]);
     }
 
+    #endregion
+
     #region Scene Transition Handling
+
+    /// <summary>
+    /// 
+    /// Used to detect when a new scene is loaded into, since Game Manager is enabled when this happens
+    /// See 
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
     private void OnEnable()
     {
+        SceneManager.sceneUnloaded += OldSceneUnloaded;
         SceneManager.sceneLoaded += NewSceneLoaded;
     }
 
+    /// <summary>
+    /// 
+    /// Used to detect when a scene is loaded out of, since Game Manager is disabled when this happens
+    /// See 
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= NewSceneLoaded;
+        SceneManager.sceneUnloaded -= OldSceneUnloaded;
     }
 
+    /// <summary>
+    /// 
+    /// Used for detecting when a scene is unloaded. Customised to detect for the different scenes in the game.
+    /// See
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    /// <param name="scene"></param>
+    private void OldSceneUnloaded(Scene scene)
+    {
+        if (serverActive)
+        {
+            throw new NotImplementedException("Server Functionality not Implemented");
+            if (scene.name == "Main Menu")
+            {
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
+            }
+            else if (scene.name == "LobbyV2")
+            {
+
+            }
+            else if (scene.name == "Character SelectionV2")
+            {
+
+            }
+            else if (scene.name == "Game Level")
+            {
+
+            }
+        }
+        else
+        {
+            if (scene.name == "Main Menu")
+            {
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
+            }
+            else if (scene.name == "LobbyV2")
+            {
+                
+            }
+            else if (scene.name == "Character SelectionV2")
+            {
+
+            }
+            else if (scene.name == "Game Level")
+            {
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Used for detecting when a new scene is loaded into. Customised to detect for the different scenes in the game
+    /// See
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
     private void NewSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (serverActive)
@@ -80,7 +173,7 @@ public class GameManager : MonoBehaviour
             throw new NotImplementedException("Server Functionality not Implemented");
             if (scene.name == "Main Menu")
             {
-
+                InitialiseGame();
             }
             else if (scene.name == "LobbyV2")
             {
@@ -109,7 +202,7 @@ public class GameManager : MonoBehaviour
             else if (scene.name == "Character SelectionV2")
             {
                 //For debugging if wanting to go into character selection immediately, generates a default player list without characters
-                if(players.Count == 0)
+                if (players.Count == 0)
                 {
                     GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
                 }
@@ -159,15 +252,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InitialiseGame()
     {
-        ResetPlayers();
-        playerOrder = new List<int>();
+        if (!gameInit)
+        {
+            ResetPlayers();
+            playerOrder = new List<int>();
 
-        //Instantiate the corruption abilities
-        corruptionAbilities = new List<Ability>();
-        corruptionAbilities.Add(new SensorScan());
-        corruptionAbilities.Add(new CodeInspection());
-        corruptionAbilities.Add(new Sabotage());
-        corruptionAbilities.Add(new PowerUp());
+            //Instantiate the corruption abilities
+            corruptionAbilities = new List<Ability>();
+            corruptionAbilities.Add(new SensorScan());
+            corruptionAbilities.Add(new CodeInspection());
+            corruptionAbilities.Add(new Sabotage());
+            corruptionAbilities.Add(new PowerUp());
+
+            gameInit = true;
+            Debug.Log("Game Initialised");
+        }        
     }
 
     /// <summary>
