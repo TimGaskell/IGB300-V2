@@ -52,9 +52,10 @@ public class CharacterSelectUIManager : MonoBehaviour
             if (counter >= 0)
             {
                 playerPanels.gameObject.SetActive(true);
-                //Since the order of the character selection is randomised, need to obtain the relevant player ID from the player order array, then obtains the relevant players name
-                int playerID = GameManager.instance.playerOrder[counter];
-                string playerName = GameManager.instance.GetPlayer(playerID).playerName;
+                //Need to sort the panels by the order of the character selection, not by their ID, so need to get the information from an ordered player
+                Player playerInfo = GameManager.instance.GetOrderedPlayer(counter);
+                int playerID = playerInfo.playerID;
+                string playerName = playerInfo.playerName;
 
                 //Set the player name to be their ID and their name
                 playerPanels.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);

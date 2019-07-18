@@ -287,6 +287,13 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         activePlayer = 0;
+
+        //foreach (Player player in players)
+        //{
+        //    Debug.Log(player.playerID);
+        //    Debug.Log(player.playerName);
+        //    Debug.Log(player.CharacterType);
+        //}
     }
 
     #endregion
