@@ -32,8 +32,13 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
+    //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
+    public int NumComponents { get { return numPlayers; } }
+
     public int aiPower;
     public int aiPowerChange;
+
+    public int installedComponents;
 
     public List<Ability> corruptionAbilities;
 
@@ -286,7 +291,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartGame()
     {
+        //Reset variables to their default state
         activePlayer = 0;
+        installedComponents = 0;
 
         //foreach (Player player in players)
         //{
@@ -436,6 +443,45 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Traitor Handling
+
+
+
+    #endregion
+
+    #region Component Handling
+
+    /// <summary>
+    /// 
+    /// Checks if a particular player can install a component or not
+    /// 
+    /// </summary>
+    /// <param name="playerID">The ID of player to be checked</param>
+    /// <returns>True if the player has a component, false otherwise</returns>
+    public bool CanInstallComponent(int playerID)
+    {
+        return players[playerID].hasComponent;
+    }
+
+    /// <summary>
+    /// 
+    /// Installs a component and checks if this is the last component to be installed. If it is returns true.
+    /// Otherwise returns false.
+    /// 
+    /// </summary>
+    /// <param name="playerID">The ID of the player installing the component</param>
+    /// <returns>If this is the last component to be installed, returns true</returns>
+    public bool InstallComponent(int playerID)
+    {
+        players[playerID].hasComponent = false;
+        installedComponents += 1;
+
+        //The number of components in the game is equal to the number of players
+        return installedComponents == NumComponents;
+    }
+
+    #endregion
+
+    #region Combat Handling and Traitor Victory Conditions
 
 
 
