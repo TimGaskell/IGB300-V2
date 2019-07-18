@@ -115,6 +115,10 @@ public class Player
     public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
     public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
 
+    //Character Specific Variables
+    public bool ChefBuffed = false; //Used for Chef's 'Preparation' ability
+    public bool IsInvisible = false; //Used for Techie's 'Muddle Sensors' ability
+
     public Player(int PlayerID, string PlayerName)
     {
         playerID = PlayerID;

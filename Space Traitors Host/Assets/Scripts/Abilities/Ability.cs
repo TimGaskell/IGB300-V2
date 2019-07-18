@@ -30,10 +30,17 @@ public class Ability
         return playerCorruption >= corruptionRequirement;
     }
 
-    //public virtual bool CheckUse()
-    //{
+    //If the corruption value is higher or lower than specified threshold, player can use the ability
+    public virtual bool CheckUse(int targetIndex)
+    {
+        if (CheckCorruption(GameManager.instance.players[targetIndex].corruption,  corruptionRequirement))
+        {
 
-    //}
+            return true;
+        }
+        else
+            return false;
+    }
 
     /// <summary>
     /// 
@@ -54,10 +61,51 @@ public class Ability
     /// 
     /// Deactivate the ability, reverting any changes that were made
     /// 
+    /// Used for the Chef's 'Preparation' ability- buffs reset at the end of each turn
+    /// 
     /// </summary>
     public virtual void Deactivate()
     {
-        throw new NotImplementedException("Ability not Defined");
+        //throw new NotImplementedException("Ability not Defined");
+
+        foreach (Player player in GameManager.instance.players)
+        {
+            if (player.ChefBuffed)
+            {
+                //Reset the buffs (-1 to all specs)
+                player.brawnModifier--;
+                player.skillModifier--;
+                player.techModifier--;
+                player.charmModifier--;
+
+                player.ChefBuffed = false;
+            }
+        }
+    }
+
+
+/// <summary>
+/// 
+/// Deactivate the ability, reverting any changes that were made
+/// 
+/// Used for disabling the Techie's 'Muddle Sensors' ability (invisibility)
+/// 
+/// Made seperate to Deactivate() as unsure how long invisibility lasts
+/// 
+/// </summary>
+
+    public virtual void MuddleDeactivate()
+    {
+        //throw new NotImplementedException("Ability not Defined");
+
+        foreach (Player player in GameManager.instance.players)
+        {
+            if (player.IsInvisible)
+            {
+                player.IsInvisible = false;
+            }
+        }
+
     }
 }
 
@@ -76,6 +124,7 @@ public class Shove : Ability
     public override void Activate()
     {
         Debug.Log("Shove Activate");
+
     }
 }
 
@@ -96,20 +145,27 @@ public class SecretPaths : Ability
     }
 }
 
-public class Preperation : Ability
+public class Preparation : Ability
 {
-    public Preperation()
+    public Preparation()
     {
-        abilityName = "Preperation";
+        abilityName = "Preparation";
         abilityDescription = "DESCRIPTION TO ADD";
 
         scrapCost = 8;
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         Debug.Log("Preperation Activate");
+        //+1 to all spec modifiers
+        GameManager.instance.players[targetIndex].brawnModifier++;
+        GameManager.instance.players[targetIndex].skillModifier++;
+        GameManager.instance.players[targetIndex].techModifier++;
+        GameManager.instance.players[targetIndex].charmModifier++;
+
+        GameManager.instance.players[targetIndex].ChefBuffed = true;
     }
 }
 
@@ -127,7 +183,12 @@ public class QuickRepair : Ability
     public override void Activate(int targetIndex)
     {
         Debug.Log("Quick Repair Activate");
-        GameManager.instance.players[targetIndex].lifePoints += 1; //Need to add in check for max 
+
+        if (GameManager.instance.players[targetIndex].lifePoints <= GameManager.instance.players[targetIndex].maxLifePoints) //Temporary max check, could be better handled by Player
+        {
+            GameManager.instance.players[targetIndex].lifePoints += 1;
+        }
+       
     }
 }
 
@@ -142,9 +203,14 @@ public class EncouragingSong : Ability
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         Debug.Log("Encouraging Song Activate");
+       
+        if (GameManager.instance.players[targetIndex].corruption >= 15)
+            GameManager.instance.players[targetIndex].corruption -= 15;
+        else
+            GameManager.instance.players[targetIndex].corruption = 0;  //Corruption should never be a negative
     }
 }
 
@@ -159,9 +225,10 @@ public class MuddleSensors : Ability
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         Debug.Log("Muddle Sensors Activate");
+        GameManager.instance.players[targetIndex].IsInvisible = true; //Either let Player script handle invisibility, or set it here
     }
 }
 #endregion
