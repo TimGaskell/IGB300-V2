@@ -201,7 +201,11 @@ public class Choice
         player.scrap += scrapChange;
         player.corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
-        player.GiveItem(specItem);
+        //Checks if the choice has an item to give before assignment
+        if (specItem.itemName != "Null")
+        {
+            player.GiveItem(specItem);
+        }
         player.hasComponent = component;
         player.lifePoints += lifeChange;
 

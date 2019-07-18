@@ -11,7 +11,12 @@ public class Item
     public int techChange;
     public int charmChange;
 
-    //Need to add in inventory handling
+    //The position in the map where the item originally came from. Used for discarding items
+    //First number indicates the room ID. Second number indicates the choice ID.
+    public int[] roomOrigin;
+
+    //Tells if the player has the item equipped or not
+    public bool isEquipped;
 
     /// <summary>
     /// 
@@ -20,12 +25,17 @@ public class Item
     /// </summary>
     public Item()
     {
-        itemName = "Default";
+        itemName = "Null";
 
         brawnChange = 0;
         skillChange = 0;
         techChange = 0;
         charmChange = 0;
+
+        //All items start out in a room that does not exist until they are assigned
+        roomOrigin = new int[] { -1, -1 };
+
+        isEquipped = false;
     }
 
     /// <summary>
@@ -39,6 +49,11 @@ public class Item
         itemName = newItemName;
 
         DetermineItemScores();
+
+        //All items start out in a room that does not exist until they are assigned
+        roomOrigin = new int[] { -1, -1 };
+
+        isEquipped = false;
     }
 
     /// <summary>
@@ -87,5 +102,27 @@ public class Item
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// Returns an item to its original position in the level map and reenables the choice it came from
+    /// 
+    /// </summary>
+    /// <param name="rooms">The parent object of all the room objects</param>
+    public void ReturnItem(GameObject rooms)
+    {
+        //Retrieve the choice and store it temporarily
+        Choice tempChoice = rooms.transform.GetChild(roomOrigin[0]).GetComponent<Room>().roomChoices[roomOrigin[1]];
+
+        //Assign the choice and reenable the choice
+        tempChoice.specItem = this;
+        if (tempChoice.oneOff)
+        {
+            tempChoice.disabled = false;
+        }
+
+        //Reassigns the choice
+        rooms.transform.GetChild(roomOrigin[0]).GetComponent<Room>().roomChoices[roomOrigin[1]] = tempChoice;
     }
 }

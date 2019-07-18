@@ -406,6 +406,11 @@ public class ChoiceRandomiser : MonoBehaviour
                 //If the given choice position is not currently occupied (default constructor will have an ID of 0), will assign choice there and return a success
                 if (roomChoices[choicePos].choiceID == 0)
                 {
+                    //If the choice contains a spec item, will set up its room origin as the current room
+                    if(choice.specItem.itemName != "Null")
+                    {
+                        choice.specItem.roomOrigin = new int[] { roomLocation, choicePos };
+                    }
                     rooms[roomLocation].GetComponent<Room>().roomChoices[choicePos] = choice;
                     isOccupied = false;
                     return true;
