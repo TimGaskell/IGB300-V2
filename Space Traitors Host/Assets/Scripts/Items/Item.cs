@@ -110,7 +110,7 @@ public class Item
     /// 
     /// </summary>
     /// <param name="rooms">The parent object of all the room objects</param>
-    public void ReturnItem(GameObject rooms)
+    public void ReturnItem(ref GameObject rooms)
     {
         //Retrieve the choice and store it temporarily
         Choice tempChoice = rooms.transform.GetChild(roomOrigin[0]).GetComponent<Room>().roomChoices[roomOrigin[1]];

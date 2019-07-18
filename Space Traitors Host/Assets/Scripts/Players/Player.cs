@@ -31,8 +31,8 @@ public class Player
     public string CharacterType { get { return characterType.characterName; } set { characterType = new Character(value); } }
     public Character characterType;
 
-    #region Item Changes on Spec Scores
-    //Changes to spec scores which originate from the player's items
+    #region Static Changes on Spec Scores
+    //Changes to spec scores which originate from the player's items and abilities
     private int BrawnChange
     {
         get
@@ -44,8 +44,9 @@ public class Player
                 {
                     brawnScore += item.brawnChange;
                 }
-                
+
             }
+            brawnScore += brawnModifier;
 
             return brawnScore;
         }
@@ -62,6 +63,7 @@ public class Player
                     skillScore += item.skillChange;
                 }
             }
+            skillScore += skillModifier;
 
             return skillScore;
         }
@@ -78,6 +80,7 @@ public class Player
                     techScore += item.techChange;
                 }
             }
+            techScore += techModifier;
 
             return techScore;
         }
@@ -94,11 +97,17 @@ public class Player
                     charmScore += item.charmChange;
                 }
             }
+            charmScore += charmModifier;
 
             return charmScore;
         }
     }
     #endregion
+
+    public int brawnModifier;
+    public int skillModifier;
+    public int techModifier;
+    public int charmModifier;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
     public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn, BrawnChange); } }
@@ -123,6 +132,11 @@ public class Player
         maxLifePoints = BASE_LIFE_POINTS;
 
         characterType = new Character();
+
+        brawnModifier = 0;
+        skillModifier = 0;
+        techModifier = 0;
+        charmModifier = 0;
     }
 
     /// <summary>
@@ -143,9 +157,9 @@ public class Player
     /// <param name="baseScore">The relevant spec score base</param>
     /// <param name="itemModifier">The modifier to the relevant spec score based upon their items</param>
     /// <returns>The scaled spec score</returns>
-    private int ApplyScaling (int baseScore, int itemModifier)
+    private int ApplyScaling(int baseScore, int itemModifier)
     {
-        return baseScore * (int) ((100 - 0.5 * corruption) / 100) + itemModifier;
+        return baseScore * (int)((100 - 0.5 * corruption) / 100) + itemModifier;
     }
 
     #region Item Handling
@@ -160,11 +174,11 @@ public class Player
     public bool GiveItem(Item item)
     {
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
-        if(items.Count < MAX_ITEMS)
+        if (items.Count < MAX_ITEMS)
         {
             items.Add(item);
             return true;
-        }        
+        }
 
         return false;
     }
@@ -193,19 +207,19 @@ public class Player
         int numEquipped = 0;
         Item testingItem = items[itemIndex];
 
-        foreach(Item item in items)
+        foreach (Item item in items)
         {
             //Only need to verify conditions if the item is already equipped
             if (item.isEquipped)
             {
                 //If the item is already equipped, returns false
-                if(item == testingItem)
+                if (item == testingItem)
                 {
                     Debug.Log("Item already Equipped."); //Can replace this with some other form of output to give feedback to player if needed
                     return false;
                 }
 
-                
+
                 numEquipped++;
 
                 //If the number of items equipped exceeds the maximum, returns false
@@ -231,7 +245,7 @@ public class Player
     public void UnequipItem(int itemIndex)
     {
         items[itemIndex].isEquipped = false;
-    }   
+    }
 
     /// <summary>
     /// 
@@ -240,9 +254,9 @@ public class Player
     /// </summary>
     /// <param name="itemIndex">The index of the item in the players inventory</param>
     /// <param name="rooms">The parent object of all the room objects</param>
-    public void DiscardItem(int itemIndex, GameObject rooms)
+    public void DiscardItem(int itemIndex, ref GameObject rooms)
     {
-        items[itemIndex].ReturnItem(rooms);
+        items[itemIndex].ReturnItem(ref rooms);
         RemoveItem(itemIndex);
     }
 

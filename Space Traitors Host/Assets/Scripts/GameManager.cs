@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
             {
 
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == "Game LevelV2")
             {
 
             }
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
             {
 
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == "Game LevelV2")
             {
 
             }
@@ -403,6 +403,26 @@ public class GameManager : MonoBehaviour
             {
                 players.Add(new Player(playerID, DEFAULT_NAMES[playerID]));
             }
+        }
+    }
+
+    #endregion
+
+    #region Round Management
+
+    /// <summary>
+    /// 
+    /// Increment the turn order to the next player. Starts a new round if the current player is the last player in the order
+    /// 
+    /// </summary>
+    public void IncrementTurn()
+    {
+        activePlayer++;
+        //If the active player reaches the maximum number of players, the round has ended and a surge will occur
+        if(activePlayer == numPlayers)
+        {
+            activePlayer = 0;
+            //Need to add traitor handling for surges in here (i.e. power increases and traitor selection)
         }
     }
 
