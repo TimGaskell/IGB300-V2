@@ -115,6 +115,11 @@ public class Player
     public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
     public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
 
+    //Says if the player has been selected as traitor or not
+    public bool isTraitor;
+    //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
+    public bool isRevealed;
+
     public Player(int PlayerID, string PlayerName)
     {
         playerID = PlayerID;
@@ -137,6 +142,9 @@ public class Player
         skillModifier = 0;
         techModifier = 0;
         charmModifier = 0;
+
+        isTraitor = false;
+        isRevealed = false;
     }
 
     /// <summary>

@@ -96,11 +96,11 @@ public class SecretPaths : Ability
     }
 }
 
-public class Preperation : Ability
+public class Preparation : Ability
 {
-    public Preperation()
+    public Preparation()
     {
-        abilityName = "Preperation";
+        abilityName = "Preparation";
         abilityDescription = "DESCRIPTION TO ADD";
 
         scrapCost = 8;

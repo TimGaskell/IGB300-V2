@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     //(i.e. in awake and loading into main menu). Should be set true after initialisation is complete and false after leaving the main menu
     private bool gameInit = false;
 
+    //A default player ID for dummy players (i.e. when a target is not needed). -1 should never be a valid player ID so it used here
+    public const int DEFAULT_PLAYER_ID = -1;
+
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
     private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
@@ -35,8 +38,28 @@ public class GameManager : MonoBehaviour
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
     public int NumComponents { get { return numPlayers; } }
 
-    public int aiPower;
-    public int aiPowerChange;
+    public float aiPower;
+    public float aiPowerChange;
+    private int aiTargetScore;
+
+    //The ID of a player who has newly been selected as traitor
+    public int newTraitor;
+    //The ID of the Player being targeted during an AI attack
+    public int targetPlayer;
+    //Boolean to determine if a traitor was selected in the previous round
+    private bool traitorDelay;
+
+    // Constants used in calculating the changes in AI Power during a surge. Increasing either of these values will increase the power gain per turn
+    private const float BASE_POWER_MOD = 24.0f;
+    private const float PLAYER_POWER_MOD = 0.2f;
+
+    //The base target score for when the AI begins to attack the players
+    private const int BASE_TARGET_SCORE = 5;
+    //The increase the AI target score every round
+    private const int AI_TARGET_INCREASE = 1;
+
+    //The modifier for spec scores when one player counters another in combat
+    private const int COUNTER_MOD = 2;
 
     public int installedComponents;
 
@@ -295,6 +318,14 @@ public class GameManager : MonoBehaviour
         activePlayer = 0;
         installedComponents = 0;
 
+        aiPower = 0;
+        aiTargetScore = BASE_TARGET_SCORE;
+        traitorDelay = false;
+
+        //Sets a default player traitor and target
+        newTraitor = DEFAULT_PLAYER_ID;
+        targetPlayer = DEFAULT_PLAYER_ID;
+
         //foreach (Player player in players)
         //{
         //    Debug.Log(player.playerID);
@@ -327,6 +358,22 @@ public class GameManager : MonoBehaviour
         }
 
         return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
+    }
+
+    /// <summary>
+    /// 
+    /// Determines if a player was successful in their spec challenge or not
+    /// 
+    /// </summary>
+    /// <param name="PlayerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
+    /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
+    /// <returns>True if the player suceeded. False otherwise</returns>
+    public bool PerformSpecChallenge(int PlayerScore, int targetScore)
+    {
+        //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
+        float successFactor = UnityEngine.Random.Range(0f, 100f);
+
+        return successFactor <= SpecChallengeChance(PlayerScore, targetScore);
     }
 
     #endregion
@@ -436,7 +483,7 @@ public class GameManager : MonoBehaviour
         if(activePlayer == numPlayers)
         {
             activePlayer = 0;
-            //Need to add traitor handling for surges in here (i.e. power increases and traitor selection)
+            ActivateSurge();
         }
     }
 
@@ -444,7 +491,346 @@ public class GameManager : MonoBehaviour
 
     #region Traitor Handling
 
+    /// <summary>
+    /// 
+    /// Performs a surge. Increments AI Power or if the AI Power is at 100% choose a random target for the AI Attacks
+    /// 
+    /// </summary>
+    private void ActivateSurge()
+    {
+        if (aiPower < 100)
+        {
+            float basePower = BASE_POWER_MOD / numPlayers;
+            float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
+            aiPower += Math.Min(100, (basePower + playerPower + aiPowerChange));
+            aiPowerChange = 0;
+        }
+        else
+        {
+            //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
+            //to see if the target is not the default case
+            targetPlayer = AIChooseTarget();
+        }
+
+        if (IsTraitorSelected())
+        {
+            ChooseTraitor();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Calculates the sum of corruption from all players. Can include only players which are not traitors or all players in the sum as desired.
+    /// 
+    /// </summary>
+    /// <param name="includeTraitor">Whether or not to consider the corruption of traitor characters when calculating the total</param>
+    /// <returns>The sum of corruption</returns>
+    private int TotalCorruption(bool includeTraitor)
+    {
+        int totalCorruption = 0;
+
+        foreach(Player player in players)
+        {
+            //Do not want to include a players corruption if traitor corruption is not to be consider
+            //and the player is a traitor
+            if(!(!includeTraitor && player.isTraitor))
+            {
+                totalCorruption += player.corruption;
+            }
+        }
+
+        return totalCorruption;
+    }
+
+    /// <summary>
+    /// 
+    /// Determines if there is to be a traitor selected, returning true if so and false otherwise
+    /// 
+    /// </summary>
+    /// <returns>If a traitor is to be selected, returns true. Otherwise returns false</returns>
+    private bool IsTraitorSelected()
+    {
+        //First checks if there are still avaialable slot for a player to become the traitor. If there is an available slot, continues to determine if a traitor is to be selected
+        if (!TraitorCountCheck())
+        {
+            //Then checks if there has been a delay in rounds since the last traitor was selected.
+            //If there hasn't, resets the delay and returns false
+            if (!traitorDelay)
+            {
+                //Determines a random number between 0 and 100 and then checks if the random number is less than the AI Power. If it is, sets up the traitorDelay to
+                //prevent a traitor being selected next round and returns true. Otherwise, resets the traitor delay and returns false.
+                float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
+                if (randomChance <= aiPower)
+                {
+                    traitorDelay = true;
+                    return true;
+                }
+                else
+                {
+                    traitorDelay = false;
+                    return false;
+                }
+            }
+            else
+            {
+                traitorDelay = false;
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Checks if the number of traitors in the game is less than the number of players by 1, preventing the last player
+    /// from being selected as the traitor
+    /// 
+    /// </summary>
+    /// <returns>If there are still available slots for a traitor, returns true. Otherwise, returns false</returns>
+    private bool TraitorCountCheck()
+    {
+        int traitorCount = 0;
+
+        //Count up the number of traitors
+        foreach(Player player in players)
+        {
+            if (player.isTraitor)
+            {
+                traitorCount += 1;
+            }
+        }
+
+        return traitorCount < numPlayers - 1;
+    }
+
+    /// <summary>
+    /// 
+    /// Select a player ID at random from the non-traitors to be traitor. Randomness is based on the player's corruption
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private int ChooseTraitor()
+    {
+        float chanceCounter = 0;
+        float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
+
+        //Want the total corruption without traitors as a scaling for each players corruption
+        int totalCorruption = TotalCorruption(false);
+
+        foreach(Player player in players)
+        {
+            //Cannot consider players which are not traitors, so will ignore them in the summation
+            if (!player.isTraitor)
+            {
+                //Add the player's proability, then determine if the random number falls in that probability range.
+                //If it does, that player is to be selected as traitor
+                chanceCounter += player.corruption / totalCorruption;
+                if (randomChance <= chanceCounter)
+                {
+                    players[player.playerID].isTraitor = true;
+                    return player.playerID;
+                }
+            }
+        }
+
+        //Provides a dummy output for the function. Should never reach this point
+        return DEFAULT_PLAYER_ID;
+    }
+
+    /// <summary>
+    /// 
+    /// The AI chooses a random player target for its attacks
+    /// 
+    /// </summary>
+    /// <returns>The random target's player index</returns>
+    private int AIChooseTarget()
+    {
+        return UnityEngine.Random.Range(0, numPlayers);
+    }
+
+    /// <summary>
+    /// 
+    /// Determines if the player wins a combat against the AI attacking it. Returns true if the player wins, false otherwise
+    /// 
+    /// </summary>
+    /// <param name="specScore">The name of the spec score the player wants to use against the AI</param>
+    /// <returns>True if the player wins the combat. False otherwise</returns>
+    private bool AIAttackPlayer(string specScore)
+    {
+        bool playerWin;
+
+        int targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
+
+        //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
+        //the target player loses a life point
+        if (PerformSpecChallenge(targetSpecScore, aiTargetScore))
+        {
+            playerWin = true;
+        }
+        else
+        {
+            playerWin = false;
+            players[targetPlayer].lifePoints -= 1;
+        }
+
+        //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
+        aiTargetScore += AI_TARGET_INCREASE;
+        //Resets target player back to the default case
+        targetPlayer = DEFAULT_PLAYER_ID;
+
+        return playerWin;
+    }
+    #endregion
+
+    #region Combat Handling and Traitor Victory Conditions
+
+    /// <summary>
+    /// 
+    /// Checks if combat is viable between two players based on them being in the same room as well either the attacker being a traitor
+    /// or the defender being revealed as the traitor
+    /// 
+    /// </summary>
+    /// <param name="attackerID">The ID of the attacking player</param>
+    /// <param name="defenderID">The ID of the defending player</param>
+    /// <returns>If combat is viable between the two players, returns true. Otherwise, returns false</returns>
+    public bool CheckCombat(int attackerID, int defenderID)
+    {
+        Player attackingPlayer = GetPlayer(attackerID);
+        Player defendingPlayer = GetPlayer(defenderID);
+
+        //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
+        return attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed);
+    }
+
+    /// <summary>
+    /// 
+    /// Performs a combat scenario between two players, considering the counters for each player based on the given spec score
+    /// 
+    /// </summary>
+    /// <param name="attackerID">The playerID of the attacker</param>
+    /// <param name="attackerSpec">The name of the spec score the attacker is using</param>
+    /// <param name="defenderID">The playerID of the defender</param>
+    /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
+    /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
+    public bool PerformCombat(int attackerID, string attackerSpec, int defenderID, string defenderSpec)
+    {
+        Player attackingPlayer = GetPlayer(attackerID);
+        Player defendingPlayer = GetPlayer(defenderID);
+
+        int attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
+        int defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
+
+        //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
+        if(attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
+        {
+            players[attackerID].isRevealed = true;
+        }
+
+        //Below statements determine the victory of a combat
+        //First set of statements consider whether the attacker counters the defender, or vice versa, or if there are no counters and applys modifiers to the relevant spec scores accordingly
+        //Next set of statements determines who wins the combat based on the relevant spec scores, updating life points and returning outcome accordingly
+        if(DetermineCounter(attackerSpec, defenderSpec))
+        {
+            if(PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
+            {
+                players[defenderID].lifePoints -= 1;
+                return true;
+            }
+            else
+            {
+                players[attackerID].lifePoints -= 1;
+                return false;
+            }
+        }
+        else if(DetermineCounter(defenderSpec, attackerSpec))
+        {
+            if(PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
+            {
+                players[defenderID].lifePoints -= 1;
+                return true;
+            }
+            else
+            {
+                players[attackerID].lifePoints -= 1;
+                return false;
+            }
+        }
+        else
+        {
+            if (PerformSpecChallenge(attackerScore, defenderScore))
+            {
+                players[defenderID].lifePoints -= 1;
+                return true;
+            }
+            else
+            {
+                players[attackerID].lifePoints -= 1;
+                return false;
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Obtains the relevant spec score to be utilised from a particular player
+    /// 
+    /// </summary>
+    /// <param name="player">The player who is being tested</param>
+    /// <param name="specScore">The name of the spec score to be utilised</param>
+    /// <returns>The value of the relevant spec score for that player</returns>
+    private int ObtainSpecScore(Player player, string specScore)
+    {
+        switch (specScore)
+        {
+            case ("Brawn"):
+                return player.ScaledBrawn;
+            case ("Skill"):
+                return player.ScaledSkill;
+            case ("Tech"):
+                return player.ScaledTech;
+            case ("Charm"):
+                return player.ScaledCharm;
+            default:
+                throw new NotImplementedException("Not a valid Spec Score");
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Determines if a given spec score counters another. If spec1 counters spec2, returns true. Otherwise returns false
+    /// 
+    /// </summary>
+    /// <param name="spec1">The name of the spec score to be countering</param>
+    /// <param name="spec2">The name of the spec score to be countered</param>
+    /// <returns>If spec1 counters spec2, returns true. Otherwise false</returns>
+    private bool DetermineCounter(string spec1, string spec2)
+    {
+        if(spec1 == "Brawn" && spec2 == "Charm")
+        {
+            return true;
+        }
+        else if (spec1 == "Charm" && spec2 == "Tech")
+        {
+            return true;
+        }
+        else if (spec1 == "Tech" && spec2 == "Skill")
+        {
+            return true;
+        }
+        else if (spec1 == "Skill" && spec2 == "Brawn")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     #endregion
 
@@ -478,12 +864,6 @@ public class GameManager : MonoBehaviour
         //The number of components in the game is equal to the number of players
         return installedComponents == NumComponents;
     }
-
-    #endregion
-
-    #region Combat Handling and Traitor Victory Conditions
-
-
 
     #endregion
 }
