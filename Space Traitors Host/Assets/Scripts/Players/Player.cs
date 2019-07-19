@@ -143,6 +143,12 @@ public class Player
         charmModifier = 0;
     }
 
+    //Techie only, have player turn invisible on main screen
+    public void MuddleSensors(bool visible)
+    {
+       // this.gameObject.GetComponent<MeshRenderer>().enabled = visible;
+    }
+
     /// <summary>
     /// 
     /// Constructor for a player if the character type has already been defined.

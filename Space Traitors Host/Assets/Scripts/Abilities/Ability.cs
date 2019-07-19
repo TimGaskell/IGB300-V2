@@ -94,18 +94,9 @@ public class Ability
 /// 
 /// </summary>
 
-    public virtual void MuddleDeactivate()
+    public virtual void MuddleDeactivate(int targetIndex)
     {
-        //throw new NotImplementedException("Ability not Defined");
-
-        foreach (Player player in GameManager.instance.players)
-        {
-            if (player.IsInvisible)
-            {
-                player.IsInvisible = false;
-            }
-        }
-
+        GameManager.instance.players[targetIndex].MuddleSensors(true);
     }
 }
 
@@ -228,7 +219,7 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         Debug.Log("Muddle Sensors Activate");
-        GameManager.instance.players[targetIndex].IsInvisible = true; //Either let Player script handle invisibility, or set it here
+        GameManager.instance.players[targetIndex].MuddleSensors(false); //Void in player script that disable/enables 
     }
 }
 #endregion
@@ -296,9 +287,12 @@ public class PowerUp : Ability
         corruptionRequirement = 100;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         Debug.Log("Power Up Activate");
+
+        GameManager.instance.players[targetIndex].maxLifePoints += 1;
+        GameManager.instance.players[targetIndex].lifePoints += 1;
     }
 }
 #endregion
