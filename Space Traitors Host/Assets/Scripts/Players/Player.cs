@@ -262,9 +262,9 @@ public class Player
     /// </summary>
     /// <param name="itemIndex">The index of the item in the players inventory</param>
     /// <param name="rooms">The parent object of all the room objects</param>
-    public void DiscardItem(int itemIndex, ref GameObject rooms)
+    public void DiscardItem(int itemIndex)
     {
-        items[itemIndex].ReturnItem(ref rooms);
+        items[itemIndex].ReturnItem();
         RemoveItem(itemIndex);
     }
 
