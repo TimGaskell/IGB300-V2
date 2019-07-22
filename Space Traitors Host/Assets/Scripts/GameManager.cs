@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
     //The modifier for spec scores when one player counters another in combat
     private const int COUNTER_MOD = 2;
 
+    public GameObject roomList;
+
     public int installedComponents;
 
     public List<Ability> corruptionAbilities;
@@ -132,60 +134,6 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Used for detecting when a scene is unloaded. Customised to detect for the different scenes in the game.
-    /// See
-    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
-    /// for more information
-    /// 
-    /// </summary>
-    /// <param name="scene"></param>
-    private void OldSceneUnloaded(Scene scene)
-    {
-        if (serverActive)
-        {
-            throw new NotImplementedException("Server Functionality not Implemented");
-            if (scene.name == "Main Menu")
-            {
-                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
-                gameInit = false;
-            }
-            else if (scene.name == "LobbyV2")
-            {
-
-            }
-            else if (scene.name == "Character SelectionV2")
-            {
-
-            }
-            else if (scene.name == "Game LevelV2")
-            {
-
-            }
-        }
-        else
-        {
-            if (scene.name == "Main Menu")
-            {
-                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
-                gameInit = false;
-            }
-            else if (scene.name == "LobbyV2")
-            {
-                
-            }
-            else if (scene.name == "Character SelectionV2")
-            {
-
-            }
-            else if (scene.name == "Game LevelV2")
-            {
-
-            }
-        }
-    }
-
-    /// <summary>
-    /// 
     /// Used for detecting when a new scene is loaded into. Customised to detect for the different scenes in the game
     /// See
     /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
@@ -248,6 +196,61 @@ public class GameManager : MonoBehaviour
                 }
 
                 StartGame();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Used for detecting when a scene is unloaded. Customised to detect for the different scenes in the game.
+    /// See
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    /// <param name="scene"></param>
+    private void OldSceneUnloaded(Scene scene)
+    {
+        if (serverActive)
+        {
+            throw new NotImplementedException("Server Functionality not Implemented");
+            if (scene.name == "Main Menu")
+            {
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
+            }
+            else if (scene.name == "LobbyV2")
+            {
+
+            }
+            else if (scene.name == "Character SelectionV2")
+            {
+
+            }
+            else if (scene.name == "Game LevelV2")
+            {
+
+            }
+        }
+        else
+        {
+            if (scene.name == "Main Menu")
+            {
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
+            }
+            else if (scene.name == "LobbyV2")
+            {
+
+            }
+            else if (scene.name == "Character SelectionV2")
+            {
+
+            }
+            else if (scene.name == "Game LevelV2")
+            {
+                //Unload the room list
+                roomList = null;
             }
         }
     }
@@ -325,6 +328,9 @@ public class GameManager : MonoBehaviour
         //Sets a default player traitor and target
         newTraitor = DEFAULT_PLAYER_ID;
         targetPlayer = DEFAULT_PLAYER_ID;
+
+        roomList = GameObject.FindWithTag("RoomList");
+        roomList.GetComponent<ChoiceRandomiser>().ChoiceSetup();
 
         //foreach (Player player in players)
         //{
