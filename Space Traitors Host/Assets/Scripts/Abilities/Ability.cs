@@ -25,12 +25,37 @@ public class Ability
         corruptionRequirement = 0;
     }
 
+    public bool CheckCorruption(int playerCorruption, int corruptionRequirement)
+    {
+        return playerCorruption >= corruptionRequirement;
+    }
+
+    //public virtual bool CheckUse()
+    //{
+
+    //}
+
     /// <summary>
     /// 
     /// Activate the ability. Default abilities should never be activated, so throws an exception
     /// 
     /// </summary>
     public virtual void Activate()
+    {
+        throw new NotImplementedException("Ability not Defined");
+    }
+
+    public virtual void Activate(int targetIndex)
+    {
+        throw new NotImplementedException("Ability not Defined");
+    }
+
+    /// <summary>
+    /// 
+    /// Deactivate the ability, reverting any changes that were made
+    /// 
+    /// </summary>
+    public virtual void Deactivate()
     {
         throw new NotImplementedException("Ability not Defined");
     }
@@ -71,11 +96,11 @@ public class SecretPaths : Ability
     }
 }
 
-public class Preperation : Ability
+public class Preparation : Ability
 {
-    public Preperation()
+    public Preparation()
     {
-        abilityName = "Preperation";
+        abilityName = "Preparation";
         abilityDescription = "DESCRIPTION TO ADD";
 
         scrapCost = 8;
@@ -99,9 +124,10 @@ public class QuickRepair : Ability
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         Debug.Log("Quick Repair Activate");
+        GameManager.instance.players[targetIndex].lifePoints += 1; //Need to add in check for max 
     }
 }
 
