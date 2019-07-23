@@ -24,7 +24,7 @@ public class Choice
 
     //Whether choice is a spec challenge, what type of challenge it is and its associated target score.
     //Spec Challenge is "Null" if not a spec challenge and target score will be 0 (this will throw math errors if passed into spec challenge formula)
-    public string specChallenge;
+    public GameManager.SpecScores specChallenge;
     public int targetScore;
 
     //Outcomes of the choice. If choice is a spec challenge, these will be the outcomes of a successful spec challenge
@@ -59,7 +59,7 @@ public class Choice
         oneOff = false;
         disabled = false;
 
-        specChallenge = "Null";
+        specChallenge = GameManager.SpecScores.Default;
         targetScore = 0;
 
         scrapChange = 0;
@@ -158,21 +158,21 @@ public class Choice
         //If the choice is not a spec challenge will simply apply the resource changes
         switch (specChallenge)
         {
-            case "Null":
+            case GameManager.SpecScores.Default:
                 currentPlayer = SuccessfulSelection(currentPlayer);
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
                 break;
-            case "Brawn":
+            case GameManager.SpecScores.Brawn:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledBrawn);
                 break;
-            case "Skill":
+            case GameManager.SpecScores.Skill:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledSkill);
                 break;
-            case "Tech":
+            case GameManager.SpecScores.Tech:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledTech);
                 break;
-            case "Charm":
+            case GameManager.SpecScores.Charm:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledCharm);
                 break;
             default:
@@ -225,7 +225,7 @@ public class Choice
         player.corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
-        if (specItem.itemName != "Null")
+        if (specItem.ItemType != Item.ItemTypes.Default)
         {
             player.GiveItem(specItem);
         }

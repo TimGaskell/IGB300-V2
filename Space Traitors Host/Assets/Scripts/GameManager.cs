@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Brute, Character.CharacterTypes.Butler, Character.CharacterTypes.Chef,
         Character.CharacterTypes.Engineer, Character.CharacterTypes.Singer, Character.CharacterTypes.Techie };
 
+    public enum SpecScores { Default, Brawn, Skill, Tech, Charm };
+
     public readonly int MAX_POWER = 100;
 
     public readonly int MIN_PLAYERS = 2;
@@ -675,7 +677,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="specScore">The name of the spec score the player wants to use against the AI</param>
     /// <returns>True if the player wins the combat. False otherwise</returns>
-    private bool AIAttackPlayer(string specScore)
+    private bool AIAttackPlayer(SpecScores specScore)
     {
         bool playerWin;
 
@@ -732,7 +734,7 @@ public class GameManager : MonoBehaviour
     /// <param name="defenderID">The playerID of the defender</param>
     /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
     /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
-    public bool PerformCombat(int attackerID, string attackerSpec, int defenderID, string defenderSpec)
+    public bool PerformCombat(int attackerID, SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
     {
         Player attackingPlayer = GetPlayer(attackerID);
         Player defendingPlayer = GetPlayer(defenderID);
@@ -799,17 +801,17 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private int ObtainSpecScore(Player player, string specScore)
+    private int ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {
-            case ("Brawn"):
+            case (SpecScores.Brawn):
                 return player.ScaledBrawn;
-            case ("Skill"):
+            case (SpecScores.Skill):
                 return player.ScaledSkill;
-            case ("Tech"):
+            case (SpecScores.Tech):
                 return player.ScaledTech;
-            case ("Charm"):
+            case (SpecScores.Charm):
                 return player.ScaledCharm;
             default:
                 throw new NotImplementedException("Not a valid Spec Score");
@@ -818,16 +820,16 @@ public class GameManager : MonoBehaviour
 
     private class SpecComparison
     {
-        public string Spec1 { get; set; }
-        public string Spec2 { get; set; }
+        public SpecScores Spec1 { get; set; }
+        public SpecScores Spec2 { get; set; }
     }
 
     private SpecComparison[] counters = 
     {
-        new SpecComparison { Spec1 = "Brawn", Spec2 = "Charm" },
-        new SpecComparison { Spec1 = "Charm", Spec2 = "Tech" },
-        new SpecComparison { Spec1 = "Tech", Spec2 = "Skill" },
-        new SpecComparison { Spec1 = "Skill", Spec2 = "Brawn" }
+        new SpecComparison { Spec1 = SpecScores.Brawn, Spec2 = SpecScores.Charm },
+        new SpecComparison { Spec1 = SpecScores.Charm, Spec2 = SpecScores.Tech },
+        new SpecComparison { Spec1 = SpecScores.Tech, Spec2 = SpecScores.Skill },
+        new SpecComparison { Spec1 = SpecScores.Skill, Spec2 = SpecScores.Brawn }
     };
 
     /// <summary>
@@ -838,7 +840,7 @@ public class GameManager : MonoBehaviour
     /// <param name="spec1">The name of the spec score to be countering</param>
     /// <param name="spec2">The name of the spec score to be countered</param>
     /// <returns>If spec1 counters spec2, returns true. Otherwise false</returns>
-    private bool DetermineCounter(string spec1, string spec2)
+    private bool DetermineCounter(SpecScores spec1, SpecScores spec2)
     {
         return counters.Any(x => spec1 == x.Spec1 && spec2 == x.Spec2);
     }

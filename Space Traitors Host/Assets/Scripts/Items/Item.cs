@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Item
 {
-    public string itemName;
+    public enum ItemTypes { Default, Boxing_Gloves, Speed_Boots, Robo_Brain, Dazzling_Outfit,
+        Fancy_Glasses, Extra_Arms, Hyper_Fuel, Spy_Suit };
 
-    public int BrawnChange;
-    public int SkillChange;
-    public int TechChange;
-    public int CharmChange;
+    public ItemTypes ItemType { get; private set; }
+
+    public string ItemName { get { return ItemType.ToString().Replace('_', ' '); } }
+
+    public int BrawnChange { get; private set; }
+    public int SkillChange { get; private set; }
+    public int TechChange { get; private set; }
+    public int CharmChange { get; private set; }
 
     //The position in the map where the item originally came from. Used for discarding items
     //First number indicates the room ID. Second number indicates the choice ID.
@@ -25,7 +30,7 @@ public class Item
     /// </summary>
     public Item()
     {
-        itemName = "Null";
+        ItemType = ItemTypes.Default;
 
         BrawnChange = 0;
         SkillChange = 0;
@@ -44,9 +49,9 @@ public class Item
     /// 
     /// </summary>
     /// <param name="newItemName">The name of the particular item</param>
-    public Item(string newItemName)
+    public Item(ItemTypes itemType)
     {
-        itemName = newItemName;
+        ItemType = itemType;
 
         DetermineItemScores();
 
@@ -69,33 +74,33 @@ public class Item
         TechChange = 0;
         CharmChange = 0;
 
-        switch (itemName)
+        switch (ItemType)
         {
-            case "Boxing Gloves":
+            case ItemTypes.Boxing_Gloves:
                 BrawnChange = 1;
                 break;
-            case "Speed Boots":
+            case ItemTypes.Speed_Boots:
                 SkillChange = 1;
                 break;
-            case "Robo-Brain":
+            case ItemTypes.Robo_Brain:
                 TechChange = 1;
                 break;
-            case "Dazzling Outfit":
+            case ItemTypes.Dazzling_Outfit:
                 CharmChange = 1;
                 break;
-            case "Fancy Glasses":
+            case ItemTypes.Fancy_Glasses:
                 TechChange = 2;
                 CharmChange = 1;
                 break;
-            case "Extra Arms":
+            case ItemTypes.Extra_Arms:
                 BrawnChange = 1;
                 SkillChange = 2;
                 break;
-            case "Hyper Fuel":
+            case ItemTypes.Hyper_Fuel:
                 BrawnChange = 2;
                 TechChange = 1;
                 break;
-            case "Spy Suit":
+            case ItemTypes.Spy_Suit:
                 SkillChange = 1;
                 CharmChange = 2;
                 break;
