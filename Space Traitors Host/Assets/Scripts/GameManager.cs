@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -299,7 +300,7 @@ public class GameManager : MonoBehaviour
 
             gameInit = true;
             Debug.Log("Game Initialised");
-        }        
+        }
     }
 
     /// <summary>
@@ -309,7 +310,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InitialiseServer()
     {
-        
+
     }
 
     /// <summary>
@@ -444,6 +445,12 @@ public class GameManager : MonoBehaviour
         return players.Exists(x => x.Character.CharacterType == characterType);
     }
 
+    /// <summary>
+    /// 
+    /// Selects the character type of the active player
+    /// 
+    /// </summary>
+    /// <param name="characterType">The character type to be given to the player</param>
     public void SelectCharacter(Character.CharacterTypes characterType)
     {
         players[playerOrder[activePlayer]].Character = new Character(characterType);
@@ -488,7 +495,7 @@ public class GameManager : MonoBehaviour
     {
         activePlayer++;
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if(activePlayer == numPlayers)
+        if (activePlayer == numPlayers)
         {
             activePlayer = 0;
             ActivateSurge();
@@ -538,11 +545,11 @@ public class GameManager : MonoBehaviour
     {
         int totalCorruption = 0;
 
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
             //Do not want to include a players corruption if traitor corruption is not to be consider
             //and the player is a traitor
-            if(!(!includeTraitor && player.isTraitor))
+            if (!(!includeTraitor && player.isTraitor))
             {
                 totalCorruption += player.corruption;
             }
@@ -604,7 +611,7 @@ public class GameManager : MonoBehaviour
         int traitorCount = 0;
 
         //Count up the number of traitors
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
             if (player.isTraitor)
             {
@@ -629,7 +636,7 @@ public class GameManager : MonoBehaviour
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
 
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
             //Cannot consider players which are not traitors, so will ignore them in the summation
             if (!player.isTraitor)
@@ -733,7 +740,7 @@ public class GameManager : MonoBehaviour
         int defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
-        if(attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
+        if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
         {
             players[attackerID].isRevealed = true;
         }
@@ -741,9 +748,9 @@ public class GameManager : MonoBehaviour
         //Below statements determine the victory of a combat
         //First set of statements consider whether the attacker counters the defender, or vice versa, or if there are no counters and applys modifiers to the relevant spec scores accordingly
         //Next set of statements determines who wins the combat based on the relevant spec scores, updating life points and returning outcome accordingly
-        if(DetermineCounter(attackerSpec, defenderSpec))
+        if (DetermineCounter(attackerSpec, defenderSpec))
         {
-            if(PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
+            if (PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
             {
                 players[defenderID].lifePoints -= 1;
                 return true;
@@ -754,9 +761,9 @@ public class GameManager : MonoBehaviour
                 return false;
             }
         }
-        else if(DetermineCounter(defenderSpec, attackerSpec))
+        else if (DetermineCounter(defenderSpec, attackerSpec))
         {
-            if(PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
+            if (PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
             {
                 players[defenderID].lifePoints -= 1;
                 return true;
@@ -808,6 +815,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private class SpecComparison
+    {
+        public string Spec1 { get; set; }
+        public string Spec2 { get; set; }
+    }
+
+    private SpecComparison[] counters = 
+    {
+        new SpecComparison { Spec1 = "Brawn", Spec2 = "Charm" },
+        new SpecComparison { Spec1 = "Charm", Spec2 = "Tech" },
+        new SpecComparison { Spec1 = "Tech", Spec2 = "Skill" },
+        new SpecComparison { Spec1 = "Skill", Spec2 = "Brawn" }
+    };
+
     /// <summary>
     /// 
     /// Determines if a given spec score counters another. If spec1 counters spec2, returns true. Otherwise returns false
@@ -818,26 +839,7 @@ public class GameManager : MonoBehaviour
     /// <returns>If spec1 counters spec2, returns true. Otherwise false</returns>
     private bool DetermineCounter(string spec1, string spec2)
     {
-        if(spec1 == "Brawn" && spec2 == "Charm")
-        {
-            return true;
-        }
-        else if (spec1 == "Charm" && spec2 == "Tech")
-        {
-            return true;
-        }
-        else if (spec1 == "Tech" && spec2 == "Skill")
-        {
-            return true;
-        }
-        else if (spec1 == "Skill" && spec2 == "Brawn")
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return counters.Any(x => spec1 == x.Spec1 && spec2 == x.Spec2);
     }
 
     #endregion

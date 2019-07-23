@@ -37,69 +37,28 @@ public class Player
     {
         get
         {
-            int brawnScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    brawnScore += item.brawnChange;
-                }
-
-            }
-            brawnScore += brawnModifier;
-
-            return brawnScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange);
         }
     }
     private int SkillChange
     {
         get
         {
-            int skillScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    skillScore += item.skillChange;
-                }
-            }
-            skillScore += skillModifier;
-
-            return skillScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange);
         }
     }
     private int TechChange
     {
         get
         {
-            int techScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    techScore += item.techChange;
-                }
-            }
-            techScore += techModifier;
-
-            return techScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.TechChange);
         }
     }
     private int CharmChange
     {
         get
         {
-            int charmScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    charmScore += item.charmChange;
-                }
-            }
-            charmScore += charmModifier;
-
-            return charmScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange);
         }
     }
     #endregion

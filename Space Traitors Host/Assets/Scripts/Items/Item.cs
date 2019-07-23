@@ -6,10 +6,10 @@ public class Item
 {
     public string itemName;
 
-    public int brawnChange;
-    public int skillChange;
-    public int techChange;
-    public int charmChange;
+    public int BrawnChange;
+    public int SkillChange;
+    public int TechChange;
+    public int CharmChange;
 
     //The position in the map where the item originally came from. Used for discarding items
     //First number indicates the room ID. Second number indicates the choice ID.
@@ -27,10 +27,10 @@ public class Item
     {
         itemName = "Null";
 
-        brawnChange = 0;
-        skillChange = 0;
-        techChange = 0;
-        charmChange = 0;
+        BrawnChange = 0;
+        SkillChange = 0;
+        TechChange = 0;
+        CharmChange = 0;
 
         //All items start out in a room that does not exist until they are assigned
         roomOrigin = new int[] { -1, -1 };
@@ -64,40 +64,40 @@ public class Item
     private void DetermineItemScores()
     {
         //Resets spec scores to default of no change
-        brawnChange = 0;
-        skillChange = 0;
-        techChange = 0;
-        charmChange = 0;
+        BrawnChange = 0;
+        SkillChange = 0;
+        TechChange = 0;
+        CharmChange = 0;
 
         switch (itemName)
         {
             case "Boxing Gloves":
-                brawnChange = 1;
+                BrawnChange = 1;
                 break;
             case "Speed Boots":
-                skillChange = 1;
+                SkillChange = 1;
                 break;
             case "Robo-Brain":
-                techChange = 1;
+                TechChange = 1;
                 break;
             case "Dazzling Outfit":
-                charmChange = 1;
+                CharmChange = 1;
                 break;
             case "Fancy Glasses":
-                techChange = 2;
-                charmChange = 1;
+                TechChange = 2;
+                CharmChange = 1;
                 break;
             case "Extra Arms":
-                brawnChange = 1;
-                skillChange = 2;
+                BrawnChange = 1;
+                SkillChange = 2;
                 break;
             case "Hyper Fuel":
-                brawnChange = 2;
-                techChange = 1;
+                BrawnChange = 2;
+                TechChange = 1;
                 break;
             case "Spy Suit":
-                skillChange = 1;
-                charmChange = 2;
+                SkillChange = 1;
+                CharmChange = 2;
                 break;
             default:
                 break;
