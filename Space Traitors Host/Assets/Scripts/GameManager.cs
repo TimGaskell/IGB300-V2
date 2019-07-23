@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
     private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
-    private static readonly string[] CHARACTER_TYPES = { "Brute", "Butler", "Chef", "Engineer", "Singer", "Techie" };
+    private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Brute, Character.CharacterTypes.Butler, Character.CharacterTypes.Chef,
+        Character.CharacterTypes.Engineer, Character.CharacterTypes.Singer, Character.CharacterTypes.Techie };
 
     public readonly int MAX_POWER = 100;
 
@@ -438,14 +439,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="characterType">The type of character to be checked</param>
     /// <returns>Whether the character has already been selected or not</returns>
-    public bool CheckCharacterSelected(string characterType)
+    public bool CheckCharacterSelected(Character.CharacterTypes characterType)
     {
-        return players.Exists(x => x.CharacterType == characterType);
+        return players.Exists(x => x.Character.CharacterType == characterType);
     }
 
-    public void SelectCharacter(string characterType)
+    public void SelectCharacter(Character.CharacterTypes characterType)
     {
-        players[playerOrder[activePlayer]].CharacterType = characterType;
+        players[playerOrder[activePlayer]].Character = new Character(characterType);
         //Character Selection is in the reverse player order, so works backward through the player order list
         activePlayer--;
     }

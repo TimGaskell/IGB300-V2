@@ -28,7 +28,8 @@ public class PlayerMovement : Navigation
         Rooms = GameObject.Find("Rooms");
 
         //Find waypoint graph
-        graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
+        //graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
+        graphNodes = Rooms.GetComponent<WayPointGraph>();
 
         //Initial node index to move to
         currentPath.Add(currentNodeIndex);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Player
 {
@@ -28,8 +29,7 @@ public class Player
 
     public bool IsDead { get { return lifePoints == 0; } }
 
-    public string CharacterType { get { return characterType.characterName; } set { characterType = new Character(value); } }
-    public Character characterType;
+    public Character Character { get; set; }
 
     #region Static Changes on Spec Scores
     //Changes to spec scores which originate from the player's items and abilities
@@ -110,10 +110,10 @@ public class Player
     public int charmModifier;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn, BrawnChange); } }
-    public int ScaledSkill { get { return ApplyScaling(characterType.baseSkill, SkillChange); } }
-    public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
-    public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
+    public int ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    public int ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    public int ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    public int ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
 
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
@@ -136,7 +136,7 @@ public class Player
         lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
-        characterType = new Character();
+        Character = new Character();
 
         brawnModifier = 0;
         skillModifier = 0;
@@ -152,9 +152,9 @@ public class Player
     /// Constructor for a player if the character type has already been defined.
     /// 
     /// </summary>
-    public Player(int PlayerID, string PlayerName, string CharacterType) : this(PlayerID, PlayerName)
+    public Player(int PlayerID, string PlayerName, Character.CharacterTypes characterType) : this(PlayerID, PlayerName)
     {
-        characterType = new Character(CharacterType);
+        Character = new Character(characterType);
     }
 
     /// <summary>
