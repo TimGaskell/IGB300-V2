@@ -7,6 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Names of scenes for scene management
+    public const string MainMenuScene = "Main Menu";
+    public const string LobbyScene = "LobbyV2";
+    public const string CharacterScene = "Character SelectionV2";
+    public const string MainGameScene = "Game LevelV2";
+
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
 
@@ -152,35 +158,35 @@ public class GameManager : MonoBehaviour
         if (serverActive)
         {
             throw new NotImplementedException("Server Functionality not Implemented");
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == MainGameScene)
             {
 
             }
         }
         else
         {
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
                 numPlayers = 0;
                 ResetPlayers();
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
                 //For debugging if wanting to go into character selection immediately, generates a default player list without characters
                 if (players.Count == 0)
@@ -192,7 +198,7 @@ public class GameManager : MonoBehaviour
                 activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
-            else if (scene.name == "Game LevelV2")
+            else if (scene.name == MainGameScene)
             {
                 //For debugging if wanting to go into game level immediately, generates a default player list with characters
                 if (players.Count == 0)
@@ -219,40 +225,40 @@ public class GameManager : MonoBehaviour
         if (serverActive)
         {
             throw new NotImplementedException("Server Functionality not Implemented");
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 //Reset the game initialisation so if the main menu is returned to, redoes initialisation
                 gameInit = false;
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game LevelV2")
+            else if (scene.name == MainGameScene)
             {
 
             }
         }
         else
         {
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 //Reset the game initialisation so if the main menu is returned to, redoes initialisation
                 gameInit = false;
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game LevelV2")
+            else if (scene.name == MainGameScene)
             {
                 //Unload the room list
                 roomList = null;

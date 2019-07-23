@@ -131,7 +131,7 @@ public class CharacterSelectUIManager : MonoBehaviour
                 //If there are no more players to select moves into next scene, otherwise updates variables for next player selection
                 if (GameManager.instance.activePlayer < 0)
                 {
-                    SceneManager.LoadScene("Game Level");
+                    SceneManager.LoadScene(GameManager.MainGameScene);
                 }
                 else
                 {

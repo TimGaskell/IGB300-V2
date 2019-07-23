@@ -121,7 +121,7 @@ public class ChoiceRandomiser : MonoBehaviour
             else
             {
                 //When splitting file by line endings, adds a space to end of each record, which needs to be removed.
-                fields[fields.Length- 1] = fields[fields.Length - 1].Substring(0, fields[fields.Length - 1].Length - 1);
+                fields[fields.Length- 1] = fields[fields.Length - 1].Substring(0, fields[fields.Length - 1].Length - 1);                
 
                 //Instantiate the choice list element
                 choiceList[counter] = new Choice
@@ -135,7 +135,7 @@ public class ChoiceRandomiser : MonoBehaviour
                     mandatory = ConvertStringToInt(fields[4]),
                     oneOff = ConvertStringToBool(fields[5]),
 
-                    specChallenge = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores),fields[6]),
+                    specChallenge = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), fields[6]),
                     targetScore = ConvertStringToInt(fields[7]),
 
                     scrapChange = ConvertStringToInt(fields[8]),
