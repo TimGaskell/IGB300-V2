@@ -40,7 +40,8 @@ public class GameManager : MonoBehaviour
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
     public int NumComponents { get { return numPlayers; } }
 
-    public float aiPower;
+    private float aiPower;
+    public float AIPower { get { return aiPower; } private set { aiPower = Math.Min(MAX_POWER, value); } }
     public float aiPowerChange;
     private int aiTargetScore;
 
@@ -513,12 +514,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ActivateSurge()
     {
-        if (aiPower < 100)
+        if (AIPower < 100)
         {
             float basePower = BASE_POWER_MOD / numPlayers;
             float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
-            aiPower += Math.Min(100, (basePower + playerPower + aiPowerChange));
+            AIPower += basePower + playerPower + aiPowerChange;
             aiPowerChange = 0;
         }
         else
