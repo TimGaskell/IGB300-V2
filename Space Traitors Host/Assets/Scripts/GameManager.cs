@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
                 activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == "Game LevelV2")
             {
                 //For debugging if wanting to go into game level immediately, generates a default player list with characters
                 if (players.Count == 0)
@@ -269,6 +269,7 @@ public class GameManager : MonoBehaviour
         else if (instance != this)
         {
             Destroy(gameObject);
+            return;
         }
 
         DontDestroyOnLoad(gameObject);

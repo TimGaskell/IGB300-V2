@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Player : NetworkBehaviour
+public class Player
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -13,7 +12,7 @@ public class Player : NetworkBehaviour
     public const int BASE_LIFE_POINTS = 3;
 
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
-    public NetworkConnection playerID;
+    public int playerID;
     //The name the player inputs when they start the game
     public string playerName;
 

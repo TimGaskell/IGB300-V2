@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 2532440133286766177}
   - component: {fileID: 2944359130722980785}
   - component: {fileID: 3169717257201115750}
-  - component: {fileID: 8741753693157259017}
   m_Layer: 0
   m_Name: TestPlayer
   m_TagString: Gamer
@@ -163,23 +162,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   componentsToDisable: []
---- !u!114 &8741753693157259017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3252958001378915573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  scrap: 0
-  corruption: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
