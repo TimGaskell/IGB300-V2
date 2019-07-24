@@ -84,6 +84,14 @@ public class GameManager : MonoBehaviour
     public enum TurnPhases { Default, Abilities, ActionPoints, Movement, Interaction, BasicSurge, AttackSurge };
     public TurnPhases currentPhase;
 
+    //Constants used to determine how many "dice" to roll when calculating action points and how many
+    //"sides" the dice are to have
+    private const int AP_NUM_DICE = 2;
+    private const int AP_DICE_SIDES = 4;
+
+    //The conversion factor for a player when they have leftover action points
+    private const float AP_CONVERSION = 0.5f;
+
     private void Update()
     {
 
@@ -936,6 +944,43 @@ public class GameManager : MonoBehaviour
 
         //The number of components in the game is equal to the number of players
         return installedComponents == NumComponents;
+    }
+
+    #endregion
+
+    #region Action Points
+
+    /// <summary>
+    /// 
+    /// Roll a random dice roll to determine how many action points a player will have to move with this turn
+    /// 
+    /// </summary>
+    /// <returns>The rolled number of action points</returns>
+    public int RollActionPoints()
+    {
+        int actionPointRoll = 0;
+
+        //For loop loops through each "dice"
+        for (int dice = 0; dice < AP_NUM_DICE; dice++)
+        {
+            //Adds the random roll of the "dice" to the total roll
+            //Need to add 1 since random.range is inclusive of lower bound and exclusive of upper bound
+            actionPointRoll += UnityEngine.Random.Range(0, AP_DICE_SIDES) + 1;
+        }
+
+        return actionPointRoll;
+    }
+
+    /// <summary>
+    /// 
+    /// Exchanges a players remaining action points for scrap
+    /// 
+    /// </summary>
+    /// <param name="playerID">The player rolling the action points</param>
+    /// <param name="remainingPoints">The remaining number of action points the player has</param>
+    public void ExchangeActionPoints(int playerID, int remainingPoints)
+    {
+        players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
     }
 
     #endregion
