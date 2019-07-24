@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
+    private GameObject playerParent;
+    public List<GameObject> playerPrefabs;
+
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
     public int NumComponents { get { return numPlayers; } }
 
@@ -344,12 +347,25 @@ public class GameManager : MonoBehaviour
         roomList = GameObject.FindWithTag("RoomList");
         roomList.GetComponent<ChoiceRandomiser>().ChoiceSetup();
 
-        //foreach (Player player in players)
-        //{
-        //    Debug.Log(player.playerID);
-        //    Debug.Log(player.playerName);
-        //    Debug.Log(player.CharacterType);
-        //}
+        InstantiatePlayers();
+    }
+
+    /// <summary>
+    /// 
+    /// Instantiate the player objects in the game world
+    /// 
+    /// </summary>
+    private void InstantiatePlayers()
+    {
+        playerParent = GameObject.FindWithTag("PlayerList");
+        Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;
+        Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
+        foreach (Player player in players)
+        {
+            GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
+
+            player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerParent.transform);
+        }
     }
 
     #endregion

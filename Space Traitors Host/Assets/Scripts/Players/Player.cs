@@ -79,6 +79,9 @@ public class Player
     //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
     public bool isRevealed;
 
+    //Reference to the players model in the game world
+    public GameObject playerObject;
+
     public Player(int PlayerID, string PlayerName)
     {
         playerID = PlayerID;
@@ -104,6 +107,8 @@ public class Player
 
         isTraitor = false;
         isRevealed = false;
+
+        playerObject = null;
     }
 
     /// <summary>
