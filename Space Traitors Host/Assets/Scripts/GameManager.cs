@@ -81,6 +81,9 @@ public class GameManager : MonoBehaviour
 
     public List<Ability> corruptionAbilities;
 
+    public enum TurnPhases { Default, Abilities, ActionPoints, Movement, Interaction, BasicSurge, AttackSurge };
+    public TurnPhases currentPhase;
+
     private void Update()
     {
 
@@ -312,6 +315,8 @@ public class GameManager : MonoBehaviour
 
             gameInit = true;
             Debug.Log("Game Initialised");
+
+            currentPhase = TurnPhases.Default;
         }
     }
 
@@ -348,6 +353,8 @@ public class GameManager : MonoBehaviour
         roomList.GetComponent<ChoiceRandomiser>().ChoiceSetup();
 
         InstantiatePlayers();
+
+        currentPhase = TurnPhases.Abilities;
     }
 
     /// <summary>
@@ -509,14 +516,14 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Round Management
+    #region Round and Phase Management
 
     /// <summary>
     /// 
     /// Increment the turn order to the next player. Starts a new round if the current player is the last player in the order
     /// 
     /// </summary>
-    public void IncrementTurn()
+    private void IncrementTurn()
     {
         activePlayer++;
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
@@ -524,6 +531,35 @@ public class GameManager : MonoBehaviour
         {
             activePlayer = 0;
             ActivateSurge();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Shifts the players current phase of their turn from one to the next. Order should be:
+    /// Abilities -> ActionPoints -> Movement -> Interaction -> Abilities
+    /// Upon shifting out of the interaction phase, moves back to abilities and shifts to the next player's turn
+    /// 
+    /// </summary>
+    public void IncrementPhase()
+    {
+        switch (currentPhase)
+        {
+            case (TurnPhases.Abilities):
+            case (TurnPhases.ActionPoints):
+            case (TurnPhases.Movement):
+                currentPhase += 1;
+                break;
+            case (TurnPhases.Interaction):
+                currentPhase = TurnPhases.Abilities;
+                IncrementTurn();
+                break;
+            case (TurnPhases.BasicSurge):
+            case (TurnPhases.AttackSurge):
+                currentPhase = TurnPhases.Abilities;
+                break;
+            default:
+                throw new NotImplementedException("Not a valid phase");
         }
     }
 
@@ -540,6 +576,8 @@ public class GameManager : MonoBehaviour
     {
         if (AIPower < 100)
         {
+            currentPhase = TurnPhases.BasicSurge;
+
             float basePower = BASE_POWER_MOD / numPlayers;
             float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
