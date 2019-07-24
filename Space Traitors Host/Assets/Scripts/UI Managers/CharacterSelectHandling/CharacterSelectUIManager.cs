@@ -81,7 +81,7 @@ public class CharacterSelectUIManager : MonoBehaviour
     private void DisplayActivePlayer()
     {
         //Find the active player in the game manager and displays its information
-        Player activePlayer = GameManager.instance.GetOrderedPlayer(GameManager.instance.activePlayer);
+        Player activePlayer = GameManager.instance.GetActivePlayer();
         string playerID = activePlayer.playerID.ToString();
         string playerName = activePlayer.playerName;
 

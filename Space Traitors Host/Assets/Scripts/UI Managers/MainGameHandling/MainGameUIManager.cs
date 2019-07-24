@@ -8,6 +8,8 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject serverActivePanel;
     public GameObject noServerPanel;
 
+    public GameObject playerCards;
+
     public GameObject abilityPanel;
     public GameObject actionPointPanel;
     public GameObject movementPanel;
@@ -33,18 +35,8 @@ public class MainGameUIManager : MonoBehaviour
             interactionPanel.SetActive(false);
             basicSurgePanel.SetActive(false);
             attackSurgePanel.SetActive(false);
-        }
-    }
 
-    private void Update()
-    {
-        if (GameManager.instance.serverActive)
-        {
-            throw new NotImplementedException("Server Functionality Not Active");
-        }
-        else
-        {
-            DisplayPhase();
+            DisplayCurrentPhase();
         }
     }
 
@@ -55,7 +47,7 @@ public class MainGameUIManager : MonoBehaviour
     /// Enables or disables the panels pertaining to the current phase of the game
     /// 
     /// </summary>
-    private void DisplayPhase()
+    private void DisplayCurrentPhase()
     {
         switch (GameManager.instance.currentPhase)
         {
@@ -63,6 +55,7 @@ public class MainGameUIManager : MonoBehaviour
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 abilityPanel.SetActive(true);
+                playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -94,9 +87,10 @@ public class MainGameUIManager : MonoBehaviour
     /// Increments the current phase of the game
     /// 
     /// </summary>
-    public void IncrementPhase()
+    private void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
+        DisplayCurrentPhase();
     }
 
     #endregion

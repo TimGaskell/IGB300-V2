@@ -123,6 +123,17 @@ public class GameManager : MonoBehaviour
         return players.Find(x => x.playerID == playerOrder[orderID]);
     }
 
+    /// <summary>
+    /// 
+    /// Returns the active player
+    /// 
+    /// </summary>
+    /// <returns>The active player</returns>
+    public Player GetActivePlayer()
+    {
+        return GetOrderedPlayer(activePlayer);
+    }
+
     #endregion
 
     #region Scene Transition Handling
@@ -218,6 +229,7 @@ public class GameManager : MonoBehaviour
                 if (players.Count == 0)
                 {
                     GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                    RandomiseOrder();
                 }
 
                 StartGame();
