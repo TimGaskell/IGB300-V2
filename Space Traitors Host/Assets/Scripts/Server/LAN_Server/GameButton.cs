@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class GameButton: MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameButton: MonoBehaviour
     private GameObject textIP;
     private GameObject textInfo;
     private NetworkManager nm;
+ 
     
  
 
@@ -34,7 +36,10 @@ public class GameButton: MonoBehaviour
         NetworkManager.singleton.networkAddress = ipAddress;
         NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartClient();
+        
     }
+
+  
 
     // Update is called once per frame
     
