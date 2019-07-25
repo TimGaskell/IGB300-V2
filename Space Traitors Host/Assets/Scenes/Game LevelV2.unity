@@ -758,7 +758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Engineering
+  roomType: 3
 --- !u!114 &101958800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2256,7 +2256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Engineering
+  roomType: 3
 --- !u!114 &309839089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4763,7 +4763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Kitchen
+  roomType: 4
 --- !u!114 &479685211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4988,7 +4988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Dining
+  roomType: 2
 --- !u!114 &506071042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5463,7 +5463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Spa
+  roomType: 6
 --- !u!114 &556819794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8499,7 +8499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Spa
+  roomType: 6
 --- !u!114 &894687515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8918,7 +8918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Sleeping
+  roomType: 5
 --- !u!114 &938201215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10513,7 +10513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Sleeping
+  roomType: 5
 --- !u!114 &1037434065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12124,7 +12124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Bar
+  roomType: 1
 --- !u!114 &1242384743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18336,7 +18336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Dining
+  roomType: 2
 --- !u!114 &1775959504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19115,7 +19115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Escape
+  roomType: 7
 --- !u!114 &1897344791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20414,7 +20414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Kitchen
+  roomType: 4
 --- !u!114 &2068220858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20850,7 +20850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: Bar
+  roomType: 1
 --- !u!114 &2094281633
 MonoBehaviour:
   m_ObjectHideFlags: 0

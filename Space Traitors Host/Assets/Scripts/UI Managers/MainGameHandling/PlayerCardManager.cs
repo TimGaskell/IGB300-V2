@@ -11,6 +11,7 @@ public class PlayerCardManager : MonoBehaviour
 
     private void Start()
     {
+        //Update the player cards to start the game
         for (int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
         {
             if (playerIndex < GameManager.instance.numPlayers)
@@ -19,16 +20,28 @@ public class PlayerCardManager : MonoBehaviour
             }
             else
             {
+                //Disable player cards for players which arent playing
                 playerPanels[playerIndex].SetActive(false);
             }
         }
     }
 
+    /// <summary>
+    /// 
+    /// Update the active player text to display the current active player
+    /// 
+    /// </summary>
     public void UpdateActivePlayer()
     {
         activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
     }
 
+    /// <summary>
+    /// 
+    /// Update a particular player card using the reference of the ordered player index
+    /// 
+    /// </summary>
+    /// <param name="playerIndex">The ordered player index</param>
     public void UpdatePlayerCard(int playerIndex)
     {
         Player player = GameManager.instance.GetOrderedPlayer(playerIndex);

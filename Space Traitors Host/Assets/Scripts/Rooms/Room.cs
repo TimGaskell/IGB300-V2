@@ -5,7 +5,11 @@ using UnityEngine;
 //Assigned to the room object which contains all the room models
 public class Room : MonoBehaviour
 {
-    public string roomType;
+    public enum roomTypes { Default, Bar, Dining_Hall, Engineering, Kitchen, Sleeping_Pods, Spa, Escape };
+    public roomTypes roomType;
+
+    public string RoomName { get { return roomType.ToString().Replace('_', ' '); } }
+
     public Choice[] roomChoices;
 
     /// <summary>

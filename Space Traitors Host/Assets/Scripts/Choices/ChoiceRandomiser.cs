@@ -40,7 +40,7 @@ public class ChoiceRandomiser : MonoBehaviour
 
         AssignMandatoryChoices();
 
-        AssignRandomChoices();
+        //AssignRandomChoices();
 
         //Output choice list in log for debugging. Note will have an output of default for escape room position. This is working as intended
         //OutputChoiceList();
@@ -296,7 +296,7 @@ public class ChoiceRandomiser : MonoBehaviour
         foreach (GameObject room in rooms)
         {
             //Escape room should not have choices assigned to it. To prevent getting caught in an infinite loop, ignores escape room and continues
-            if (room.GetComponent<Room>().roomType == "Escape")
+            if (room.GetComponent<Room>().roomType == Room.roomTypes.Escape)
             {
                 roomCounter++;
                 continue;
@@ -481,23 +481,23 @@ public class ChoiceRandomiser : MonoBehaviour
     /// <param name="choice">The choice to be tested</param>
     /// <param name="roomType">The type of room being tested</param>
     /// <returns>Whether the choice can be assigned</returns>
-    private bool RoomTypeViable(Choice choice, string roomType)
+    private bool RoomTypeViable(Choice choice, Room.roomTypes roomType)
     {
         switch (roomType)
         {
-            case "Bar":
+            case Room.roomTypes.Bar:
                 return choice.inBar;
-            case "Dining":
+            case Room.roomTypes.Dining_Hall:
                 return choice.inDining;
-            case "Engineering":
+            case Room.roomTypes.Engineering:
                 return choice.inEngineering;
-            case "Escape": //Escape Room does not have any choices in it so will always return false
+            case Room.roomTypes.Escape: //Escape Room does not have any choices in it so will always return false
                 return false;
-            case "Kitchen":
+            case Room.roomTypes.Kitchen:
                 return choice.inKitchen;
-            case "Sleeping":
+            case Room.roomTypes.Sleeping_Pods:
                 return choice.inSleeping;
-            case "Spa":
+            case Room.roomTypes.Spa:
                 return choice.inSpa;
             default:
                 return false;
