@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class Character
 {
-    public string characterName;
+    public enum CharacterTypes { Default, Brute, Butler, Chef, Engineer, Singer, Techie };
+
+    public CharacterTypes CharacterType { get; private set; }
+
+    public string CharacterName { get { return CharacterType.ToString(); } }
 
     public int baseBrawn;
     public int baseSkill;
@@ -21,7 +25,7 @@ public class Character
     /// </summary>
     public Character ()
     {
-        characterName = "Default";
+        CharacterType = CharacterTypes.Default;
 
         baseBrawn = 0;
         baseSkill = 0;
@@ -37,9 +41,9 @@ public class Character
     /// 
     /// </summary>
     /// <param name="characterType">The name of the character to be created</param>
-    public Character (string characterType)
+    public Character (CharacterTypes characterType)
     {
-        characterName = characterType;
+        CharacterType = characterType;
 
         AssignCharacterInfo();
     }
@@ -51,44 +55,44 @@ public class Character
     /// </summary>
     private void AssignCharacterInfo()
     {
-        switch (characterName)
+        switch (CharacterType)
         {
-            case "Brute":
+            case CharacterTypes.Brute:
                 baseBrawn = 6;
                 baseSkill = 3;
                 baseTech = 2;
                 baseCharm = 4;
                 characterAbility = new Shove();
                 break;
-            case "Butler":
+            case CharacterTypes.Butler:
                 baseBrawn = 4;
                 baseSkill = 5;
                 baseTech = 3;
                 baseCharm = 3;
                 characterAbility = new SecretPaths();
                 break;
-            case "Chef":
+            case CharacterTypes.Chef:
                 baseBrawn = 3;
                 baseSkill = 6;
                 baseTech = 4;
                 baseCharm = 2;
                 characterAbility = new Preparation();
                 break;
-            case "Engineer":
+            case CharacterTypes.Engineer:
                 baseBrawn = 4;
                 baseSkill = 3;
                 baseTech = 5;
                 baseCharm = 3;
                 characterAbility = new QuickRepair();
                 break;
-            case "Singer":
+            case CharacterTypes.Singer:
                 baseBrawn = 2;
                 baseSkill = 5;
                 baseTech = 2;
                 baseCharm = 6;
                 characterAbility = new EncouragingSong();
                 break;
-            case "Techie":
+            case CharacterTypes.Techie:
                 baseBrawn = 2;
                 baseSkill = 2;
                 baseTech = 6;
@@ -96,6 +100,7 @@ public class Character
                 characterAbility = new MuddleSensors();
                 break;
             default:
+                CharacterType = CharacterTypes.Default;
                 baseBrawn = 0;
                 baseSkill = 0;
                 baseTech = 0;

@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Item
 {
-    public string itemName;
+    public enum ItemTypes { Default, Boxing_Gloves, Speed_Boots, Robo_Brain, Dazzling_Outfit,
+        Fancy_Glasses, Extra_Arms, Hyper_Fuel, Spy_Suit };
 
-    public int brawnChange;
-    public int skillChange;
-    public int techChange;
-    public int charmChange;
+    public ItemTypes ItemType { get; private set; }
+
+    public string ItemName { get { return ItemType.ToString().Replace('_', ' '); } }
+
+    public int BrawnChange { get; private set; }
+    public int SkillChange { get; private set; }
+    public int TechChange { get; private set; }
+    public int CharmChange { get; private set; }
 
     //The position in the map where the item originally came from. Used for discarding items
     //First number indicates the room ID. Second number indicates the choice ID.
@@ -25,12 +30,12 @@ public class Item
     /// </summary>
     public Item()
     {
-        itemName = "Null";
+        ItemType = ItemTypes.Default;
 
-        brawnChange = 0;
-        skillChange = 0;
-        techChange = 0;
-        charmChange = 0;
+        BrawnChange = 0;
+        SkillChange = 0;
+        TechChange = 0;
+        CharmChange = 0;
 
         //All items start out in a room that does not exist until they are assigned
         roomOrigin = new int[] { -1, -1 };
@@ -44,9 +49,9 @@ public class Item
     /// 
     /// </summary>
     /// <param name="newItemName">The name of the particular item</param>
-    public Item(string newItemName)
+    public Item(ItemTypes itemType)
     {
-        itemName = newItemName;
+        ItemType = itemType;
 
         DetermineItemScores();
 
@@ -64,40 +69,40 @@ public class Item
     private void DetermineItemScores()
     {
         //Resets spec scores to default of no change
-        brawnChange = 0;
-        skillChange = 0;
-        techChange = 0;
-        charmChange = 0;
+        BrawnChange = 0;
+        SkillChange = 0;
+        TechChange = 0;
+        CharmChange = 0;
 
-        switch (itemName)
+        switch (ItemType)
         {
-            case "Boxing Gloves":
-                brawnChange = 1;
+            case ItemTypes.Boxing_Gloves:
+                BrawnChange = 1;
                 break;
-            case "Speed Boots":
-                skillChange = 1;
+            case ItemTypes.Speed_Boots:
+                SkillChange = 1;
                 break;
-            case "Robo-Brain":
-                techChange = 1;
+            case ItemTypes.Robo_Brain:
+                TechChange = 1;
                 break;
-            case "Dazzling Outfit":
-                charmChange = 1;
+            case ItemTypes.Dazzling_Outfit:
+                CharmChange = 1;
                 break;
-            case "Fancy Glasses":
-                techChange = 2;
-                charmChange = 1;
+            case ItemTypes.Fancy_Glasses:
+                TechChange = 2;
+                CharmChange = 1;
                 break;
-            case "Extra Arms":
-                brawnChange = 1;
-                skillChange = 2;
+            case ItemTypes.Extra_Arms:
+                BrawnChange = 1;
+                SkillChange = 2;
                 break;
-            case "Hyper Fuel":
-                brawnChange = 2;
-                techChange = 1;
+            case ItemTypes.Hyper_Fuel:
+                BrawnChange = 2;
+                TechChange = 1;
                 break;
-            case "Spy Suit":
-                skillChange = 1;
-                charmChange = 2;
+            case ItemTypes.Spy_Suit:
+                SkillChange = 1;
+                CharmChange = 2;
                 break;
             default:
                 break;

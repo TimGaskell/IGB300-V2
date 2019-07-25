@@ -24,7 +24,7 @@ public class Choice
 
     //Whether choice is a spec challenge, what type of challenge it is and its associated target score.
     //Spec Challenge is "Null" if not a spec challenge and target score will be 0 (this will throw math errors if passed into spec challenge formula)
-    public string specChallenge;
+    public GameManager.SpecScores specChallenge;
     public int targetScore;
 
     //Outcomes of the choice. If choice is a spec challenge, these will be the outcomes of a successful spec challenge
@@ -59,7 +59,7 @@ public class Choice
         oneOff = false;
         disabled = false;
 
-        specChallenge = "Null";
+        specChallenge = GameManager.SpecScores.Default;
         targetScore = 0;
 
         scrapChange = 0;
@@ -84,34 +84,60 @@ public class Choice
 
     /// <summary>
     /// 
-    /// Check if the choice is avaialbe for the player which is attempting to select it. If this returns false, player should not
-    /// be able to select this choice
+    /// enum for outputting the reason a choice is not available to a player
+    /// 
+    /// </summary>
+    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerNotAtMax, hasScrap, disabled, available };
+
+    /// <summary>
+    /// 
+    /// Check if the choice is avaialbe for the player which is attempting to select it, and if not returns the reason it cannot be selected
     /// 
     /// </summary>
     /// <param name="playerID">The player which is attempting to select the choice</param>
-    /// <returns>If the player can select the choice returns true. False otherwise.</returns>
-    public bool IsAvailable(int playerID)
+    /// <returns>The reason the choice cannot be selected by the player. If returns enabled, then choice can be selected</returns>
+    public IsAvailableTypes IsAvailable(int playerID)
     {
         Player checkedPlayer = GameManager.instance.players[playerID];
 
-        //Below statements check if the conditional is relevant to the choice, based on the changes which the choice causes. If the condition is not relevant will 
-        //return true due to the and
-        //Then checks the condition for each relevant change. Since the condition is met, then will overall return false, since the condition being met means the
-        //player cannot select the choice
-        bool hasComponent =  !(component && checkedPlayer.hasComponent);
-        bool hasDamage = !(lifeChange == 0 && checkedPlayer.lifePoints == checkedPlayer.maxLifePoints);
-        bool hasCorruption = !(corruptionChange == 0 && checkedPlayer.lifePoints == 0);
-        bool powerNotAtMax = !(powerChange == 0 && GameManager.instance.aiPower == GameManager.instance.MAX_POWER);
+        //Determines if the choice has been disabled due to its one-off status
+        if (disabled)
+        {
+            return IsAvailableTypes.disabled;
+        }
 
-        //If the choice reduces a players scrap, then they need to have enough scrap to pay for the choice, so will return false if this is not the case
-        bool hasScrap = checkedPlayer.scrap + scrapChange < 0;
+        //If the players scrap goes below 0 due to the choice, choice is unavailable
+        if (checkedPlayer.scrap + scrapChange < 0)
+        {
+            return IsAvailableTypes.hasScrap;
+        }
 
-        //If any of the above conditions are false, then needs to return false, since this means the choice is not available. Also if the choice has been disabled
-        //Then will also return false
-        return hasComponent && hasScrap && hasDamage && hasCorruption && powerNotAtMax && disabled;
+        //If choice gives a component, and the player already has a component, choice is unavailable
+        if (component && checkedPlayer.hasComponent)
+        {
+            return IsAvailableTypes.hasComponent;
+        }
+        
+        //If the choice has a life change and the player has no damage, choice is unavailable
+        if (lifeChange != 0 && checkedPlayer.lifePoints == checkedPlayer.maxLifePoints)
+        {
+            return IsAvailableTypes.hasNoDamage;
+        }
 
-        //Note: this is a generalised test of the conditionals. In order to provide the player with more meaningful information about why they cannot select the
-        //choice, would need to split each statement into a seperate function and check each statement one by one.
+        //If the choice has a corruption change and the players corruption is already at 0, choice is unavailable
+        if (corruptionChange != 0 && checkedPlayer.corruption == 0)
+        {
+            return IsAvailableTypes.hasNoCorruption;
+        }
+
+        //If the choice has a power change and the aiPower is already at maximum, choice is unavailable
+        if (powerChange != 0 && GameManager.instance.AIPower == GameManager.instance.MAX_POWER)
+        {
+            return IsAvailableTypes.powerNotAtMax;
+        }
+
+        //If the choice has been determined that it is not unavailable for a reason, returns that it is available
+        return IsAvailableTypes.available;
     }
     #endregion
 
@@ -127,26 +153,26 @@ public class Choice
     {
         //Obtain the relevant player information
         Player currentPlayer = GameManager.instance.players[playerID];
-        
+
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
         switch (specChallenge)
         {
-            case "Null":
+            case GameManager.SpecScores.Default:
                 currentPlayer = SuccessfulSelection(currentPlayer);
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
                 break;
-            case "Brawn":
+            case GameManager.SpecScores.Brawn:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledBrawn);
                 break;
-            case "Skill":
+            case GameManager.SpecScores.Skill:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledSkill);
                 break;
-            case "Tech":
+            case GameManager.SpecScores.Tech:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledTech);
                 break;
-            case "Charm":
+            case GameManager.SpecScores.Charm:
                 currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledCharm);
                 break;
             default:
@@ -199,7 +225,7 @@ public class Choice
         player.corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
-        if (specItem.itemName != "Null")
+        if (specItem.ItemType != Item.ItemTypes.Default)
         {
             player.GiveItem(specItem);
         }

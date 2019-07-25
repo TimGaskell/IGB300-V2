@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -120,7 +121,7 @@ public class ChoiceRandomiser : MonoBehaviour
             else
             {
                 //When splitting file by line endings, adds a space to end of each record, which needs to be removed.
-                fields[fields.Length- 1] = fields[fields.Length - 1].Substring(0, fields[fields.Length - 1].Length - 1);
+                fields[fields.Length- 1] = fields[fields.Length - 1].Substring(0, fields[fields.Length - 1].Length - 1);                
 
                 //Instantiate the choice list element
                 choiceList[counter] = new Choice
@@ -134,13 +135,13 @@ public class ChoiceRandomiser : MonoBehaviour
                     mandatory = ConvertStringToInt(fields[4]),
                     oneOff = ConvertStringToBool(fields[5]),
 
-                    specChallenge = fields[6],
+                    specChallenge = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), fields[6]),
                     targetScore = ConvertStringToInt(fields[7]),
 
                     scrapChange = ConvertStringToInt(fields[8]),
                     corruptionChange = ConvertStringToInt(fields[9]),
                     powerChange = ConvertStringToInt(fields[10]),
-                    specItem = new Item(fields[11]),
+                    specItem = new Item((Item.ItemTypes)Enum.Parse(typeof(Item.ItemTypes),fields[11])),
                     lifeChange = ConvertStringToInt(fields[12]),
                     component = ConvertStringToBool(fields[13]),
 
@@ -229,8 +230,8 @@ public class ChoiceRandomiser : MonoBehaviour
                     do
                     {
                         //Randomise the room location and the choice position in the room. The choice position is the index in the roomChoices array for each room.
-                        roomLocation = Random.Range(0, numRooms);
-                        choicePos = Random.Range(0, CHOICES_PER_ROOM);
+                        roomLocation = UnityEngine.Random.Range(0, numRooms);
+                        choicePos = UnityEngine.Random.Range(0, CHOICES_PER_ROOM);
                         counter++;
 
                     } while (!TestAssignChoice(choice, roomLocation, choicePos, out isOccupied) && counter < MAX_ITERS);
@@ -346,7 +347,7 @@ public class ChoiceRandomiser : MonoBehaviour
     private Choice RandomChoice(List<Choice> randomChoices, float totalWeighting)
     {
         //Finds a position within the sum of the weighting
-        float randomChoicePos = Random.Range(0, totalWeighting);
+        float randomChoicePos = UnityEngine.Random.Range(0, totalWeighting);
 
         float weightingCounter = 0;
 
@@ -422,7 +423,7 @@ public class ChoiceRandomiser : MonoBehaviour
                 if (roomChoices[choicePos].choiceID == 0)
                 {
                     //If the choice contains a spec item, will set up its room origin as the current room
-                    if(choice.specItem.itemName != "Null")
+                    if(choice.specItem.ItemType != Item.ItemTypes.Default)
                     {
                         choice.specItem.roomOrigin = new int[] { roomLocation, choicePos };
                     }

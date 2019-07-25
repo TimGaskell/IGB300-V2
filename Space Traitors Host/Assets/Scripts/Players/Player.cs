@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
+using System.Linq;
 
-public class Player : NetworkBehaviour
+public class Player
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour
     public const int BASE_LIFE_POINTS = 3;
 
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
-    public NetworkConnection playerID;
+    public int playerID;
     //The name the player inputs when they start the game
     public string playerName;
 
@@ -29,8 +29,7 @@ public class Player : NetworkBehaviour
 
     public bool IsDead { get { return lifePoints == 0; } }
 
-    public string CharacterType { get { return characterType.characterName; } set { characterType = new Character(value); } }
-    public Character characterType;
+    public Character Character { get; set; }
 
     #region Static Changes on Spec Scores
     //Changes to spec scores which originate from the player's items and abilities
@@ -38,69 +37,28 @@ public class Player : NetworkBehaviour
     {
         get
         {
-            int brawnScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    brawnScore += item.brawnChange;
-                }
-
-            }
-            brawnScore += brawnModifier;
-
-            return brawnScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange);
         }
     }
     private int SkillChange
     {
         get
         {
-            int skillScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    skillScore += item.skillChange;
-                }
-            }
-            skillScore += skillModifier;
-
-            return skillScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange);
         }
     }
     private int TechChange
     {
         get
         {
-            int techScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    techScore += item.techChange;
-                }
-            }
-            techScore += techModifier;
-
-            return techScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.TechChange);
         }
     }
     private int CharmChange
     {
         get
         {
-            int charmScore = 0;
-            foreach (Item item in items)
-            {
-                if (item.isEquipped)
-                {
-                    charmScore += item.charmChange;
-                }
-            }
-            charmScore += charmModifier;
-
-            return charmScore;
+            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange);
         }
     }
     #endregion
@@ -111,15 +69,18 @@ public class Player : NetworkBehaviour
     public int charmModifier;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public int ScaledBrawn { get { return ApplyScaling(characterType.baseBrawn, BrawnChange); } }
-    public int ScaledSkill { get { return ApplyScaling(characterType.baseSkill, SkillChange); } }
-    public int ScaledTech { get { return ApplyScaling(characterType.baseTech, TechChange); } }
-    public int ScaledCharm { get { return ApplyScaling(characterType.baseCharm, CharmChange); } }
+    public int ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    public int ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    public int ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    public int ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
 
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
     //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
     public bool isRevealed;
+
+    //Reference to the players model in the game world
+    public GameObject playerObject;
 
     public Player(int PlayerID, string PlayerName)
     {
@@ -137,7 +98,7 @@ public class Player : NetworkBehaviour
         lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
-        characterType = new Character();
+        Character = new Character();
 
         brawnModifier = 0;
         skillModifier = 0;
@@ -146,6 +107,8 @@ public class Player : NetworkBehaviour
 
         isTraitor = false;
         isRevealed = false;
+
+        playerObject = null;
     }
 
     /// <summary>
@@ -153,9 +116,9 @@ public class Player : NetworkBehaviour
     /// Constructor for a player if the character type has already been defined.
     /// 
     /// </summary>
-    public Player(int PlayerID, string PlayerName, string CharacterType) : this(PlayerID, PlayerName)
+    public Player(int PlayerID, string PlayerName, Character.CharacterTypes characterType) : this(PlayerID, PlayerName)
     {
-        characterType = new Character(CharacterType);
+        Character = new Character(characterType);
     }
 
     /// <summary>

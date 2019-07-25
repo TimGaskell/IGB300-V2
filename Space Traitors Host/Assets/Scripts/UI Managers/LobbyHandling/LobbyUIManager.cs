@@ -117,7 +117,7 @@ public class LobbyUIManager : MonoBehaviour
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
             {
-                SceneManager.LoadScene("Character SelectionV2");
+                SceneManager.LoadScene(GameManager.CharacterScene);
                 break;
             }
 
