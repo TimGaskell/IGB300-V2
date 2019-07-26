@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
-    private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
+    private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Brute, Character.CharacterTypes.Butler, Character.CharacterTypes.Chef,
         Character.CharacterTypes.Engineer, Character.CharacterTypes.Singer, Character.CharacterTypes.Techie };
 
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public readonly int MAX_POWER = 100;
 
     public readonly int MIN_PLAYERS = 2;
-    public readonly int MAX_PLAYERS = 6;
+    public readonly int MAX_PLAYERS = 4;
 
     public static GameManager instance = null;
 
