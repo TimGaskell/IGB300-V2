@@ -50,6 +50,7 @@ public class PlayerCardManager : MonoBehaviour
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.corruption.ToString();
+        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
 
         string lifePointsString = string.Format("{0} / {1}", player.lifePoints, player.maxLifePoints);
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;

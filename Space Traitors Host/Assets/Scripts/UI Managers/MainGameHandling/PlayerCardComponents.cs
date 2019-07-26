@@ -9,4 +9,5 @@ public class PlayerCardComponents : MonoBehaviour
     public GameObject scrapText;
     public GameObject corruptionText;
     public GameObject lifePointsText;
+    public GameObject traitorMarker;
 }
