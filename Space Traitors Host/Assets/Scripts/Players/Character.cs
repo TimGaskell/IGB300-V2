@@ -72,7 +72,7 @@ public class Character
                 baseSkill = 6;
                 baseTech = 4;
                 baseCharm = 2;
-                characterAbility = new Preperation();
+                characterAbility = new Preparation();
                 break;
             case "Engineer":
                 baseBrawn = 4;
