@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public class Player
+public class Player 
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
