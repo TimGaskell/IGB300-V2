@@ -110,10 +110,10 @@ public class Item
     /// 
     /// </summary>
     /// <param name="rooms">The parent object of all the room objects</param>
-    public void ReturnItem(ref GameObject rooms)
+    public void ReturnItem()
     {
         //Retrieve the choice and store it temporarily
-        Choice tempChoice = rooms.transform.GetChild(roomOrigin[0]).GetComponent<Room>().roomChoices[roomOrigin[1]];
+        Choice tempChoice = GameManager.instance.roomList.GetComponent<ChoiceRandomiser>().GetChoice(roomOrigin[0], roomOrigin[1]);
 
         //Assign the choice and reenable the choice
         tempChoice.specItem = this;
@@ -123,6 +123,6 @@ public class Item
         }
 
         //Reassigns the choice
-        rooms.transform.GetChild(roomOrigin[0]).GetComponent<Room>().roomChoices[roomOrigin[1]] = tempChoice;
+        GameManager.instance.GetComponent<ChoiceRandomiser>().SetChoice(roomOrigin[0], roomOrigin[1], tempChoice);
     }
 }

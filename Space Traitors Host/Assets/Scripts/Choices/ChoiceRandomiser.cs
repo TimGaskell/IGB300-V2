@@ -21,7 +21,12 @@ public class ChoiceRandomiser : MonoBehaviour
 
     private int numRooms;
 
-    private void Start()
+    /// <summary>
+    /// 
+    /// To be called when the game is started
+    /// 
+    /// </summary>
+    public void ChoiceSetup()
     {
         ReadChoiceData();
 
@@ -29,8 +34,8 @@ public class ChoiceRandomiser : MonoBehaviour
 
         //Sets the number of components in the game to be equal to the number of players- mandatory for this choice being the number
         //of times the component choice will appear in the game
-        //choiceList[0].mandatory = Server.Instance.playersJoined;- Need to verify this actually works
-        choiceList[0].mandatory = 3; //For Hardcoding when Debugging
+        choiceList[0].mandatory = GameManager.instance.NumComponents;
+        //choiceList[0].mandatory = 3; //For Hardcoding when Debugging
 
         AssignMandatoryChoices();
 
@@ -72,6 +77,16 @@ public class ChoiceRandomiser : MonoBehaviour
         {
             room.GetComponent<Room>().InitialiseRoom(CHOICES_PER_ROOM);
         }
+    }
+
+    public Choice GetChoice(int roomIndex, int choiceIndex)
+    {
+        return rooms[roomIndex].GetComponent<Room>().roomChoices[choiceIndex];
+    }
+
+    public void SetChoice(int roomIndex, int choiceIndex, Choice choice)
+    {
+        rooms[roomIndex].GetComponent<Room>().roomChoices[choiceIndex] = choice;
     }
     #endregion
 
@@ -411,7 +426,7 @@ public class ChoiceRandomiser : MonoBehaviour
                     {
                         choice.specItem.roomOrigin = new int[] { roomLocation, choicePos };
                     }
-                    rooms[roomLocation].GetComponent<Room>().roomChoices[choicePos] = choice;
+                    SetChoice(roomLocation, choicePos, choice);
                     isOccupied = false;
                     return true;
                 }

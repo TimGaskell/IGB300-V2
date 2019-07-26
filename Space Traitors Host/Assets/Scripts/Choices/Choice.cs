@@ -168,12 +168,9 @@ public class Choice
     /// <returns>The updated player information</returns>
     private Player ApplySpecChallenge(Player player, int specScore)
     {
-        //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
-        float successFactor = Random.Range(0f, 100f);
-
-        //If the random number is less than or equal to the chance of succeeding in the spec challenge, then will assign
-        //the successful resource changes. Otherwise will apply the failed resource changes.
-        if (successFactor <= GameManager.instance.SpecChallengeChance(specScore, targetScore))
+        //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
+        //then will apply the resource changes for a failure.
+        if (GameManager.instance.PerformSpecChallenge(specScore, targetScore))
         {
             player = SuccessfulSelection(player);
 

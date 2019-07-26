@@ -212,7 +212,7 @@ public class MuddleSensors : Ability
         abilityName = "Muddle Sensors";
         abilityDescription = "DESCRIPTION TO ADD";
 
-        scrapCost = 6;
+        scrapCost = 5;
         corruptionRequirement = 0;
     }
 
