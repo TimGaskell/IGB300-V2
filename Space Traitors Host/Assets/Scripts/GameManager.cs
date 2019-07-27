@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
-    private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Brute, Character.CharacterTypes.Butler, Character.CharacterTypes.Chef,
-        Character.CharacterTypes.Engineer, Character.CharacterTypes.Singer, Character.CharacterTypes.Techie };
+    private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
+        Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
 
     public enum SpecScores { Default, Brawn, Skill, Tech, Charm };
 
@@ -92,9 +92,26 @@ public class GameManager : MonoBehaviour
     //The conversion factor for a player when they have leftover action points
     private const float AP_CONVERSION = 0.5f;
 
+    //Variables used during the movement phase
+    //roomSelection is true if the player is needing to select a room to move to. Only used in serverless version of the game
+    //playerMoving is true if the player model is moving across the map.
+    //playerGoalIndex is the target room index the active player is moving towards.
+    public bool roomSelection;
+    public bool playerMoving;
+    public int playerGoalIndex;
+
     private void Update()
     {
+        //Only need to detect if the player is clicking on a room on the host system if the server is inactive
+        if (roomSelection && !serverActive)
+        {
+            ClickRoom();
+        }
 
+        if (playerMoving)
+        {
+            playerParent.GetComponent<PlayerMovement>().PlayerMoveViaNodes(playerGoalIndex);
+        }
     }
 
     #region Player Retrieval
@@ -375,6 +392,9 @@ public class GameManager : MonoBehaviour
         InstantiatePlayers();
 
         currentPhase = TurnPhases.Abilities;
+
+        roomSelection = false;
+        playerMoving = false;
     }
 
     /// <summary>
@@ -558,7 +578,9 @@ public class GameManager : MonoBehaviour
     /// 
     /// Shifts the players current phase of their turn from one to the next. Order should be:
     /// Abilities -> ActionPoints -> Movement -> Interaction -> Abilities
-    /// Upon shifting out of the interaction phase, moves back to abilities and shifts to the next player's turn
+    /// If after moving out of the interaction phase it is the last player in the turn order's phase,
+    /// will move into either one of the surge states, after which will move back into the first players
+    /// abilities phase
     /// 
     /// </summary>
     public void IncrementPhase()
@@ -566,9 +588,14 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case (TurnPhases.Abilities):
-            case (TurnPhases.ActionPoints):
             case (TurnPhases.Movement):
                 currentPhase += 1;
+                break;
+            case (TurnPhases.ActionPoints):
+                currentPhase += 1;
+                roomSelection = true;
+                //Apply the active player model to be moved
+                playerParent.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
                 break;
             case (TurnPhases.Interaction):
                 currentPhase = TurnPhases.Abilities;
@@ -622,17 +649,17 @@ public class GameManager : MonoBehaviour
     /// Calculates the sum of corruption from all players. Can include only players which are not traitors or all players in the sum as desired.
     /// 
     /// </summary>
-    /// <param name="includeTraitor">Whether or not to consider the corruption of traitor characters when calculating the total</param>
+    /// <param name="includeTraitors">Whether or not to consider the corruption of traitor characters when calculating the total</param>
     /// <returns>The sum of corruption</returns>
-    private int TotalCorruption(bool includeTraitor)
+    private int TotalCorruption(bool includeTraitors)
     {
         int totalCorruption = 0;
 
         foreach (Player player in players)
         {
-            //Do not want to include a players corruption if traitor corruption is not to be consider
+            //Do not want to include a players corruption if traitor corruption is not to be considered
             //and the player is a traitor
-            if (!(!includeTraitor && player.isTraitor))
+            if (!(!includeTraitors && player.isTraitor))
             {
                 totalCorruption += player.corruption;
             }
@@ -993,6 +1020,34 @@ public class GameManager : MonoBehaviour
     public void ExchangeActionPoints(int playerID, int remainingPoints)
     {
         players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
+    }
+
+    #endregion
+
+    #region Movement Handling
+
+    public void StartPlayerMoving(int goalIndex)
+    {
+        playerGoalIndex = goalIndex;
+        playerMoving = true;
+    }
+
+    private void ClickRoom()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.root.gameObject == roomList)
+                {
+                    int goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    roomSelection = false;
+                    StartPlayerMoving(goalIndex);
+                }
+            }
+        }
     }
 
     #endregion

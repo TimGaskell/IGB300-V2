@@ -40,6 +40,24 @@ public class MainGameUIManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (GameManager.instance.serverActive)
+        {
+            throw new NotImplementedException("Server Not Implemented");
+        }
+        else
+        {
+            //Detects if the movement phase is over when the player model has stopped moving.
+            //Need to detect if room selection is true otherwise will entirely skip over the movement phase.
+            if (!GameManager.instance.playerMoving && !GameManager.instance.roomSelection &&
+                GameManager.instance.currentPhase == GameManager.TurnPhases.Movement)
+            {
+                IncrementPhase();
+            }
+        }
+    }
+
     #region No Server Handling
 
     /// <summary>

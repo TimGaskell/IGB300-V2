@@ -12,66 +12,22 @@ public class PlayerMovement : Navigation
 
     //Player Variables
     public GameObject Player;
-    private bool SelectRoom = true;
-    private bool StartMoving = false;
 
     //Button variables
     private GameObject SelectedRoom;
     private int RoomNumber;
 
-    private GameObject Rooms;
-
     // Start is called before the first frame update
     void Start()
     {
-        Rooms = GameObject.Find("Rooms");
-
         //Find waypoint graph
         //graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
-        graphNodes = Rooms.GetComponent<WayPointGraph>();
+        graphNodes = GameManager.instance.roomList.GetComponent<WayPointGraph>();
 
         //Initial node index to move to
         currentPath.Add(currentNodeIndex);
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (SelectRoom == true)
-        {
-            ClickRoom();
-        }
-        if (StartMoving == true)
-        {
-            PlayerMoveViaNodes(goalIndex);
-        }
-
-    }
-
-    private void ClickRoom()
-    {
-
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.transform.root.gameObject == Rooms)
-                {
-
-                    goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
-                    SelectRoom = false;
-                    StartMoving = true;
-
-
-                }
-            }
-        }
-    }
-
 
     public void PlayerMoveViaNodes(int goalIndex)
     {
@@ -111,10 +67,7 @@ public class PlayerMovement : Navigation
             Player.transform.rotation = Quaternion.LookRotation(lookBack);
 
             Debug.Log("finished Moving");
-            SelectRoom = true;
-            StartMoving = false;
-
-
+            GameManager.instance.playerMoving = false;
         }
     }
 
