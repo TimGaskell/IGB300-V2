@@ -86,6 +86,7 @@ public class MainGameUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Interaction):
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
+                interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 interactionPanel.SetActive(false);

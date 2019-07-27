@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
-    private GameObject playerParent;
+    private GameObject playerList;
     public List<GameObject> playerPrefabs;
 
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
 
         if (playerMoving)
         {
-            playerParent.GetComponent<PlayerMovement>().PlayerMoveViaNodes(playerGoalIndex);
+            playerList.GetComponent<PlayerMovement>().PlayerMoveViaNodes(playerGoalIndex);
         }
     }
 
@@ -149,6 +149,15 @@ public class GameManager : MonoBehaviour
     public Player GetActivePlayer()
     {
         return GetOrderedPlayer(activePlayer);
+    }
+
+    #endregion
+
+    #region Room Retrieval
+
+    public Room GetRoom(int roomIndex)
+    {
+        return roomList.GetComponent<ChoiceRandomiser>().rooms[roomIndex].GetComponent<Room>();
     }
 
     #endregion
@@ -404,14 +413,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InstantiatePlayers()
     {
-        playerParent = GameObject.FindWithTag("PlayerList");
+        playerList = GameObject.FindWithTag("PlayerList");
         Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;
         Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
         foreach (Player player in players)
         {
             GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
 
-            player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerParent.transform);
+            player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerList.transform);
         }
     }
 
@@ -595,7 +604,7 @@ public class GameManager : MonoBehaviour
                 currentPhase += 1;
                 roomSelection = true;
                 //Apply the active player model to be moved
-                playerParent.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
+                playerList.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
                 break;
             case (TurnPhases.Interaction):
                 currentPhase = TurnPhases.Abilities;
@@ -1029,6 +1038,8 @@ public class GameManager : MonoBehaviour
     public void StartPlayerMoving(int goalIndex)
     {
         playerGoalIndex = goalIndex;
+        GetActivePlayer().roomPosition = goalIndex;
+        Debug.Log(GetActivePlayer().roomPosition);
         playerMoving = true;
     }
 

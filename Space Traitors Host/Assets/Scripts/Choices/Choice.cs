@@ -145,43 +145,40 @@ public class Choice
 
     /// <summary>
     /// 
-    /// Functionality of a particular player who selects the choice
+    /// Updates the active players resources based on the choice they select
     /// 
     /// </summary>
-    /// <param name="playerID">The player who is selecting the choice</param>
-    public void SelectChoice(int playerID)
+    /// <param name="playerIndex">The player who is selecting the choice</param>
+    public void SelectChoice()
     {
         //Obtain the relevant player information
-        Player currentPlayer = GameManager.instance.players[playerID];
+        Player currentPlayer = GameManager.instance.GetActivePlayer();
 
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
         switch (specChallenge)
         {
             case GameManager.SpecScores.Default:
-                currentPlayer = SuccessfulSelection(currentPlayer);
+                SuccessfulSelection();
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
                 break;
             case GameManager.SpecScores.Brawn:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledBrawn);
+                ApplySpecChallenge(currentPlayer.ScaledBrawn);
                 break;
             case GameManager.SpecScores.Skill:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledSkill);
+                ApplySpecChallenge(currentPlayer.ScaledSkill);
                 break;
             case GameManager.SpecScores.Tech:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledTech);
+                ApplySpecChallenge(currentPlayer.ScaledTech);
                 break;
             case GameManager.SpecScores.Charm:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledCharm);
+                ApplySpecChallenge(currentPlayer.ScaledCharm);
                 break;
             default:
                 Debug.Log("Failed Selection");
                 break;
         }
-
-        //Reassign the updated player information
-        GameManager.instance.players[playerID] = currentPlayer;
     }
 
     /// <summary>
@@ -189,65 +186,96 @@ public class Choice
     /// Test whether a player is successful or not in a spec challenge when they select the choice
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
     /// <param name="specScore">The player's relevant spec score</param>
     /// <returns>The updated player information</returns>
-    private Player ApplySpecChallenge(Player player, int specScore)
+    private void ApplySpecChallenge(int specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
         if (GameManager.instance.PerformSpecChallenge(specScore, targetScore))
         {
-            player = SuccessfulSelection(player);
+            SuccessfulSelection();
 
             //Disable the choice if it can only be selected once. Only functions if the player is successful in a spec challenge
             disabled = oneOff;
         }
         else
         {
-            player = FailedSelection(player);
+            FailedSelection();
         }
 
-        return player;
     }
 
 
     /// <summary>
     /// 
-    /// Update the player's resources if they are successful in a spec challenge. Also used if the choice is not a spec challenge
+    /// Update the active player's resources if they are successful in a spec challenge. Also used if the choice is not a spec challenge
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
-    /// <returns>The updated player's information</returns>
-    private Player SuccessfulSelection(Player player)
+    private void SuccessfulSelection()
     {
-        player.scrap += scrapChange;
-        player.corruption += corruptionChange;
+        GameManager.instance.GetActivePlayer().scrap += scrapChange;
+        GameManager.instance.GetActivePlayer().corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
         if (specItem.ItemType != Item.ItemTypes.Default)
         {
-            player.GiveItem(specItem);
+            GameManager.instance.GetActivePlayer().GiveItem(specItem);
         }
-        player.hasComponent = component;
-        player.lifePoints += lifeChange;
-
-        return player;
+        GameManager.instance.GetActivePlayer().hasComponent = component;
+        GameManager.instance.GetActivePlayer().lifePoints += lifeChange;
     }
 
     /// <summary>
     /// 
-    /// Update the player's resource if they failed a spec challenge
+    /// Update the active player's resource if they failed a spec challenge
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
-    /// <returns>The updated player's information</returns>
-    private Player FailedSelection(Player player)
+    private void FailedSelection()
     {
-        player.corruption += corruptionFail;
-        player.lifePoints += lifeFail;
-
-        return player;
+        GameManager.instance.GetActivePlayer().corruption += corruptionFail;
+        GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
     }
+
+    #endregion
+
+    #region Display Text Handling
+
+    public string SuccessText()
+    {
+        string scrapText = IntResourceChange(scrapChange);
+        string corruptionText = IntResourceChange(corruptionChange);
+        string aiPowerText = IntResourceChange(powerChange);
+        string itemText = specItem.ItemType != Item.ItemTypes.Default ? string.Format("+1 {0},\n", specItem.ItemName) : "";
+        string lifeText = IntResourceChange(lifeChange);
+        string componentText = component ? "+1 Component,\n" : "";
+
+        return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
+    }
+
+    public string FailText()
+    {
+        string corruptionText = IntResourceChange(corruptionFail);
+        string lifeText = IntResourceChange(lifeFail);
+
+        return corruptionText + lifeText;
+    }
+
+    private string IntResourceChange(int resourceVal)
+    {
+        if(resourceVal > 0)
+        {
+            return string.Format("+{0},\n", resourceVal.ToString());
+        }
+        else if(resourceVal < 0)
+        {
+            return string.Format("{0},\n", resourceVal.ToString());
+        }
+        else
+        {
+            return "";
+        }
+    }
+
     #endregion
 }

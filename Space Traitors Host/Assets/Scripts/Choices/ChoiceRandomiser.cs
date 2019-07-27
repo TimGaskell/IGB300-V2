@@ -40,7 +40,7 @@ public class ChoiceRandomiser : MonoBehaviour
 
         AssignMandatoryChoices();
 
-        //AssignRandomChoices();
+        AssignRandomChoices();
 
         //Output choice list in log for debugging. Note will have an output of default for escape room position. This is working as intended
         //OutputChoiceList();
