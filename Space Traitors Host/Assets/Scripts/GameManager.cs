@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Names of scenes for scene management
+    public const string MainMenuScene = "Main Menu";
+    public const string LobbyScene = "LobbyV2";
+    public const string CharacterScene = "Character SelectionV2";
+    public const string MainGameScene = "Game LevelV2";
+
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
 
@@ -18,13 +25,16 @@ public class GameManager : MonoBehaviour
 
     //Used for generating default player information if loading into a scene later than the lobby
     private const int DEFAULT_NUM_PLAYERS = 4;
-    private static readonly string[] DEFAULT_NAMES = { "BruteTest", "ButlerTest", "ChefTest", "EngineerTest", "SingerTest", "TechieTest" };
-    private static readonly string[] CHARACTER_TYPES = { "Brute", "Butler", "Chef", "Engineer", "Singer", "Techie" };
+    private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
+    private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
+        Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
+
+    public enum SpecScores { Default, Brawn, Skill, Tech, Charm };
 
     public readonly int MAX_POWER = 100;
 
     public readonly int MIN_PLAYERS = 2;
-    public readonly int MAX_PLAYERS = 6;
+    public readonly int MAX_PLAYERS = 4;
 
     public static GameManager instance = null;
 
@@ -35,10 +45,14 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
+    private GameObject playerList;
+    public List<GameObject> playerPrefabs;
+
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
     public int NumComponents { get { return numPlayers; } }
 
-    public float aiPower;
+    private float aiPower;
+    public float AIPower { get { return aiPower; } private set { aiPower = Math.Min(MAX_POWER, value); } }
     public float aiPowerChange;
     private int aiTargetScore;
 
@@ -67,9 +81,37 @@ public class GameManager : MonoBehaviour
 
     public List<Ability> corruptionAbilities;
 
+    public enum TurnPhases { Default, Abilities, ActionPoints, Movement, Interaction, BasicSurge, AttackSurge };
+    public TurnPhases currentPhase;
+
+    //Constants used to determine how many "dice" to roll when calculating action points and how many
+    //"sides" the dice are to have
+    private const int AP_NUM_DICE = 2;
+    private const int AP_DICE_SIDES = 4;
+
+    //The conversion factor for a player when they have leftover action points
+    private const float AP_CONVERSION = 0.5f;
+
+    //Variables used during the movement phase
+    //roomSelection is true if the player is needing to select a room to move to. Only used in serverless version of the game
+    //playerMoving is true if the player model is moving across the map.
+    //playerGoalIndex is the target room index the active player is moving towards.
+    public bool roomSelection;
+    public bool playerMoving;
+    public int playerGoalIndex;
+
     private void Update()
     {
+        //Only need to detect if the player is clicking on a room on the host system if the server is inactive
+        if (roomSelection && !serverActive)
+        {
+            ClickRoom();
+        }
 
+        if (playerMoving)
+        {
+            playerList.GetComponent<PlayerMovement>().PlayerMoveViaNodes(playerGoalIndex);
+        }
     }
 
     #region Player Retrieval
@@ -96,6 +138,26 @@ public class GameManager : MonoBehaviour
     public Player GetOrderedPlayer(int orderID)
     {
         return players.Find(x => x.playerID == playerOrder[orderID]);
+    }
+
+    /// <summary>
+    /// 
+    /// Returns the active player
+    /// 
+    /// </summary>
+    /// <returns>The active player</returns>
+    public Player GetActivePlayer()
+    {
+        return GetOrderedPlayer(activePlayer);
+    }
+
+    #endregion
+
+    #region Room Retrieval
+
+    public Room GetRoom(int roomIndex)
+    {
+        return roomList.GetComponent<ChoiceRandomiser>().rooms[roomIndex].GetComponent<Room>();
     }
 
     #endregion
@@ -147,35 +209,35 @@ public class GameManager : MonoBehaviour
         if (serverActive)
         {
             throw new NotImplementedException("Server Functionality not Implemented");
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == MainGameScene)
             {
 
             }
         }
         else
         {
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
                 numPlayers = 0;
                 ResetPlayers();
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
                 //For debugging if wanting to go into character selection immediately, generates a default player list without characters
                 if (players.Count == 0)
@@ -187,12 +249,13 @@ public class GameManager : MonoBehaviour
                 activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
-            else if (scene.name == "Game Level")
+            else if (scene.name == MainGameScene)
             {
                 //For debugging if wanting to go into game level immediately, generates a default player list with characters
                 if (players.Count == 0)
                 {
                     GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                    RandomiseOrder();
                 }
 
                 StartGame();
@@ -214,40 +277,40 @@ public class GameManager : MonoBehaviour
         if (serverActive)
         {
             throw new NotImplementedException("Server Functionality not Implemented");
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 //Reset the game initialisation so if the main menu is returned to, redoes initialisation
                 gameInit = false;
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game LevelV2")
+            else if (scene.name == MainGameScene)
             {
 
             }
         }
         else
         {
-            if (scene.name == "Main Menu")
+            if (scene.name == MainMenuScene)
             {
                 //Reset the game initialisation so if the main menu is returned to, redoes initialisation
                 gameInit = false;
             }
-            else if (scene.name == "LobbyV2")
+            else if (scene.name == LobbyScene)
             {
 
             }
-            else if (scene.name == "Character SelectionV2")
+            else if (scene.name == CharacterScene)
             {
 
             }
-            else if (scene.name == "Game LevelV2")
+            else if (scene.name == MainGameScene)
             {
                 //Unload the room list
                 roomList = null;
@@ -269,6 +332,7 @@ public class GameManager : MonoBehaviour
         else if (instance != this)
         {
             Destroy(gameObject);
+            return;
         }
 
         DontDestroyOnLoad(gameObject);
@@ -297,7 +361,9 @@ public class GameManager : MonoBehaviour
 
             gameInit = true;
             Debug.Log("Game Initialised");
-        }        
+
+            currentPhase = TurnPhases.Default;
+        }
     }
 
     /// <summary>
@@ -307,7 +373,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void InitialiseServer()
     {
-        
+
     }
 
     /// <summary>
@@ -332,12 +398,30 @@ public class GameManager : MonoBehaviour
         roomList = GameObject.FindWithTag("RoomList");
         roomList.GetComponent<ChoiceRandomiser>().ChoiceSetup();
 
-        //foreach (Player player in players)
-        //{
-        //    Debug.Log(player.playerID);
-        //    Debug.Log(player.playerName);
-        //    Debug.Log(player.CharacterType);
-        //}
+        InstantiatePlayers();
+
+        currentPhase = TurnPhases.Abilities;
+
+        roomSelection = false;
+        playerMoving = false;
+    }
+
+    /// <summary>
+    /// 
+    /// Instantiate the player objects in the game world
+    /// 
+    /// </summary>
+    private void InstantiatePlayers()
+    {
+        playerList = GameObject.FindWithTag("PlayerList");
+        Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;
+        Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
+        foreach (Player player in players)
+        {
+            GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
+
+            player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerList.transform);
+        }
     }
 
     #endregion
@@ -363,7 +447,7 @@ public class GameManager : MonoBehaviour
             throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
-        return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
+        return Math.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
     }
 
     /// <summary>
@@ -437,14 +521,20 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="characterType">The type of character to be checked</param>
     /// <returns>Whether the character has already been selected or not</returns>
-    public bool CheckCharacterSelected(string characterType)
+    public bool CheckCharacterSelected(Character.CharacterTypes characterType)
     {
-        return players.Exists(x => x.CharacterType == characterType);
+        return players.Exists(x => x.Character.CharacterType == characterType);
     }
 
-    public void SelectCharacter(string characterType)
+    /// <summary>
+    /// 
+    /// Selects the character type of the active player
+    /// 
+    /// </summary>
+    /// <param name="characterType">The character type to be given to the player</param>
+    public void SelectCharacter(Character.CharacterTypes characterType)
     {
-        players[playerOrder[activePlayer]].CharacterType = characterType;
+        players[playerOrder[activePlayer]].Character = new Character(characterType);
         //Character Selection is in the reverse player order, so works backward through the player order list
         activePlayer--;
     }
@@ -475,21 +565,57 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Round Management
+    #region Round and Phase Management
 
     /// <summary>
     /// 
     /// Increment the turn order to the next player. Starts a new round if the current player is the last player in the order
     /// 
     /// </summary>
-    public void IncrementTurn()
+    private void IncrementTurn()
     {
         activePlayer++;
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if(activePlayer == numPlayers)
+        if (activePlayer == numPlayers)
         {
             activePlayer = 0;
             ActivateSurge();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Shifts the players current phase of their turn from one to the next. Order should be:
+    /// Abilities -> ActionPoints -> Movement -> Interaction -> Abilities
+    /// If after moving out of the interaction phase it is the last player in the turn order's phase,
+    /// will move into either one of the surge states, after which will move back into the first players
+    /// abilities phase
+    /// 
+    /// </summary>
+    public void IncrementPhase()
+    {
+        switch (currentPhase)
+        {
+            case (TurnPhases.Abilities):
+            case (TurnPhases.Movement):
+                currentPhase += 1;
+                break;
+            case (TurnPhases.ActionPoints):
+                currentPhase += 1;
+                roomSelection = true;
+                //Apply the active player model to be moved
+                playerList.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
+                break;
+            case (TurnPhases.Interaction):
+                currentPhase = TurnPhases.Abilities;
+                IncrementTurn();
+                break;
+            case (TurnPhases.BasicSurge):
+            case (TurnPhases.AttackSurge):
+                currentPhase = TurnPhases.Abilities;
+                break;
+            default:
+                throw new NotImplementedException("Not a valid phase");
         }
     }
 
@@ -504,12 +630,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ActivateSurge()
     {
-        if (aiPower < 100)
+        if (AIPower < 100)
         {
+            currentPhase = TurnPhases.BasicSurge;
+
             float basePower = BASE_POWER_MOD / numPlayers;
             float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
-            aiPower += Math.Min(100, (basePower + playerPower + aiPowerChange));
+            AIPower += basePower + playerPower + aiPowerChange;
             aiPowerChange = 0;
         }
         else
@@ -530,17 +658,17 @@ public class GameManager : MonoBehaviour
     /// Calculates the sum of corruption from all players. Can include only players which are not traitors or all players in the sum as desired.
     /// 
     /// </summary>
-    /// <param name="includeTraitor">Whether or not to consider the corruption of traitor characters when calculating the total</param>
+    /// <param name="includeTraitors">Whether or not to consider the corruption of traitor characters when calculating the total</param>
     /// <returns>The sum of corruption</returns>
-    private int TotalCorruption(bool includeTraitor)
+    private int TotalCorruption(bool includeTraitors)
     {
         int totalCorruption = 0;
 
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
-            //Do not want to include a players corruption if traitor corruption is not to be consider
+            //Do not want to include a players corruption if traitor corruption is not to be considered
             //and the player is a traitor
-            if(!(!includeTraitor && player.isTraitor))
+            if (!(!includeTraitors && player.isTraitor))
             {
                 totalCorruption += player.corruption;
             }
@@ -602,7 +730,7 @@ public class GameManager : MonoBehaviour
         int traitorCount = 0;
 
         //Count up the number of traitors
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
             if (player.isTraitor)
             {
@@ -627,7 +755,7 @@ public class GameManager : MonoBehaviour
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
 
-        foreach(Player player in players)
+        foreach (Player player in players)
         {
             //Cannot consider players which are not traitors, so will ignore them in the summation
             if (!player.isTraitor)
@@ -665,7 +793,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="specScore">The name of the spec score the player wants to use against the AI</param>
     /// <returns>True if the player wins the combat. False otherwise</returns>
-    private bool AIAttackPlayer(string specScore)
+    private bool AIAttackPlayer(SpecScores specScore)
     {
         bool playerWin;
 
@@ -694,22 +822,36 @@ public class GameManager : MonoBehaviour
 
     #region Combat Handling and Traitor Victory Conditions
 
-    /// <summary>
-    /// 
-    /// Checks if combat is viable between two players based on them being in the same room as well either the attacker being a traitor
-    /// or the defender being revealed as the traitor
-    /// 
-    /// </summary>
-    /// <param name="attackerID">The ID of the attacking player</param>
-    /// <param name="defenderID">The ID of the defending player</param>
-    /// <returns>If combat is viable between the two players, returns true. Otherwise, returns false</returns>
-    public bool CheckCombat(int attackerID, int defenderID)
+   /// <summary>
+   /// 
+   /// Checks if the active player is able to attack any of the other players and returns a list of all valid players player IDs that they can attack
+   /// 
+   /// </summary>
+   /// <returns>A list of all the player IDs that the active player can attack</returns>
+    public List<int> CheckCombat()
     {
-        Player attackingPlayer = GetPlayer(attackerID);
-        Player defendingPlayer = GetPlayer(defenderID);
+        //List of IDs which the active player is able to attack
+        List<int> validIDs = new List<int>();
 
-        //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
-        return attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed);
+        Player attackingPlayer = GetActivePlayer();
+
+        foreach(Player defendingPlayer in players)
+        {
+            if(defendingPlayer.playerID == attackingPlayer.playerID)
+            {
+                continue;
+            }
+            else
+            {
+                //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
+                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed))
+                {
+                    validIDs.Add(defendingPlayer.playerID);
+                }
+            }
+        }
+
+        return validIDs;
     }
 
     /// <summary>
@@ -722,7 +864,7 @@ public class GameManager : MonoBehaviour
     /// <param name="defenderID">The playerID of the defender</param>
     /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
     /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
-    public bool PerformCombat(int attackerID, string attackerSpec, int defenderID, string defenderSpec)
+    public bool PerformCombat(int attackerID, SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
     {
         Player attackingPlayer = GetPlayer(attackerID);
         Player defendingPlayer = GetPlayer(defenderID);
@@ -731,7 +873,7 @@ public class GameManager : MonoBehaviour
         int defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
-        if(attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
+        if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
         {
             players[attackerID].isRevealed = true;
         }
@@ -739,9 +881,9 @@ public class GameManager : MonoBehaviour
         //Below statements determine the victory of a combat
         //First set of statements consider whether the attacker counters the defender, or vice versa, or if there are no counters and applys modifiers to the relevant spec scores accordingly
         //Next set of statements determines who wins the combat based on the relevant spec scores, updating life points and returning outcome accordingly
-        if(DetermineCounter(attackerSpec, defenderSpec))
+        if (DetermineCounter(attackerSpec, defenderSpec))
         {
-            if(PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
+            if (PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
             {
                 players[defenderID].lifePoints -= 1;
                 return true;
@@ -752,9 +894,9 @@ public class GameManager : MonoBehaviour
                 return false;
             }
         }
-        else if(DetermineCounter(defenderSpec, attackerSpec))
+        else if (DetermineCounter(defenderSpec, attackerSpec))
         {
-            if(PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
+            if (PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
             {
                 players[defenderID].lifePoints -= 1;
                 return true;
@@ -789,22 +931,36 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private int ObtainSpecScore(Player player, string specScore)
+    private int ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {
-            case ("Brawn"):
+            case (SpecScores.Brawn):
                 return player.ScaledBrawn;
-            case ("Skill"):
+            case (SpecScores.Skill):
                 return player.ScaledSkill;
-            case ("Tech"):
+            case (SpecScores.Tech):
                 return player.ScaledTech;
-            case ("Charm"):
+            case (SpecScores.Charm):
                 return player.ScaledCharm;
             default:
                 throw new NotImplementedException("Not a valid Spec Score");
         }
     }
+
+    private class SpecComparison
+    {
+        public SpecScores Spec1 { get; set; }
+        public SpecScores Spec2 { get; set; }
+    }
+
+    private SpecComparison[] counters = 
+    {
+        new SpecComparison { Spec1 = SpecScores.Brawn, Spec2 = SpecScores.Charm },
+        new SpecComparison { Spec1 = SpecScores.Charm, Spec2 = SpecScores.Tech },
+        new SpecComparison { Spec1 = SpecScores.Tech, Spec2 = SpecScores.Skill },
+        new SpecComparison { Spec1 = SpecScores.Skill, Spec2 = SpecScores.Brawn }
+    };
 
     /// <summary>
     /// 
@@ -814,28 +970,9 @@ public class GameManager : MonoBehaviour
     /// <param name="spec1">The name of the spec score to be countering</param>
     /// <param name="spec2">The name of the spec score to be countered</param>
     /// <returns>If spec1 counters spec2, returns true. Otherwise false</returns>
-    private bool DetermineCounter(string spec1, string spec2)
+    private bool DetermineCounter(SpecScores spec1, SpecScores spec2)
     {
-        if(spec1 == "Brawn" && spec2 == "Charm")
-        {
-            return true;
-        }
-        else if (spec1 == "Charm" && spec2 == "Tech")
-        {
-            return true;
-        }
-        else if (spec1 == "Tech" && spec2 == "Skill")
-        {
-            return true;
-        }
-        else if (spec1 == "Skill" && spec2 == "Brawn")
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return counters.Any(x => spec1 == x.Spec1 && spec2 == x.Spec2);
     }
 
     #endregion
@@ -869,6 +1006,72 @@ public class GameManager : MonoBehaviour
 
         //The number of components in the game is equal to the number of players
         return installedComponents == NumComponents;
+    }
+
+    #endregion
+
+    #region Action Points
+
+    /// <summary>
+    /// 
+    /// Roll a random dice roll to determine how many action points a player will have to move with this turn
+    /// 
+    /// </summary>
+    /// <returns>The rolled number of action points</returns>
+    public int RollActionPoints()
+    {
+        int actionPointRoll = 0;
+
+        //For loop loops through each "dice"
+        for (int dice = 0; dice < AP_NUM_DICE; dice++)
+        {
+            //Adds the random roll of the "dice" to the total roll
+            //Need to add 1 since random.range is inclusive of lower bound and exclusive of upper bound
+            actionPointRoll += UnityEngine.Random.Range(0, AP_DICE_SIDES) + 1;
+        }
+
+        return actionPointRoll;
+    }
+
+    /// <summary>
+    /// 
+    /// Exchanges a players remaining action points for scrap
+    /// 
+    /// </summary>
+    /// <param name="playerID">The player rolling the action points</param>
+    /// <param name="remainingPoints">The remaining number of action points the player has</param>
+    public void ExchangeActionPoints(int playerID, int remainingPoints)
+    {
+        players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
+    }
+
+    #endregion
+
+    #region Movement Handling
+
+    public void StartPlayerMoving(int goalIndex)
+    {
+        playerGoalIndex = goalIndex;
+        GetActivePlayer().roomPosition = goalIndex;
+        playerMoving = true;
+    }
+
+    private void ClickRoom()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges")
+                {
+                    int goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    roomSelection = false;
+                    StartPlayerMoving(goalIndex);
+                }
+            }
+        }
     }
 
     #endregion

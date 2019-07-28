@@ -14,7 +14,7 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     public GameObject activePlayerPanel;
 
-    private string tempCharacterType;
+    private Character.CharacterTypes tempCharacterType;
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class CharacterSelectUIManager : MonoBehaviour
 
             SetupPlayerList();
             DisplayActivePlayer();
-            tempCharacterType = "";
+            tempCharacterType = Character.CharacterTypes.Default;
             DisplaySelectedCharacter();
         }
     }
@@ -81,7 +81,7 @@ public class CharacterSelectUIManager : MonoBehaviour
     private void DisplayActivePlayer()
     {
         //Find the active player in the game manager and displays its information
-        Player activePlayer = GameManager.instance.GetOrderedPlayer(GameManager.instance.activePlayer);
+        Player activePlayer = GameManager.instance.GetActivePlayer();
         string playerID = activePlayer.playerID.ToString();
         string playerName = activePlayer.playerName;
 
@@ -95,7 +95,8 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     private void DisplaySelectedCharacter()
     {
-        activePlayerPanel.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = tempCharacterType;
+        //If the character type is default, displays an empty string- otherwise displays the selected character
+        activePlayerPanel.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = tempCharacterType == Character.CharacterTypes.Default ? "": tempCharacterType.ToString();
     }
 
     /// <summary>
@@ -106,7 +107,8 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// <param name="characterType"></param>
     public void SelectCharacter(string characterType)
     {
-        tempCharacterType = characterType;
+        //Button input functions cannot take enums as parameters. As such have to convert to enum from string input
+        tempCharacterType = (Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), characterType);
         DisplaySelectedCharacter();
     }
 
@@ -118,7 +120,7 @@ public class CharacterSelectUIManager : MonoBehaviour
     public void ConfirmCharacter()
     {
         //Checks if the player actually has selected a character
-        if(tempCharacterType != "")
+        if(tempCharacterType != Character.CharacterTypes.Default)
         {
             //Checks if the character has already been selected
             if (!GameManager.instance.CheckCharacterSelected(tempCharacterType))
@@ -129,11 +131,11 @@ public class CharacterSelectUIManager : MonoBehaviour
                 //If there are no more players to select moves into next scene, otherwise updates variables for next player selection
                 if (GameManager.instance.activePlayer < 0)
                 {
-                    SceneManager.LoadScene("Game Level");
+                    SceneManager.LoadScene(GameManager.MainGameScene);
                 }
                 else
                 {
-                    tempCharacterType = "";
+                    tempCharacterType = Character.CharacterTypes.Default;
                     DisplaySelectedCharacter();
                     DisplayActivePlayer();
                 }
@@ -157,7 +159,7 @@ public class CharacterSelectUIManager : MonoBehaviour
     public void UpdatePlayerCharacter()
     {
         int currentPlayerPos = GameManager.instance.numPlayers - GameManager.instance.activePlayer - 1;
-        playerList.transform.GetChild(currentPlayerPos).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = tempCharacterType;
+        playerList.transform.GetChild(currentPlayerPos).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = tempCharacterType.ToString();
     }
 
     #endregion

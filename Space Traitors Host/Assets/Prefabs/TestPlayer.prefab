@@ -15,10 +15,9 @@ GameObject:
   - component: {fileID: 2532440133286766177}
   - component: {fileID: 2944359130722980785}
   - component: {fileID: 3169717257201115750}
-  - component: {fileID: 6893263056801198815}
   m_Layer: 0
   m_Name: TestPlayer
-  m_TagString: Untagged
+  m_TagString: Gamer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,16 +162,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   componentsToDisable: []
---- !u!114 &6893263056801198815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3252958001378915573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e39df122768b2844f9381e149d2efe79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Object: {fileID: 7421031519114493488, guid: aad15689d586f154481fb0a737fe8aa7, type: 3}
