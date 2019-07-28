@@ -72,6 +72,7 @@ public class MainGameUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
+                interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
@@ -110,6 +111,13 @@ public class MainGameUIManager : MonoBehaviour
     {
         GameManager.instance.IncrementPhase();
         DisplayCurrentPhase();
+    }
+
+    public void SelectChoice()
+    {
+        interactionPanel.GetComponent<InteractionManager>().currentRoom.roomChoices[interactionPanel.GetComponent<InteractionManager>().selectedChoiceID].SelectChoice();
+        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        IncrementPhase();
     }
 
     #endregion

@@ -87,7 +87,7 @@ public class Choice
     /// enum for outputting the reason a choice is not available to a player
     /// 
     /// </summary>
-    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerNotAtMax, hasScrap, disabled, available };
+    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available };
 
     /// <summary>
     /// 
@@ -96,9 +96,9 @@ public class Choice
     /// </summary>
     /// <param name="playerID">The player which is attempting to select the choice</param>
     /// <returns>The reason the choice cannot be selected by the player. If returns enabled, then choice can be selected</returns>
-    public IsAvailableTypes IsAvailable(int playerID)
+    public IsAvailableTypes IsAvailable()
     {
-        Player checkedPlayer = GameManager.instance.players[playerID];
+        Player checkedPlayer = GameManager.instance.GetActivePlayer();
 
         //Determines if the choice has been disabled due to its one-off status
         if (disabled)
@@ -125,7 +125,7 @@ public class Choice
         }
 
         //If the choice has a corruption change and the players corruption is already at 0, choice is unavailable
-        if (corruptionChange != 0 && checkedPlayer.corruption == 0)
+        if (corruptionChange < 0 && checkedPlayer.corruption == 0)
         {
             return IsAvailableTypes.hasNoCorruption;
         }
@@ -133,11 +133,32 @@ public class Choice
         //If the choice has a power change and the aiPower is already at maximum, choice is unavailable
         if (powerChange != 0 && GameManager.instance.AIPower == GameManager.instance.MAX_POWER)
         {
-            return IsAvailableTypes.powerNotAtMax;
+            return IsAvailableTypes.powerAtMax;
         }
 
         //If the choice has been determined that it is not unavailable for a reason, returns that it is available
         return IsAvailableTypes.available;
+    }
+
+    public string ConvertErrorText(IsAvailableTypes errorType)
+    {
+        switch (errorType)
+        {
+            case (IsAvailableTypes.disabled):
+                return "Item has already been taken";
+            case (IsAvailableTypes.hasScrap):
+                return "You do not have enough scrap";
+            case (IsAvailableTypes.hasComponent):
+                return "You already have a component";
+            case (IsAvailableTypes.hasNoDamage):
+                return "You already have max life points";
+            case (IsAvailableTypes.hasNoCorruption):
+                return "You have no corruption";
+            case (IsAvailableTypes.powerAtMax):
+                return "AI Power already at max";
+            default:
+                return "Not a valid Error Text";
+        }
     }
     #endregion
 
@@ -151,9 +172,6 @@ public class Choice
     /// <param name="playerIndex">The player who is selecting the choice</param>
     public void SelectChoice()
     {
-        //Obtain the relevant player information
-        Player currentPlayer = GameManager.instance.GetActivePlayer();
-
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
         switch (specChallenge)
@@ -164,16 +182,16 @@ public class Choice
                 disabled = oneOff;
                 break;
             case GameManager.SpecScores.Brawn:
-                ApplySpecChallenge(currentPlayer.ScaledBrawn);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
                 break;
             case GameManager.SpecScores.Skill:
-                ApplySpecChallenge(currentPlayer.ScaledSkill);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
                 break;
             case GameManager.SpecScores.Tech:
-                ApplySpecChallenge(currentPlayer.ScaledTech);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
                 break;
             case GameManager.SpecScores.Charm:
-                ApplySpecChallenge(currentPlayer.ScaledCharm);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
                 break;
             default:
                 Debug.Log("Failed Selection");
@@ -243,33 +261,33 @@ public class Choice
 
     public string SuccessText()
     {
-        string scrapText = IntResourceChange(scrapChange);
-        string corruptionText = IntResourceChange(corruptionChange);
-        string aiPowerText = IntResourceChange(powerChange);
-        string itemText = specItem.ItemType != Item.ItemTypes.Default ? string.Format("+1 {0},\n", specItem.ItemName) : "";
-        string lifeText = IntResourceChange(lifeChange);
-        string componentText = component ? "+1 Component,\n" : "";
+        string scrapText = IntResourceChange(scrapChange, " Scrap");
+        string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
+        string aiPowerText = IntResourceChange(powerChange, "% AI Power");
+        string itemText = specItem.ItemType != Item.ItemTypes.Default ? string.Format("+1 {0}\n", specItem.ItemName) : "";
+        string lifeText = IntResourceChange(lifeChange, " Life Points");
+        string componentText = component ? "+1 Component\n" : "";
 
         return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
     }
 
     public string FailText()
     {
-        string corruptionText = IntResourceChange(corruptionFail);
-        string lifeText = IntResourceChange(lifeFail);
+        string corruptionText = IntResourceChange(corruptionFail, " Corruption");
+        string lifeText = IntResourceChange(lifeFail, " Life Points");
 
         return corruptionText + lifeText;
     }
 
-    private string IntResourceChange(int resourceVal)
+    private string IntResourceChange(int resourceVal, string valueName)
     {
         if(resourceVal > 0)
         {
-            return string.Format("+{0},\n", resourceVal.ToString());
+            return string.Format("+{0}{1}\n\n", resourceVal.ToString(), valueName);
         }
         else if(resourceVal < 0)
         {
-            return string.Format("{0},\n", resourceVal.ToString());
+            return string.Format("{0}{1}\n\n", resourceVal.ToString(), valueName);
         }
         else
         {

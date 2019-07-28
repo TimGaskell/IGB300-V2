@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.UI;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -16,8 +17,10 @@ public class InteractionManager : MonoBehaviour
 
     public GameObject choiceInfoPanel;
 
-    private Room currentRoom;
-    private int selectedChoice;
+    public Room currentRoom;
+    public int selectedChoiceID;
+
+    private List<int> attackablePlayers;
     
     public void InitialiseChoices(int roomIndex)
     {
@@ -40,20 +43,81 @@ public class InteractionManager : MonoBehaviour
             choice0ButtonText.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[0].choiceName;
             choice1ButtonText.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[1].choiceName;
         }
+
+        attackablePlayers = GameManager.instance.CheckCombat();
+        if (attackablePlayers.Count == 0)
+        {
+            attackButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            attackButton.GetComponent<Button>().interactable = true;
+        }
     }
 
     public void DisplayChoice(int choiceID)
     {
         choiceInfoPanel.SetActive(true);
-        selectedChoice = choiceID;
+        selectedChoiceID = choiceID;
+        Choice selectedChoice = currentRoom.roomChoices[selectedChoiceID];
 
-        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[selectedChoice].choiceName;
-        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().displayText.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[selectedChoice].SuccessText();
-    }
+        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = selectedChoice.choiceName;
 
-    public void SelectChoice()
-    {
-        currentRoom.roomChoices[selectedChoice].SelectChoice();
         
+        if(selectedChoice.specChallenge == GameManager.SpecScores.Default)
+        {
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(true);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(false);
+
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
+
+        }
+        else
+        {
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
+
+            int playerScore;
+
+            switch (selectedChoice.specChallenge)
+            {
+                case (GameManager.SpecScores.Brawn):
+                    playerScore = GameManager.instance.GetActivePlayer().ScaledBrawn;
+                    break;
+                case (GameManager.SpecScores.Skill):
+                    playerScore = GameManager.instance.GetActivePlayer().ScaledSkill;
+                    break;
+                case (GameManager.SpecScores.Tech):
+                    playerScore = GameManager.instance.GetActivePlayer().ScaledTech;
+                    break;
+                case (GameManager.SpecScores.Charm):
+                    playerScore = GameManager.instance.GetActivePlayer().ScaledCharm;
+                    break;
+                default:
+                    throw new NotImplementedException("Not a valid choice");
+            }
+
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
+                string.Format("Chance: {0}%", Math.Round(GameManager.instance.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = selectedChoice.FailText();
+        }
+
+
+        Choice.IsAvailableTypes isAvailable = selectedChoice.IsAvailable();
+
+        if(isAvailable == Choice.IsAvailableTypes.available)
+        {
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(false);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(true);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailable);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = false;
+        }
     }
+
+    
 }

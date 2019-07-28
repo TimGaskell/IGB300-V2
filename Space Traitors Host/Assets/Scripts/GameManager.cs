@@ -447,7 +447,7 @@ public class GameManager : MonoBehaviour
             throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
-        return Math.Min(100, 50 + (playerScore - targetScore) * (50 / targetScore));
+        return Math.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
     }
 
     /// <summary>
@@ -822,22 +822,36 @@ public class GameManager : MonoBehaviour
 
     #region Combat Handling and Traitor Victory Conditions
 
-    /// <summary>
-    /// 
-    /// Checks if combat is viable between two players based on them being in the same room as well either the attacker being a traitor
-    /// or the defender being revealed as the traitor
-    /// 
-    /// </summary>
-    /// <param name="attackerID">The ID of the attacking player</param>
-    /// <param name="defenderID">The ID of the defending player</param>
-    /// <returns>If combat is viable between the two players, returns true. Otherwise, returns false</returns>
-    public bool CheckCombat(int attackerID, int defenderID)
+   /// <summary>
+   /// 
+   /// Checks if the active player is able to attack any of the other players and returns a list of all valid players player IDs that they can attack
+   /// 
+   /// </summary>
+   /// <returns>A list of all the player IDs that the active player can attack</returns>
+    public List<int> CheckCombat()
     {
-        Player attackingPlayer = GetPlayer(attackerID);
-        Player defendingPlayer = GetPlayer(defenderID);
+        //List of IDs which the active player is able to attack
+        List<int> validIDs = new List<int>();
 
-        //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
-        return attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed);
+        Player attackingPlayer = GetActivePlayer();
+
+        foreach(Player defendingPlayer in players)
+        {
+            if(defendingPlayer.playerID == attackingPlayer.playerID)
+            {
+                continue;
+            }
+            else
+            {
+                //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
+                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed))
+                {
+                    validIDs.Add(defendingPlayer.playerID);
+                }
+            }
+        }
+
+        return validIDs;
     }
 
     /// <summary>
@@ -1039,7 +1053,6 @@ public class GameManager : MonoBehaviour
     {
         playerGoalIndex = goalIndex;
         GetActivePlayer().roomPosition = goalIndex;
-        Debug.Log(GetActivePlayer().roomPosition);
         playerMoving = true;
     }
 
@@ -1051,7 +1064,7 @@ public class GameManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.root.gameObject == roomList)
+                if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges")
                 {
                     int goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
                     roomSelection = false;
