@@ -43,13 +43,13 @@ public class CameraSystem : MonoBehaviour
     /////////////////////////Call these methods in other scripts to initiate zoom in/zoom out effect/////////////////////////
 
     //Call ZoomIn from another script to have the camera zoom in on the specified player
-    public void ZoomIn(GameObject currentPlayer)
+    public void ZoomIn(Player currentPlayer)
     {
-        //GameObject playerObject = currentPlayer.
+        GameObject playerObject = currentPlayer.playerObject;
         zoomedIn = true;
-        newPos_Z = transform.position.z + currentPlayer.transform.position.z + ZoomInLevel_Z;
+        newPos_Z = transform.position.z + playerObject.transform.position.z + ZoomInLevel_Z;
         newPos_Y = transform.position.y - ZoomInLevel_Y;
-        newPos_X = currentPlayer.transform.position.x;
+        newPos_X = playerObject.transform.position.x;
     }
 
     //Call ZoomOut from another script to have the camera zoom in on the specified player
@@ -124,6 +124,16 @@ public class CameraSystem : MonoBehaviour
                 transform.position = new Vector3(transform.position.x - cameraSpeed * Time.deltaTime, transform.position.y, transform.position.z);
             }
         }
+    }
+
+
+    //Use this for testing purposes only- GameObject rather than Player so can be called from button
+    public void ZoomIn2(GameObject currentPlayer)
+    {
+        zoomedIn = true;
+        newPos_Z = transform.position.z + currentPlayer.transform.position.z + ZoomInLevel_Z;
+        newPos_Y = transform.position.y - ZoomInLevel_Y;
+        newPos_X = currentPlayer.transform.position.x;
     }
 }
 
