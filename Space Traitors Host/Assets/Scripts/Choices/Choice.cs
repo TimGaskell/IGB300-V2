@@ -87,7 +87,7 @@ public class Choice
     /// enum for outputting the reason a choice is not available to a player
     /// 
     /// </summary>
-    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerNotAtMax, hasScrap, disabled, available };
+    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available };
 
     /// <summary>
     /// 
@@ -96,9 +96,9 @@ public class Choice
     /// </summary>
     /// <param name="playerID">The player which is attempting to select the choice</param>
     /// <returns>The reason the choice cannot be selected by the player. If returns enabled, then choice can be selected</returns>
-    public IsAvailableTypes IsAvailable(int playerID)
+    public IsAvailableTypes IsAvailable()
     {
-        Player checkedPlayer = GameManager.instance.players[playerID];
+        Player checkedPlayer = GameManager.instance.GetActivePlayer();
 
         //Determines if the choice has been disabled due to its one-off status
         if (disabled)
@@ -125,7 +125,7 @@ public class Choice
         }
 
         //If the choice has a corruption change and the players corruption is already at 0, choice is unavailable
-        if (corruptionChange != 0 && checkedPlayer.corruption == 0)
+        if (corruptionChange < 0 && checkedPlayer.corruption == 0)
         {
             return IsAvailableTypes.hasNoCorruption;
         }
@@ -133,11 +133,32 @@ public class Choice
         //If the choice has a power change and the aiPower is already at maximum, choice is unavailable
         if (powerChange != 0 && GameManager.instance.AIPower == GameManager.instance.MAX_POWER)
         {
-            return IsAvailableTypes.powerNotAtMax;
+            return IsAvailableTypes.powerAtMax;
         }
 
         //If the choice has been determined that it is not unavailable for a reason, returns that it is available
         return IsAvailableTypes.available;
+    }
+
+    public string ConvertErrorText(IsAvailableTypes errorType)
+    {
+        switch (errorType)
+        {
+            case (IsAvailableTypes.disabled):
+                return "Item has already been taken";
+            case (IsAvailableTypes.hasScrap):
+                return "You do not have enough scrap";
+            case (IsAvailableTypes.hasComponent):
+                return "You already have a component";
+            case (IsAvailableTypes.hasNoDamage):
+                return "You already have max life points";
+            case (IsAvailableTypes.hasNoCorruption):
+                return "You have no corruption";
+            case (IsAvailableTypes.powerAtMax):
+                return "AI Power already at max";
+            default:
+                return "Not a valid Error Text";
+        }
     }
     #endregion
 
@@ -145,43 +166,37 @@ public class Choice
 
     /// <summary>
     /// 
-    /// Functionality of a particular player who selects the choice
+    /// Updates the active players resources based on the choice they select
     /// 
     /// </summary>
-    /// <param name="playerID">The player who is selecting the choice</param>
-    public void SelectChoice(int playerID)
+    /// <param name="playerIndex">The player who is selecting the choice</param>
+    public void SelectChoice()
     {
-        //Obtain the relevant player information
-        Player currentPlayer = GameManager.instance.players[playerID];
-
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
         switch (specChallenge)
         {
             case GameManager.SpecScores.Default:
-                currentPlayer = SuccessfulSelection(currentPlayer);
+                SuccessfulSelection();
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
                 break;
             case GameManager.SpecScores.Brawn:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledBrawn);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
                 break;
             case GameManager.SpecScores.Skill:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledSkill);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
                 break;
             case GameManager.SpecScores.Tech:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledTech);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
                 break;
             case GameManager.SpecScores.Charm:
-                currentPlayer = ApplySpecChallenge(currentPlayer, currentPlayer.ScaledCharm);
+                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
                 break;
             default:
                 Debug.Log("Failed Selection");
                 break;
         }
-
-        //Reassign the updated player information
-        GameManager.instance.players[playerID] = currentPlayer;
     }
 
     /// <summary>
@@ -189,65 +204,96 @@ public class Choice
     /// Test whether a player is successful or not in a spec challenge when they select the choice
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
     /// <param name="specScore">The player's relevant spec score</param>
     /// <returns>The updated player information</returns>
-    private Player ApplySpecChallenge(Player player, int specScore)
+    private void ApplySpecChallenge(int specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
         if (GameManager.instance.PerformSpecChallenge(specScore, targetScore))
         {
-            player = SuccessfulSelection(player);
+            SuccessfulSelection();
 
             //Disable the choice if it can only be selected once. Only functions if the player is successful in a spec challenge
             disabled = oneOff;
         }
         else
         {
-            player = FailedSelection(player);
+            FailedSelection();
         }
 
-        return player;
     }
 
 
     /// <summary>
     /// 
-    /// Update the player's resources if they are successful in a spec challenge. Also used if the choice is not a spec challenge
+    /// Update the active player's resources if they are successful in a spec challenge. Also used if the choice is not a spec challenge
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
-    /// <returns>The updated player's information</returns>
-    private Player SuccessfulSelection(Player player)
+    private void SuccessfulSelection()
     {
-        player.scrap += scrapChange;
-        player.corruption += corruptionChange;
+        GameManager.instance.GetActivePlayer().scrap += scrapChange;
+        GameManager.instance.GetActivePlayer().corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
         if (specItem.ItemType != Item.ItemTypes.Default)
         {
-            player.GiveItem(specItem);
+            GameManager.instance.GetActivePlayer().GiveItem(specItem);
         }
-        player.hasComponent = component;
-        player.lifePoints += lifeChange;
-
-        return player;
+        GameManager.instance.GetActivePlayer().hasComponent = component;
+        GameManager.instance.GetActivePlayer().lifePoints += lifeChange;
     }
 
     /// <summary>
     /// 
-    /// Update the player's resource if they failed a spec challenge
+    /// Update the active player's resource if they failed a spec challenge
     /// 
     /// </summary>
-    /// <param name="player">The relevant player's information</param>
-    /// <returns>The updated player's information</returns>
-    private Player FailedSelection(Player player)
+    private void FailedSelection()
     {
-        player.corruption += corruptionFail;
-        player.lifePoints += lifeFail;
-
-        return player;
+        GameManager.instance.GetActivePlayer().corruption += corruptionFail;
+        GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
     }
+
+    #endregion
+
+    #region Display Text Handling
+
+    public string SuccessText()
+    {
+        string scrapText = IntResourceChange(scrapChange, " Scrap");
+        string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
+        string aiPowerText = IntResourceChange(powerChange, "% AI Power");
+        string itemText = specItem.ItemType != Item.ItemTypes.Default ? string.Format("+1 {0}\n", specItem.ItemName) : "";
+        string lifeText = IntResourceChange(lifeChange, " Life Points");
+        string componentText = component ? "+1 Component\n" : "";
+
+        return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
+    }
+
+    public string FailText()
+    {
+        string corruptionText = IntResourceChange(corruptionFail, " Corruption");
+        string lifeText = IntResourceChange(lifeFail, " Life Points");
+
+        return corruptionText + lifeText;
+    }
+
+    private string IntResourceChange(int resourceVal, string valueName)
+    {
+        if(resourceVal > 0)
+        {
+            return string.Format("+{0}{1}\n\n", resourceVal.ToString(), valueName);
+        }
+        else if(resourceVal < 0)
+        {
+            return string.Format("{0}{1}\n\n", resourceVal.ToString(), valueName);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
     #endregion
 }

@@ -74,6 +74,11 @@ public class Player
     public int ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
     public int ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
 
+
+    //Character Specific Variables
+    public bool ChefBuffed = false; //Used for Chef's 'Preparation' ability
+    public bool IsInvisible = false; //Used for Techie's 'Muddle Sensors' ability
+
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
     //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
@@ -109,6 +114,12 @@ public class Player
         isRevealed = false;
 
         playerObject = null;
+    }
+
+    //Techie only, have player turn invisible on main screen
+    public void MuddleSensors(bool visible)
+    {
+       // this.gameObject.GetComponent<MeshRenderer>().enabled = visible;
     }
 
     /// <summary>
