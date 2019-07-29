@@ -12,10 +12,10 @@ public class CharacterInformation : NetMessage
 
     }
 
-    public int brawn  { set; get; }
-    public int skill { set; get; }
-    public int tech { set; get; }
-    public int charm { set; get; }
+    public int Basebrawn  { set; get; }
+    public int Baseskill { set; get; }
+    public int Basetech { set; get; }
+    public int Basecharm { set; get; }
    
 }
 
