@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class MainGameUIManager : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject noServerPanel;
 
     public GameObject playerCards;
+
+    public GameObject aiPowerPanel;
 
     public GameObject abilityPanel;
     public GameObject actionPointPanel;
@@ -37,6 +41,7 @@ public class MainGameUIManager : MonoBehaviour
             attackSurgePanel.SetActive(false);
 
             DisplayCurrentPhase();
+            UpdateAIPower();
         }
     }
 
@@ -90,11 +95,13 @@ public class MainGameUIManager : MonoBehaviour
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
+                UpdateAIPower();
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 break;
             case (GameManager.TurnPhases.AttackSurge):
+                UpdateAIPower();
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
@@ -127,5 +134,15 @@ public class MainGameUIManager : MonoBehaviour
         IncrementPhase();
     }
 
+    /// <summary>
+    /// 
+    /// Update the AI Power panel with the current AI Power for the slider and the counter
+    /// 
+    /// </summary>
+    private void UpdateAIPower()
+    {
+        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = GameManager.instance.AIPower.ToString();
+        aiPowerPanel.GetComponent<AIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
+    }
     #endregion
 }
