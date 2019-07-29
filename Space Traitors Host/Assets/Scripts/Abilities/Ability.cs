@@ -33,7 +33,7 @@ public class Ability
     //If the corruption value is higher or lower than specified threshold, player can use the ability
     public virtual bool CheckUse(int targetIndex)
     {
-        if (CheckCorruption(GameManager.instance.players[targetIndex].corruption,  corruptionRequirement))
+        if (CheckCorruption(GameManager.instance.players[targetIndex].Corruption,  corruptionRequirement))
         {
 
             return true;
@@ -198,10 +198,10 @@ public class EncouragingSong : Ability
     {
         Debug.Log("Encouraging Song Activate");
        
-        if (GameManager.instance.players[targetIndex].corruption >= 15)
-            GameManager.instance.players[targetIndex].corruption -= 15;
+        if (GameManager.instance.players[targetIndex].Corruption >= 15)
+            GameManager.instance.players[targetIndex].Corruption -= 15;
         else
-            GameManager.instance.players[targetIndex].corruption = 0;  //Corruption should never be a negative
+            GameManager.instance.players[targetIndex].Corruption = 0;  //Corruption should never be a negative
     }
 }
 

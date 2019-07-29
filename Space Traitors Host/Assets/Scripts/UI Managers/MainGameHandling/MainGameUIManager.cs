@@ -115,6 +115,11 @@ public class MainGameUIManager : MonoBehaviour
         DisplayCurrentPhase();
     }
 
+    /// <summary>
+    /// 
+    /// Updates the players resources based on the choice they have selected and moves into the next phase.
+    /// 
+    /// </summary>
     public void SelectChoice()
     {
         interactionPanel.GetComponent<InteractionManager>().currentRoom.roomChoices[interactionPanel.GetComponent<InteractionManager>().selectedChoiceID].SelectChoice();

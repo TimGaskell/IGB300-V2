@@ -55,7 +55,7 @@ public class PlayerCardManager : MonoBehaviour
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(player.Character.CharacterType);
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.corruption.ToString();
+        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.Corruption.ToString();
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
 
@@ -72,6 +72,13 @@ public class PlayerCardManager : MonoBehaviour
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
     }
 
+    /// <summary>
+    /// 
+    /// Returns the relevant sprite image for a character of a particular type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The type of character</param>
+    /// <returns>The sprite image to be used</returns>
     private Sprite GetCharacterPortrait (Character.CharacterTypes characterType)
     {
         switch (characterType)
@@ -93,6 +100,15 @@ public class PlayerCardManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// Return a string which displays the characters scaled spec score as well as their spec score which 
+    /// has not been scaled because of corruption
+    /// 
+    /// </summary>
+    /// <param name="scaledSpec">The scaled spec score</param>
+    /// <param name="modSpec">The unscaled spce score, but with base modifiers</param>
+    /// <returns>The string to display</returns>
     private string ObtainSpecInfo(float scaledSpec, int modSpec)
     {
         return string.Format("{0} / {1}", scaledSpec, modSpec);

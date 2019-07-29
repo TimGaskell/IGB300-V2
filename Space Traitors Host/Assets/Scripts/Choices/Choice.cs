@@ -125,7 +125,7 @@ public class Choice
         }
 
         //If the choice has a corruption change and the players corruption is already at 0, choice is unavailable
-        if (corruptionChange < 0 && checkedPlayer.corruption == 0)
+        if (corruptionChange < 0 && checkedPlayer.Corruption == 0)
         {
             return IsAvailableTypes.hasNoCorruption;
         }
@@ -233,7 +233,7 @@ public class Choice
     private void SuccessfulSelection()
     {
         GameManager.instance.GetActivePlayer().scrap += scrapChange;
-        GameManager.instance.GetActivePlayer().corruption += corruptionChange;
+        GameManager.instance.GetActivePlayer().Corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
         if (specItem.ItemType != Item.ItemTypes.Default)
@@ -251,7 +251,7 @@ public class Choice
     /// </summary>
     private void FailedSelection()
     {
-        GameManager.instance.GetActivePlayer().corruption += corruptionFail;
+        GameManager.instance.GetActivePlayer().Corruption += corruptionFail;
         GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
     }
 

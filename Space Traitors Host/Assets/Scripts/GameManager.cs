@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour
     private const int BASE_TARGET_SCORE = 5;
     //The increase the AI target score every round
     private const int AI_TARGET_INCREASE = 1;
+    //The increase in a traitors corruption every round during a surge
+    private const int TRAITOR_CORRUPTION_MOD = 15;
 
     //The modifier for spec scores when one player counters another in combat
     private const int COUNTER_MOD = 2;
@@ -649,8 +651,10 @@ public class GameManager : MonoBehaviour
 
         if (IsTraitorSelected())
         {
-            ChooseTraitor();
+            newTraitor = ChooseTraitor();
         }
+
+        RoundCorruptionIncrease();
     }
 
     /// <summary>
@@ -670,11 +674,27 @@ public class GameManager : MonoBehaviour
             //and the player is a traitor
             if (!(!includeTraitors && player.isTraitor))
             {
-                totalCorruption += player.corruption;
+                totalCorruption += player.Corruption;
             }
         }
 
         return totalCorruption;
+    }
+
+    /// <summary>
+    /// 
+    /// Increases the corruption per round for all traitors
+    /// 
+    /// </summary>
+    private void RoundCorruptionIncrease()
+    {
+        foreach (Player player in players)
+        {
+            if (player.isTraitor)
+            {
+                player.Corruption += TRAITOR_CORRUPTION_MOD;
+            }
+        }
     }
 
     /// <summary>
@@ -762,10 +782,12 @@ public class GameManager : MonoBehaviour
             {
                 //Add the player's proability, then determine if the random number falls in that probability range.
                 //If it does, that player is to be selected as traitor
-                chanceCounter += player.corruption / totalCorruption;
+                chanceCounter += player.Corruption / totalCorruption;
                 if (randomChance <= chanceCounter)
                 {
-                    players[player.playerID].isTraitor = true;
+                    //Increase the traitor corruption and sets them as a traitor
+                    player.isTraitor = true;
+                    player.Corruption += TRAITOR_CORRUPTION_MOD;
                     return player.playerID;
                 }
             }
@@ -1049,13 +1071,11 @@ public class GameManager : MonoBehaviour
 
     #region Movement Handling
 
-    public void StartPlayerMoving(int goalIndex)
-    {
-        playerGoalIndex = goalIndex;
-        GetActivePlayer().roomPosition = goalIndex;
-        playerMoving = true;
-    }
-
+    /// <summary>
+    /// 
+    /// Detect if one of the rooms is clicked on for the player to move to based on a raycast system.
+    /// 
+    /// </summary>
     private void ClickRoom()
     {
         if (Input.GetMouseButtonDown(0))
@@ -1066,9 +1086,10 @@ public class GameManager : MonoBehaviour
             {
                 if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges")
                 {
-                    int goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    playerGoalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
                     roomSelection = false;
-                    StartPlayerMoving(goalIndex);
+                    GetActivePlayer().roomPosition = playerGoalIndex;
+                    playerMoving = true;
                 }
             }
         }
