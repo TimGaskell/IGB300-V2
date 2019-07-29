@@ -77,7 +77,7 @@ public class InteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
-            int playerScore;
+            float playerScore;
 
             switch (selectedChoice.specChallenge)
             {

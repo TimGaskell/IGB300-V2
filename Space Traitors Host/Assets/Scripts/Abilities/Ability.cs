@@ -73,10 +73,10 @@ public class Ability
             if (player.ChefBuffed)
             {
                 //Reset the buffs (-1 to all specs)
-                player.brawnModifier--;
-                player.skillModifier--;
-                player.techModifier--;
-                player.charmModifier--;
+                player.brawnModTemp--;
+                player.skillModTemp--;
+                player.techModTemp--;
+                player.charmModTemp--;
 
                 player.ChefBuffed = false;
             }
@@ -151,10 +151,10 @@ public class Preparation : Ability
     {
         Debug.Log("Preperation Activate");
         //+1 to all spec modifiers
-        GameManager.instance.players[targetIndex].brawnModifier++;
-        GameManager.instance.players[targetIndex].skillModifier++;
-        GameManager.instance.players[targetIndex].techModifier++;
-        GameManager.instance.players[targetIndex].charmModifier++;
+        GameManager.instance.players[targetIndex].brawnModTemp++;
+        GameManager.instance.players[targetIndex].skillModTemp++;
+        GameManager.instance.players[targetIndex].techModTemp++;
+        GameManager.instance.players[targetIndex].charmModTemp++;
 
         GameManager.instance.players[targetIndex].ChefBuffed = true;
     }

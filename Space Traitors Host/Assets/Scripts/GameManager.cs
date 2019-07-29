@@ -440,7 +440,7 @@ public class GameManager : MonoBehaviour
     /// <param name="playerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>The chance for the player or the attacker to succeed on the spec challenge</returns>
-    public float SpecChallengeChance(int playerScore, int targetScore)
+    public float SpecChallengeChance(float playerScore, float targetScore)
     {
         if (targetScore == 0)
         {
@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
     /// <param name="PlayerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>True if the player suceeded. False otherwise</returns>
-    public bool PerformSpecChallenge(int PlayerScore, int targetScore)
+    public bool PerformSpecChallenge(float PlayerScore, float targetScore)
     {
         //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
         float successFactor = UnityEngine.Random.Range(0f, 100f);
@@ -797,7 +797,7 @@ public class GameManager : MonoBehaviour
     {
         bool playerWin;
 
-        int targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
+        float targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -869,8 +869,8 @@ public class GameManager : MonoBehaviour
         Player attackingPlayer = GetPlayer(attackerID);
         Player defendingPlayer = GetPlayer(defenderID);
 
-        int attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
-        int defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
+        float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
+        float defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
@@ -931,7 +931,7 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private int ObtainSpecScore(Player player, SpecScores specScore)
+    private float ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {

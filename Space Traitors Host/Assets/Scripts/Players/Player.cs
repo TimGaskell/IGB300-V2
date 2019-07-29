@@ -37,42 +37,47 @@ public class Player
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange) + brawnModTemp;
         }
     }
     private int SkillChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange) + skillModTemp;
         }
     }
     private int TechChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.TechChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.TechChange) + techModTemp;
         }
     }
     private int CharmChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange) + charmModTemp;
         }
     }
     #endregion
 
-    public int brawnModifier;
-    public int skillModifier;
-    public int techModifier;
-    public int charmModifier;
+    public int brawnModTemp;
+    public int skillModTemp;
+    public int techModTemp;
+    public int charmModTemp;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public int ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
-    public int ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
-    public int ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
-    public int ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+    public float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    public float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    public float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    public float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+
+    public int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
+    public int ModSkill { get { return Character.baseSkill + SkillChange; } }
+    public int ModTech { get { return Character.baseTech + TechChange; } }
+    public int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
 
     //Character Specific Variables
@@ -105,10 +110,10 @@ public class Player
 
         Character = new Character();
 
-        brawnModifier = 0;
-        skillModifier = 0;
-        techModifier = 0;
-        charmModifier = 0;
+        brawnModTemp = 0;
+        skillModTemp = 0;
+        techModTemp = 0;
+        charmModTemp = 0;
 
         isTraitor = false;
         isRevealed = false;
@@ -140,9 +145,9 @@ public class Player
     /// <param name="baseScore">The relevant spec score base</param>
     /// <param name="itemModifier">The modifier to the relevant spec score based upon their items</param>
     /// <returns>The scaled spec score</returns>
-    private int ApplyScaling(int baseScore, int itemModifier)
+    private float ApplyScaling(int baseScore, int itemModifier)
     {
-        return baseScore * (int)((100 - 0.5 * corruption) / 100) + itemModifier;
+        return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
     }
 
     #region Item Handling

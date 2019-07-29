@@ -206,7 +206,7 @@ public class Choice
     /// </summary>
     /// <param name="specScore">The player's relevant spec score</param>
     /// <returns>The updated player information</returns>
-    private void ApplySpecChallenge(int specScore)
+    private void ApplySpecChallenge(float specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.

@@ -92,10 +92,12 @@ public class MainGameUIManager : MonoBehaviour
             case (GameManager.TurnPhases.BasicSurge):
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
+                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 break;
             case (GameManager.TurnPhases.AttackSurge):
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
+                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
