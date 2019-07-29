@@ -649,11 +649,13 @@ public class GameManager : MonoBehaviour
             targetPlayer = AIChooseTarget();
         }
 
+        //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
         if (IsTraitorSelected())
         {
             newTraitor = ChooseTraitor();
         }
 
+        //Increase corruption for all traitors
         RoundCorruptionIncrease();
     }
 
@@ -706,7 +708,7 @@ public class GameManager : MonoBehaviour
     private bool IsTraitorSelected()
     {
         //First checks if there are still avaialable slot for a player to become the traitor. If there is an available slot, continues to determine if a traitor is to be selected
-        if (!TraitorCountCheck())
+        if (TraitorCountCheck())
         {
             //Then checks if there has been a delay in rounds since the last traitor was selected.
             //If there hasn't, resets the delay and returns false
@@ -774,27 +776,57 @@ public class GameManager : MonoBehaviour
 
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
-
-        foreach (Player player in players)
+        
+        if(totalCorruption == 0)
         {
-            //Cannot consider players which are not traitors, so will ignore them in the summation
-            if (!player.isTraitor)
+            int randomPlayerID;
+
+            //Need to ensure that the new traitor has not already been selected, so repeats the random selection until finds a
+            //character which is not a traitor.
+            do
             {
-                //Add the player's proability, then determine if the random number falls in that probability range.
-                //If it does, that player is to be selected as traitor
-                chanceCounter += player.Corruption / totalCorruption;
-                if (randomChance <= chanceCounter)
+                randomPlayerID = UnityEngine.Random.Range(0, numPlayers);
+
+            } while (GetPlayer(randomPlayerID).isTraitor);
+
+            AssignTraitor(randomPlayerID);
+
+            return randomPlayerID;
+        }
+        else
+        {
+            foreach (Player player in players)
+            {
+                //Cannot consider players which are traitors, so will ignore them in the summation
+                if (!player.isTraitor)
                 {
-                    //Increase the traitor corruption and sets them as a traitor
-                    player.isTraitor = true;
-                    player.Corruption += TRAITOR_CORRUPTION_MOD;
-                    return player.playerID;
+                    //Add the player's proability, then determine if the random number falls in that probability range.
+                    //If it does, that player is to be selected as traitor
+                    chanceCounter += player.Corruption / totalCorruption * 100.0f;
+                    if (randomChance <= chanceCounter)
+                    {
+                        //Increase the traitor corruption and sets them as a traitor
+                        AssignTraitor(player.playerID);
+                        return player.playerID;
+                    }
                 }
             }
         }
 
         //Provides a dummy output for the function. Should never reach this point
         return DEFAULT_PLAYER_ID;
+    }
+
+    /// <summary>
+    /// 
+    /// Assign a particular player to be traitor
+    /// 
+    /// </summary>
+    /// <param name="playerID">The ID of the player becoming the traitor</param>
+    private void AssignTraitor(int playerID)
+    {
+        GetPlayer(playerID).isTraitor = true;
+        GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
     }
 
     /// <summary>

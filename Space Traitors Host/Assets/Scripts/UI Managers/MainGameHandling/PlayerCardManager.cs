@@ -72,6 +72,14 @@ public class PlayerCardManager : MonoBehaviour
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
     }
 
+    public void UpdateAllCards()
+    {
+        for (int playerIndex = 0; playerIndex < GameManager.instance.numPlayers; playerIndex++)
+        {
+            UpdatePlayerCard(playerIndex);
+        }
+    }
+
     /// <summary>
     /// 
     /// Returns the relevant sprite image for a character of a particular type
