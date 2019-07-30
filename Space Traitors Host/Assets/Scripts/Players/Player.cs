@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
 
 public class Player
 {
@@ -25,7 +24,7 @@ public class Player
     //Player Resources
     public int scrap;
     private int corruption;
-    public int Corruption { get { return corruption; } set { corruption = Math.Min(MAX_CORRUPTION, value); } }
+    public int Corruption { get { return corruption; } set { corruption = Mathf.Clamp(value, 0, MAX_CORRUPTION); } }
     public List<Item> items;
     public bool hasComponent;
     public int lifePoints;

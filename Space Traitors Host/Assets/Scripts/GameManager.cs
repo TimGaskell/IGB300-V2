@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public int numPlayers;
-    public List<Player> players;
+    private List<Player> players;
     public List<int> playerOrder;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     public int NumComponents { get { return numPlayers; } }
 
     private float aiPower;
-    public float AIPower { get { return aiPower; } private set { aiPower = Math.Min(MAX_POWER, value); } }
+    public float AIPower { get { return aiPower; } private set { aiPower = Mathf.Clamp(value, 0, MAX_POWER); } }
     public float aiPowerChange;
     private int aiTargetScore;
 
@@ -449,7 +449,7 @@ public class GameManager : MonoBehaviour
             throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
-        return Math.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
+        return Mathf.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
     }
 
     /// <summary>
@@ -650,10 +650,10 @@ public class GameManager : MonoBehaviour
         }
 
         //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
-        if (IsTraitorSelected())
-        {
+        //if (IsTraitorSelected())
+        //{
             newTraitor = ChooseTraitor();
-        }
+        //}
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
@@ -771,13 +771,10 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private int ChooseTraitor()
     {
-        float chanceCounter = 0;
-        float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
-
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
-        
-        if(totalCorruption == 0)
+
+        if (totalCorruption == 0)
         {
             int randomPlayerID;
 
@@ -795,6 +792,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            float chanceCounter = 0;
+            float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
+
             foreach (Player player in players)
             {
                 //Cannot consider players which are traitors, so will ignore them in the summation
@@ -802,7 +802,7 @@ public class GameManager : MonoBehaviour
                 {
                     //Add the player's proability, then determine if the random number falls in that probability range.
                     //If it does, that player is to be selected as traitor
-                    chanceCounter += player.Corruption / totalCorruption * 100.0f;
+                    chanceCounter += (float)player.Corruption / totalCorruption * 100.0f;
                     if (randomChance <= chanceCounter)
                     {
                         //Increase the traitor corruption and sets them as a traitor
@@ -1096,7 +1096,7 @@ public class GameManager : MonoBehaviour
     /// <param name="remainingPoints">The remaining number of action points the player has</param>
     public void ExchangeActionPoints(int playerID, int remainingPoints)
     {
-        players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
+        players[playerID].scrap += (int)Mathf.Round(remainingPoints * AP_CONVERSION);
     }
 
     #endregion
