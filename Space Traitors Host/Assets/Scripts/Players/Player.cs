@@ -167,6 +167,16 @@ public class Player
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
+            //If the player has valid slots for the item to be equipped, equips the item.
+            //May need to be changed if forcing inventory management when picking up an item
+            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
+            {
+                item.isEquipped = true;
+            }
+            else
+            {
+                item.isEquipped = false;
+            }
             items.Add(item);
             return true;
         }
