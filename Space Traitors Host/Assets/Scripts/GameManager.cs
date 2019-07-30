@@ -53,7 +53,11 @@ public class GameManager : MonoBehaviour
 
     private float aiPower;
     public float AIPower { get { return aiPower; } private set { aiPower = Mathf.Clamp(value, 0, MAX_POWER); } }
+    //Changes in AI power per round
+    public float basePower;
+    public float playerPower;
     public float aiPowerChange;
+    //The target score for the player when the AI attacks them
     private int aiTargetScore;
 
     //The ID of a player who has newly been selected as traitor
@@ -636,24 +640,25 @@ public class GameManager : MonoBehaviour
         {
             currentPhase = TurnPhases.BasicSurge;
 
-            float basePower = BASE_POWER_MOD / numPlayers;
-            float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
+            basePower = BASE_POWER_MOD / numPlayers;
+            playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += basePower + playerPower + aiPowerChange;
             aiPowerChange = 0;
         }
         else
         {
+            currentPhase = TurnPhases.AttackSurge;
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
         }
 
         //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
-        //if (IsTraitorSelected())
-        //{
+        if (IsTraitorSelected())
+        {
             newTraitor = ChooseTraitor();
-        //}
+        }
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
@@ -826,7 +831,7 @@ public class GameManager : MonoBehaviour
     private void AssignTraitor(int playerID)
     {
         GetPlayer(playerID).isTraitor = true;
-        GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
+        //GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
     }
 
     /// <summary>
