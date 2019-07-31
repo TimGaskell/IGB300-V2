@@ -106,15 +106,9 @@ public class Server : MonoBehaviour
     private int portraitID = -1;
     public int tempPlayerID;
     private string sceneName;
-    public int InstalledComponents = 0;
-    private bool SentMessage = false;
+   
 
-    public enum WinLossConditions {
-
-        InnocentsWin ,
-        Eliminated,
-        TraitorsWin
-    }
+  
   
 
 
@@ -171,10 +165,7 @@ public class Server : MonoBehaviour
         }
         if(sceneName == "server") {
 
-            SetScrapText();
-            SetComponentsText();
-            SetAiPowerSlider();
-            VictoryConditions();
+          
 
         }
 
@@ -264,148 +255,13 @@ public class Server : MonoBehaviour
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.ChangeRoom:
-                ChangeRoom(conID, chanID, rHostID, (Net_ChangeRoom)msg);
-                break;
-            case NetOP.SendPoints:
-                SendPoints(conID, chanID, rHostID, (Net_SendPoints)msg);
-                break;
-            case NetOP.SendTurnEnd:
-                SendTurnEnd(conID, chanID, rHostID, (Net_SendTurnEnd)msg);
-                break;
-            case NetOP.SendScrap:
-                AssignScrap(conID, chanID, rHostID, (Net_SendScrap)msg);
-                break;
-            case NetOP.SendComponents:
-                AssignComponents(conID, chanID, rHostID, (Net_SendComponents)msg);
-                break;
-            case NetOP.SendAIPower:
-                AssignAiPower(conID, chanID, rHostID, (Net_SendAiPower)msg);
-                break;
-            case NetOP.RoomNumber:
-                SendRoomCost(conID, chanID, rHostID, (Net_SendRoomNumber)msg);
-                break;
-            case NetOP.AssignTraitor:
-                AssignTraitor(conID, chanID, rHostID, (Net_AssignTraitor)msg);
-                break;
+           
         }
         //Debug.Log("Recieved a message of type " + msg.OperationCode);
 
     }
 
 
-    private void AssignScrap(int conID, int chanID, int rHostID, Net_SendScrap scrap) {
-
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
-
-               ScrapTotals[conID - 1].GetComponent<Text>().text = scrap.ScrapTotal.ToString();
-
-            }
-        }
-    }
-
-    private void AssignTraitor(int conID, int chanID, int rHostID, Net_AssignTraitor scrap)
-    {
-    }
-
-    private void AssignAiPower(int conID, int chanID, int rHostID, Net_SendAiPower aiPower) {
-
-        AiPowerSliderUI.GetComponent<AiPower>().power += aiPower.AIpowerAmountGained;
-       
-    }
-
-    private void AssignComponents(int conID, int chanID, int rHostID, Net_SendComponents components) {
-
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
-
-                Components[conID - 1].GetComponent<Text>().text = components.ComponentNumber.ToString();
-
-                if (components.Installed == true) {
-
-                    InstalledComponents += 1;
-
-                }
-            }
-            
-        }
-    }
-
-
-    private void ChangeRoom(int conID, int chanID, int rHostID, Net_ChangeRoom ca)
-    {
-        foreach (GameObject player in playerArray())
-        {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
-            {
-                //player.GetComponent<Player>().goalIndex = ca.Location;
-                //player.GetComponent<Player>().Begin = true;
-                //player.GetComponent<Player>().startMoving = true;
-
-              
-                Debug.Log(player.name + " is in " + ca.Location);
-                break;
-            }
-        }
-    }
-
-    private void SendPoints(int conID, int chanID, int rHostID, Net_SendPoints lr)
-    {
-        foreach (GameObject player in playerArray())
-        {
-            //Find the correct player
-            if (player.GetComponent<PlayerConnect>().playerID == conID)
-            {
-                if ((sceneName == "Character Select"))
-                {
-                    switch (lr.Influence)
-                    {
-                        case "Brute":
-                            player.GetComponent<PlayerConnect>().characterName = "Brute";
-                            break;
-
-                        case "Butler":
-                            player.GetComponent<PlayerConnect>().characterName = "Butler";
-                            break;
-
-                        case "Singer":
-                            player.GetComponent<PlayerConnect>().characterName = "Singer";
-                            break;
-
-                        case "Techie":
-                            player.GetComponent<PlayerConnect>().characterName = "Techie";
-                            break;
-
-                        case "Engineer":
-                            player.GetComponent<PlayerConnect>().characterName = "Engineer";
-                            break;
-
-                        case "Chef":
-                            player.GetComponent<PlayerConnect>().characterName = "Chef";
-                            break;
-                    }
-
-                }
-                break;
-            }
-        }
-    }
-
-    public void SendTurnEnd(int conID, int chanID, int rHostID, Net_SendTurnEnd te)
-    {
-        foreach (GameObject player in playerArray())
-        {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
-            {
-                playerStorage.GetComponent<RoundManager>().IncrementTurn();
-            }
-        }
-    }
 
     public void SendClient(int recHost, int conID, NetMessage msg)
     {
@@ -427,13 +283,7 @@ public class Server : MonoBehaviour
 
     }
 
-    public void roomLocation(Net_ChangeRoom ca)
-    {
-
-
-
-
-    }
+    //This needs to be updated
 
     private List<GameObject> playerArray()
     {
@@ -450,6 +300,7 @@ public class Server : MonoBehaviour
 
     }
 
+    //This needs to be updated
     private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable)
     {
         player.GetComponent<PlayerConnect>().connected = connect;
@@ -457,12 +308,14 @@ public class Server : MonoBehaviour
         player.GetComponent<PlayerConnect>().playerImage.enabled = imageEnable;
     }
 
+    //This needs to be updated
     private void GameConnectOrDisconnect(GameObject player, bool connect, int conID)
     {
        // player.GetComponent<Player>().connected = connect;
        // player.GetComponent<Player>().playerID = conID;
     }
 
+    //This needs to be updated
     private void SetPortraits()
     {
         setter = GameObject.FindGameObjectWithTag("Setter");
@@ -504,6 +357,8 @@ public class Server : MonoBehaviour
 
     }
 
+
+    //This needs to be updated
     public void StartGame() //This is called when a game is started in lobby
     {
         //TODO: cannot start game unless at least 3 (1 for purposes of testing) players are connected
@@ -544,27 +399,7 @@ public class Server : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void ClientNextScene()
-    {
-        foreach (GameObject player in players)
-        {
-            tempPlayerID = player.GetComponent<PlayerConnect>().playerID;
-            SendLocation(0);
-        }
-    }
-
-    public void ChooseTraitor()
-    {
-        int randomIndex = Random.Range(0, players.Count + 1);
-        tempPlayerID = players[randomIndex].GetComponent<PlayerConnect>().playerID;
-        SendTraitor(0);
-    }
-
-    public void ClientTurnChange(int playerID, bool playerturn)
-    {
-        tempPlayerID = playerID;
-        SendTurnEnd(playerturn);
-    }
+   
 
     public void SendClient(NetMessage msg)
     {
@@ -582,122 +417,6 @@ public class Server : MonoBehaviour
 
     }
 
-    //Sends the location to the server, references the get,set from Net_Change Room
-    public void SendLocation(int location)
-    {
-        Net_ChangeRoom ca = new Net_ChangeRoom();
-
-        ca.Location = location;
-
-        SendClient(ca);
-
-    }
-
-    public void SendTraitor(int blank)
-    {
-        Net_AssignTraitor ca = new Net_AssignTraitor();
-
-        SendClient(ca);
-
-    }
-
-    //Sends the location to the server, references the get,set from Net_Change Room
-    public void SendTurnEnd(bool playerturn)
-    {
-        Net_SendTurnEnd ca = new Net_SendTurnEnd();
-
-        ca.Ended = playerturn;
-
-        SendClient(ca);
-
-    }
-
-    public void SendAllowMovement(int player, bool yes_no) {
-
-        NetAllowMovement ca = new NetAllowMovement();
-
-        tempPlayerID = player;
-
-        ca.AllowToMove = yes_no;
-
-        SendClient(ca);
-
-    }
-
-
-
-
-    private void SendRoomCost(int conID, int chanID, int rHostID, Net_SendRoomNumber roomNumber) {
-
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
-
-                Net_SendCostOfRoom costOfRoom = new Net_SendCostOfRoom();
-                //player.GetComponent<Player>().goalIndex = roomNumber.Room;
-                //player.GetComponent<Player>().startMoving = false;
-                //player.GetComponent<Player>().Begin = true;
-
-
-                //I know this method is disgusting but ill fix it later.
-                //player.GetComponent<Player>().currentPath = player.GetComponent<Player>().AStarSearch(player.GetComponent<Player>().currentPath[player.GetComponent<Player>().currentPathIndex], roomNumber.Room);
-
-
-                //costOfRoom.RoomCost = player.GetComponent<Player>().currentPath.Count -1 ;
-                Debug.Log("EnergyCost: " + costOfRoom.RoomCost);
-                SendClient(costOfRoom);
-            }
-        }
-    }
-
-    public void SetScrapText() {
-
-        ScrapTotals = GameObject.FindGameObjectsWithTag("Scrap Text");
-
-    }
-
-    public void SetComponentsText() {
-
-        Components = GameObject.FindGameObjectsWithTag("Components Text");
-
-    }
-
-    public void SetAiPowerSlider() {
-
-        AiPowerSliderUI = GameObject.FindGameObjectWithTag("Ai Power");
-
-    }
-
-    private void VictoryConditions() {
-
-
-        if (SentMessage == false) {
-
-            tempPlayerID = 1;
-
-            if (InstalledComponents == 5) {
-
-                foreach(GameObject player in playerArray()) {
-
-
-                    Net_SendWinLoss VictoryMet = new Net_SendWinLoss();
-                    VictoryMet.WinOrLossCondition = (int)WinLossConditions.InnocentsWin;
-                    SendClient(VictoryMet);
-                    tempPlayerID++;
-                 
-
-                }
-                SentMessage = true;
-
-
-            }
-            else if (players.Count == 0) {
-
-
-
-            }
-
-        }
-    }
+  
 
 }
