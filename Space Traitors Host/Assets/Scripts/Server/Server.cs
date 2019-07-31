@@ -71,11 +71,11 @@ public enum ADDRESSFAM
     IPv4, IPv6
 }
 
-public class Server : MonoBehaviour
-{
+public class Server : MonoBehaviour {
     //Networking variables
     private byte reliableChannel;
     private int hostID;
+    private int connectionID;
     private int webHostID;
 
     private const int maxUser = 100;
@@ -106,22 +106,20 @@ public class Server : MonoBehaviour
     private int portraitID = -1;
     public int tempPlayerID;
     private string sceneName;
-   
 
-  
-  
+
+
+
 
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         DontDestroyOnLoad(gameObject);
-        Initialise();
-       
+
+
     }
 
-    public void Initialise()
-    {
+    public void HostInitialise() {
         NetworkTransport.Init();
 
         ConnectionConfig config = new ConnectionConfig();
@@ -138,34 +136,58 @@ public class Server : MonoBehaviour
         isStarted = true;
     }
 
-    public void ShutDown()
-    {
+    public void ClientInitialise() {
+        NetworkTransport.Init();
+
+        ConnectionConfig config = new ConnectionConfig();
+        reliableChannel = config.AddChannel(QosType.Reliable);
+
+        HostTopology topo = new HostTopology(config, maxUser);
+
+        //Client only code
+        hostID = NetworkTransport.AddHost(topo, 0);
+
+#if !UNITY_WEBGL && UNITY_EDITOR
+        //Standalone Client
+        Debug.Log(serverIP);
+        connectionID = NetworkTransport.Connect(hostID, serverIP, port, 0, out error);
+        Debug.Log(string.Format("Connecting from standalone"));
+#else
+        //Web Client
+        connectionID = NetworkTransport.Connect(hostID, serverIP, port, 0, out error);
+        Debug.Log(string.Format("Connecting from Web"));
+#endif
+
+        Debug.Log(string.Format("Attempting to connect on {0}...", serverIP));
+        isStarted = true;
+    }
+
+
+
+    public void ShutDown() {
         isStarted = false;
         NetworkTransport.Shutdown();
     }
 
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
 
         //Keep track of the current scene
         currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
 
-        if (sceneName == "LobbyTest")
-        {
+        if (sceneName == "LobbyTest") {
             connectText.text = serverIP;
         }
 
-        if (sceneName == "Character Select")
-        {
+        if (sceneName == "Character Select") {
             SetPortraits();
         }
-        if(sceneName == "server") {
+        if (sceneName == "server") {
 
-          
+
 
         }
 
@@ -175,10 +197,8 @@ public class Server : MonoBehaviour
 
 
 
-    private void UpdateMessagePump()
-    {
-        if (!isStarted)
-        {
+    private void UpdateMessagePump() {
+        if (!isStarted) {
             return;
         }
         int recHostID;  //checks whether this is from Web or standalone
@@ -189,8 +209,7 @@ public class Server : MonoBehaviour
         int dataSize;
 
         NetworkEventType type = NetworkTransport.Receive(out recHostID, out connectionID, out channelID, recBuffer, byteSize, out dataSize, out error);
-        switch (type)
-        {
+        switch (type) {
             case NetworkEventType.Nothing:
                 break;
 
@@ -198,10 +217,8 @@ public class Server : MonoBehaviour
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
                 //Loop through to find a player not already connected, and assign them their ID
-                foreach (GameObject player in playerArray())
-                {
-                    if (!player.GetComponent<PlayerConnect>().connected)
-                    {
+                foreach (GameObject player in playerArray()) {
+                    if (!player.GetComponent<PlayerConnect>().connected) {
                         if (sceneName == "LobbyTest")
                             LobbyConnectOrDisconnect(player, true, connectionID, true);
                         else if (sceneName == "server")
@@ -216,10 +233,8 @@ public class Server : MonoBehaviour
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                foreach (GameObject player in playerArray())
-                {
-                    if (player.GetComponent<PlayerConnect>().playerID == connectionID)
-                    {
+                foreach (GameObject player in playerArray()) {
+                    if (player.GetComponent<PlayerConnect>().playerID == connectionID) {
                         if (sceneName == "LobbyTest")
                             //Reset player variables
                             LobbyConnectOrDisconnect(player, false, 0, false);
@@ -248,14 +263,45 @@ public class Server : MonoBehaviour
         }
     }
 
-    private void OnData(int conID, int chanID, int rHostID, NetMessage msg)
-    {
-        switch (msg.OperationCode)
-        {
+    private void OnData(int conID, int chanID, int rHostID, NetMessage msg) {
+        switch (msg.OperationCode) {
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
-           
+            case NetOP.PlayerDetails:
+                AssignPlayerDetails(conID, chanID, rHostID, (PlayerDetails)msg);
+                break;
+            case NetOP.CharacterSelection:
+                AssignCharacterSelection(conID, chanID, rHostID, (CharacterSelection)msg);
+                break;
+            case NetOP.AbilityUsage:
+                AbilityUsed(conID, chanID, rHostID, (AbilityUsage)msg);
+                break;
+            case NetOP.ActionPoints:
+                ActionPoints(conID, chanID, rHostID, (ActionPoints)msg);
+                break;
+            case NetOP.Movement:
+                AssignRoomMovement(conID, chanID, rHostID, (Movement)msg);
+                break;
+            case NetOP.SelectedChoice:
+                ChoiceSelection(conID, chanID, rHostID, (SelectedChoice)msg);
+                break;
+            case NetOP.InventoryChanges:
+                Inventory(conID, chanID, rHostID, (InventoryChanges)msg);
+                break;
+            case NetOP.SpecSelection:
+                SpecSelection(conID, chanID, rHostID, (SpecSelection)msg);
+                break;
+            case NetOP.CombatAttackingTarget:
+                SpecCombat(conID, chanID, rHostID, (CombatAttackingTarget)msg);
+                break;
+            case NetOP.ItemSelection:
+                ItemSelection(conID, chanID, rHostID, (ItemSelection)msg);
+                break;
+            case NetOP.InstallComponent:
+                InstallComponent(conID, chanID, rHostID, (InstallComponent)msg);
+                break;
+
         }
         //Debug.Log("Recieved a message of type " + msg.OperationCode);
 
@@ -263,8 +309,7 @@ public class Server : MonoBehaviour
 
 
 
-    public void SendClient(int recHost, int conID, NetMessage msg)
-    {
+    public void SendClient(int recHost, int conID, NetMessage msg) {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
 
@@ -272,12 +317,10 @@ public class Server : MonoBehaviour
         MemoryStream ms = new MemoryStream(buffer);
         formatter.Serialize(ms, msg);
 
-        if (recHost == 0)
-        {
+        if (recHost == 0) {
             NetworkTransport.Send(hostID, conID, reliableChannel, buffer, byteSize, out error);
         }
-        else
-        {
+        else {
             NetworkTransport.Send(webHostID, conID, reliableChannel, buffer, byteSize, out error);
         }
 
@@ -285,15 +328,13 @@ public class Server : MonoBehaviour
 
     //This needs to be updated
 
-    private List<GameObject> playerArray()
-    {
+    private List<GameObject> playerArray() {
 
         if ((sceneName == "LobbyTest") || (sceneName == "Character Select"))
             return players;
         else if (sceneName == "server")
             return playerStorage.GetComponent<RoundManager>().playersInGame;
-        else
-        {
+        else {
             Debug.Log("Could not get the correct scene");
             return null;
         }
@@ -301,28 +342,23 @@ public class Server : MonoBehaviour
     }
 
     //This needs to be updated
-    private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable)
-    {
+    private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
         player.GetComponent<PlayerConnect>().connected = connect;
         player.GetComponent<PlayerConnect>().playerID = conID;
         player.GetComponent<PlayerConnect>().playerImage.enabled = imageEnable;
     }
 
     //This needs to be updated
-    private void GameConnectOrDisconnect(GameObject player, bool connect, int conID)
-    {
-       // player.GetComponent<Player>().connected = connect;
-       // player.GetComponent<Player>().playerID = conID;
+    private void GameConnectOrDisconnect(GameObject player, bool connect, int conID) {
+        // player.GetComponent<Player>().connected = connect;
+        // player.GetComponent<Player>().playerID = conID;
     }
 
     //This needs to be updated
-    private void SetPortraits()
-    {
+    private void SetPortraits() {
         setter = GameObject.FindGameObjectWithTag("Setter");
-        for (int i = 0; i < playerArray().Count; i++)
-        {
-            switch (players[i].GetComponent<PlayerConnect>().characterName)
-            {
+        for (int i = 0; i < playerArray().Count; i++) {
+            switch (players[i].GetComponent<PlayerConnect>().characterName) {
                 case "Brute":
                     portraitID = 0;
                     break;
@@ -347,8 +383,7 @@ public class Server : MonoBehaviour
                     portraitID = 5;
                     break;
             }
-            if (portraitID >= 0)
-            {
+            if (portraitID >= 0) {
                 setter.GetComponent<ImageSetter>().images[i].sprite = portraits[portraitID];
             }
 
@@ -364,18 +399,14 @@ public class Server : MonoBehaviour
         //TODO: cannot start game unless at least 3 (1 for purposes of testing) players are connected
 
         //If a player hasn't been assigned to one of the player objects, remove it from the server's array of players
-        for (int k = 0; k < players.Count; k++)
-        {
-            if (!players[k].GetComponent<PlayerConnect>().connected)
-            {
+        for (int k = 0; k < players.Count; k++) {
+            if (!players[k].GetComponent<PlayerConnect>().connected) {
                 playersRemoved.Add(players[k]);
             }
         }
 
-        if (playersRemoved != null)
-        {
-            foreach (GameObject player in playersRemoved)
-            {
+        if (playersRemoved != null) {
+            foreach (GameObject player in playersRemoved) {
                 players.Remove(player);
             }
         }
@@ -384,8 +415,7 @@ public class Server : MonoBehaviour
         //Get the number of players based on how many remain
         playersJoined = players.Count;
         int i = 0;
-        foreach (GameObject player in players)
-        {
+        foreach (GameObject player in players) {
             playerIDs[i] = player.GetComponent<PlayerConnect>().playerID;
             player.GetComponent<PlayerConnect>().transform.parent = null;
             DontDestroyOnLoad(player);
@@ -399,10 +429,8 @@ public class Server : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-   
 
-    public void SendClient(NetMessage msg)
-    {
+    public void SendClient(NetMessage msg) {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
 
@@ -417,6 +445,256 @@ public class Server : MonoBehaviour
 
     }
 
-  
+    public void SendServer(NetMessage msg) {
+        //This is where data is held
+        byte[] buffer = new byte[byteSize];
 
+        BinaryFormatter formatter = new BinaryFormatter();
+        MemoryStream ms = new MemoryStream(buffer);
+        formatter.Serialize(ms, msg);
+
+        Debug.Log("sent");
+        NetworkTransport.Send(hostID, connectionID, reliableChannel, buffer, byteSize, out error);
+
+    }
+
+    #region Client Sent Messages
+
+    public void SendPlayerInformation(int ConnectionId, string playerName) {
+
+        PlayerDetails details = new PlayerDetails();
+        details.ConnectionID = connectionID;
+        details.PlayerName = playerName;
+
+        SendServer(details);
+    }
+
+    public void SendCharacterSelected(string Character) {
+
+        CharacterSelection selection = new CharacterSelection();
+        selection.SelectedCharacter = Character;
+
+        SendServer(selection);
+    }
+
+    public void SendAbilityUsed(string AbilityType, int SelectedTarget) {
+
+        AbilityUsage ability = new AbilityUsage();
+        ability.Ability = AbilityType;
+        ability.target = SelectedTarget;
+
+        SendServer(ability);
+    }
+
+    public void SendActionPoints(int ActionPoints) {
+
+        ActionPoints actionPoints = new ActionPoints();
+        actionPoints.Points = ActionPoints;
+
+        SendServer(actionPoints);
+    }
+
+    public void SendRoomChoice(int Room) {
+
+        Movement movement = new Movement();
+        movement.SelectedRoom = Room;
+
+        SendServer(movement);
+    }
+
+    public void SendSelectedChoice(int ChoiceId) {
+
+        SelectedChoice choice = new SelectedChoice();
+        choice.ChoiceId = ChoiceId;
+
+        SendServer(choice);
+    }
+
+    public void SendInventoryChanges(List<string> EquiptItems, List<string> UnEquiptItems, List<string> DiscardItems) {
+
+        InventoryChanges inventory = new InventoryChanges();
+        inventory.equipedItems = EquiptItems;
+        inventory.UnequipedItems = UnEquiptItems;
+        inventory.discardItems = DiscardItems;
+
+        SendServer(inventory);
+    }
+
+    public void SendSpecSelection(string Spec) {
+
+        SpecSelection specSelection = new SpecSelection();
+        specSelection.SelectedSpec = Spec;
+
+        SendServer(specSelection);
+    }
+
+    public void SendCombat(int Player) {
+
+        CombatAttackingTarget combat = new CombatAttackingTarget();
+        combat.SelectedPlayer = Player;
+
+        SendServer(combat);
+    }
+
+    public void ItemSelection(string Item) {
+
+        ItemSelection selection = new ItemSelection();
+        selection.SelectedItem = Item;
+
+        SendServer(selection);
+    }
+
+    public void InstallComponent() {
+
+        InstallComponent installComponent = new InstallComponent();
+
+        SendServer(installComponent);
+
+    }
+    #endregion
+
+    #region Server Recieved Messages
+
+    private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                player.GetComponent<Player>().playerName = details.PlayerName;
+
+
+
+            }
+        }
+    }
+    private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+               
+
+            }
+        }
+    }
+    private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+               
+
+
+
+            }
+        }
+    }
+    private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+               
+
+
+
+            }
+        }
+    }
+    private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                
+
+
+
+            }
+        }
+    }
+    private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                
+
+
+
+            }
+        }
+    }
+    private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+               
+
+
+
+            }
+        }
+    }
+    private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                
+
+
+
+            }
+        }
+    }
+    private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                
+
+
+
+            }
+        }
+    }
+    private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                
+
+
+
+            }
+        }
+    }
+    private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+               
+
+
+
+            }
+        }
+    }
+    #endregion
 }

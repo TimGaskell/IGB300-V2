@@ -10,6 +10,5 @@ public class Movement : NetMessage {
 
     }
 
-    public int ActionPoints { set; get; }
     public int SelectedRoom { set; get; }
 }

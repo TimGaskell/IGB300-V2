@@ -12,5 +12,5 @@ public class AbilityUsage : NetMessage {
 
 
     public string Ability { set; get; }
-    public GameObject target { set; get; }
+    public int target { set; get; }
 }
