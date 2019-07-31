@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public int numPlayers;
-    public List<Player> players;
+    private List<Player> players;
     public List<int> playerOrder;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
@@ -52,8 +52,12 @@ public class GameManager : MonoBehaviour
     public int NumComponents { get { return numPlayers; } }
 
     private float aiPower;
-    public float AIPower { get { return aiPower; } private set { aiPower = Math.Min(MAX_POWER, value); } }
+    public float AIPower { get { return aiPower; } private set { aiPower = Mathf.Clamp(value, 0, MAX_POWER); } }
+    //Changes in AI power per round
+    public float basePower;
+    public float playerPower;
     public float aiPowerChange;
+    //The target score for the player when the AI attacks them
     private int aiTargetScore;
 
     //The ID of a player who has newly been selected as traitor
@@ -71,6 +75,8 @@ public class GameManager : MonoBehaviour
     private const int BASE_TARGET_SCORE = 5;
     //The increase the AI target score every round
     private const int AI_TARGET_INCREASE = 1;
+    //The increase in a traitors corruption every round during a surge
+    private const int TRAITOR_CORRUPTION_MOD = 15;
 
     //The modifier for spec scores when one player counters another in combat
     private const int COUNTER_MOD = 2;
@@ -440,14 +446,14 @@ public class GameManager : MonoBehaviour
     /// <param name="playerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>The chance for the player or the attacker to succeed on the spec challenge</returns>
-    public float SpecChallengeChance(int playerScore, int targetScore)
+    public float SpecChallengeChance(float playerScore, float targetScore)
     {
         if (targetScore == 0)
         {
             throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
-        return Math.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
+        return Mathf.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
     }
 
     /// <summary>
@@ -458,7 +464,7 @@ public class GameManager : MonoBehaviour
     /// <param name="PlayerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>True if the player suceeded. False otherwise</returns>
-    public bool PerformSpecChallenge(int PlayerScore, int targetScore)
+    public bool PerformSpecChallenge(float PlayerScore, float targetScore)
     {
         //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
         float successFactor = UnityEngine.Random.Range(0f, 100f);
@@ -634,23 +640,28 @@ public class GameManager : MonoBehaviour
         {
             currentPhase = TurnPhases.BasicSurge;
 
-            float basePower = BASE_POWER_MOD / numPlayers;
-            float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
+            basePower = BASE_POWER_MOD / numPlayers;
+            playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += basePower + playerPower + aiPowerChange;
             aiPowerChange = 0;
         }
         else
         {
+            currentPhase = TurnPhases.AttackSurge;
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
         }
 
+        //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
         if (IsTraitorSelected())
         {
-            ChooseTraitor();
+            newTraitor = ChooseTraitor();
         }
+
+        //Increase corruption for all traitors
+        RoundCorruptionIncrease();
     }
 
     /// <summary>
@@ -670,11 +681,27 @@ public class GameManager : MonoBehaviour
             //and the player is a traitor
             if (!(!includeTraitors && player.isTraitor))
             {
-                totalCorruption += player.corruption;
+                totalCorruption += player.Corruption;
             }
         }
 
         return totalCorruption;
+    }
+
+    /// <summary>
+    /// 
+    /// Increases the corruption per round for all traitors
+    /// 
+    /// </summary>
+    private void RoundCorruptionIncrease()
+    {
+        foreach (Player player in players)
+        {
+            if (player.isTraitor)
+            {
+                player.Corruption += TRAITOR_CORRUPTION_MOD;
+            }
+        }
     }
 
     /// <summary>
@@ -686,7 +713,7 @@ public class GameManager : MonoBehaviour
     private bool IsTraitorSelected()
     {
         //First checks if there are still avaialable slot for a player to become the traitor. If there is an available slot, continues to determine if a traitor is to be selected
-        if (!TraitorCountCheck())
+        if (TraitorCountCheck())
         {
             //Then checks if there has been a delay in rounds since the last traitor was selected.
             //If there hasn't, resets the delay and returns false
@@ -749,30 +776,62 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private int ChooseTraitor()
     {
-        float chanceCounter = 0;
-        float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
-
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
 
-        foreach (Player player in players)
+        if (totalCorruption == 0)
         {
-            //Cannot consider players which are not traitors, so will ignore them in the summation
-            if (!player.isTraitor)
+            int randomPlayerID;
+
+            //Need to ensure that the new traitor has not already been selected, so repeats the random selection until finds a
+            //character which is not a traitor.
+            do
             {
-                //Add the player's proability, then determine if the random number falls in that probability range.
-                //If it does, that player is to be selected as traitor
-                chanceCounter += player.corruption / totalCorruption;
-                if (randomChance <= chanceCounter)
+                randomPlayerID = UnityEngine.Random.Range(0, numPlayers);
+
+            } while (GetPlayer(randomPlayerID).isTraitor);
+
+            AssignTraitor(randomPlayerID);
+
+            return randomPlayerID;
+        }
+        else
+        {
+            float chanceCounter = 0;
+            float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
+
+            foreach (Player player in players)
+            {
+                //Cannot consider players which are traitors, so will ignore them in the summation
+                if (!player.isTraitor)
                 {
-                    players[player.playerID].isTraitor = true;
-                    return player.playerID;
+                    //Add the player's proability, then determine if the random number falls in that probability range.
+                    //If it does, that player is to be selected as traitor
+                    chanceCounter += (float)player.Corruption / totalCorruption * 100.0f;
+                    if (randomChance <= chanceCounter)
+                    {
+                        //Increase the traitor corruption and sets them as a traitor
+                        AssignTraitor(player.playerID);
+                        return player.playerID;
+                    }
                 }
             }
         }
 
         //Provides a dummy output for the function. Should never reach this point
         return DEFAULT_PLAYER_ID;
+    }
+
+    /// <summary>
+    /// 
+    /// Assign a particular player to be traitor
+    /// 
+    /// </summary>
+    /// <param name="playerID">The ID of the player becoming the traitor</param>
+    private void AssignTraitor(int playerID)
+    {
+        GetPlayer(playerID).isTraitor = true;
+        //GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
     }
 
     /// <summary>
@@ -797,7 +856,7 @@ public class GameManager : MonoBehaviour
     {
         bool playerWin;
 
-        int targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
+        float targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -869,8 +928,8 @@ public class GameManager : MonoBehaviour
         Player attackingPlayer = GetPlayer(attackerID);
         Player defendingPlayer = GetPlayer(defenderID);
 
-        int attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
-        int defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
+        float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
+        float defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
@@ -931,7 +990,7 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private int ObtainSpecScore(Player player, SpecScores specScore)
+    private float ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {
@@ -1042,20 +1101,18 @@ public class GameManager : MonoBehaviour
     /// <param name="remainingPoints">The remaining number of action points the player has</param>
     public void ExchangeActionPoints(int playerID, int remainingPoints)
     {
-        players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
+        players[playerID].scrap += (int)Mathf.Round(remainingPoints * AP_CONVERSION);
     }
 
     #endregion
 
     #region Movement Handling
 
-    public void StartPlayerMoving(int goalIndex)
-    {
-        playerGoalIndex = goalIndex;
-        GetActivePlayer().roomPosition = goalIndex;
-        playerMoving = true;
-    }
-
+    /// <summary>
+    /// 
+    /// Detect if one of the rooms is clicked on for the player to move to based on a raycast system.
+    /// 
+    /// </summary>
     private void ClickRoom()
     {
         if (Input.GetMouseButtonDown(0))
@@ -1066,9 +1123,10 @@ public class GameManager : MonoBehaviour
             {
                 if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges")
                 {
-                    int goalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    playerGoalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
                     roomSelection = false;
-                    StartPlayerMoving(goalIndex);
+                    GetActivePlayer().roomPosition = playerGoalIndex;
+                    playerMoving = true;
                 }
             }
         }

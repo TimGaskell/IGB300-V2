@@ -15,7 +15,7 @@ Choice_ID,Choice_Name,Weighting,Unique,Mandatory,One_Off,Spec_Challenge,Target S
 14,Override Security,1,FALSE,0,FALSE,Tech,3,10,0,0,Default,0,FALSE,15,0,FALSE,TRUE,TRUE,FALSE,TRUE,TRUE
 15,Impress Ship Systems,1,FALSE,0,FALSE,Charm,3,10,0,0,Default,0,FALSE,15,0,TRUE,FALSE,FALSE,TRUE,TRUE,TRUE
 16,Initiate Repair Sequence,0.3,FALSE,1,FALSE,Default,0,-8,0,0,Default,1,FALSE,0,0,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE
-17,Initiate Purgining Sequence,1,FALSE,1,FALSE,Default,0,-4,10,0,Default,0,FALSE,0,0,TRUE,TRUE,FALSE,FALSE,FALSE,TRUE
+17,Initiate Purgining Sequence,1,FALSE,1,FALSE,Default,0,-4,-10,0,Default,0,FALSE,0,0,TRUE,TRUE,FALSE,FALSE,FALSE,TRUE
 18,Lock out the AI,0.5,FALSE,0,FALSE,Default,0,-12,0,-10,Default,0,FALSE,0,0,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE
 19,Siphon Code Defects,0.5,TRUE,0,FALSE,Default,0,0,-25,10,Default,0,FALSE,0,0,FALSE,FALSE,TRUE,FALSE,TRUE,FALSE
 20,Smash Ship Computers,0.7,FALSE,0,FALSE,Brawn,5,0,0,-10,Default,0,FALSE,0,-1,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE

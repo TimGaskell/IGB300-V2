@@ -33,7 +33,7 @@ public class Ability
     //If the corruption value is higher or lower than specified threshold, player can use the ability
     public virtual bool CheckUse(int targetIndex)
     {
-        if (CheckCorruption(GameManager.instance.players[targetIndex].corruption,  corruptionRequirement))
+        if (CheckCorruption(GameManager.instance.GetPlayer(targetIndex).Corruption,  corruptionRequirement))
         {
 
             return true;
@@ -68,19 +68,19 @@ public class Ability
     {
         //throw new NotImplementedException("Ability not Defined");
 
-        foreach (Player player in GameManager.instance.players)
-        {
-            if (player.ChefBuffed)
-            {
-                //Reset the buffs (-1 to all specs)
-                player.brawnModifier--;
-                player.skillModifier--;
-                player.techModifier--;
-                player.charmModifier--;
+        //foreach (Player player in GameManager.instance.players)
+        //{
+        //    if (player.ChefBuffed)
+        //    {
+        //        //Reset the buffs (-1 to all specs)
+        //        player.brawnModTemp--;
+        //        player.skillModTemp--;
+        //        player.techModTemp--;
+        //        player.charmModTemp--;
 
-                player.ChefBuffed = false;
-            }
-        }
+        //        player.ChefBuffed = false;
+        //    }
+        //}
     }
 
 
@@ -96,7 +96,7 @@ public class Ability
 
     public virtual void MuddleDeactivate(int targetIndex)
     {
-        GameManager.instance.players[targetIndex].MuddleSensors(true);
+        //GameManager.instance.players[targetIndex].MuddleSensors(true);
     }
 }
 
@@ -151,12 +151,12 @@ public class Preparation : Ability
     {
         Debug.Log("Preperation Activate");
         //+1 to all spec modifiers
-        GameManager.instance.players[targetIndex].brawnModifier++;
-        GameManager.instance.players[targetIndex].skillModifier++;
-        GameManager.instance.players[targetIndex].techModifier++;
-        GameManager.instance.players[targetIndex].charmModifier++;
+        //GameManager.instance.players[targetIndex].brawnModTemp++;
+        //GameManager.instance.players[targetIndex].skillModTemp++;
+        //GameManager.instance.players[targetIndex].techModTemp++;
+        //GameManager.instance.players[targetIndex].charmModTemp++;
 
-        GameManager.instance.players[targetIndex].ChefBuffed = true;
+        //GameManager.instance.players[targetIndex].ChefBuffed = true;
     }
 }
 
@@ -175,10 +175,10 @@ public class QuickRepair : Ability
     {
         Debug.Log("Quick Repair Activate");
 
-        if (GameManager.instance.players[targetIndex].lifePoints <= GameManager.instance.players[targetIndex].maxLifePoints) //Temporary max check, could be better handled by Player
-        {
-            GameManager.instance.players[targetIndex].lifePoints += 1;
-        }
+        //if (GameManager.instance.players[targetIndex].lifePoints <= GameManager.instance.players[targetIndex].maxLifePoints) //Temporary max check, could be better handled by Player
+        //{
+        //    GameManager.instance.players[targetIndex].lifePoints += 1;
+        //}
        
     }
 }
@@ -198,10 +198,10 @@ public class EncouragingSong : Ability
     {
         Debug.Log("Encouraging Song Activate");
        
-        if (GameManager.instance.players[targetIndex].corruption >= 15)
-            GameManager.instance.players[targetIndex].corruption -= 15;
-        else
-            GameManager.instance.players[targetIndex].corruption = 0;  //Corruption should never be a negative
+        //if (GameManager.instance.players[targetIndex].Corruption >= 15)
+        //    GameManager.instance.players[targetIndex].Corruption -= 15;
+        //else
+        //    GameManager.instance.players[targetIndex].Corruption = 0;  //Corruption should never be a negative
     }
 }
 
@@ -219,7 +219,7 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         Debug.Log("Muddle Sensors Activate");
-        GameManager.instance.players[targetIndex].MuddleSensors(false); //Void in player script that disable/enables 
+        //GameManager.instance.players[targetIndex].MuddleSensors(false); //Void in player script that disable/enables 
     }
 }
 #endregion
@@ -291,8 +291,8 @@ public class PowerUp : Ability
     {
         Debug.Log("Power Up Activate");
 
-        GameManager.instance.players[targetIndex].maxLifePoints += 1;
-        GameManager.instance.players[targetIndex].lifePoints += 1;
+        //GameManager.instance.players[targetIndex].maxLifePoints += 1;
+        //GameManager.instance.players[targetIndex].lifePoints += 1;
     }
 }
 #endregion
