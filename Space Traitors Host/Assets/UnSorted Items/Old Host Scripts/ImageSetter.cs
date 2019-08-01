@@ -15,7 +15,7 @@ public class ImageSetter : MonoBehaviour
     }
     public void GotoGame()
     {
-        server.GetComponent<Server>().ClientNextScene();
+        //server.GetComponent<Server>().ClientNextScene();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

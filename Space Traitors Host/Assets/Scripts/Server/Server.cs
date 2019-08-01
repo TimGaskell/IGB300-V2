@@ -423,7 +423,7 @@ public class Server : MonoBehaviour {
         }
 
         //Send message to every player's client to move onto next scene
-        ClientNextScene();
+        //ClientNextScene();
 
         //Change to the character select
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

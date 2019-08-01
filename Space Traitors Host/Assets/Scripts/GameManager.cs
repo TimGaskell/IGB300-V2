@@ -106,6 +106,10 @@ public class GameManager : MonoBehaviour
     public bool playerMoving;
     public int playerGoalIndex;
 
+    //Used for outputting if any of the victory conditions, traitor or non-traitor have been met
+    public enum VictoryTypes { None, Traitor, NonTraitor };
+    public VictoryTypes CurrentVictory;
+
     private void Update()
     {
         //Only need to detect if the player is clicking on a room on the host system if the server is inactive
@@ -410,6 +414,8 @@ public class GameManager : MonoBehaviour
 
         roomSelection = false;
         playerMoving = false;
+
+        CurrentVictory = VictoryTypes.None;
     }
 
     /// <summary>
@@ -585,7 +591,14 @@ public class GameManager : MonoBehaviour
         if (activePlayer == numPlayers)
         {
             activePlayer = 0;
-            ActivateSurge();
+            if (CheckNonTraitorVictory())
+            {
+                CurrentVictory = VictoryTypes.NonTraitor;
+            }
+            else
+            {
+                ActivateSurge();
+            }
         }
     }
 
@@ -1036,35 +1049,59 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Component Handling
+    #region Non-Traitor Victory Handling
 
     /// <summary>
     /// 
-    /// Checks if a particular player can install a component or not
+    /// Checks if the active player can install a component or not
     /// 
     /// </summary>
-    /// <param name="playerID">The ID of player to be checked</param>
     /// <returns>True if the player has a component, false otherwise</returns>
-    public bool CanInstallComponent(int playerID)
+    public bool CanInstallComponent()
     {
-        return players[playerID].hasComponent;
+        return GetActivePlayer().hasComponent;
     }
 
     /// <summary>
     /// 
-    /// Installs a component and checks if this is the last component to be installed. If it is returns true.
-    /// Otherwise returns false.
+    /// Installs a component from the active player
     /// 
     /// </summary>
-    /// <param name="playerID">The ID of the player installing the component</param>
-    /// <returns>If this is the last component to be installed, returns true</returns>
-    public bool InstallComponent(int playerID)
+    public void InstallComponent()
     {
-        players[playerID].hasComponent = false;
+        GetActivePlayer().hasComponent = false;
         installedComponents += 1;
+    }
 
-        //The number of components in the game is equal to the number of players
+    /// <summary>
+    /// 
+    /// Checks whether there have been enough components installed to trigger a non-traitor victory
+    /// 
+    /// </summary>
+    /// <returns>If the non-traitors can win, returns true. Otherwise false</returns>
+    public bool CheckInstalledComponents()
+    {
         return installedComponents == NumComponents;
+    }
+
+    /// <summary>
+    /// 
+    /// Checks that all the non-traitors are in the escape room and returns true if so. If there is 
+    /// a traitor that is not in the escape room, returns false. Otherwise returns true
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckNonTraitorVictory()
+    {
+        foreach(Player player in players)
+        {
+            if(!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     #endregion

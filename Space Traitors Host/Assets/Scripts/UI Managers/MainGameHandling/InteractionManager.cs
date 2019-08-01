@@ -21,7 +21,14 @@ public class InteractionManager : MonoBehaviour
     public int selectedChoiceID;
 
     private List<int> attackablePlayers;
+
+    public GameObject componentPanelsParent;
+    public GameObject componentPanelPrefab;
+    private List<GameObject> componentPanels;
+    public GameObject installButton;
+
     
+
     /// <summary>
     /// 
     /// Update the UI to allow the player to select the choices relevant to a particular room.
@@ -36,7 +43,17 @@ public class InteractionManager : MonoBehaviour
             escapeRoomUI.SetActive(true);
             standardChoiceUI.SetActive(false);
 
-            throw new NotImplementedException("Escape Room Not Implemented");
+            int counter = 0;
+            foreach(GameObject compPanel in componentPanels)
+            {
+                if(counter < GameManager.instance.installedComponents)
+                {
+                    compPanel.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                counter++;
+            }
+
+            installButton.GetComponent<Button>().interactable = GameManager.instance.CanInstallComponent();
         }
         else
         {
@@ -64,6 +81,7 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    #region Standard Choice
     /// <summary>
     /// 
     /// Update the choice information panel to suit the players selected choice to display
@@ -135,5 +153,20 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    
+    #endregion
+
+    #region Escape Room Installation
+
+    public void InitComponentPanel()
+    {
+        //Initialise the component panels on the interaction UI
+        componentPanels = new List<GameObject>();
+
+        for (int componentIndex = 0; componentIndex < GameManager.instance.NumComponents; componentIndex++)
+        {
+            componentPanels.Add(Instantiate(componentPanelPrefab, componentPanelsParent.transform));
+        }
+    }
+
+    #endregion
 }

@@ -27,14 +27,14 @@ public class MusicManager : MonoBehaviour
 
         if (sceneName == "server")
         {
-            if (server.InstalledComponents == 5)
-            {
-                ChangeMusicClip(victoryMusic);
-            }
-            else
-            {
-                ChangeMusicClip(gameMusic);
-            }
+            //if (server.InstalledComponents == 5)
+            //{
+            //    ChangeMusicClip(victoryMusic);
+            //}
+            //else
+            //{
+            //    ChangeMusicClip(gameMusic);
+            //}
         }
         else if (sceneName == "Character Select" || sceneName == "LobbyTest")
         {

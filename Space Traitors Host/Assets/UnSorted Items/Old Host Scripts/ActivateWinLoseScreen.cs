@@ -14,10 +14,10 @@ public class ActivateWinLoseScreen : MonoBehaviour
 
     private void Update()
     {
-        if (server.GetComponent<Server>().InstalledComponents == 5)
-        {
-            GetComponent<Canvas>().enabled = true;
-            transform.SetAsLastSibling();
-        }
+        //if (server.GetComponent<Server>().InstalledComponents == 5)
+        //{
+        //    GetComponent<Canvas>().enabled = true;
+        //    transform.SetAsLastSibling();
+        //}
     }
 }

@@ -28,7 +28,7 @@ public class AiPower : MonoBehaviour
         {
             if (!traitorSent)
             {
-                server.GetComponent<Server>().ChooseTraitor();
+                //server.GetComponent<Server>().ChooseTraitor();
                 traitorSent = true;
             }
         }
