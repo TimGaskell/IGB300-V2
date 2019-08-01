@@ -80,6 +80,38 @@ public class Choice
         inSpa = true;
     }
 
+    public Choice(Choice choice)
+    {
+        choiceID = choice.choiceID;
+        choiceName = choice.choiceName;
+
+        weighting = choice.weighting;
+        unique = choice.unique;
+        mandatory = choice.mandatory;
+        oneOff = choice.oneOff;
+        disabled = choice.disabled;
+
+        specChallenge = choice.specChallenge;
+        targetScore = choice.targetScore;
+
+        scrapChange = choice.scrapChange;
+        corruptionChange = choice.corruptionChange;
+        powerChange = choice.powerChange;
+        specItem = new Item(choice.specItem);
+        lifeChange = choice.lifeChange;
+        component = choice.component;
+
+        corruptionFail = choice.corruptionFail;
+        lifeFail = choice.lifeFail;
+
+        inBar = choice.inBar;
+        inDining = choice.inDining;
+        inEngineering = choice.inEngineering;
+        inKitchen = choice.inKitchen;
+        inSleeping = choice.inSleeping;
+        inSpa = choice.inSpa;
+    }
+
     #region Check Availability
 
     /// <summary>

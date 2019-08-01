@@ -13,6 +13,7 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject playerCards;
 
     public GameObject aiPowerPanel;
+    public GameObject componentTrackerPanel;
 
     public GameObject abilityPanel;
     public GameObject actionPointPanel;
@@ -20,6 +21,9 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject interactionPanel;
     public GameObject basicSurgePanel;
     public GameObject attackSurgePanel;
+
+    public GameObject nonTraitorVictoryPanel;
+    public GameObject traitorVictoryPanel;
 
     private void Start()
     {
@@ -36,12 +40,18 @@ public class MainGameUIManager : MonoBehaviour
             abilityPanel.SetActive(false);
             actionPointPanel.SetActive(false);
             movementPanel.SetActive(false);
+            interactionPanel.SetActive(true);
+            interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
             interactionPanel.SetActive(false);
             basicSurgePanel.SetActive(false);
             attackSurgePanel.SetActive(false);
 
+            nonTraitorVictoryPanel.SetActive(false);
+            //traitorVictoryPanel.SetActive(false);
+
             DisplayCurrentPhase();
             UpdateAIPower();
+            UpdateComponentTracker();
         }
     }
 
@@ -75,6 +85,7 @@ public class MainGameUIManager : MonoBehaviour
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Abilities):
+                UpdateAIPower();
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
@@ -95,14 +106,15 @@ public class MainGameUIManager : MonoBehaviour
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
-                UpdateAIPower();
+                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
                 break;
             case (GameManager.TurnPhases.AttackSurge):
-                UpdateAIPower();
+                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
@@ -118,7 +130,7 @@ public class MainGameUIManager : MonoBehaviour
     /// Increments the current phase of the game
     /// 
     /// </summary>
-    private void IncrementPhase()
+    public void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
         DisplayCurrentPhase();
@@ -143,8 +155,41 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     private void UpdateAIPower()
     {
-        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = GameManager.instance.AIPower.ToString();
+        aiPowerPanel.SetActive(true);
+        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
         aiPowerPanel.GetComponent<AIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
+    }
+
+    private void UpdateComponentTracker()
+    {
+        if (GameManager.instance.CheckInstalledComponents())
+        {
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(false);
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(false);
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(true);
+        }
+        else
+        {
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(true);
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(true);
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(false);
+
+            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.GetComponent<TextMeshProUGUI>().text = 
+                string.Format("{0} / {1}", GameManager.instance.installedComponents, GameManager.instance.NumComponents);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Installs a component for a player
+    /// 
+    /// </summary>
+    public void InstallComponent()
+    {
+        GameManager.instance.InstallComponent();
+        UpdateComponentTracker();
+        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        IncrementPhase();
     }
     #endregion
 }

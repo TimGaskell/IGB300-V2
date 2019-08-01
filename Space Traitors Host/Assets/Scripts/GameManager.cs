@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public int numPlayers;
-    public List<Player> players;
+    private List<Player> players;
     public List<int> playerOrder;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
@@ -52,8 +52,12 @@ public class GameManager : MonoBehaviour
     public int NumComponents { get { return numPlayers; } }
 
     private float aiPower;
-    public float AIPower { get { return aiPower; } private set { aiPower = Math.Min(MAX_POWER, value); } }
+    public float AIPower { get { return aiPower; } private set { aiPower = Mathf.Clamp(value, 0, MAX_POWER); } }
+    //Changes in AI power per round
+    public float basePower;
+    public float playerPower;
     public float aiPowerChange;
+    //The target score for the player when the AI attacks them
     private int aiTargetScore;
 
     //The ID of a player who has newly been selected as traitor
@@ -101,6 +105,10 @@ public class GameManager : MonoBehaviour
     public bool roomSelection;
     public bool playerMoving;
     public int playerGoalIndex;
+
+    //Used for outputting if any of the victory conditions, traitor or non-traitor have been met
+    public enum VictoryTypes { None, Traitor, NonTraitor };
+    public VictoryTypes CurrentVictory;
 
     private void Update()
     {
@@ -406,6 +414,8 @@ public class GameManager : MonoBehaviour
 
         roomSelection = false;
         playerMoving = false;
+
+        CurrentVictory = VictoryTypes.None;
     }
 
     /// <summary>
@@ -449,7 +459,7 @@ public class GameManager : MonoBehaviour
             throw new DivideByZeroException("Target Score cannot be zero in a Spec Challenge.");
         }
 
-        return Math.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
+        return Mathf.Min(100.0f, 50.0f + ((float)playerScore - (float)targetScore) * (50.0f / targetScore));
     }
 
     /// <summary>
@@ -581,7 +591,14 @@ public class GameManager : MonoBehaviour
         if (activePlayer == numPlayers)
         {
             activePlayer = 0;
-            ActivateSurge();
+            if (CheckNonTraitorVictory())
+            {
+                CurrentVictory = VictoryTypes.NonTraitor;
+            }
+            else
+            {
+                ActivateSurge();
+            }
         }
     }
 
@@ -636,14 +653,15 @@ public class GameManager : MonoBehaviour
         {
             currentPhase = TurnPhases.BasicSurge;
 
-            float basePower = BASE_POWER_MOD / numPlayers;
-            float playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
+            basePower = BASE_POWER_MOD / numPlayers;
+            playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += basePower + playerPower + aiPowerChange;
             aiPowerChange = 0;
         }
         else
         {
+            currentPhase = TurnPhases.AttackSurge;
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
@@ -771,13 +789,10 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private int ChooseTraitor()
     {
-        float chanceCounter = 0;
-        float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
-
         //Want the total corruption without traitors as a scaling for each players corruption
         int totalCorruption = TotalCorruption(false);
-        
-        if(totalCorruption == 0)
+
+        if (totalCorruption == 0)
         {
             int randomPlayerID;
 
@@ -795,6 +810,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            float chanceCounter = 0;
+            float randomChance = UnityEngine.Random.Range(0.0f, 100.0f);
+
             foreach (Player player in players)
             {
                 //Cannot consider players which are traitors, so will ignore them in the summation
@@ -802,7 +820,7 @@ public class GameManager : MonoBehaviour
                 {
                     //Add the player's proability, then determine if the random number falls in that probability range.
                     //If it does, that player is to be selected as traitor
-                    chanceCounter += player.Corruption / totalCorruption * 100.0f;
+                    chanceCounter += (float)player.Corruption / totalCorruption * 100.0f;
                     if (randomChance <= chanceCounter)
                     {
                         //Increase the traitor corruption and sets them as a traitor
@@ -826,7 +844,7 @@ public class GameManager : MonoBehaviour
     private void AssignTraitor(int playerID)
     {
         GetPlayer(playerID).isTraitor = true;
-        GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
+        //GetPlayer(playerID).Corruption += TRAITOR_CORRUPTION_MOD;
     }
 
     /// <summary>
@@ -1031,35 +1049,59 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region Component Handling
+    #region Non-Traitor Victory Handling
 
     /// <summary>
     /// 
-    /// Checks if a particular player can install a component or not
+    /// Checks if the active player can install a component or not
     /// 
     /// </summary>
-    /// <param name="playerID">The ID of player to be checked</param>
     /// <returns>True if the player has a component, false otherwise</returns>
-    public bool CanInstallComponent(int playerID)
+    public bool CanInstallComponent()
     {
-        return players[playerID].hasComponent;
+        return GetActivePlayer().hasComponent;
     }
 
     /// <summary>
     /// 
-    /// Installs a component and checks if this is the last component to be installed. If it is returns true.
-    /// Otherwise returns false.
+    /// Installs a component from the active player
     /// 
     /// </summary>
-    /// <param name="playerID">The ID of the player installing the component</param>
-    /// <returns>If this is the last component to be installed, returns true</returns>
-    public bool InstallComponent(int playerID)
+    public void InstallComponent()
     {
-        players[playerID].hasComponent = false;
+        GetActivePlayer().hasComponent = false;
         installedComponents += 1;
+    }
 
-        //The number of components in the game is equal to the number of players
+    /// <summary>
+    /// 
+    /// Checks whether there have been enough components installed to trigger a non-traitor victory
+    /// 
+    /// </summary>
+    /// <returns>If the non-traitors can win, returns true. Otherwise false</returns>
+    public bool CheckInstalledComponents()
+    {
         return installedComponents == NumComponents;
+    }
+
+    /// <summary>
+    /// 
+    /// Checks that all the non-traitors are in the escape room and returns true if so. If there is 
+    /// a traitor that is not in the escape room, returns false. Otherwise returns true
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckNonTraitorVictory()
+    {
+        foreach(Player player in players)
+        {
+            if(!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     #endregion
@@ -1096,7 +1138,7 @@ public class GameManager : MonoBehaviour
     /// <param name="remainingPoints">The remaining number of action points the player has</param>
     public void ExchangeActionPoints(int playerID, int remainingPoints)
     {
-        players[playerID].scrap += (int)Math.Round(remainingPoints * AP_CONVERSION);
+        players[playerID].scrap += (int)Mathf.Round(remainingPoints * AP_CONVERSION);
     }
 
     #endregion

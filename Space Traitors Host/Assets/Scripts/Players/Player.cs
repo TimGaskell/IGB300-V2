@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
 
-public class Player
+public class Player 
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -25,7 +24,7 @@ public class Player
     //Player Resources
     public int scrap;
     private int corruption;
-    public int Corruption { get { return corruption; } set { corruption = Math.Min(MAX_CORRUPTION, value); } }
+    public int Corruption { get { return corruption; } set { corruption = Mathf.Clamp(value, 0, MAX_CORRUPTION); } }
     public List<Item> items;
     public bool hasComponent;
     public int lifePoints;
@@ -168,6 +167,16 @@ public class Player
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
+            //If the player has valid slots for the item to be equipped, equips the item.
+            //May need to be changed if forcing inventory management when picking up an item
+            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
+            {
+                item.isEquipped = true;
+            }
+            else
+            {
+                item.isEquipped = false;
+            }
             items.Add(item);
             return true;
         }

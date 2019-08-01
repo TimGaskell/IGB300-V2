@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-public class LobbyUIManager : MonoBehaviour
+public class LobbyUIManager : NetworkBehaviour
 {
-    public GameObject serverActivePanel;
-    public GameObject noServerPanel;
+    public GameObject ClientPanel;
+    public GameObject ServerPanel;
 
     public GameObject playerNumPanel;
     public GameObject playerNamePanel;
@@ -16,25 +17,33 @@ public class LobbyUIManager : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.instance.serverActive)
+
+        if (NetworkServer.connections.Count > 0)
         {
-            serverActivePanel.SetActive(true);
-            noServerPanel.SetActive(false);
+            ServerPanel.SetActive(true);
+
+
         }
         else
         {
-            serverActivePanel.SetActive(false);
-            noServerPanel.SetActive(true);
+            ClientPanel.SetActive(true);
+
+        }
+       
+
 
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
-        }
+        
     }
 
-    #region No Server Handling
+   
+
+
+    #region Server Handling
 
     /// <summary>
     /// 
@@ -117,8 +126,7 @@ public class LobbyUIManager : MonoBehaviour
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
             {
-                SceneManager.LoadScene(GameManager.CharacterScene);
-                break;
+                NetworkManager.singleton.ServerChangeScene("Character SelectionV2");
             }
 
         }
