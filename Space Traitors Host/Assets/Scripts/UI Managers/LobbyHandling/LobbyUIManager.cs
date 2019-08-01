@@ -17,33 +17,34 @@ public class LobbyUIManager : NetworkBehaviour
 
     private void Start()
     {
-
-        if (NetworkServer.connections.Count > 0)
+        if (GameManager.instance.serverActive)
         {
-            ServerPanel.SetActive(true);
+            if (NetworkServer.connections.Count > 0)
+            {
+                ServerPanel.SetActive(true);
 
 
+            }
+            else
+            {
+                ClientPanel.SetActive(true);
+
+            }
         }
         else
         {
-            ClientPanel.SetActive(true);
-
-        }
-       
-
-
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
-        
+        }
     }
 
    
 
 
-    #region Server Handling
+    #region No Server Handling
 
     /// <summary>
     /// 
