@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 using System.Net;
 using System.Net.NetworkInformation;
@@ -106,6 +107,9 @@ public class Server : MonoBehaviour {
     private int portraitID = -1;
     public int tempPlayerID;
     private string sceneName;
+
+    //Player Variables
+    private int PlayerActionPoints;
 
 
 
@@ -486,11 +490,10 @@ public class Server : MonoBehaviour {
         SendServer(ability);
     }
 
-    public void SendActionPoints(int ActionPoints) {
+    public void SendActionPoints() {
 
         ActionPoints actionPoints = new ActionPoints();
-        actionPoints.Points = ActionPoints;
-
+     
         SendServer(actionPoints);
     }
 
@@ -563,8 +566,6 @@ public class Server : MonoBehaviour {
 
                 player.GetComponent<Player>().playerName = details.PlayerName;
 
-
-
             }
         }
     }
@@ -574,8 +575,9 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-               
+                GameManager.instance.SelectCharacter((Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), character.SelectedCharacter));
 
+              
             }
         }
     }
@@ -598,8 +600,8 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-               
-
+                player.GetComponent<Player>().ActionPoints = GameManager.instance.RollActionPoints();
+                //Needs to call send Active rooms to the client here
 
 
             }
@@ -611,8 +613,8 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                
-
+                //Need to assign the player gameobject here
+                PlayerMovement.instance.PlayerMoveViaNodes(moveTo.SelectedRoom);
 
 
             }
@@ -689,8 +691,7 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-               
-
+                GameManager.instance.InstallComponent(player.GetComponent<Player>().playerID);
 
 
             }

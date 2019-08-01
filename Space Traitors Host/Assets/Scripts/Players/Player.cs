@@ -29,6 +29,7 @@ public class Player
     public bool hasComponent;
     public int lifePoints;
     public int maxLifePoints;
+    public int ActionPoints;
 
     public bool IsDead { get { return lifePoints == 0; } }
 

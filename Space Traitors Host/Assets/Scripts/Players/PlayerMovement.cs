@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerMovement : Navigation
 {
+    public static PlayerMovement instance = null;
+
+
     //Movement Variables
     public float moveSpeed = 100.0f;
     public float minDistance = 0.1f;
