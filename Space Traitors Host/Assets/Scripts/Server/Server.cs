@@ -123,6 +123,7 @@ public class Server : MonoBehaviour {
 
     }
 
+    #region Connection Handling
     public void HostInitialise() {
         NetworkTransport.Init();
 
@@ -267,6 +268,8 @@ public class Server : MonoBehaviour {
         }
     }
 
+    #endregion 
+
     private void OnData(int conID, int chanID, int rHostID, NetMessage msg) {
         switch (msg.OperationCode) {
             case NetOP.None:
@@ -309,9 +312,7 @@ public class Server : MonoBehaviour {
         }
 
     }
-
-
-
+    //Not sure which sendClient to use
     public void SendClient(int recHost, int conID, NetMessage msg) {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
@@ -432,98 +433,14 @@ public class Server : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    //////////////////Sending methods- sending to client/////////////////
-    private void SendCharacterInfo(int brawn, int skill, int tech, int charm)
-    {
-        CharacterInformation ci = new CharacterInformation();
-
-        ci.Basebrawn = brawn;
-        ci.Baseskill = skill;
-        ci.Basetech = tech;
-        ci.Basecharm = charm;
-
-        SendClient(ci);
-    }
-
-    private void SendAbilityInfo(string description)
-    {
-        AbilityInformation ai = new AbilityInformation();
-
-        ai.AbilityDescription = description;
-
-        SendClient(ai);
-    }
-
-    private void SendAvailableRooms(int conID, int chanID, int rHostID, AvailableRooms ar)
-    {
-        SendClient(ar);
-    }
-
-    private void SendRoomChoices(int conID, int chanID, int rHostID, RoomChoices rc)
-    {
-        SendClient(rc);
-    }
-
-    private void SendSpecChallenge(int conID, int chanID, int rHostID, SpecChallenge sc)
-    {
-        SendClient(sc);
-    }
-
-    private void SendPlayerInfo(int conID, int chanID, int rHostID, PlayerInformation pi)
-    {
-        SendClient(pi);
-    }
-
-    private void SendTraitor(int conID, int chanID, int rHostID, TraitorSelection ts)
-    {
-        SendClient(ts);
-    }
-
-    private void SurgeInfo(int conID, int chanID, int rHostID, SurgeInformation si)
-    {
-        SendClient(si);
-    }
-
-    private void SendAiAttack(int conID, int chanID, int rHostID, AiAttacks aa)
-    {
-        SendClient(aa);
-    }
-
-    private void SendResolution(int conID, int chanID, int rHostID, CombatResolution cr)
-    {
-        SendClient(cr);
-    }
-
-    private void SendAvailability(int conID, int chanID, int rHostID, CombatAvailability ca)
-    {
-        SendClient(ca);
-    }
-
-    private void SendBeingAttacked(int conID, int chanID, int rHostID, CombatBeingAttacked ba)
-    {
-        SendClient(ba);
-    }
-
-    private void SendPlayerElimination(int conID, int chanID, int rHostID, PlayerElimination pe)
-    {
-        SendClient(pe);
-    }
-
-    private void SendVictory(int conID, int chanID, int rHostID, InnocentVictory nv)
-    {
-        SendClient(nv);
-    }
-
     public void ClientNextScene()
     {
         foreach (GameObject player in players)
         {
             tempPlayerID = player.GetComponent<PlayerConnect>().playerID;
-            SendLocation(0);
+            //SendLocation(0);
         }
     }
-
-
     public void SendClient(NetMessage msg) {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
