@@ -12,6 +12,8 @@ public class Player
 
     public const int BASE_LIFE_POINTS = 3;
 
+    private const int MAX_CORRUPTION = 100;
+
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
     public int playerID;
     //The name the player inputs when they start the game
@@ -21,11 +23,13 @@ public class Player
 
     //Player Resources
     public int scrap;
-    public int corruption;
+    private int corruption;
+    public int Corruption { get { return corruption; } set { corruption = Mathf.Clamp(value, 0, MAX_CORRUPTION); } }
     public List<Item> items;
     public bool hasComponent;
     public int lifePoints;
     public int maxLifePoints;
+    public int ActionPoints;
 
     public bool IsDead { get { return lifePoints == 0; } }
 
@@ -37,42 +41,47 @@ public class Player
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.BrawnChange) + brawnModTemp;
         }
     }
     private int SkillChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.SkillChange) + skillModTemp;
         }
     }
     private int TechChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.TechChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.TechChange) + techModTemp;
         }
     }
     private int CharmChange
     {
         get
         {
-            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange);
+            return items.Where(x => x.isEquipped).Sum(x => x.CharmChange) + charmModTemp;
         }
     }
     #endregion
 
-    public int brawnModifier;
-    public int skillModifier;
-    public int techModifier;
-    public int charmModifier;
+    public int brawnModTemp;
+    public int skillModTemp;
+    public int techModTemp;
+    public int charmModTemp;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public int ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
-    public int ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
-    public int ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
-    public int ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+    public float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    public float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    public float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    public float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+
+    public int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
+    public int ModSkill { get { return Character.baseSkill + SkillChange; } }
+    public int ModTech { get { return Character.baseTech + TechChange; } }
+    public int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
 
     //Character Specific Variables
@@ -105,10 +114,10 @@ public class Player
 
         Character = new Character();
 
-        brawnModifier = 0;
-        skillModifier = 0;
-        techModifier = 0;
-        charmModifier = 0;
+        brawnModTemp = 0;
+        skillModTemp = 0;
+        techModTemp = 0;
+        charmModTemp = 0;
 
         isTraitor = false;
         isRevealed = false;
@@ -140,9 +149,9 @@ public class Player
     /// <param name="baseScore">The relevant spec score base</param>
     /// <param name="itemModifier">The modifier to the relevant spec score based upon their items</param>
     /// <returns>The scaled spec score</returns>
-    private int ApplyScaling(int baseScore, int itemModifier)
+    private float ApplyScaling(int baseScore, int itemModifier)
     {
-        return baseScore * (int)((100 - 0.5 * corruption) / 100) + itemModifier;
+        return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
     }
 
     #region Item Handling
@@ -159,6 +168,16 @@ public class Player
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
+            //If the player has valid slots for the item to be equipped, equips the item.
+            //May need to be changed if forcing inventory management when picking up an item
+            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
+            {
+                item.isEquipped = true;
+            }
+            else
+            {
+                item.isEquipped = false;
+            }
             items.Add(item);
             return true;
         }

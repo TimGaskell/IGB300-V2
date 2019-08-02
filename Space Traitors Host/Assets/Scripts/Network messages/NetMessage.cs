@@ -36,6 +36,7 @@ public static class NetOP
     public const int CombatAttackingTarget = 22 ;
     public const int ItemSelection = 23;
     public const int InstallComponent = 24 ;
+    public const int ActionPoints = 25;
     #endregion
 }
 

@@ -80,6 +80,38 @@ public class Choice
         inSpa = true;
     }
 
+    public Choice(Choice choice)
+    {
+        choiceID = choice.choiceID;
+        choiceName = choice.choiceName;
+
+        weighting = choice.weighting;
+        unique = choice.unique;
+        mandatory = choice.mandatory;
+        oneOff = choice.oneOff;
+        disabled = choice.disabled;
+
+        specChallenge = choice.specChallenge;
+        targetScore = choice.targetScore;
+
+        scrapChange = choice.scrapChange;
+        corruptionChange = choice.corruptionChange;
+        powerChange = choice.powerChange;
+        specItem = new Item(choice.specItem);
+        lifeChange = choice.lifeChange;
+        component = choice.component;
+
+        corruptionFail = choice.corruptionFail;
+        lifeFail = choice.lifeFail;
+
+        inBar = choice.inBar;
+        inDining = choice.inDining;
+        inEngineering = choice.inEngineering;
+        inKitchen = choice.inKitchen;
+        inSleeping = choice.inSleeping;
+        inSpa = choice.inSpa;
+    }
+
     #region Check Availability
 
     /// <summary>
@@ -125,7 +157,7 @@ public class Choice
         }
 
         //If the choice has a corruption change and the players corruption is already at 0, choice is unavailable
-        if (corruptionChange < 0 && checkedPlayer.corruption == 0)
+        if (corruptionChange < 0 && checkedPlayer.Corruption == 0)
         {
             return IsAvailableTypes.hasNoCorruption;
         }
@@ -206,7 +238,7 @@ public class Choice
     /// </summary>
     /// <param name="specScore">The player's relevant spec score</param>
     /// <returns>The updated player information</returns>
-    private void ApplySpecChallenge(int specScore)
+    private void ApplySpecChallenge(float specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
@@ -233,7 +265,7 @@ public class Choice
     private void SuccessfulSelection()
     {
         GameManager.instance.GetActivePlayer().scrap += scrapChange;
-        GameManager.instance.GetActivePlayer().corruption += corruptionChange;
+        GameManager.instance.GetActivePlayer().Corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
         //Checks if the choice has an item to give before assignment
         if (specItem.ItemType != Item.ItemTypes.Default)
@@ -251,7 +283,7 @@ public class Choice
     /// </summary>
     private void FailedSelection()
     {
-        GameManager.instance.GetActivePlayer().corruption += corruptionFail;
+        GameManager.instance.GetActivePlayer().Corruption += corruptionFail;
         GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
     }
 
