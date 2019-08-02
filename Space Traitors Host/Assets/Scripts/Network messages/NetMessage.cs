@@ -9,7 +9,7 @@ public static class NetOP
     #region ServerToClient
     public const int CharacterInformation = 1;
     public const int AbilityInformation = 2;
-    public const int AvilableRooms = 3;
+    public const int AvailableRooms = 3;
     public const int RoomChoices = 4;
     public const int SpecChallenge = 5;
     public const int PlayerInformation = 6;

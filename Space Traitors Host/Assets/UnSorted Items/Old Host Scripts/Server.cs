@@ -261,36 +261,153 @@ public class Server : MonoBehaviour
     {
         switch (msg.OperationCode)
         {
+            //////////////////Temporary placement of new netmessages, will move to proper server script later/////////////////
+
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.ChangeRoom:
-                ChangeRoom(conID, chanID, rHostID, (Net_ChangeRoom)msg);
+            case NetOP.CharacterInformation:
+                //SendCharacterInfo(conID, chanID, rHostID, (CharacterInformation)msg);
                 break;
-            case NetOP.SendPoints:
-                SendPoints(conID, chanID, rHostID, (Net_SendPoints)msg);
+            case NetOP.AbilityInformation:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.SendTurnEnd:
-                SendTurnEnd(conID, chanID, rHostID, (Net_SendTurnEnd)msg);
+            case NetOP.AvailableRooms:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.SendScrap:
-                AssignScrap(conID, chanID, rHostID, (Net_SendScrap)msg);
+            case NetOP.RoomChoices:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.SendComponents:
-                AssignComponents(conID, chanID, rHostID, (Net_SendComponents)msg);
+            case NetOP.SpecChallenge:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.SendAIPower:
-                AssignAiPower(conID, chanID, rHostID, (Net_SendAiPower)msg);
+            case NetOP.PlayerInformation:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.RoomNumber:
-                SendRoomCost(conID, chanID, rHostID, (Net_SendRoomNumber)msg);
+            case NetOP.TraitorSelction:
+                Debug.Log("Unexpected NETOP");
                 break;
-            case NetOP.AssignTraitor:
-                AssignTraitor(conID, chanID, rHostID, (Net_AssignTraitor)msg);
+            case NetOP.SurgeInformation:
+                Debug.Log("Unexpected NETOP");
                 break;
+            case NetOP.AiAttacks:
+                Debug.Log("Unexpected NETOP");
+                break;
+            case NetOP.CombatResolution:
+                Debug.Log("Unexpected NETOP");
+                break;
+            case NetOP.CombatAvailablity:
+                Debug.Log("Unexpected NETOP");
+                break;
+            case NetOP.CombatBeingAttacked:
+                Debug.Log("Unexpected NETOP");
+                break;
+            case NetOP.PlayerElimination:
+                Debug.Log("Unexpected NETOP");
+                break;
+            case NetOP.NonTraitorVictory:
+                Debug.Log("Unexpected NETOP");
+                break;
+
+
+                /*
+                case NetOP.None:
+                    Debug.Log("Unexpected NETOP");
+                    break;
+                case NetOP.ChangeRoom:
+                    ChangeRoom(conID, chanID, rHostID, (Net_ChangeRoom)msg);
+                    break;
+                case NetOP.SendPoints:
+                    SendPoints(conID, chanID, rHostID, (Net_SendPoints)msg);
+                    break;
+                case NetOP.SendTurnEnd:
+                    SendTurnEnd(conID, chanID, rHostID, (Net_SendTurnEnd)msg);
+                    break;
+                case NetOP.SendScrap:
+                    AssignScrap(conID, chanID, rHostID, (Net_SendScrap)msg);
+                    break;
+                case NetOP.SendComponents:
+                    AssignComponents(conID, chanID, rHostID, (Net_SendComponents)msg);
+                    break;
+                case NetOP.SendAIPower:
+                    AssignAiPower(conID, chanID, rHostID, (Net_SendAiPower)msg);
+                    break;
+                case NetOP.RoomNumber:
+                    SendRoomCost(conID, chanID, rHostID, (Net_SendRoomNumber)msg);
+                    break;
+                case NetOP.AssignTraitor:
+                    AssignTraitor(conID, chanID, rHostID, (Net_AssignTraitor)msg);
+                    break;
+                    */
         }
         //Debug.Log("Recieved a message of type " + msg.OperationCode);
 
+    }
+
+    //////////////////Receiving methods- methods sent from client/////////////////
+    private void RecieveAbilityInfo(int conID, int chanID, int rHostID, AbilityInformation ai)
+    {
+        SendClient(ai);
+    }
+
+    private void ReceiveAvailableRooms(int conID, int chanID, int rHostID, AvailableRooms ar)
+    {
+        SendClient(ar);
+    }
+
+    private void RecieveRoomChoices(int conID, int chanID, int rHostID, RoomChoices rc)
+    {
+        SendClient(rc);
+    }
+
+    private void RecieveSpecChallenge(int conID, int chanID, int rHostID, SpecChallenge sc)
+    {
+        SendClient(sc);
+    }
+
+    private void RecievePlayerInfo(int conID, int chanID, int rHostID, PlayerInformation pi)
+    {
+        SendClient(pi);
+    }
+
+    private void RecieveTraitor(int conID, int chanID, int rHostID, TraitorSelection ts)
+    {
+        SendClient(ts);
+    }
+
+    private void RecieveSurgeInfo(int conID, int chanID, int rHostID, SurgeInformation si)
+    {
+        SendClient(si);
+    }
+
+    private void RecieveAiAttack(int conID, int chanID, int rHostID, AiAttacks aa)
+    {
+        SendClient(aa);
+    }
+
+    private void RecieveResolution(int conID, int chanID, int rHostID, CombatResolution cr)
+    {
+        SendClient(cr);
+    }
+
+    private void RecieveAvailability(int conID, int chanID, int rHostID, CombatAvailability ca)
+    {
+        SendClient(ca);
+    }
+
+    private void RecieveBeingAttacked(int conID, int chanID, int rHostID, CombatBeingAttacked ba)
+    {
+        SendClient(ba);
+    }
+
+    private void RecievePlayerElimination(int conID, int chanID, int rHostID, PlayerElimination pe)
+    {
+        SendClient(pe);
+    }
+
+    private void RecieveVictory(int conID, int chanID, int rHostID, InnocentVictory nv)
+    {
+        SendClient(nv);
     }
 
 
@@ -334,7 +451,7 @@ public class Server : MonoBehaviour
         }
     }
 
-
+ 
     private void ChangeRoom(int conID, int chanID, int rHostID, Net_ChangeRoom ca)
     {
         foreach (GameObject player in playerArray())
@@ -542,6 +659,89 @@ public class Server : MonoBehaviour
 
         //Change to the character select
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+
+    //////////////////Sending methods- sending to client/////////////////
+    private void SendCharacterInfo(int brawn, int skill, int tech, int charm)
+    {
+        CharacterInformation ci = new CharacterInformation();
+
+        ci.Basebrawn = brawn;
+        ci.Baseskill = skill;
+        ci.Basetech = tech;
+        ci.Basecharm = charm;
+
+        SendClient(ci);
+    }
+
+    private void SendAbilityInfo(string description)
+    {
+        AbilityInformation ai = new AbilityInformation();
+
+        ai.AbilityDescription = description;
+
+        SendClient(ai);
+    }
+
+    private void SendAvailableRooms(int conID, int chanID, int rHostID, AvailableRooms ar)
+    {
+        SendClient(ar);
+    }
+
+    private void SendRoomChoices(int conID, int chanID, int rHostID, RoomChoices rc)
+    {
+        SendClient(rc);
+    }
+
+    private void SendSpecChallenge(int conID, int chanID, int rHostID, SpecChallenge sc)
+    {
+        SendClient(sc);
+    }
+
+    private void SendPlayerInfo(int conID, int chanID, int rHostID, PlayerInformation pi)
+    {
+        SendClient(pi);
+    }
+
+    private void SendTraitor(int conID, int chanID, int rHostID, TraitorSelection ts)
+    {
+        SendClient(ts);
+    }
+
+    private void SurgeInfo(int conID, int chanID, int rHostID, SurgeInformation si)
+    {
+        SendClient(si);
+    }
+
+    private void SendAiAttack(int conID, int chanID, int rHostID, AiAttacks aa)
+    {
+        SendClient(aa);
+    }
+
+    private void SendResolution(int conID, int chanID, int rHostID, CombatResolution cr)
+    {
+        SendClient(cr);
+    }
+
+    private void SendAvailability(int conID, int chanID, int rHostID, CombatAvailability ca)
+    {
+        SendClient(ca);
+    }
+
+    private void SendBeingAttacked(int conID, int chanID, int rHostID, CombatBeingAttacked ba)
+    {
+        SendClient(ba);
+    }
+
+    private void SendPlayerElimination(int conID, int chanID, int rHostID, PlayerElimination pe)
+    {
+        SendClient(pe);
+    }
+
+    private void SendVictory(int conID, int chanID, int rHostID, InnocentVictory nv)
+    {
+        SendClient(nv);
     }
 
     public void ClientNextScene()

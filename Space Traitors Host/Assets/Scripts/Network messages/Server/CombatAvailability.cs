@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CombatAvilability: NetMessage
+public class CombatAvailability: NetMessage
 {
-    public CombatAvilability()
+    public CombatAvailability()
     {
 
         OperationCode = NetOP.CombatAvailablity;
