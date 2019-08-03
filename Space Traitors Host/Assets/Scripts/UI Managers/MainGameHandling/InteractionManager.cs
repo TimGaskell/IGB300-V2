@@ -131,6 +131,8 @@ public class InteractionManager : MonoBehaviour
                     throw new NotImplementedException("Not a valid choice");
             }
 
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
+                string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Chance: {0}%", Mathf.Round(GameManager.instance.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
