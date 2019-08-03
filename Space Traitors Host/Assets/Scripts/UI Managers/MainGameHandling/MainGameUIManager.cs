@@ -127,13 +127,24 @@ public class MainGameUIManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Increments the current phase of the game
+    /// Increments the current phase of the game, while also checking if the victory screens are required to be displayed
     /// 
     /// </summary>
     public void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
-        DisplayCurrentPhase();
+        if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
+        {
+            nonTraitorVictoryPanel.SetActive(true);
+        }
+        else if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.Traitor)
+        {
+            traitorVictoryPanel.SetActive(true);
+        }
+        else
+        {
+            DisplayCurrentPhase();
+        }
     }
 
     /// <summary>
