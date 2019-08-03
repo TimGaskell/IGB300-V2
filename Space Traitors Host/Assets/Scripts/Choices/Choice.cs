@@ -272,7 +272,10 @@ public class Choice
         {
             GameManager.instance.GetActivePlayer().GiveItem(specItem);
         }
-        GameManager.instance.GetActivePlayer().hasComponent = component;
+        if (!GameManager.instance.GetActivePlayer().hasComponent)
+        {
+            GameManager.instance.GetActivePlayer().hasComponent = component;
+        }
         GameManager.instance.GetActivePlayer().lifePoints += lifeChange;
     }
 
