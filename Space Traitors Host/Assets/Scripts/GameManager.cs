@@ -9,9 +9,14 @@ public class GameManager : MonoBehaviour
 {
     //Names of scenes for scene management
     public const string MainMenuScene = "Main Menu";
-    public const string LobbyScene = "LobbyV2";
-    public const string CharacterScene = "Character SelectionV2";
-    public const string MainGameScene = "Game LevelV2";
+
+    public const string LobbyScene = "Lobby";
+    public const string CharacterScene = "Character Selection";
+    public const string MainGameScene = "Game Level";
+
+    public const string NoServerLobbyScene = "NOSERVER Lobby";
+    public const string NoServerCharacterScene = "NOSERVER Character Selection";
+    public const string NoServerMainGameScene = "NOSERVER Game Level";
 
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
@@ -242,12 +247,12 @@ public class GameManager : MonoBehaviour
             {
                 InitialiseGame();
             }
-            else if (scene.name == LobbyScene)
+            else if (scene.name == NoServerLobbyScene)
             {
                 numPlayers = 0;
                 ResetPlayers();
             }
-            else if (scene.name == CharacterScene)
+            else if (scene.name == NoServerCharacterScene)
             {
                 //For debugging if wanting to go into character selection immediately, generates a default player list without characters
                 if (players.Count == 0)
@@ -259,7 +264,7 @@ public class GameManager : MonoBehaviour
                 activePlayer = numPlayers - 1;
                 RandomiseOrder();
             }
-            else if (scene.name == MainGameScene)
+            else if (scene.name == NoServerMainGameScene)
             {
                 //For debugging if wanting to go into game level immediately, generates a default player list with characters
                 if (players.Count == 0)
@@ -312,15 +317,15 @@ public class GameManager : MonoBehaviour
                 //Reset the game initialisation so if the main menu is returned to, redoes initialisation
                 gameInit = false;
             }
-            else if (scene.name == LobbyScene)
+            else if (scene.name == NoServerLobbyScene)
             {
 
             }
-            else if (scene.name == CharacterScene)
+            else if (scene.name == NoServerCharacterScene)
             {
 
             }
-            else if (scene.name == MainGameScene)
+            else if (scene.name == NoServerMainGameScene)
             {
                 //Unload the room list
                 roomList = null;

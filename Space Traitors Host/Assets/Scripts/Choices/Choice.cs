@@ -294,18 +294,30 @@ public class Choice
 
     #region Display Text Handling
 
+    /// <summary>
+    /// 
+    /// Returns the display text for the choice in the success case
+    /// 
+    /// </summary>
+    /// <returns>The display text</returns>
     public string SuccessText()
     {
         string scrapText = IntResourceChange(scrapChange, " Scrap");
         string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
         string aiPowerText = IntResourceChange(powerChange, "% AI Power");
-        string itemText = specItem.ItemType != Item.ItemTypes.Default ? string.Format("+1 {0}\n", specItem.ItemName) : "";
+        string itemText = ItemString();
         string lifeText = IntResourceChange(lifeChange, " Life Points");
         string componentText = component ? "+1 Component\n" : "";
 
         return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
     }
 
+    /// <summary>
+    /// 
+    /// Returns the display text for the choice in the failure case
+    /// 
+    /// </summary>
+    /// <returns>The display text</returns>
     public string FailText()
     {
         string corruptionText = IntResourceChange(corruptionFail, " Corruption");
@@ -314,6 +326,15 @@ public class Choice
         return corruptionText + lifeText;
     }
 
+    /// <summary>
+    /// 
+    /// Returns the string of a integer value for a resource change.
+    /// If the value is positive, includes a + value out the front of the string.
+    /// 
+    /// </summary>
+    /// <param name="resourceVal">The resource change which is to be displayed</param>
+    /// <param name="valueName">The name of the resource to be displayed after the change</param>
+    /// <returns>The string which is to be displayed</returns>
     private string IntResourceChange(int resourceVal, string valueName)
     {
         if(resourceVal > 0)
@@ -327,6 +348,31 @@ public class Choice
         else
         {
             return "";
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Returns the display string for an item which includes its modifiers in spec scores after the item name
+    /// 
+    /// </summary>
+    /// <returns>The string which is to be displayed for the item</returns>
+    private string ItemString()
+    {
+        //If there is no item, returns no string
+        if (specItem.ItemType == Item.ItemTypes.Default)
+        {
+            return "";
+        }
+        else
+        {
+            // If there is no modifier for a particular spec score, does not include it in the string
+            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn ", specItem.BrawnChange) : "";
+            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill ", specItem.SkillChange) : "";
+            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech ", specItem.TechChange) : "";
+            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm ", specItem.CharmChange) : "";
+
+            return string.Format("+1 {0}\n( {1}{2}{3}{4})", specItem.ItemName, brawnMod, skillMod, techMod, charmMod);
         }
     }
 

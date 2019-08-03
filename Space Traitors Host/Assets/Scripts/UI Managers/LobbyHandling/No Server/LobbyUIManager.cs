@@ -127,7 +127,7 @@ public class LobbyUIManager : NetworkBehaviour
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
             {
-                SceneManager.LoadScene(GameManager.CharacterScene);
+                SceneManager.LoadScene(GameManager.NoServerCharacterScene);
             }
 
         }
