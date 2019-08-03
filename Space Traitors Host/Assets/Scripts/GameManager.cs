@@ -632,6 +632,7 @@ public class GameManager : MonoBehaviour
             case (TurnPhases.BasicSurge):
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
+                aiPowerChange = 0;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -657,7 +658,6 @@ public class GameManager : MonoBehaviour
             playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += basePower + playerPower + aiPowerChange;
-            aiPowerChange = 0;
         }
         else
         {
