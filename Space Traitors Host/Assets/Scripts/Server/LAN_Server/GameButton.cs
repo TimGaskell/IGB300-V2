@@ -37,8 +37,8 @@ public class GameButton: MonoBehaviour
         NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartClient();
 
-        Server.Instance.serverIP = gameIP;
-        Server.Instance.ClientInitialise();
+      //  Server.Instance.serverIP = gameIP;
+       // Server.Instance.ClientInitialise();
 
     }
 
