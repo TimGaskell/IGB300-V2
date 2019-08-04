@@ -99,6 +99,7 @@ public class Server : MonoBehaviour {
     public GameObject[] ScrapTotals;
     public GameObject[] Components;
     private GameObject setter;
+    public GameObject PlayerObject;
     private Scene currentScene;
     public Text connectText;
     public Sprite[] portraits;
@@ -213,6 +214,7 @@ public class Server : MonoBehaviour {
             //When user connects to game
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
+                players.Add(PlayerObject);
                 //Loop through to find a player not already connected, and assign them their ID
                 foreach (GameObject player in playerArray()) {
                     if (!player.GetComponent<Player>().isConnected) {
@@ -361,6 +363,8 @@ public class Server : MonoBehaviour {
 
     }
 
+   
+
     //This needs to be updated
 
     private List<GameObject> playerArray() {
@@ -423,7 +427,6 @@ public class Server : MonoBehaviour {
         }
 
     }
-
 
     //This needs to be updated
     public void StartGame() //This is called when a game is started in lobby
