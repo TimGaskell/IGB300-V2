@@ -262,34 +262,41 @@ public class GameManager : MonoBehaviour
             {
                 InitialiseGame();
             }
-            else if (scene.name == NoServerLobbyScene)
+            else
             {
-                numPlayers = 0;
-                ResetPlayers();
-            }
-            else if (scene.name == NoServerCharacterScene)
-            {
-                //For debugging if wanting to go into character selection immediately, generates a default player list without characters
-                if (players.Count == 0)
-                {
-                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
-                }
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
 
-                //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
-                activePlayer = numPlayers - 1;
-                RandomiseOrder();
-            }
-            else if (scene.name == NoServerMainGameScene)
-            {
-                //For debugging if wanting to go into game level immediately, generates a default player list with characters
-                if (players.Count == 0)
+                if (scene.name == NoServerLobbyScene)
                 {
-                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                    numPlayers = 0;
+                    ResetPlayers();
+                }
+                else if (scene.name == NoServerCharacterScene)
+                {
+                    //For debugging if wanting to go into character selection immediately, generates a default player list without characters
+                    if (players.Count == 0)
+                    {
+                        GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
+                    }
+
+                    //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
+                    activePlayer = numPlayers - 1;
                     RandomiseOrder();
                 }
+                else if (scene.name == NoServerMainGameScene)
+                {
+                    //For debugging if wanting to go into game level immediately, generates a default player list with characters
+                    if (players.Count == 0)
+                    {
+                        GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                        RandomiseOrder();
+                    }
 
-                StartGame();
+                    StartGame();
+                }
             }
+            
         }
     }
 
@@ -329,8 +336,7 @@ public class GameManager : MonoBehaviour
         {
             if (scene.name == MainMenuScene)
             {
-                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
-                gameInit = false;
+                
             }
             else if (scene.name == NoServerLobbyScene)
             {
