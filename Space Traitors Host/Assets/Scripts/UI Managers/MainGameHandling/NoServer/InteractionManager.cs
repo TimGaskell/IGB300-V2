@@ -231,6 +231,10 @@ public class InteractionManager : MonoBehaviour
             {
                 targetButton.GetComponent<Button>().interactable = false;
             }
+            else
+            {
+                targetButton.GetComponent<Button>().interactable = true;
+            }
         }
     }
 
@@ -259,6 +263,12 @@ public class InteractionManager : MonoBehaviour
         combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = false;
+
+        for (int buttonID = 0; buttonID < 4; buttonID++)
+        {
+            combatPanel.GetComponent<CombatComponents>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+            combatPanel.GetComponent<CombatComponents>().defenderSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+        }
 
         attackerSpecScore = GameManager.SpecScores.Default;
         defenderSpecScore = GameManager.SpecScores.Default;

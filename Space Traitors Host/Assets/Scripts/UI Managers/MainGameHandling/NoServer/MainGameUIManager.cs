@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainGameUIManager : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class MainGameUIManager : MonoBehaviour
             attackSurgePanel.SetActive(false);
 
             nonTraitorVictoryPanel.SetActive(false);
-            //traitorVictoryPanel.SetActive(false);
+            traitorVictoryPanel.SetActive(false);
 
             DisplayCurrentPhase();
             UpdateAIPower();
@@ -140,6 +141,7 @@ public class MainGameUIManager : MonoBehaviour
         else if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.Traitor)
         {
             traitorVictoryPanel.SetActive(true);
+            traitorVictoryPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0} Wins!", GameManager.instance.GetPlayer(GameManager.instance.traitorWinID).playerName);
         }
         else
         {
@@ -205,13 +207,24 @@ public class MainGameUIManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Exits the combat screen and continues to the next phase
+    /// Exits the combat screen and then checks if the traitor has won before moving to the next phase
     /// 
     /// </summary>
     public void EndCombat()
     {
         interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+        GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
+    }
+
+    /// <summary>
+    /// 
+    /// Return to the main menu
+    /// 
+    /// </summary>
+    public void ExitGame()
+    {
+        SceneManager.LoadScene(GameManager.MainMenuScene);
     }
 
     #endregion
