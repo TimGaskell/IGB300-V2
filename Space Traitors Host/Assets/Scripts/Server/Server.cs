@@ -216,7 +216,7 @@ public class Server : MonoBehaviour {
                 connectSound.Play();
                 players.Add(PlayerObject);
                 //Loop through to find a player not already connected, and assign them their ID
-                foreach (GameObject player in playerArray()) {
+                foreach (GameObject player in players) {
                     if (!player.GetComponent<Player>().isConnected) {
                         if (sceneName == "LobbyLan")
                             LobbyConnectOrDisconnect(player, true, connectionID, true);
