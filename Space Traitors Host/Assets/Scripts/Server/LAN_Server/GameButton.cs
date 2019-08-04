@@ -33,6 +33,10 @@ public class GameButton: MonoBehaviour
     {
         NetworkManager.singleton.StopAllCoroutines();
         string ipAddress = gameIP;
+        NetworkManager.singleton.networkAddress = ipAddress;
+        NetworkManager.singleton.networkPort = 7777;
+        NetworkManager.singleton.StartClient();
+
         Server.Instance.serverIP = gameIP;
         Server.Instance.ClientInitialise();
 

@@ -208,6 +208,7 @@ public class Server : MonoBehaviour {
 
             //When user connects to game
             case NetworkEventType.ConnectEvent:
+                Debug.Log("yeet");
                 connectSound.Play();
                 //Loop through to find a player not already connected, and assign them their ID
                 foreach (GameObject player in playerArray()) {
@@ -322,7 +323,7 @@ public class Server : MonoBehaviour {
 
     private List<GameObject> playerArray() {
 
-        if ((sceneName == "LobbyTest") || (sceneName == "Character Select"))
+        if ((sceneName == "LobbyLan") || (sceneName == "Character Select"))
             return players;
         //else if (sceneName == "server")
           //  return playerStorage.GetComponent<RoundManager>().playersInGame;
