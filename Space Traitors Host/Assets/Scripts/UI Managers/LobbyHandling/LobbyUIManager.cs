@@ -18,20 +18,6 @@ public class LobbyUIManager : NetworkBehaviour
     private void Start()
     {
 
-        if (NetworkServer.connections.Count > 0)
-        {
-            ServerPanel.SetActive(true);
-
-
-        }
-        else
-        {
-            ClientPanel.SetActive(true);
-
-        }
-       
-
-
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
@@ -40,7 +26,21 @@ public class LobbyUIManager : NetworkBehaviour
         
     }
 
-   
+    void Update() {
+
+        if (NetworkServer.connections.Count > 0) {
+
+            ServerPanel.SetActive(true);
+            ClientPanel.SetActive(false);
+
+        }
+        else {
+            ClientPanel.SetActive(true);
+            ServerPanel.SetActive(false);
+        }
+    }
+
+
 
 
     #region Server Handling
