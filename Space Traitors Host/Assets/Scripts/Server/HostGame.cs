@@ -48,9 +48,9 @@ public class HostGame : MonoBehaviour
             {
                 networkManager.StopAllCoroutines();
                 networkManager.networkPort = 7777;
-                networkManager.StartHost();
-                networkManager.networkAddress = roomName;
-               // Server.Instance.HostInitialise();
+               // networkManager.StartHost();
+               // networkManager.networkAddress = roomName;
+                Server.Instance.HostInitialise();
             }
             else
             {
