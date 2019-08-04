@@ -183,19 +183,7 @@ public class Server : MonoBehaviour {
         currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
 
-        if (sceneName == "LobbyTest") {
-            connectText.text = serverIP;
-        }
-
-        if (sceneName == "Character Select") {
-            SetPortraits();
-        }
-        if (sceneName == "server") {
-
-
-
-        }
-
+    
         //Networking messages
         UpdateMessagePump();
     }
