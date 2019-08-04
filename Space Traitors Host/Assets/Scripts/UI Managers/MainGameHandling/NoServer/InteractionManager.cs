@@ -200,31 +200,46 @@ public class InteractionManager : MonoBehaviour
 
     #region Combat Handling
 
+    /// <summary>
+    /// 
+    /// Setups the target panel to show the players which are in the game (disabling those which are not) as well as setting up their names above
+    /// their portraits. Only needs to be called once when the game is started
+    /// 
+    /// </summary>
     private void SetupTargets()
     {
         foreach (GameObject targetButton in targetButtons)
         {
             Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            //If the player of the particular type does not exist, disables the target button for the character of that type
             if (player == null)
             {
                 targetButton.SetActive(false);
             }
             else
             {
+                //Sets the player ID on the target image as well as their name above their image
                 targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
                 targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
             }
         }
     }
 
+    /// <summary>
+    /// 
+    /// Setup the target panel to allow the player to select a valid target
+    /// 
+    /// </summary>
     public void DisplayTargets()
     {
         targetPanel.SetActive(true);
 
+        //Sets the target to be default values.
         targetName.GetComponent<TextMeshProUGUI>().text = "";
         selectedTarget = GameManager.DEFAULT_PLAYER_ID;
         targetButton.GetComponent<Button>().interactable = false;
 
+        //Loops through each of the target buttons and sets them to be non-interactable if the character is not a valid target
         foreach (GameObject targetButton in targetButtons)
         {
             if (!attackablePlayers.Exists(x => x == targetButton.GetComponent<TargetProperties>().playerID))
@@ -238,32 +253,49 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// Sets the selected target to be attacked
+    /// 
+    /// </summary>
+    /// <param name="buttonID">The ID of the button. Used to get the associated player ID from the image</param>
     public void SelectTarget(int buttonID)
     {
+        //Gets the relevant player information
         Player targetPlayer = GameManager.instance.GetPlayer(targetButtons[buttonID].GetComponent<TargetProperties>().playerID);
 
         selectedTarget = targetPlayer.playerID;
         targetName.GetComponent<TextMeshProUGUI>().text = targetPlayer.playerName;
 
+        //Allow the player to confirm their target for the attack
         targetButton.GetComponent<Button>().interactable = true;
     }
 
+    /// <summary>
+    /// 
+    /// Confirms the selected target and opens the combat screen
+    /// 
+    /// </summary>
     public void ConfirmTarget()
     {
+        //Gets the relevant player information. The attacker will always be the active player and the defending will be the selected target
+        //from the target panel.
         Player attackingPlayer = GameManager.instance.GetActivePlayer();
         Player defendingPlayer = GameManager.instance.GetPlayer(selectedTarget);
 
         combatPanel.SetActive(true);
 
+        //Sets the default screen status for the combats
         combatPanel.GetComponent<CombatComponents>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.playerName;
         combatPanel.GetComponent<CombatComponents>().defenderName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.playerName;
-        combatPanel.GetComponent<CombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(attackingPlayer.Character.CharacterType);
-        combatPanel.GetComponent<CombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(defendingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<CombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<CombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.Character.CharacterType);
         combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = false;
 
+        //Reenables the spec score buttons
         for (int buttonID = 0; buttonID < 4; buttonID++)
         {
             combatPanel.GetComponent<CombatComponents>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
@@ -274,27 +306,12 @@ public class InteractionManager : MonoBehaviour
         defenderSpecScore = GameManager.SpecScores.Default;
     }
 
-    private Sprite GetCharacterPortrait(Character.CharacterTypes characterType)
-    {
-        switch (characterType)
-        {
-            case (Character.CharacterTypes.Brute):
-                return characterPortraits[0];
-            case (Character.CharacterTypes.Butler):
-                return characterPortraits[1];
-            case (Character.CharacterTypes.Chef):
-                return characterPortraits[2];
-            case (Character.CharacterTypes.Engineer):
-                return characterPortraits[3];
-            case (Character.CharacterTypes.Singer):
-                return characterPortraits[4];
-            case (Character.CharacterTypes.Techie):
-                return characterPortraits[5];
-            default:
-                throw new NotImplementedException("Not a valid character type.");
-        }
-    }
-
+    /// <summary>
+    /// 
+    /// If one of the attacker spec scores is selected updates the display and store the spec score to use in the combat
+    /// 
+    /// </summary>
+    /// <param name="specScore">The name of the spec score for the button</param>
     public void AttackerSpec(string specScore)
     {
         GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
@@ -302,17 +319,25 @@ public class InteractionManager : MonoBehaviour
         combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
         attackerSpecScore = chosenSpec;
 
+        //Disables the buttons to prevent the value from being changed
         foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().attackerSpecButtons)
         {
             specButton.GetComponent<Button>().interactable = false;
         }
 
+        //If both spec scores have been selected, starts the combat and displays the combat
         if (!(defenderSpecScore == GameManager.SpecScores.Default))
         {
             DisplayWinner();
         }
     }
 
+    /// <summary>
+    /// 
+    /// If one of the defender spec scores is selected updates the display and store the spec score to use in the combat
+    /// 
+    /// </summary>
+    /// <param name="specScore">The name of the spec score for the button</param>
     public void DefenderSpec(string specScore)
     {
         GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
@@ -320,18 +345,24 @@ public class InteractionManager : MonoBehaviour
         combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = specScore;
         defenderSpecScore = chosenSpec;
 
+        //Disables the buttons to prevent the value from being changed
         foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().defenderSpecButtons)
         {
             specButton.GetComponent<Button>().interactable = false;
         }
 
+        //If both spec scores have been selected, starts the combat and displays the combat
         if (!(attackerSpecScore == GameManager.SpecScores.Default))
         {
             DisplayWinner();
         }
     }
 
-
+    /// <summary>
+    /// 
+    /// Starts a combat and displays the winner of the combat
+    /// 
+    /// </summary>
     private void DisplayWinner()
     {
         combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = true;
@@ -349,6 +380,11 @@ public class InteractionManager : MonoBehaviour
         playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
     }
 
+    /// <summary>
+    /// 
+    /// Closes the combat panels
+    /// 
+    /// </summary>
     public void CloseCombat()
     {
         targetPanel.SetActive(false);

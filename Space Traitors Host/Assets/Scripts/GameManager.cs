@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
+    public List<Sprite> characterPortraits;
+
     private GameObject playerList;
     public List<GameObject> playerPrefabs;
 
@@ -179,6 +181,34 @@ public class GameManager : MonoBehaviour
     public Player GetPlayer(Character.CharacterTypes characterType)
     {
         return players.Find(x => x.Character.CharacterType == characterType);
+    }
+
+    /// <summary>
+    /// 
+    /// Gets the character portrait for a character of a particular type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The required character type</param>
+    /// <returns>Returns the sprite image of the relevant character type</returns>
+    public Sprite GetCharacterPortrait(Character.CharacterTypes characterType)
+    {
+        switch (characterType)
+        {
+            case (Character.CharacterTypes.Brute):
+                return characterPortraits[0];
+            case (Character.CharacterTypes.Butler):
+                return characterPortraits[1];
+            case (Character.CharacterTypes.Chef):
+                return characterPortraits[2];
+            case (Character.CharacterTypes.Engineer):
+                return characterPortraits[3];
+            case (Character.CharacterTypes.Singer):
+                return characterPortraits[4];
+            case (Character.CharacterTypes.Techie):
+                return characterPortraits[5];
+            default:
+                throw new NotImplementedException("Not a valid character type.");
+        }
     }
 
     #endregion
