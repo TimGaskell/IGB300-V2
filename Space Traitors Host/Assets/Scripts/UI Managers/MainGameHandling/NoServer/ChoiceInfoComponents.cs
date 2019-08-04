@@ -9,6 +9,7 @@ public class ChoiceInfoComponents : MonoBehaviour
     public GameObject nonSpecChoiceText;
 
     public GameObject specChallengeGroup;
+    public GameObject specScoreText;
     public GameObject specChanceText;
     public GameObject specSuccessText;
     public GameObject specFailureText;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainGameUIManager : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class MainGameUIManager : MonoBehaviour
             attackSurgePanel.SetActive(false);
 
             nonTraitorVictoryPanel.SetActive(false);
-            //traitorVictoryPanel.SetActive(false);
+            traitorVictoryPanel.SetActive(false);
 
             DisplayCurrentPhase();
             UpdateAIPower();
@@ -119,6 +120,7 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -127,13 +129,25 @@ public class MainGameUIManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Increments the current phase of the game
+    /// Increments the current phase of the game, while also checking if the victory screens are required to be displayed
     /// 
     /// </summary>
     public void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
-        DisplayCurrentPhase();
+        if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
+        {
+            nonTraitorVictoryPanel.SetActive(true);
+        }
+        else if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.Traitor)
+        {
+            traitorVictoryPanel.SetActive(true);
+            traitorVictoryPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0} Wins!", GameManager.instance.GetPlayer(GameManager.instance.traitorWinID).playerName);
+        }
+        else
+        {
+            DisplayCurrentPhase();
+        }
     }
 
     /// <summary>
@@ -191,5 +205,41 @@ public class MainGameUIManager : MonoBehaviour
         playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }
+
+    /// <summary>
+    /// 
+    /// Exits the combat screen and then checks if the traitor has won before moving to the next phase
+    /// 
+    /// </summary>
+    public void EndCombat()
+    {
+        interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+        GameManager.instance.CheckTraitorVictory();
+        IncrementPhase();
+    }
+
+    /// <summary>
+    /// 
+    /// Return to the main menu
+    /// 
+    /// </summary>
+    public void ExitGame()
+    {
+        SceneManager.LoadScene(GameManager.MainMenuScene);
+    }
+
+    /// <summary>
+    /// 
+    /// Confirms the spec score the player wants to use when targetted by an AI Attack
+    /// 
+    /// </summary>
+    public void ConfirmSpecSelection()
+    {
+        GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
+        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+        GameManager.instance.CheckTraitorVictory();
+        IncrementPhase();
+    }
+
     #endregion
 }

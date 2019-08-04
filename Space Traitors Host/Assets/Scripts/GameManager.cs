@@ -9,9 +9,14 @@ public class GameManager : MonoBehaviour
 {
     //Names of scenes for scene management
     public const string MainMenuScene = "Main Menu";
-    public const string LobbyScene = "LobbyV2";
-    public const string CharacterScene = "Character SelectionV2";
-    public const string MainGameScene = "Game LevelV2";
+
+    public const string LobbyScene = "Lobby";
+    public const string CharacterScene = "Character Selection";
+    public const string MainGameScene = "Game Level";
+
+    public const string NoServerLobbyScene = "NOSERVER Lobby";
+    public const string NoServerCharacterScene = "NOSERVER Character Selection";
+    public const string NoServerMainGameScene = "NOSERVER Game Level";
 
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
     public bool serverActive = false;
@@ -24,7 +29,7 @@ public class GameManager : MonoBehaviour
     public const int DEFAULT_PLAYER_ID = -1;
 
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -45,6 +50,8 @@ public class GameManager : MonoBehaviour
     //instead the index in the player order list
     public int activePlayer = 0;
 
+    public List<Sprite> characterPortraits;
+
     private GameObject playerList;
     public List<GameObject> playerPrefabs;
 
@@ -58,7 +65,7 @@ public class GameManager : MonoBehaviour
     public float playerPower;
     public float aiPowerChange;
     //The target score for the player when the AI attacks them
-    private int aiTargetScore;
+    public int aiTargetScore;
 
     //The ID of a player who has newly been selected as traitor
     public int newTraitor;
@@ -110,6 +117,9 @@ public class GameManager : MonoBehaviour
     public enum VictoryTypes { None, Traitor, NonTraitor };
     public VictoryTypes CurrentVictory;
 
+    //The ID of the last player alive. If there is more than one player alive, then this should be the default case.
+    public int traitorWinID;
+
     private void Update()
     {
         //Only need to detect if the player is clicking on a room on the host system if the server is inactive
@@ -159,6 +169,46 @@ public class GameManager : MonoBehaviour
     public Player GetActivePlayer()
     {
         return GetOrderedPlayer(activePlayer);
+    }
+
+    /// <summary>
+    /// 
+    /// Returns the player of a particular character type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The character type to retrieve</param>
+    /// <returns>The player of the character type</returns>
+    public Player GetPlayer(Character.CharacterTypes characterType)
+    {
+        return players.Find(x => x.Character.CharacterType == characterType);
+    }
+
+    /// <summary>
+    /// 
+    /// Gets the character portrait for a character of a particular type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The required character type</param>
+    /// <returns>Returns the sprite image of the relevant character type</returns>
+    public Sprite GetCharacterPortrait(Character.CharacterTypes characterType)
+    {
+        switch (characterType)
+        {
+            case (Character.CharacterTypes.Brute):
+                return characterPortraits[0];
+            case (Character.CharacterTypes.Butler):
+                return characterPortraits[1];
+            case (Character.CharacterTypes.Chef):
+                return characterPortraits[2];
+            case (Character.CharacterTypes.Engineer):
+                return characterPortraits[3];
+            case (Character.CharacterTypes.Singer):
+                return characterPortraits[4];
+            case (Character.CharacterTypes.Techie):
+                return characterPortraits[5];
+            default:
+                throw new NotImplementedException("Not a valid character type.");
+        }
     }
 
     #endregion
@@ -242,34 +292,41 @@ public class GameManager : MonoBehaviour
             {
                 InitialiseGame();
             }
-            else if (scene.name == LobbyScene)
+            else
             {
-                numPlayers = 0;
-                ResetPlayers();
-            }
-            else if (scene.name == CharacterScene)
-            {
-                //For debugging if wanting to go into character selection immediately, generates a default player list without characters
-                if (players.Count == 0)
-                {
-                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
-                }
+                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
+                gameInit = false;
 
-                //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
-                activePlayer = numPlayers - 1;
-                RandomiseOrder();
-            }
-            else if (scene.name == MainGameScene)
-            {
-                //For debugging if wanting to go into game level immediately, generates a default player list with characters
-                if (players.Count == 0)
+                if (scene.name == NoServerLobbyScene)
                 {
-                    GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                    numPlayers = 0;
+                    ResetPlayers();
+                }
+                else if (scene.name == NoServerCharacterScene)
+                {
+                    //For debugging if wanting to go into character selection immediately, generates a default player list without characters
+                    if (players.Count == 0)
+                    {
+                        GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, false);
+                    }
+
+                    //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
+                    activePlayer = numPlayers - 1;
                     RandomiseOrder();
                 }
+                else if (scene.name == NoServerMainGameScene)
+                {
+                    //For debugging if wanting to go into game level immediately, generates a default player list with characters
+                    if (players.Count == 0)
+                    {
+                        GenerateDefaultPlayers(DEFAULT_NUM_PLAYERS, true);
+                        RandomiseOrder();
+                    }
 
-                StartGame();
+                    StartGame();
+                }
             }
+            
         }
     }
 
@@ -309,18 +366,17 @@ public class GameManager : MonoBehaviour
         {
             if (scene.name == MainMenuScene)
             {
-                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
-                gameInit = false;
+                
             }
-            else if (scene.name == LobbyScene)
+            else if (scene.name == NoServerLobbyScene)
             {
 
             }
-            else if (scene.name == CharacterScene)
+            else if (scene.name == NoServerCharacterScene)
             {
 
             }
-            else if (scene.name == MainGameScene)
+            else if (scene.name == NoServerMainGameScene)
             {
                 //Unload the room list
                 roomList = null;
@@ -416,6 +472,8 @@ public class GameManager : MonoBehaviour
         playerMoving = false;
 
         CurrentVictory = VictoryTypes.None;
+
+        traitorWinID = DEFAULT_PLAYER_ID;
     }
 
     /// <summary>
@@ -632,6 +690,7 @@ public class GameManager : MonoBehaviour
             case (TurnPhases.BasicSurge):
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
+                aiPowerChange = 0;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -657,7 +716,6 @@ public class GameManager : MonoBehaviour
             playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += basePower + playerPower + aiPowerChange;
-            aiPowerChange = 0;
         }
         else
         {
@@ -865,11 +923,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="specScore">The name of the spec score the player wants to use against the AI</param>
     /// <returns>True if the player wins the combat. False otherwise</returns>
-    private bool AIAttackPlayer(SpecScores specScore)
+    public bool AIAttackPlayer(SpecScores specScore)
     {
         bool playerWin;
 
-        float targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
+        float targetSpecScore = ObtainSpecScore(GetPlayer(targetPlayer), specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -928,17 +986,17 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Performs a combat scenario between two players, considering the counters for each player based on the given spec score
+    /// Performs a combat scenario between two players, considering the counters for each player based on the given spec score. The attacker
+    /// will always be the active player
     /// 
     /// </summary>
-    /// <param name="attackerID">The playerID of the attacker</param>
     /// <param name="attackerSpec">The name of the spec score the attacker is using</param>
     /// <param name="defenderID">The playerID of the defender</param>
     /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
     /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
-    public bool PerformCombat(int attackerID, SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
+    public bool PerformCombat(SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
     {
-        Player attackingPlayer = GetPlayer(attackerID);
+        Player attackingPlayer = GetActivePlayer();
         Player defendingPlayer = GetPlayer(defenderID);
 
         float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
@@ -947,51 +1005,31 @@ public class GameManager : MonoBehaviour
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
         {
-            players[attackerID].isRevealed = true;
+            GetActivePlayer().isRevealed = true;
         }
 
-        //Below statements determine the victory of a combat
-        //First set of statements consider whether the attacker counters the defender, or vice versa, or if there are no counters and applys modifiers to the relevant spec scores accordingly
-        //Next set of statements determines who wins the combat based on the relevant spec scores, updating life points and returning outcome accordingly
+        //Below statements determine if the attacker or defender counters the other combat participant. If they do, their
+        //score is multiplied by the counter multiplier. If there are no counters, leaves scores untouched.
         if (DetermineCounter(attackerSpec, defenderSpec))
         {
-            if (PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
+            attackerScore *= COUNTER_MOD;
         }
         else if (DetermineCounter(defenderSpec, attackerSpec))
         {
-            if (PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
+            defenderScore *= COUNTER_MOD;
+        }
+
+        //Once the counters have been determined, performs the combat between the two players. If the spec challenge is
+        //successful, then the attacker wins, otherwise the defender loses.
+        if (PerformSpecChallenge(attackerScore, defenderScore))
+        {
+            GetPlayer(defenderID).lifePoints -= 1;
+            return true;
         }
         else
         {
-            if (PerformSpecChallenge(attackerScore, defenderScore))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
-
+            GetActivePlayer().lifePoints -= 1;
+            return false;
         }
     }
 
@@ -1003,7 +1041,7 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private float ObtainSpecScore(Player player, SpecScores specScore)
+    public float ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {
@@ -1026,7 +1064,7 @@ public class GameManager : MonoBehaviour
         public SpecScores Spec2 { get; set; }
     }
 
-    private SpecComparison[] counters = 
+    private readonly SpecComparison[] counters = 
     {
         new SpecComparison { Spec1 = SpecScores.Brawn, Spec2 = SpecScores.Charm },
         new SpecComparison { Spec1 = SpecScores.Charm, Spec2 = SpecScores.Tech },
@@ -1045,6 +1083,43 @@ public class GameManager : MonoBehaviour
     private bool DetermineCounter(SpecScores spec1, SpecScores spec2)
     {
         return counters.Any(x => spec1 == x.Spec1 && spec2 == x.Spec2);
+    }
+
+    /// <summary>
+    /// 
+    /// Checks if there is only one player left alive in the game. Returns the player ID of the last player if there is only one player left.
+    /// If not returns the default player ID. Will return the default ID if there are no players left alive, however this should never be the case.
+    /// 
+    /// </summary>
+    public void CheckTraitorVictory()
+    {
+        foreach (Player player in players)
+        {
+            //Checks if the player is alive, skipping players which are dead
+            if (!player.IsDead)
+            {
+                //If the winner ID is the default (which is the case when the loop first begins), then sets the winner
+                //as the current alive player. If the current winner ID is not the default, this means another player has
+                //been set as the winner previously, as such, meaning there is more than one player alive and sets as the
+                //default ID then breaks from the loop (since the condition has already been fulfilled).
+                if (traitorWinID == DEFAULT_PLAYER_ID)
+                {
+                    traitorWinID = player.playerID;
+                }
+                else
+                {
+                    traitorWinID = DEFAULT_PLAYER_ID;
+                    break;
+                }
+            }
+        }
+
+        //If the script exits the above loop with the winner ID not being the default ID, this means there is only one player
+        //is alive, as such making them the victor
+        if (traitorWinID != DEFAULT_PLAYER_ID)
+        {
+            CurrentVictory = VictoryTypes.Traitor;
+        }
     }
 
     #endregion
@@ -1087,21 +1162,27 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 
     /// Checks that all the non-traitors are in the escape room and returns true if so. If there is 
-    /// a traitor that is not in the escape room, returns false. Otherwise returns true
+    /// a non traitor that is not in the escape room, returns false. If not all the components have been installed
+    /// also returns false
     /// 
     /// </summary>
     /// <returns></returns>
     private bool CheckNonTraitorVictory()
     {
-        foreach(Player player in players)
+        if (CheckInstalledComponents())
         {
-            if(!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+            foreach (Player player in players)
             {
-                return false;
+                if (!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     #endregion

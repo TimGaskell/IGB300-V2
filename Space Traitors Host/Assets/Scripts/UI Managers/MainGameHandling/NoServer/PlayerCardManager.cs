@@ -53,7 +53,7 @@ public class PlayerCardManager : MonoBehaviour
 
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(player.Character.CharacterType);
+        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.Corruption.ToString();
         playerPanels[playerIndex].GetComponent<PlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
@@ -77,34 +77,6 @@ public class PlayerCardManager : MonoBehaviour
         for (int playerIndex = 0; playerIndex < GameManager.instance.numPlayers; playerIndex++)
         {
             UpdatePlayerCard(playerIndex);
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// Returns the relevant sprite image for a character of a particular type
-    /// 
-    /// </summary>
-    /// <param name="characterType">The type of character</param>
-    /// <returns>The sprite image to be used</returns>
-    private Sprite GetCharacterPortrait (Character.CharacterTypes characterType)
-    {
-        switch (characterType)
-        {
-            case (Character.CharacterTypes.Brute):
-                return playerPortraits[0];
-            case (Character.CharacterTypes.Butler):
-                return playerPortraits[1]; 
-            case (Character.CharacterTypes.Chef):
-                return playerPortraits[2];
-            case (Character.CharacterTypes.Engineer):
-                return playerPortraits[3];
-            case (Character.CharacterTypes.Singer):
-                return playerPortraits[4];
-            case (Character.CharacterTypes.Techie):
-                return playerPortraits[5];
-            default:
-                throw new NotImplementedException("Not a valid character type");
         }
     }
 
