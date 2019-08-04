@@ -202,5 +202,17 @@ public class MainGameUIManager : MonoBehaviour
         playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }
+
+    /// <summary>
+    /// 
+    /// Exits the combat screen and continues to the next phase
+    /// 
+    /// </summary>
+    public void EndCombat()
+    {
+        interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+        IncrementPhase();
+    }
+
     #endregion
 }

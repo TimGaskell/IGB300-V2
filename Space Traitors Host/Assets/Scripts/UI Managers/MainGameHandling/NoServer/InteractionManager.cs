@@ -10,10 +10,10 @@ public class InteractionManager : MonoBehaviour
     public GameObject standardChoiceUI;
     public GameObject escapeRoomUI;
 
+    public GameObject playerCards;
+
     public GameObject choice0ButtonText;
     public GameObject choice1ButtonText;
-
-    public GameObject attackButton;
 
     public GameObject choiceInfoPanel;
 
@@ -27,7 +27,29 @@ public class InteractionManager : MonoBehaviour
     private List<GameObject> componentPanels;
     public GameObject installButton;
 
-    
+    public GameObject combatButton;
+
+    public GameObject targetPanel;
+    public GameObject combatPanel;
+
+    public List<GameObject> targetButtons;
+    public GameObject targetName;
+
+    public GameObject targetButton;
+
+    private int selectedTarget;
+
+    public List<Sprite> characterPortraits;
+
+    private GameManager.SpecScores attackerSpecScore;
+    private GameManager.SpecScores defenderSpecScore;
+
+    private enum ParticipantTypes { Attacker, Defender }
+
+    private void Start()
+    {
+        SetupTargets();
+    }
 
     /// <summary>
     /// 
@@ -37,16 +59,20 @@ public class InteractionManager : MonoBehaviour
     /// <param name="roomIndex">The index of the room the player is in</param>
     public void InitialiseChoices(int roomIndex)
     {
+        //Disable the combat panels
+        targetPanel.SetActive(false);
+        combatPanel.SetActive(false);
+
         //Escape room is for installing components, so requies a different screen. The Escape Room ID is where the players start
-        if(roomIndex == Player.STARTING_ROOM_ID)
+        if (roomIndex == Player.STARTING_ROOM_ID)
         {
             escapeRoomUI.SetActive(true);
             standardChoiceUI.SetActive(false);
 
             int counter = 0;
-            foreach(GameObject compPanel in componentPanels)
+            foreach (GameObject compPanel in componentPanels)
             {
-                if(counter < GameManager.instance.installedComponents)
+                if (counter < GameManager.instance.installedComponents)
                 {
                     compPanel.transform.GetChild(0).gameObject.SetActive(true);
                 }
@@ -61,7 +87,7 @@ public class InteractionManager : MonoBehaviour
             escapeRoomUI.SetActive(false);
 
             choiceInfoPanel.SetActive(false);
-            
+
             currentRoom = GameManager.instance.GetRoom(roomIndex);
 
             //Update button text
@@ -73,11 +99,11 @@ public class InteractionManager : MonoBehaviour
         attackablePlayers = GameManager.instance.CheckCombat();
         if (attackablePlayers.Count == 0)
         {
-            attackButton.GetComponent<Button>().interactable = false;
+            combatButton.GetComponent<Button>().interactable = false;
         }
         else
         {
-            attackButton.GetComponent<Button>().interactable = true;
+            combatButton.GetComponent<Button>().interactable = true;
         }
     }
 
@@ -95,9 +121,9 @@ public class InteractionManager : MonoBehaviour
         Choice selectedChoice = currentRoom.roomChoices[selectedChoiceID];
 
         choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = selectedChoice.choiceName;
-        
+
         //If the choice is not a spec challenge, updates the display text to suit the choice.
-        if(selectedChoice.specChallenge == GameManager.SpecScores.Default)
+        if (selectedChoice.specChallenge == GameManager.SpecScores.Default)
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(true);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(false);
@@ -142,7 +168,7 @@ public class InteractionManager : MonoBehaviour
         //Test if the choice is available to the player and displays the reason it cannot be selected if not.
         Choice.IsAvailableTypes isAvailable = selectedChoice.IsAvailable();
 
-        if(isAvailable == Choice.IsAvailableTypes.available)
+        if (isAvailable == Choice.IsAvailableTypes.available)
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(false);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = true;
@@ -168,6 +194,155 @@ public class InteractionManager : MonoBehaviour
         {
             componentPanels.Add(Instantiate(componentPanelPrefab, componentPanelsParent.transform));
         }
+    }
+
+    #endregion
+
+    #region Combat Handling
+
+    private void SetupTargets()
+    {
+        foreach (GameObject targetButton in targetButtons)
+        {
+            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            if (player == null)
+            {
+                targetButton.SetActive(false);
+            }
+            else
+            {
+                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
+                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
+            }
+        }
+    }
+
+    public void DisplayTargets()
+    {
+        targetPanel.SetActive(true);
+
+        targetName.GetComponent<TextMeshProUGUI>().text = "";
+        selectedTarget = GameManager.DEFAULT_PLAYER_ID;
+        targetButton.GetComponent<Button>().interactable = false;
+
+        foreach (GameObject targetButton in targetButtons)
+        {
+            if (!attackablePlayers.Exists(x => x == targetButton.GetComponent<TargetProperties>().playerID))
+            {
+                targetButton.GetComponent<Button>().interactable = false;
+            }
+        }
+    }
+
+    public void SelectTarget(int buttonID)
+    {
+        Player targetPlayer = GameManager.instance.GetPlayer(targetButtons[buttonID].GetComponent<TargetProperties>().playerID);
+
+        selectedTarget = targetPlayer.playerID;
+        targetName.GetComponent<TextMeshProUGUI>().text = targetPlayer.playerName;
+
+        targetButton.GetComponent<Button>().interactable = true;
+    }
+
+    public void ConfirmTarget()
+    {
+        Player attackingPlayer = GameManager.instance.GetActivePlayer();
+        Player defendingPlayer = GameManager.instance.GetPlayer(selectedTarget);
+
+        combatPanel.SetActive(true);
+
+        combatPanel.GetComponent<CombatComponents>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.playerName;
+        combatPanel.GetComponent<CombatComponents>().defenderName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.playerName;
+        combatPanel.GetComponent<CombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(attackingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<CombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GetCharacterPortrait(defendingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = false;
+
+        attackerSpecScore = GameManager.SpecScores.Default;
+        defenderSpecScore = GameManager.SpecScores.Default;
+    }
+
+    private Sprite GetCharacterPortrait(Character.CharacterTypes characterType)
+    {
+        switch (characterType)
+        {
+            case (Character.CharacterTypes.Brute):
+                return characterPortraits[0];
+            case (Character.CharacterTypes.Butler):
+                return characterPortraits[1];
+            case (Character.CharacterTypes.Chef):
+                return characterPortraits[2];
+            case (Character.CharacterTypes.Engineer):
+                return characterPortraits[3];
+            case (Character.CharacterTypes.Singer):
+                return characterPortraits[4];
+            case (Character.CharacterTypes.Techie):
+                return characterPortraits[5];
+            default:
+                throw new NotImplementedException("Not a valid character type.");
+        }
+    }
+
+    public void AttackerSpec(string specScore)
+    {
+        GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
+
+        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
+        attackerSpecScore = chosenSpec;
+
+        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().attackerSpecButtons)
+        {
+            specButton.GetComponent<Button>().interactable = false;
+        }
+
+        if (!(defenderSpecScore == GameManager.SpecScores.Default))
+        {
+            DisplayWinner();
+        }
+    }
+
+    public void DefenderSpec(string specScore)
+    {
+        GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
+
+        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = specScore;
+        defenderSpecScore = chosenSpec;
+
+        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().defenderSpecButtons)
+        {
+            specButton.GetComponent<Button>().interactable = false;
+        }
+
+        if (!(attackerSpecScore == GameManager.SpecScores.Default))
+        {
+            DisplayWinner();
+        }
+    }
+
+
+    private void DisplayWinner()
+    {
+        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = true;
+
+        //If perform combat returns true, means the attacker wins
+        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
+        {
+            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+        }
+        else
+        {
+            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
+        }
+
+        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+    }
+
+    public void CloseCombat()
+    {
+        targetPanel.SetActive(false);
+        combatPanel.SetActive(false);
     }
 
     #endregion

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public const int DEFAULT_PLAYER_ID = -1;
 
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -164,6 +164,18 @@ public class GameManager : MonoBehaviour
     public Player GetActivePlayer()
     {
         return GetOrderedPlayer(activePlayer);
+    }
+
+    /// <summary>
+    /// 
+    /// Returns the player of a particular character type
+    /// 
+    /// </summary>
+    /// <param name="characterType">The character type to retrieve</param>
+    /// <returns>The player of the character type</returns>
+    public Player GetPlayer(Character.CharacterTypes characterType)
+    {
+        return players.Find(x => x.Character.CharacterType == characterType);
     }
 
     #endregion
@@ -933,17 +945,17 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Performs a combat scenario between two players, considering the counters for each player based on the given spec score
+    /// Performs a combat scenario between two players, considering the counters for each player based on the given spec score. The attacker
+    /// will always be the active player
     /// 
     /// </summary>
-    /// <param name="attackerID">The playerID of the attacker</param>
     /// <param name="attackerSpec">The name of the spec score the attacker is using</param>
     /// <param name="defenderID">The playerID of the defender</param>
     /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
     /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
-    public bool PerformCombat(int attackerID, SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
+    public bool PerformCombat(SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
     {
-        Player attackingPlayer = GetPlayer(attackerID);
+        Player attackingPlayer = GetActivePlayer();
         Player defendingPlayer = GetPlayer(defenderID);
 
         float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
@@ -952,51 +964,31 @@ public class GameManager : MonoBehaviour
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
         {
-            players[attackerID].isRevealed = true;
+            GetActivePlayer().isRevealed = true;
         }
 
-        //Below statements determine the victory of a combat
-        //First set of statements consider whether the attacker counters the defender, or vice versa, or if there are no counters and applys modifiers to the relevant spec scores accordingly
-        //Next set of statements determines who wins the combat based on the relevant spec scores, updating life points and returning outcome accordingly
+        //Below statements determine if the attacker or defender counters the other combat participant. If they do, their
+        //score is multiplied by the counter multiplier. If there are no counters, leaves scores untouched.
         if (DetermineCounter(attackerSpec, defenderSpec))
         {
-            if (PerformSpecChallenge(attackerScore * COUNTER_MOD, defenderScore))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
+            attackerScore *= COUNTER_MOD;
         }
         else if (DetermineCounter(defenderSpec, attackerSpec))
         {
-            if (PerformSpecChallenge(attackerScore, defenderScore * COUNTER_MOD))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
+            defenderScore *= COUNTER_MOD;
+        }
+
+        //Once the counters have been determined, performs the combat between the two players. If the spec challenge is
+        //successful, then the attacker wins, otherwise the defender loses.
+        if (PerformSpecChallenge(attackerScore, defenderScore))
+        {
+            GetPlayer(defenderID).lifePoints -= 1;
+            return true;
         }
         else
         {
-            if (PerformSpecChallenge(attackerScore, defenderScore))
-            {
-                players[defenderID].lifePoints -= 1;
-                return true;
-            }
-            else
-            {
-                players[attackerID].lifePoints -= 1;
-                return false;
-            }
-
+            GetActivePlayer().lifePoints -= 1;
+            return false;
         }
     }
 

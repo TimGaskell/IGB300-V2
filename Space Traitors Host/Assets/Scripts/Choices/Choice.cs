@@ -320,7 +320,7 @@ public class Choice
     /// <returns>The display text</returns>
     public string FailText()
     {
-        string corruptionText = IntResourceChange(corruptionFail, " Corruption");
+        string corruptionText = IntResourceChange(corruptionFail, "% Corruption");
         string lifeText = IntResourceChange(lifeFail, " Life Points");
 
         return corruptionText + lifeText;
