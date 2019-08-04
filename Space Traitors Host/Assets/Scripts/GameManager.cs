@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     public float playerPower;
     public float aiPowerChange;
     //The target score for the player when the AI attacks them
-    private int aiTargetScore;
+    public int aiTargetScore;
 
     //The ID of a player who has newly been selected as traitor
     public int newTraitor;
@@ -923,11 +923,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="specScore">The name of the spec score the player wants to use against the AI</param>
     /// <returns>True if the player wins the combat. False otherwise</returns>
-    private bool AIAttackPlayer(SpecScores specScore)
+    public bool AIAttackPlayer(SpecScores specScore)
     {
         bool playerWin;
 
-        float targetSpecScore = ObtainSpecScore(players[targetPlayer], specScore);
+        float targetSpecScore = ObtainSpecScore(GetPlayer(targetPlayer), specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -1041,7 +1041,7 @@ public class GameManager : MonoBehaviour
     /// <param name="player">The player who is being tested</param>
     /// <param name="specScore">The name of the spec score to be utilised</param>
     /// <returns>The value of the relevant spec score for that player</returns>
-    private float ObtainSpecScore(Player player, SpecScores specScore)
+    public float ObtainSpecScore(Player player, SpecScores specScore)
     {
         switch (specScore)
         {
@@ -1162,21 +1162,27 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 
     /// Checks that all the non-traitors are in the escape room and returns true if so. If there is 
-    /// a traitor that is not in the escape room, returns false. Otherwise returns true
+    /// a non traitor that is not in the escape room, returns false. If not all the components have been installed
+    /// also returns false
     /// 
     /// </summary>
     /// <returns></returns>
     private bool CheckNonTraitorVictory()
     {
-        foreach(Player player in players)
+        if (CheckInstalledComponents())
         {
-            if(!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+            foreach (Player player in players)
             {
-                return false;
+                if (!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     #endregion

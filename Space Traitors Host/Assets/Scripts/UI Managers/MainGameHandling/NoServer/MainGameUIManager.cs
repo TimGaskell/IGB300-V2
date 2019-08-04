@@ -120,6 +120,7 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(true);
                 playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -225,6 +226,19 @@ public class MainGameUIManager : MonoBehaviour
     public void ExitGame()
     {
         SceneManager.LoadScene(GameManager.MainMenuScene);
+    }
+
+    /// <summary>
+    /// 
+    /// Confirms the spec score the player wants to use when targetted by an AI Attack
+    /// 
+    /// </summary>
+    public void ConfirmSpecSelection()
+    {
+        GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
+        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+        GameManager.instance.CheckTraitorVictory();
+        IncrementPhase();
     }
 
     #endregion
