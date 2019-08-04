@@ -25,21 +25,21 @@ public class MusicManager : MonoBehaviour
         string sceneName = currentScene.name;
         
 
-        if (sceneName == "server")
-        {
-            if (server.InstalledComponents == 5)
-            {
-                ChangeMusicClip(victoryMusic);
-            }
-            else
-            {
-                ChangeMusicClip(gameMusic);
-            }
-        }
-        else if (sceneName == "Character Select" || sceneName == "LobbyTest")
-        {
-            ChangeMusicClip(menuMusic);
-        }
+        //if (sceneName == "server")
+       // {
+           // if (server.InstalledComponents == 5)
+          //  {
+          //      ChangeMusicClip(victoryMusic);
+          //  }
+           // else
+           // {
+             //   ChangeMusicClip(gameMusic);
+            //}
+        //}
+        //else if (sceneName == "Character Select" || sceneName == "LobbyTest")
+        //{
+          //  ChangeMusicClip(menuMusic);
+        //}
     }
 
     private void StopMusic()

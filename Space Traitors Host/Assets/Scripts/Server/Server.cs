@@ -74,6 +74,7 @@ public enum ADDRESSFAM
 
 public class Server : MonoBehaviour {
     //Networking variables
+    public static Server Instance { get; set; }
     private byte reliableChannel;
     private int hostID;
     private int connectionID;
@@ -86,7 +87,7 @@ public class Server : MonoBehaviour {
 
     private bool isStarted = false;
     private byte error;
-    private string serverIP = IPManager.GetIP(ADDRESSFAM.IPv4);
+    public string serverIP = IPManager.GetIP(ADDRESSFAM.IPv4);
 
     //Other
     public AudioSource connectSound;
@@ -95,8 +96,6 @@ public class Server : MonoBehaviour {
     private List<GameObject> playersRemoved = new List<GameObject>();
     public GameObject[] ScrapTotals;
     public GameObject[] Components;
-    public GameObject AiPowerSliderUI;
-    public GameObject playerStorage;
     private GameObject setter;
     private Scene currentScene;
     public Text connectText;
@@ -118,6 +117,7 @@ public class Server : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
 
@@ -336,8 +336,8 @@ public class Server : MonoBehaviour {
 
         if ((sceneName == "LobbyTest") || (sceneName == "Character Select"))
             return players;
-        else if (sceneName == "server")
-            return playerStorage.GetComponent<RoundManager>().playersInGame;
+        //else if (sceneName == "server")
+          //  return playerStorage.GetComponent<RoundManager>().playersInGame;
         else {
             Debug.Log("Could not get the correct scene");
             return null;
