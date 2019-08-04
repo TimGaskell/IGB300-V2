@@ -39,6 +39,9 @@ public class GameButton: MonoBehaviour
 
         Server.Instance.serverIP = gameIP;
         Server.Instance.ClientInitialise();
+        if (Server.Instance.connected) {
+            SceneManager.LoadScene("Lobby");
+        }
 
     }
 

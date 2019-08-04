@@ -51,6 +51,7 @@ public class HostGame : MonoBehaviour
                // networkManager.StartHost();
                // networkManager.networkAddress = roomName;
                 Server.Instance.HostInitialise();
+                SceneManager.LoadScene("Lobby");
             }
             else
             {

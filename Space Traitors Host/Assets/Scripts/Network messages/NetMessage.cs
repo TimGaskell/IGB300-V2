@@ -21,6 +21,7 @@ public static class NetOP
     public const int CombatBeingAttacked = 12;
     public const int PlayerElimination = 13;
     public const int NonTraitorVictory = 14;
+    public const int ChangeScenes = 26;
 
 
     #endregion

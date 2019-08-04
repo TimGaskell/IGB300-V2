@@ -21,6 +21,9 @@ public class Player
 
     public int roomPosition;
 
+    //Connection
+    public bool isConnected;
+
     //Player Resources
     public int scrap;
     private int corruption;

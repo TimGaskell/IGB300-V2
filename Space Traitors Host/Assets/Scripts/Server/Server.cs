@@ -79,6 +79,7 @@ public class Server : MonoBehaviour {
     private int hostID;
     private int connectionID;
     private int webHostID;
+    public bool connected;
 
     private const int maxUser = 100;
     private const int port = 26000;
@@ -211,16 +212,14 @@ public class Server : MonoBehaviour {
 
             //When user connects to game
             case NetworkEventType.ConnectEvent:
-                Debug.Log("yeet");
                 connectSound.Play();
                 //Loop through to find a player not already connected, and assign them their ID
                 foreach (GameObject player in playerArray()) {
-                    if (!player.GetComponent<PlayerConnect>().connected) {
-                        if (sceneName == "LobbyTest")
+                    if (!player.GetComponent<Player>().isConnected) {
+                        if (sceneName == "LobbyLan")
                             LobbyConnectOrDisconnect(player, true, connectionID, true);
-                        else if (sceneName == "server")
+                        else if (sceneName == "GameLevel")
                             GameConnectOrDisconnect(player, true, connectionID);
-
                         Debug.Log(player.name + " has connected through host " + recHostID);
                         break;
                     }
@@ -232,13 +231,11 @@ public class Server : MonoBehaviour {
                 //Loop through to find player that is disconnecting, based on their ID
                 foreach (GameObject player in playerArray()) {
                     if (player.GetComponent<PlayerConnect>().playerID == connectionID) {
-                        if (sceneName == "LobbyTest")
+                        if (sceneName == "LobbyLan")
                             //Reset player variables
                             LobbyConnectOrDisconnect(player, false, 0, false);
-                        else if (sceneName == "server")
+                        else if (sceneName == "GameLevel")
                             GameConnectOrDisconnect(player, false, 0);
-
-
                         Debug.Log(player.name + " has disconnected");
                         break;
                     }
@@ -278,6 +275,7 @@ public class Server : MonoBehaviour {
                 break;
 
             case NetworkEventType.ConnectEvent:
+                connected = true;
                 Debug.Log(string.Format("Connected to server"));
                 //Disable the connect button so player can't have multiple instances
                 break;
@@ -378,17 +376,14 @@ public class Server : MonoBehaviour {
 
     }
 
-    //This needs to be updated
     private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
-        player.GetComponent<PlayerConnect>().connected = connect;
-        player.GetComponent<PlayerConnect>().playerID = conID;
-        player.GetComponent<PlayerConnect>().playerImage.enabled = imageEnable;
+        player.GetComponent<Player>().isConnected = connect;
+        player.GetComponent<Player>().playerID = conID;      
     }
 
-    //This needs to be updated
     private void GameConnectOrDisconnect(GameObject player, bool connect, int conID) {
-        // player.GetComponent<Player>().connected = connect;
-        // player.GetComponent<Player>().playerID = conID;
+        player.GetComponent<Player>().isConnected = connect;
+        player.GetComponent<Player>().playerID = conID;
     }
 
     //This needs to be updated
@@ -453,8 +448,8 @@ public class Server : MonoBehaviour {
         playersJoined = players.Count;
         int i = 0;
         foreach (GameObject player in players) {
-            playerIDs[i] = player.GetComponent<PlayerConnect>().playerID;
-            player.GetComponent<PlayerConnect>().transform.parent = null;
+            playerIDs[i] = player.GetComponent<Player>().playerID;
+            player.transform.parent = null;
             DontDestroyOnLoad(player);
             i++;
         }
@@ -470,8 +465,8 @@ public class Server : MonoBehaviour {
     {
         foreach (GameObject player in players)
         {
-            tempPlayerID = player.GetComponent<PlayerConnect>().playerID;
-            //SendLocation(0);
+            tempPlayerID = player.GetComponent<Player>().playerID;
+            SendChangeScene("Lobby");
         }
     }
     public void SendClient(NetMessage msg) {
@@ -501,6 +496,19 @@ public class Server : MonoBehaviour {
         NetworkTransport.Send(hostID, connectionID, reliableChannel, buffer, byteSize, out error);
 
     }
+
+# region Server Sent Messages
+
+    public void SendChangeScene(string SceneName) {
+
+        SceneChange scene = new SceneChange();
+        scene.SceneName = SceneName;
+        SendClient(scene);
+    }
+
+
+
+#endregion
 
     #region Client Sent Messages
 
