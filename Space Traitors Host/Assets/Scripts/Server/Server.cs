@@ -88,6 +88,7 @@ public class Server : MonoBehaviour {
     private bool isStarted = false;
     private byte error;
     public string serverIP = IPManager.GetIP(ADDRESSFAM.IPv4);
+    private bool isServer = false;
 
     //Other
     public AudioSource connectSound;
@@ -129,7 +130,7 @@ public class Server : MonoBehaviour {
 
         ConnectionConfig config = new ConnectionConfig();
         reliableChannel = config.AddChannel(QosType.Reliable);
-
+        isServer = true;
 
         HostTopology topo = new HostTopology(config, maxUser);
 
@@ -183,14 +184,16 @@ public class Server : MonoBehaviour {
         currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
 
-    
-        //Networking messages
-        UpdateMessagePump();
+        //NetworkMessaging
+        if (isServer) {
+            ServerUpdateMessagePump();
+        }
+        ClientUpdateMessagePump();
     }
 
 
 
-    private void UpdateMessagePump() {
+    private void ServerUpdateMessagePump() {
         if (!isStarted) {
             return;
         }
@@ -249,6 +252,47 @@ public class Server : MonoBehaviour {
                 NetMessage msg = (NetMessage)formatter.Deserialize(ms);
 
                 OnData(connectionID, channelID, recHostID, msg);
+                break;
+
+            case NetworkEventType.BroadcastEvent:
+                Debug.Log("Unexpected network event type");
+                break;
+        }
+    }
+
+    private void ClientUpdateMessagePump() {
+
+        if (!isStarted) {
+            return;
+        }
+        int recHostID;  //checks whether this is from Web or standalone
+        int connectionID; //checks which user is sending info
+        int channelID;  //checks lane infor is being sent from
+
+        byte[] recBuffer = new byte[byteSize];
+        int dataSize;
+
+        NetworkEventType type = NetworkTransport.Receive(out recHostID, out connectionID, out channelID, recBuffer, byteSize, out dataSize, out error);
+        switch (type) {
+            case NetworkEventType.Nothing:
+                break;
+
+            case NetworkEventType.ConnectEvent:
+                Debug.Log(string.Format("Connected to server"));
+                //Disable the connect button so player can't have multiple instances
+                break;
+
+            case NetworkEventType.DisconnectEvent:
+                Debug.Log(string.Format("You were disconnected"));
+                break;
+
+            case NetworkEventType.DataEvent:
+                BinaryFormatter formatter = new BinaryFormatter();
+                MemoryStream ms = new MemoryStream(recBuffer);
+                NetMessage msg = (NetMessage)formatter.Deserialize(ms);
+
+                OnData(connectionID, channelID, recHostID, msg);
+
                 break;
 
             case NetworkEventType.BroadcastEvent:
