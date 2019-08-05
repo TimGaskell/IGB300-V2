@@ -231,7 +231,7 @@ public class Server : MonoBehaviour {
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                foreach (GameObject player in playerArray()) {
+                foreach (GameObject player in players)) {
                     if (player.GetComponent<PlayerConnect>().playerID == connectionID) {
                         if (sceneName == "LobbyLan")
                             //Reset player variables
@@ -458,10 +458,10 @@ public class Server : MonoBehaviour {
         }
 
         //Send message to every player's client to move onto next scene
-        ClientNextScene();
+        SendChangeScene("Character Selection");
 
         //Change to the character select
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Character Selection");
     }
 
     public void ClientNextScene()
@@ -508,10 +508,13 @@ public class Server : MonoBehaviour {
         scene.SceneName = SceneName;
         SendClient(scene);
     }
+    #endregion
 
 
+    #region Client Received Messages
 
-#endregion
+
+    #endregion
 
     #region Client Sent Messages
 
@@ -607,7 +610,7 @@ public class Server : MonoBehaviour {
     }
     #endregion
 
-    #region Server Recieved Messages
+    #region Server Received Messages
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details) {
 

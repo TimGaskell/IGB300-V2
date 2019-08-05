@@ -14,9 +14,19 @@ public class GameButton: MonoBehaviour
     private GameObject textIP;
     private GameObject textInfo;
     private NetworkManager nm;
- 
-    
- 
+
+
+
+    public void Update()
+    {
+        if (Server.Instance.connected)
+        {
+            NetworkManager.singleton.GetComponent<CustomNetworkDiscovery>().StopBroadcast();
+            SceneManager.LoadScene("Lobby");
+            
+        }
+
+    }
 
     public void Setup(string IP, string info)
     {
@@ -39,11 +49,12 @@ public class GameButton: MonoBehaviour
 
         Server.Instance.serverIP = gameIP;
         Server.Instance.ClientInitialise();
-        if (Server.Instance.connected) {
-            SceneManager.LoadScene("Lobby");
-        }
+        
+       
+       
 
     }
+   
 
   
 
