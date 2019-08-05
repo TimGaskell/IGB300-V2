@@ -28,16 +28,6 @@ public class LobbyUIManager : NetworkBehaviour
 
     void Update() {
 
-        if (NetworkServer.connections.Count > 0) {
-
-            ServerPanel.SetActive(true);
-            ClientPanel.SetActive(false);
-
-        }
-        else {
-            ClientPanel.SetActive(true);
-            ServerPanel.SetActive(false);
-        }
     }
 
 

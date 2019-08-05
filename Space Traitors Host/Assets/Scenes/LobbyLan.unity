@@ -190,8 +190,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2134034032}
   m_HandleRect: {fileID: 2134034031}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1806,7 +1806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00002142929, y: 0.000023964485}
+  m_AnchoredPosition: {x: 0.00002142929, y: 0.000023812952}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1728198663
@@ -2412,6 +2412,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8992639022478983018, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
+      propertyPath: players.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8992639022478983018, guid: 6e2f30af9fc739d4887766955637c307,
+        type: 3}
       propertyPath: players.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -2430,5 +2435,11 @@ PrefabInstance:
       propertyPath: players.Array.data[3]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8992639022478983018, guid: 6e2f30af9fc739d4887766955637c307,
+        type: 3}
+      propertyPath: PlayerObject
+      value: 
+      objectReference: {fileID: 3252958001378915573, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e2f30af9fc739d4887766955637c307, type: 3}
