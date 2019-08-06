@@ -70,6 +70,11 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    public int BaseBrawn { get { return Character.baseBrawn; } }
+    public int BaseSkill { get { return Character.baseSkill; } }
+    public int BaseTech { get { return Character.baseTech; } }
+    public int BaseCharm { get { return Character.baseCharm; } }
+
     public int brawnModTemp;
     public int skillModTemp;
     public int techModTemp;

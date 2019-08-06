@@ -12,7 +12,7 @@ public class CombatAvailability: NetMessage
 
     }
 
-    public List<GameObject>Players { get; set; } //list of gameobjects of the players nearby
+    public List<int>Players { get; set; } 
 
 }
 

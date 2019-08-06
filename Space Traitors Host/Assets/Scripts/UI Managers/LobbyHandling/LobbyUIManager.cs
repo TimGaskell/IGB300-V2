@@ -15,6 +15,8 @@ public class LobbyUIManager : NetworkBehaviour
 
     private Transform nameEntryFields;
 
+    private int counter = 0;
+
     private void Start()
     {
 
@@ -27,6 +29,8 @@ public class LobbyUIManager : NetworkBehaviour
     }
 
     void Update() {
+
+
 
     }
 
@@ -83,6 +87,27 @@ public class LobbyUIManager : NetworkBehaviour
             counter++;
         }
     }
+
+
+    public void AddPlayerNames() {
+
+
+        foreach (Transform entryField in nameEntryFields.transform) {
+
+            string tempPlayername = Server.Instance.players[counter].GetComponent<Player>().playerName;
+
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    counter++;
+                }
+
+
+            }
+        }
+    }
+
 
     /// <summary>
     /// 
