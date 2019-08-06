@@ -805,7 +805,7 @@ public class Server : MonoBehaviour {
             if (player.GetComponent<Player>().playerID == conID) {
 
                 GameManager.instance.SelectCharacter((Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), character.SelectedCharacter));
-                SendCharacterBaseStats(conID,character.SelectedCharacter);
+                
               
             }
         }

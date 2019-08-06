@@ -25,6 +25,7 @@ public class LobbyUIManager : NetworkBehaviour
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
+
         
     }
 
@@ -63,6 +64,8 @@ public class LobbyUIManager : NetworkBehaviour
             Debug.Log("Not a valid player number");
         }
     }
+
+
 
     /// <summary>
     /// 

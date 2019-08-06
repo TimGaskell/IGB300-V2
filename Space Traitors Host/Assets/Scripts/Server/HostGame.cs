@@ -14,6 +14,8 @@ public class HostGame : MonoBehaviour
 
     private NetworkManager networkManager;
 
+    public Scene NextScene;
+
 
     void Start() {
         networkManager = NetworkManager.singleton;
@@ -51,7 +53,7 @@ public class HostGame : MonoBehaviour
                // networkManager.StartHost();
                 networkManager.networkAddress = roomName;
                 Server.Instance.HostInitialise();
-                SceneManager.LoadScene("Lobby");
+                SceneManager.LoadScene("ServerLobby");
             }
             else
             {
