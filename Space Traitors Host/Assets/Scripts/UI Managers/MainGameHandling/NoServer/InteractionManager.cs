@@ -96,15 +96,15 @@ public class InteractionManager : MonoBehaviour
         }
 
         //Checks is combat is available for the active player, enabling the attack button if it is
-        //attackablePlayers = GameManager.instance.CheckCombat();
-        //if (attackablePlayers.Count == 0)
-        //{
-        //    combatButton.GetComponent<Button>().interactable = false;
-        //}
-        //else
-        //{
-        //    combatButton.GetComponent<Button>().interactable = true;
-        //}
+        attackablePlayers = GameManager.instance.CheckCombat();
+        if (attackablePlayers.Count == 0)
+        {
+            combatButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            combatButton.GetComponent<Button>().interactable = true;
+        }
     }
 
     #region Standard Choice

@@ -83,7 +83,7 @@ public class Character
                 baseSkill = 3;
                 baseTech = 5;
                 baseCharm = 3;
-                characterAbility = new QuickRepair();
+                characterAbility = new PowerBoost();
                 break;
             case CharacterTypes.Singer:
                 baseBrawn = 2;

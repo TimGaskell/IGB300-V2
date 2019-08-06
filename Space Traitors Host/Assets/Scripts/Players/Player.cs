@@ -183,6 +183,18 @@ public class Player
 
     /// <summary>
     /// 
+    /// Get an ability based on its ID in the list
+    /// 
+    /// </summary>
+    /// <param name="abilityID">The ID of the ability in the player ability list</param>
+    /// <returns>The ability</returns>
+    public Ability GetAbility(int abilityID)
+    {
+        return abilities[abilityID];
+    }
+
+    /// <summary>
+    /// 
     /// Assigns the active ability to be deactivated later.
     /// 
     /// </summary>
@@ -194,12 +206,24 @@ public class Player
 
     /// <summary>
     /// 
+    /// Checks if the active ability is of the type specified. If it is returns true. False otherwise
+    /// 
+    /// </summary>
+    /// <param name="abilityType">The type of ability to compare with</param>
+    /// <returns>True if the active ability is of this type. False otherwise</returns>
+    public bool CheckActiveAbility(Ability.AbilityTypes abilityType)
+    {
+        return activeAbility.abilityType == abilityType;
+    }
+
+    /// <summary>
+    /// 
     /// Deactivate any active abilities a player may have
     /// 
     /// </summary>
     public void DisableActiveAbility()
     {
-        if(activeAbility.abilityType != Ability.AbilityTypes.Default)
+        if(!CheckActiveAbility(Ability.AbilityTypes.Default))
         {
             activeAbility.Deactivate();
             AssignActiveAbility(new Ability());

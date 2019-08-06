@@ -39,7 +39,7 @@ public class Ability
     /// <returns>Returns true if the player has enough scrap to use the ability. False otherwise</returns>
     public bool CheckScrap()
     {
-        return GameManager.instance.GetActivePlayer().scrap - scrapCost < 0;
+        return GameManager.instance.GetActivePlayer().scrap - scrapCost >= 0;
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class Ability
     /// <returns>Returns false if the player does not have enough corruption to use the ability. If they do, returns true</returns>
     public bool CheckCorruption()
     {
-        return GameManager.instance.GetActivePlayer().Corruption <= corruptionRequirement;
+        return GameManager.instance.GetActivePlayer().Corruption >= corruptionRequirement;
     }
 
     /// <summary>

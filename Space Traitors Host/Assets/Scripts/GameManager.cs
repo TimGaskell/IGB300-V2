@@ -662,8 +662,7 @@ public class GameManager : MonoBehaviour
     {
         activePlayer++;
 
-        //When the players turn starts, disables any active abilities they may have
-        GetActivePlayer().DisableActiveAbility();
+        
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers)
@@ -677,6 +676,11 @@ public class GameManager : MonoBehaviour
             {
                 ActivateSurge();
             }
+        }
+        else
+        {
+            //When the players turn starts, disables any active abilities they may have
+            GetActivePlayer().DisableActiveAbility();
         }
     }
 
@@ -994,7 +998,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
-                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed))
+                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition) 
+                    //(attackingPlayer.isTraitor || defendingPlayer.isRevealed))
                 {
                     validIDs.Add(defendingPlayer.playerID);
                 }
@@ -1175,6 +1180,7 @@ public class GameManager : MonoBehaviour
         else
         {
             GetActivePlayer().lifePoints -= 1;
+            sabotageCharges--;
             return false;
         }
     }

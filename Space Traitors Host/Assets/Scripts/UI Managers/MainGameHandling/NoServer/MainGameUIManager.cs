@@ -91,6 +91,7 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
+                abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
                 playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
