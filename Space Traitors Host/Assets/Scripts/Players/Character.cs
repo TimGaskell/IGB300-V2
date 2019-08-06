@@ -16,7 +16,7 @@ public class Character
     public int baseTech;
     public int baseCharm;
 
-    Ability characterAbility;
+    public Ability characterAbility;
 
     /// <summary>
     /// 
@@ -76,7 +76,7 @@ public class Character
                 baseSkill = 6;
                 baseTech = 4;
                 baseCharm = 2;
-                characterAbility = new Preparation();
+                characterAbility = new PowerBoost();
                 break;
             case CharacterTypes.Engineer:
                 baseBrawn = 4;
