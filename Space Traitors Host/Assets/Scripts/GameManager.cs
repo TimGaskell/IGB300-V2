@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public const int DEFAULT_PLAYER_ID = -1;
 
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 2;
+    private const int DEFAULT_NUM_PLAYERS = 4;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -91,8 +91,8 @@ public class GameManager : MonoBehaviour
     public GameObject roomList;
 
     public int installedComponents;
-
-    public List<Ability> corruptionAbilities;
+    //boolean used in the sabotage ability to detect if a player has sabotaged the escape shuttle
+    public int sabotageCharges;
 
     public enum TurnPhases { Default, Abilities, ActionPoints, Movement, Interaction, BasicSurge, AttackSurge };
     public TurnPhases currentPhase;
@@ -218,6 +218,26 @@ public class GameManager : MonoBehaviour
     public Room GetRoom(int roomIndex)
     {
         return roomList.GetComponent<ChoiceRandomiser>().rooms[roomIndex].GetComponent<Room>();
+    }
+
+    /// <summary>
+    /// 
+    /// Returns a list of all the room scripts on the rooms adjacent to the room of the given index
+    /// 
+    /// </summary>
+    /// <param name="roomIndex">The index of the room to get adjacent to</param>
+    /// <returns>The list of adjacent rooms</returns>
+    public List<Room> GetAdjacentRooms(int roomIndex)
+    {
+        GameObject[] adjacentRoomObjects = roomList.GetComponent<ChoiceRandomiser>().rooms[roomIndex].GetComponent<LinkedNodes>().linkedNodeObjects;
+        List<Room> adjacentRooms = new List<Room>();
+
+        foreach (GameObject roomObject in adjacentRoomObjects)
+        {
+            adjacentRooms.Add(roomObject.GetComponent<Room>());
+        }
+
+        return adjacentRooms;
     }
 
     #endregion
@@ -418,13 +438,6 @@ public class GameManager : MonoBehaviour
             ResetPlayers();
             playerOrder = new List<int>();
 
-            //Instantiate the corruption abilities
-            corruptionAbilities = new List<Ability>();
-            corruptionAbilities.Add(new SensorScan());
-            corruptionAbilities.Add(new CodeInspection());
-            corruptionAbilities.Add(new Sabotage());
-            corruptionAbilities.Add(new PowerUp());
-
             gameInit = true;
             Debug.Log("Game Initialised");
 
@@ -474,6 +487,8 @@ public class GameManager : MonoBehaviour
         CurrentVictory = VictoryTypes.None;
 
         traitorWinID = DEFAULT_PLAYER_ID;
+
+        sabotageCharges = 0;
     }
 
     /// <summary>
@@ -604,7 +619,8 @@ public class GameManager : MonoBehaviour
     /// <param name="characterType">The character type to be given to the player</param>
     public void SelectCharacter(Character.CharacterTypes characterType)
     {
-        players[playerOrder[activePlayer]].Character = new Character(characterType);
+        GetActivePlayer().Character = new Character(characterType);
+        GetActivePlayer().GenerateAbilityList();
         //Character Selection is in the reverse player order, so works backward through the player order list
         activePlayer--;
     }
@@ -645,6 +661,9 @@ public class GameManager : MonoBehaviour
     private void IncrementTurn()
     {
         activePlayer++;
+
+        
+
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers)
         {
@@ -657,6 +676,11 @@ public class GameManager : MonoBehaviour
             {
                 ActivateSurge();
             }
+        }
+        else
+        {
+            //When the players turn starts, disables any active abilities they may have
+            GetActivePlayer().DisableActiveAbility();
         }
     }
 
@@ -974,7 +998,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Checks if the players are in the same room as well as if either the attacking player is a traitor, or the defending player has been revealed as a traitor
-                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition && (attackingPlayer.isTraitor || defendingPlayer.isRevealed))
+                if (attackingPlayer.roomPosition == defendingPlayer.roomPosition) 
+                    //(attackingPlayer.isTraitor || defendingPlayer.isRevealed))
                 {
                     validIDs.Add(defendingPlayer.playerID);
                 }
@@ -1139,13 +1164,25 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
-    /// Installs a component from the active player
+    /// Installs a component from the active player. If the component was installed successfully, returns true.
+    /// If they fail to install due to a sabotage, returns false
     /// 
     /// </summary>
-    public void InstallComponent()
+    /// <returns>Returns true if the player installed the component successfully. False otherwise</returns>
+    public bool InstallComponent()
     {
-        GetActivePlayer().hasComponent = false;
-        installedComponents += 1;
+        if (sabotageCharges == 0)
+        {
+            GetActivePlayer().hasComponent = false;
+            installedComponents += 1;
+            return true;
+        }
+        else
+        {
+            GetActivePlayer().lifePoints -= 1;
+            sabotageCharges--;
+            return false;
+        }
     }
 
     /// <summary>

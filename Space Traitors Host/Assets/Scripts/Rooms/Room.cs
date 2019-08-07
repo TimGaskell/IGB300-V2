@@ -5,6 +5,8 @@ using UnityEngine;
 //Assigned to the room object which contains all the room models
 public class Room : MonoBehaviour
 {
+    public int roomIndex;
+
     public enum roomTypes { Default, Bar, Dining_Hall, Engineering, Kitchen, Sleeping_Pods, Spa, Escape };
     public roomTypes roomType;
 

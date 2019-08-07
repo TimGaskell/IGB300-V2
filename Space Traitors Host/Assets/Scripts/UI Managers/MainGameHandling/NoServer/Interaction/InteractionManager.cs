@@ -46,11 +46,6 @@ public class InteractionManager : MonoBehaviour
 
     private enum ParticipantTypes { Attacker, Defender }
 
-    private void Start()
-    {
-        SetupTargets();
-    }
-
     /// <summary>
     /// 
     /// Update the UI to allow the player to select the choices relevant to a particular room.
@@ -199,31 +194,6 @@ public class InteractionManager : MonoBehaviour
     #endregion
 
     #region Combat Handling
-
-    /// <summary>
-    /// 
-    /// Setups the target panel to show the players which are in the game (disabling those which are not) as well as setting up their names above
-    /// their portraits. Only needs to be called once when the game is started
-    /// 
-    /// </summary>
-    private void SetupTargets()
-    {
-        foreach (GameObject targetButton in targetButtons)
-        {
-            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
-            //If the player of the particular type does not exist, disables the target button for the character of that type
-            if (player == null)
-            {
-                targetButton.SetActive(false);
-            }
-            else
-            {
-                //Sets the player ID on the target image as well as their name above their image
-                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
-                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
-            }
-        }
-    }
 
     /// <summary>
     /// 

@@ -82,15 +82,14 @@ public class Player
     public int ModTech { get { return Character.baseTech + TechChange; } }
     public int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
-
-    //Character Specific Variables
-    public bool ChefBuffed = false; //Used for Chef's 'Preparation' ability
-    public bool IsInvisible = false; //Used for Techie's 'Muddle Sensors' ability
-
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
     //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
     public bool isRevealed;
+
+    private List<Ability> abilities;
+    //If an abilities effects persist beyond the turn they are used in, will store the ability hear to deactivate at the start of their next turn
+    public Ability activeAbility;
 
     //Reference to the players model in the game world
     public GameObject playerObject;
@@ -102,8 +101,8 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 0;
-        corruption = 0;
+        scrap = 1000;
+        corruption = 100;
 
         items = new List<Item>();
 
@@ -121,13 +120,10 @@ public class Player
         isTraitor = false;
         isRevealed = false;
 
-        playerObject = null;
-    }
+        abilities = new List<Ability>();
+        activeAbility = new Ability();
 
-    //Techie only, have player turn invisible on main screen
-    public void MuddleSensors(bool visible)
-    {
-       // this.gameObject.GetComponent<MeshRenderer>().enabled = visible;
+        playerObject = null;
     }
 
     /// <summary>
@@ -138,6 +134,8 @@ public class Player
     public Player(int PlayerID, string PlayerName, Character.CharacterTypes characterType) : this(PlayerID, PlayerName)
     {
         Character = new Character(characterType);
+        //If the character is predefined by the game manager, will not generate the ability list, so needs to be done here
+        GenerateAbilityList();
     }
 
     /// <summary>
@@ -152,6 +150,86 @@ public class Player
     {
         return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
     }
+
+    #region Abilitiy Handling
+    /// <summary>
+    /// 
+    /// Generates a list of the players abilities to access
+    /// 
+    /// </summary>
+    public void GenerateAbilityList()
+    {
+        abilities = new List<Ability>
+        {
+            Character.characterAbility,
+            new SensorScan(),
+            new CodeInspection(),
+            new Sabotage(),
+            new SuperCharge()
+        };
+    }
+
+    /// <summary>
+    /// 
+    /// Gets an ability of a particular type
+    /// 
+    /// </summary>
+    /// <param name="abilityType">The type of the ability</param>
+    /// <returns>The ability</returns>
+    public Ability GetAbility(Ability.AbilityTypes abilityType)
+    {
+        return abilities.Find(x => x.abilityType == abilityType);
+    }
+
+    /// <summary>
+    /// 
+    /// Get an ability based on its ID in the list
+    /// 
+    /// </summary>
+    /// <param name="abilityID">The ID of the ability in the player ability list</param>
+    /// <returns>The ability</returns>
+    public Ability GetAbility(int abilityID)
+    {
+        return abilities[abilityID];
+    }
+
+    /// <summary>
+    /// 
+    /// Assigns the active ability to be deactivated later.
+    /// 
+    /// </summary>
+    /// <param name="ability"></param>
+    public void AssignActiveAbility(Ability ability)
+    {
+        activeAbility = ability;
+    }
+
+    /// <summary>
+    /// 
+    /// Checks if the active ability is of the type specified. If it is returns true. False otherwise
+    /// 
+    /// </summary>
+    /// <param name="abilityType">The type of ability to compare with</param>
+    /// <returns>True if the active ability is of this type. False otherwise</returns>
+    public bool CheckActiveAbility(Ability.AbilityTypes abilityType)
+    {
+        return activeAbility.abilityType == abilityType;
+    }
+
+    /// <summary>
+    /// 
+    /// Deactivate any active abilities a player may have
+    /// 
+    /// </summary>
+    public void DisableActiveAbility()
+    {
+        if(!CheckActiveAbility(Ability.AbilityTypes.Default))
+        {
+            activeAbility.Deactivate();
+            AssignActiveAbility(new Ability());
+        }
+    }
+    #endregion
 
     #region Item Handling
 

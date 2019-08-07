@@ -26,6 +26,8 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
 
+    public GameObject sabotagePanel;
+
     private void Start()
     {
         if (GameManager.instance.serverActive)
@@ -35,6 +37,10 @@ public class MainGameUIManager : MonoBehaviour
         }
         else
         {
+            //Sets up targets for choosing other players on the combat and ability panels
+            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
+            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
+
             serverActivePanel.SetActive(false);
             noServerPanel.SetActive(true);
 
@@ -49,6 +55,8 @@ public class MainGameUIManager : MonoBehaviour
 
             nonTraitorVictoryPanel.SetActive(false);
             traitorVictoryPanel.SetActive(false);
+
+            sabotagePanel.SetActive(false);
 
             DisplayCurrentPhase();
             UpdateAIPower();
@@ -91,6 +99,7 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
+                abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
                 playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
@@ -200,7 +209,10 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void InstallComponent()
     {
-        GameManager.instance.InstallComponent();
+        if (!GameManager.instance.InstallComponent())
+        {
+            sabotagePanel.SetActive(true);
+        }
         UpdateComponentTracker();
         playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
@@ -239,6 +251,36 @@ public class MainGameUIManager : MonoBehaviour
         playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
         GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
+    }
+
+    /// <summary>
+    /// 
+    /// Setups the target panel to show the players which are in the game (disabling those which are not) as well as setting up their names above
+    /// their portraits. Only needs to be called once when the game is started
+    /// 
+    /// </summary>
+    private void SetupTargets(List<GameObject> targetButtons)
+    {
+        foreach (GameObject targetButton in targetButtons)
+        {
+            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            //If the player of the particular type does not exist, disables the target button for the character of that type
+            if (player == null)
+            {
+                targetButton.SetActive(false);
+            }
+            else
+            {
+                //Sets the player ID on the target image as well as their name above their image
+                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
+                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
+            }
+        }
+    }
+
+    public void CloseSabotagePanel()
+    {
+        sabotagePanel.SetActive(false);
     }
 
     #endregion
