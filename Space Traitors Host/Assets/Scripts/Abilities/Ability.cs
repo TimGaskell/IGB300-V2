@@ -15,7 +15,7 @@ public class Ability
     public int scrapCost;
     public int corruptionRequirement;
 
-    public enum ScanResources { Scrap, Item, Component }
+    public enum ScanResources { Default, Scrap, Items, Components }
 
     /// <summary>
     /// 
@@ -142,12 +142,12 @@ public class SecretPaths : Ability
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         SpendScrap();
         Debug.Log("Secret Paths Activate- Requires action point integration");
 
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(this);
+        GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
     }
 
     public override void Deactivate()
@@ -177,15 +177,15 @@ public class PowerBoost : Ability
         corruptionRequirement = 0;
     }
 
-    public override void Activate()
+    public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetActivePlayer().brawnModTemp += SPEC_MOD;
-        GameManager.instance.GetActivePlayer().skillModTemp += SPEC_MOD;
-        GameManager.instance.GetActivePlayer().techModTemp += SPEC_MOD;
-        GameManager.instance.GetActivePlayer().charmModTemp += SPEC_MOD;
+        GameManager.instance.GetPlayer(targetIndex).brawnModTemp += SPEC_MOD;
+        GameManager.instance.GetPlayer(targetIndex).skillModTemp += SPEC_MOD;
+        GameManager.instance.GetPlayer(targetIndex).techModTemp += SPEC_MOD;
+        GameManager.instance.GetPlayer(targetIndex).charmModTemp += SPEC_MOD;
 
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(this);
+        GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
     }
 
     public override void Deactivate()
@@ -281,8 +281,8 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetActivePlayer().playerObject.GetComponent<MeshRenderer>().enabled = false;
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(this);
+        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<MeshRenderer>().enabled = false;
+        GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
     }
 
     public override void Deactivate()
@@ -336,8 +336,8 @@ public class SensorScan : Ability
             {
                 //Checks if the resources are present in the current choice, adding the room's index to the list if it is present
                 if((resourceType == ScanResources.Scrap && choice.scrapChange >= 0) ||
-                    (resourceType == ScanResources.Item && choice.specItem.ItemType != Item.ItemTypes.Default) ||
-                    (resourceType == ScanResources.Component && choice.component))
+                    (resourceType == ScanResources.Items && choice.specItem.ItemType != Item.ItemTypes.Default) ||
+                    (resourceType == ScanResources.Components && choice.component))
                 {
                     roomIDs.Add(room.roomIndex);
                     //Breaks from the choice loop since if one of the choices contains the resource, the room must contain that resource
