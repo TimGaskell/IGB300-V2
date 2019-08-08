@@ -57,7 +57,7 @@ public class NSInventoryManager : MonoBehaviour
         }
     }
 
-    public void SelectItem()
+    public void SelectItem(int buttonID)
     {
 
     }

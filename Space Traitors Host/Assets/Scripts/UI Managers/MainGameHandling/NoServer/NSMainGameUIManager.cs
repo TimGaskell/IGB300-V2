@@ -62,6 +62,7 @@ public class NSMainGameUIManager : MonoBehaviour
 
             inventoryPanel.SetActive(false);
 
+            playerCards.GetComponent<NSPlayerCardManager>().InitialisePlayerCards();
             DisplayCurrentPhase();
             UpdateAIPower();
             UpdateComponentTracker();
@@ -105,6 +106,7 @@ public class NSMainGameUIManager : MonoBehaviour
                 abilityPanel.SetActive(true);
                 abilityPanel.GetComponent<NSAbilityManager>().SetupAbilities();
                 playerCards.GetComponent<NSPlayerCardManager>().UpdateActivePlayer();
+                playerCards.GetComponent<NSPlayerCardManager>().UpdateInventoryButton(GameManager.instance.activePlayer, true);
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -118,6 +120,7 @@ public class NSMainGameUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<NSInteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
+                playerCards.GetComponent<NSPlayerCardManager>().UpdateInventoryButton(GameManager.instance.activePlayer, false);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 aiPowerPanel.SetActive(false);

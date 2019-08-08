@@ -13,7 +13,7 @@ public class NSPlayerCardManager : MonoBehaviour
 
     public List<Sprite> playerPortraits;
 
-    private void Start()
+    public void InitialisePlayerCards()
     {
         //Update the player cards to start the game
         for (int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
@@ -21,6 +21,7 @@ public class NSPlayerCardManager : MonoBehaviour
             if (playerIndex < GameManager.instance.numPlayers)
             {
                 UpdatePlayerCard(playerIndex);
+                UpdateInventoryButton(playerIndex, false);
             }
             else
             {
@@ -92,5 +93,11 @@ public class NSPlayerCardManager : MonoBehaviour
     private string ObtainSpecInfo(float scaledSpec, int modSpec)
     {
         return string.Format("{0} / {1}", scaledSpec, modSpec);
+    }
+
+
+    public void UpdateInventoryButton(int playerIndex, bool enable)
+    {
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().inventoryButton.GetComponent<Button>().interactable = enable;
     }
 }

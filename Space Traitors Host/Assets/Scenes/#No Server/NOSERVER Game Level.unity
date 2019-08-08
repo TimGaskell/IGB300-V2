@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6382,6 +6382,7 @@ MonoBehaviour:
   lifePointsText: {fileID: 1325873770}
   traitorMarker: {fileID: 562514087}
   componentMarker: {fileID: 983256160}
+  inventoryButton: {fileID: 1613607240}
   specCounters:
   - {fileID: 1812576066}
   - {fileID: 432898263}
@@ -12823,6 +12824,7 @@ MonoBehaviour:
   lifePointsText: {fileID: 1713907262}
   traitorMarker: {fileID: 953551964}
   componentMarker: {fileID: 791200015}
+  inventoryButton: {fileID: 2106724334}
   specCounters:
   - {fileID: 1522246383}
   - {fileID: 1546986955}
@@ -16309,7 +16311,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5529412, g: 0.5529412, b: 0.5529412, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -23985,7 +23987,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5529412, g: 0.5529412, b: 0.5529412, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -33354,6 +33356,7 @@ MonoBehaviour:
   lifePointsText: {fileID: 1532880149}
   traitorMarker: {fileID: 215746886}
   componentMarker: {fileID: 523102367}
+  inventoryButton: {fileID: 591808156}
   specCounters:
   - {fileID: 1467651079}
   - {fileID: 1299879076}
@@ -43649,7 +43652,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.554, g: 0.554, b: 0.554, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -54410,7 +54413,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.5529412, g: 0.5529412, b: 0.5529412, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -55087,6 +55090,7 @@ MonoBehaviour:
   lifePointsText: {fileID: 982534123}
   traitorMarker: {fileID: 427708529}
   componentMarker: {fileID: 617319451}
+  inventoryButton: {fileID: 912791041}
   specCounters:
   - {fileID: 1210233207}
   - {fileID: 1820165318}

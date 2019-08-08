@@ -28,6 +28,12 @@ public class NSAbilityManager : MonoBehaviour
 
     public GameObject playerCards;
 
+    /// <summary>
+    /// 
+    /// Setup the abilities panel to display the abilities avaialble to the player, including disabling abilities which they do
+    /// not have enough scrap or corruption for.
+    /// 
+    /// </summary>
     public void SetupAbilities()
     {
         selectedAbility = new Ability();
@@ -76,6 +82,12 @@ public class NSAbilityManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// Pressing one of the ability buttons will select it to be confirmed later.
+    /// 
+    /// </summary>
+    /// <param name="buttonID">The ID of the button selected, which relates to the index of the ability in the players ability list</param>
     public void SelectAbility(int buttonID)
     {
         selectedAbility = GameManager.instance.GetActivePlayer().GetAbility(buttonID);
@@ -84,6 +96,11 @@ public class NSAbilityManager : MonoBehaviour
         selectButton.GetComponent<Button>().interactable = true;
     }
 
+    /// <summary>
+    /// 
+    /// Confirm the ability to be selected and open the relevant panel for the various scenarios which the abilities present.
+    /// 
+    /// </summary>
     public void ConfirmAbility()
     {
         selectedPlayer = GameManager.DEFAULT_PLAYER_ID;
@@ -91,11 +108,13 @@ public class NSAbilityManager : MonoBehaviour
 
         switch (selectedAbility.abilityType)
         {
+            //Case for abilities which do not require a selection screen
             case (Ability.AbilityTypes.Sabotage):
                 selectedAbility.Activate();
                 DisplayActiveAbility();
                 break;
-
+            
+            //Case for abilities which require a player to be targetted
             case (Ability.AbilityTypes.Secret_Paths):
             case (Ability.AbilityTypes.Power_Boost):
             case (Ability.AbilityTypes.Encouraging_Song):
@@ -108,6 +127,7 @@ public class NSAbilityManager : MonoBehaviour
                 playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "No target selected";
                 break;
 
+            //Case for abilities which require a resource to be selected
             case (Ability.AbilityTypes.Sensor_Scan):
 
                 resourceTargetDisplay.SetActive(true);
@@ -120,6 +140,12 @@ public class NSAbilityManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// Select a player target to be targeted with the active ability
+    /// 
+    /// </summary>
+    /// <param name="buttonID">The ID of the button being selected</param>
     public void SelectTarget(int buttonID)
     {
         selectedPlayer = targetButtons[buttonID].GetComponent<NSTargetProperties>().playerID;
@@ -127,11 +153,18 @@ public class NSAbilityManager : MonoBehaviour
         playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Selected: {0}", GameManager.instance.GetPlayer(selectedPlayer).playerName);
     }
 
+    /// <summary>
+    /// 
+    /// Confirm a player target to pass onto the selected ability and activate it.
+    /// 
+    /// </summary>
     public void ConfirmTarget()
     {
+        //For code inspection, need to display if the player is or isn't a traitor
         if(selectedAbility.abilityType == Ability.AbilityTypes.Code_Inspection)
         {
             selectedAbility.Activate(selectedPlayer, out bool isTraitor);
+            //Set up the modifier to the traitor string
             string traitorString = "";
             if (!isTraitor)
             {
@@ -148,6 +181,12 @@ public class NSAbilityManager : MonoBehaviour
         DisplayActiveAbility();
     }
 
+    /// <summary>
+    /// 
+    /// Select a resource target to be targeted with the sensor scan ability
+    /// 
+    /// </summary>
+    /// <param name="buttonID">The ID of the button being selected</param>
     public void SelectResource(int buttonID)
     {
         switch (buttonID)
@@ -167,8 +206,14 @@ public class NSAbilityManager : MonoBehaviour
         resourceSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Selected: {0}", selectedResource.ToString());
     }
 
+    /// <summary>
+    /// 
+    /// Confirm the resource target and pass it into the selected ability and activate it
+    /// 
+    /// </summary>
     public void ConfirmResource()
     {
+        //Find the rooms which contain the selected resource and display it to the player
         List<int> scannedRooms = selectedAbility.Activate(selectedResource);
         List<string> scannedRoomsString = new List<string>();
         foreach (int roomID in scannedRooms)
@@ -180,12 +225,22 @@ public class NSAbilityManager : MonoBehaviour
         DisplayActiveAbility();
     }
 
+    /// <summary>
+    /// 
+    /// Cancels the selection of an ability to go back to the abilities page
+    /// 
+    /// </summary>
     public void CancelSelection()
     {
         playerTargetDisplay.SetActive(false);
         resourceTargetDisplay.SetActive(false);
     }
 
+    /// <summary>
+    /// 
+    /// Displays the activated ability to the player
+    /// 
+    /// </summary>
     private void DisplayActiveAbility()
     {
         abilityActiveDisplay.SetActive(true);
