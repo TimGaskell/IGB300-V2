@@ -7,19 +7,26 @@ public class RollActionPoints : MonoBehaviour
 {
     public Image[] barImages;
     public Text numberText;
+    private GameObject gameManager;
 
-    public float timeRange = 0.2f;
+    public float timeRange = 0.5f;
     public float randomTime;
+    //Also acts as the speed of the bar
     public float MaxTime = 0.5f;
+    //How slow the bar speed will become
+    public float decelerationRate = 1.25f;
 
     private float timeInterval;
+    private float acceleration = 1;
 
-    private int actionPoints;
+    private int actionPoints, currentActionPoints;
     private int rollValue, rollAdd;
     private int MaxBars = 8;
     private int MinRandom = 2;
 
-    private bool increasing = true, rollStop = false,  timerStop = false;
+    private bool increasing = true;
+    private bool rollStop = false,  timerStop = false;
+    private bool decelerating = false;
 
 
     // Start is called before the first frame update
@@ -36,10 +43,18 @@ public class RollActionPoints : MonoBehaviour
     {
         if (!timerStop)
         {
+            //Increment/decrement bars
             if (increasing)
-                timeInterval += Time.deltaTime;
+                timeInterval += Time.deltaTime * acceleration;
             else
-                timeInterval -= Time.deltaTime;
+                timeInterval -= Time.deltaTime * acceleration;
+        }
+        else
+        {
+            if (numberText != null)
+            {
+                numberText.text = rollValue.ToString();
+            }
         }
         
         TimeCheck();
@@ -63,18 +78,15 @@ public class RollActionPoints : MonoBehaviour
         rollValue = actionPoints + rollAdd;
 
         //If the roll goes higher that the maximum amount, it will reverse by the number of its remainder. E.G. roll = 9, 9-8=1, roll-1=7
-        if (increasing &&(rollValue > MaxBars))
+        if (rollValue > MaxBars)
         {
             rollAdd -= (MaxBars - actionPoints);
             rollValue = MaxBars - rollAdd;
         }
 
-        if (numberText != null)
-        {
-            numberText.text = rollValue.ToString();
-        }
-
         rollStop = true;
+        acceleration /= 2;
+        decelerating = true;
 
         Debug.Log("RA: "+ rollAdd + " AP: " + actionPoints + " RV: " + rollValue);
 
@@ -97,6 +109,11 @@ public class RollActionPoints : MonoBehaviour
             }
 
             i++;
+        }
+
+        if (decelerating)
+        {
+            acceleration /= decelerationRate;
         }
     }
 
@@ -141,7 +158,12 @@ public class RollActionPoints : MonoBehaviour
             actionPoints = 8;
         }
 
-        BarIncrement(actionPoints);
+        //Bars only change when an alteration in the current number of Action Points is detected
+        if (actionPoints != currentActionPoints)
+        {
+            currentActionPoints = actionPoints;
+            BarIncrement(actionPoints);
+        }
 
         //Check if bars have reached max/min amount, reverse direction
         if (timeInterval >= MaxTime * 1.14)
