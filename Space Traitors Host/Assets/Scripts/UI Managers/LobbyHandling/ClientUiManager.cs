@@ -17,6 +17,7 @@ public class ClientUiManager : MonoBehaviour
         if (name != "") {
 
             PlayerInput.GetComponent<CanvasGroup>().interactable = false;
+            Server.Instance.SendPlayerInformation(name);
             
         }
         else {

@@ -217,8 +217,8 @@ public class Server : MonoBehaviour {
                 players.Add(PlayerObject);
                 //Loop through to find a player not already connected, and assign them their ID
                 foreach (GameObject player in players) {
-                    if (!player.GetComponent<Player>().isConnected) {
-                        if (sceneName == "LobbyLan")
+                    if (player.GetComponent<Player>().isConnected == false) {
+                        if (sceneName == "ServerLobby")
                             LobbyConnectOrDisconnect(player, true, connectionID, true);
                         else if (sceneName == "GameLevel")
                             GameConnectOrDisconnect(player, true, connectionID);
@@ -232,7 +232,7 @@ public class Server : MonoBehaviour {
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
                 foreach (GameObject player in players) {
-                    if (player.GetComponent<PlayerConnect>().playerID == connectionID) {
+                    if (player.GetComponent<Player>().playerID == connectionID) {
                         if (sceneName == "LobbyLan")
                             //Reset player variables
                             LobbyConnectOrDisconnect(player, false, 0, false);
@@ -383,6 +383,10 @@ public class Server : MonoBehaviour {
     private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
         player.GetComponent<Player>().isConnected = connect;
         player.GetComponent<Player>().playerID = conID;
+    
+        Debug.Log(player.GetComponent<Player>().isConnected);
+        Debug.Log(player.GetComponent<Player>().playerID);
+
     }
 
     private void GameConnectOrDisconnect(GameObject player, bool connect, int conID) {
@@ -569,7 +573,7 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor) {
+    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor) {
 
         PlayerInformation playerInformation = new PlayerInformation();
         tempPlayerID = player;
@@ -691,7 +695,7 @@ public class Server : MonoBehaviour {
 
     #region Client Sent Messages
 
-    public void SendPlayerInformation(int ConnectionId, string playerName) {
+    public void SendPlayerInformation(string playerName) {
 
         PlayerDetails details = new PlayerDetails();
         details.PlayerName = playerName;
@@ -786,13 +790,15 @@ public class Server : MonoBehaviour {
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details) {
 
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
+        Debug.Log("Recieved Player Name");
+        foreach (GameObject player in players) {
             if (player.GetComponent<Player>().playerID == conID) {
+            //Find the correct player
 
                 player.GetComponent<Player>().playerName = details.PlayerName;
                 GameObject LobbyUiHandler = GameObject.Find("Canvas");
                 LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames();
+              
                 
 
             }
