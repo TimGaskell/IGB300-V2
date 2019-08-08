@@ -26,7 +26,6 @@ public class RollActionPoints : MonoBehaviour
 
     private bool increasing = true;
     private bool rollStop = false,  timerStop = false;
-    private bool decelerating = false;
 
 
     // Start is called before the first frame update
@@ -49,13 +48,6 @@ public class RollActionPoints : MonoBehaviour
             else
                 timeInterval -= Time.deltaTime * acceleration;
         }
-        else
-        {
-            if (numberText != null)
-            {
-                numberText.text = rollValue.ToString();
-            }
-        }
         
         TimeCheck();
 
@@ -65,6 +57,12 @@ public class RollActionPoints : MonoBehaviour
             if (actionPoints == rollValue)
             {
                 timerStop = true;
+            }
+
+            //Show the display number
+            if (numberText != null)
+            {
+                numberText.text = actionPoints.ToString();
             }
         }
     }
@@ -85,8 +83,8 @@ public class RollActionPoints : MonoBehaviour
         }
 
         rollStop = true;
+        //Makes the deceleration feel 'smoother'
         acceleration /= 2;
-        decelerating = true;
 
         Debug.Log("RA: "+ rollAdd + " AP: " + actionPoints + " RV: " + rollValue);
 
@@ -111,7 +109,7 @@ public class RollActionPoints : MonoBehaviour
             i++;
         }
 
-        if (decelerating)
+        if (rollStop)
         {
             acceleration /= decelerationRate;
         }

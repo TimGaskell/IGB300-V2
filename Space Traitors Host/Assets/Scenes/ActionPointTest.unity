@@ -441,7 +441,7 @@ MonoBehaviour:
   timeRange: 0.5
   randomTime: 0
   MaxTime: 0.5
-  decelerationRate: 1.5
+  decelerationRate: 1.9
 --- !u!114 &202856954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1373,16 +1373,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682218761}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.8216, y: 1.8216, z: 1.8216}
+  m_LocalScale: {x: 1.8215998, y: 1.8216, z: 1.8216002}
   m_Children: []
   m_Father: {fileID: 121028145}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: 85}
+  m_AnchoredPosition: {x: 15.999994, y: 85}
   m_SizeDelta: {x: 37.45, y: 24.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1682218763
