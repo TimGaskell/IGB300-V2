@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HostGame : MonoBehaviour
@@ -13,12 +14,22 @@ public class HostGame : MonoBehaviour
 
     private NetworkManager networkManager;
 
+    public Scene NextScene;
+
 
     void Start() {
-
         networkManager = NetworkManager.singleton;
-        if(networkManager.matchMaker == null) {
-            networkManager.StartMatchMaker();
+        if (SceneManager.GetActiveScene().name == "LobbyLan")
+        {
+            return;
+        }
+        else
+        {
+            
+            if(networkManager.matchMaker == null) {
+                networkManager.StartMatchMaker();
+            }
+              
         }
 
       
@@ -35,7 +46,20 @@ public class HostGame : MonoBehaviour
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + "with room for " + roomSize);
             //create room
+            if (SceneManager.GetActiveScene().name == "LobbyLan")
+            {
+                networkManager.StopAllCoroutines();
+                networkManager.networkPort = 7777;
+               // networkManager.StartHost();
+                networkManager.networkAddress = roomName;
+                Server.Instance.HostInitialise();
+                SceneManager.LoadScene("ServerLobby");
+            }
+            else
+            {
             networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "","",0,0,networkManager.OnMatchCreate);
+
+            }
         }
 
     }

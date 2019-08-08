@@ -87,7 +87,7 @@ public class ChoiceRandomiser : MonoBehaviour
 
     public void SetChoice(int roomIndex, int choiceIndex, Choice choice)
     {
-        rooms[roomIndex].GetComponent<Room>().roomChoices[choiceIndex] = choice;
+        rooms[roomIndex].GetComponent<Room>().roomChoices[choiceIndex] = new Choice(choice);
     }
     #endregion
 

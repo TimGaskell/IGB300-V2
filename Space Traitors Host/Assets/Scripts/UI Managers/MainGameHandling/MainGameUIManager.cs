@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class MainGameUIManager : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject noServerPanel;
 
     public GameObject playerCards;
+
+    public GameObject aiPowerPanel;
 
     public GameObject abilityPanel;
     public GameObject actionPointPanel;
@@ -37,6 +41,7 @@ public class MainGameUIManager : MonoBehaviour
             attackSurgePanel.SetActive(false);
 
             DisplayCurrentPhase();
+            UpdateAIPower();
         }
     }
 
@@ -70,6 +75,7 @@ public class MainGameUIManager : MonoBehaviour
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Abilities):
+                UpdateAIPower();
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
@@ -90,12 +96,19 @@ public class MainGameUIManager : MonoBehaviour
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
+                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
+                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
+                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
                 break;
             case (GameManager.TurnPhases.AttackSurge):
+                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
+                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
+                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -107,12 +120,17 @@ public class MainGameUIManager : MonoBehaviour
     /// Increments the current phase of the game
     /// 
     /// </summary>
-    private void IncrementPhase()
+    public void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
         DisplayCurrentPhase();
     }
 
+    /// <summary>
+    /// 
+    /// Updates the players resources based on the choice they have selected and moves into the next phase.
+    /// 
+    /// </summary>
     public void SelectChoice()
     {
         interactionPanel.GetComponent<InteractionManager>().currentRoom.roomChoices[interactionPanel.GetComponent<InteractionManager>().selectedChoiceID].SelectChoice();
@@ -120,5 +138,16 @@ public class MainGameUIManager : MonoBehaviour
         IncrementPhase();
     }
 
+    /// <summary>
+    /// 
+    /// Update the AI Power panel with the current AI Power for the slider and the counter
+    /// 
+    /// </summary>
+    private void UpdateAIPower()
+    {
+        aiPowerPanel.SetActive(true);
+        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
+        aiPowerPanel.GetComponent<AIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
+    }
     #endregion
 }

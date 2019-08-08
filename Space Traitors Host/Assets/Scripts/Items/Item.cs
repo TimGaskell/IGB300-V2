@@ -43,6 +43,20 @@ public class Item
         isEquipped = false;
     }
 
+    public Item(Item item)
+    {
+        ItemType = item.ItemType;
+
+        BrawnChange = item.BrawnChange;
+        SkillChange = item.SkillChange;
+        TechChange = item.TechChange;
+        CharmChange = item.CharmChange;
+
+        roomOrigin = item.roomOrigin;
+
+        isEquipped = item.isEquipped;
+    }
+
     /// <summary>
     /// 
     /// Define an item of a particular type

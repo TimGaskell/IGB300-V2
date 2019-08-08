@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
+using UnityEngine.SceneManagement;
 
 public class JoinGame : MonoBehaviour {
     List<GameObject> RoomList = new List<GameObject>();
@@ -19,12 +20,23 @@ public class JoinGame : MonoBehaviour {
 
     private NetworkManager networkManager;
 
+    private CustomNetworkDiscovery cnd;
+
     void Start() {
 
         networkManager = NetworkManager.singleton;
+        if (SceneManager.GetActiveScene().name == "LobbyLan")
+        {
+            cnd = GameObject.Find("NetworkManager").GetComponent<CustomNetworkDiscovery>();
+            cnd.Initialize();
+            cnd.StartAsClient();
+        }
+        else
+        {
 
         if (networkManager.matchMaker == null) {
             networkManager.StartMatchMaker();
+        }
         }
 
         RefreshRoomList();
@@ -33,7 +45,34 @@ public class JoinGame : MonoBehaviour {
     public void RefreshRoomList() {
 
         ClearRoomList();
+        if (SceneManager.GetActiveScene().name == "LobbyLan")
+        {
+            if (cnd.broadcastsReceived.Values != null)
+            {
+                foreach (var value in cnd.broadcastsReceived.Values)
+                {
+                    string ip = value.serverAddress.Substring(7);
+                    string name = System.Text.Encoding.Unicode.GetString(value.broadcastData);
+                    name = name.Substring(name.IndexOf(":") + 1, name.IndexOf(":7") - name.IndexOf(":") - 1);
+
+                    GameObject RoomListItemGO = Instantiate(roomListItemPrefab);
+                    RoomListItemGO.transform.SetParent(roomListParent, false);
+
+                    RoomListItemGO.GetComponent<GameButton>().Setup(ip, name);
+
+
+                    RoomList.Add(RoomListItemGO);
+
+
+                }
+            }
+            
+        }
+        else
+        {
         networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
+
+        }
         status.text = "Loading...";
 
     }

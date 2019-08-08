@@ -3,38 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-public class LobbyUIManager : MonoBehaviour
+public class LobbyUIManager : NetworkBehaviour
 {
-    public GameObject serverActivePanel;
-    public GameObject noServerPanel;
+    public GameObject ClientPanel;
+    public GameObject ServerPanel;
 
     public GameObject playerNumPanel;
     public GameObject playerNamePanel;
 
     private Transform nameEntryFields;
 
+    private int counter = 0;
+
     private void Start()
     {
-        if (GameManager.instance.serverActive)
-        {
-            serverActivePanel.SetActive(true);
-            noServerPanel.SetActive(false);
-        }
-        else
-        {
-            serverActivePanel.SetActive(false);
-            noServerPanel.SetActive(true);
 
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
-        }
+
+        
     }
 
-    #region No Server Handling
+    void Update() {
+
+
+
+    }
+
+
+
+
+    #region Server Handling
 
     /// <summary>
     /// 
@@ -61,6 +65,8 @@ public class LobbyUIManager : MonoBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 
     /// Disables player entry fields if they are not to be used (i.e. leave only enough fields active for a particular number of players)
@@ -84,6 +90,27 @@ public class LobbyUIManager : MonoBehaviour
             counter++;
         }
     }
+
+
+    public void AddPlayerNames() {
+
+
+        foreach (Transform entryField in nameEntryFields.transform) {
+
+            string tempPlayername = Server.Instance.players[counter].GetComponent<Player>().playerName;
+
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    counter++;
+                }
+
+
+            }
+        }
+    }
+
 
     /// <summary>
     /// 
@@ -117,8 +144,7 @@ public class LobbyUIManager : MonoBehaviour
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
             {
-                SceneManager.LoadScene(GameManager.CharacterScene);
-                break;
+                NetworkManager.singleton.ServerChangeScene("Character SelectionV2");
             }
 
         }

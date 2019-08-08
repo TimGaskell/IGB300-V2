@@ -231,7 +231,7 @@ public class Server : MonoBehaviour {
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                foreach (GameObject player in players){
+                foreach (GameObject player in players) {
                     if (player.GetComponent<PlayerConnect>().playerID == connectionID) {
                         if (sceneName == "LobbyLan")
                             //Reset player variables
@@ -363,7 +363,7 @@ public class Server : MonoBehaviour {
 
     }
 
-   
+
 
     //This needs to be updated
 
@@ -372,7 +372,7 @@ public class Server : MonoBehaviour {
         if ((sceneName == "LobbyLan") || (sceneName == "Character Select"))
             return players;
         //else if (sceneName == "server")
-          //  return playerStorage.GetComponent<RoundManager>().playersInGame;
+        //  return playerStorage.GetComponent<RoundManager>().playersInGame;
         else {
             Debug.Log("Could not get the correct scene");
             return null;
@@ -382,7 +382,7 @@ public class Server : MonoBehaviour {
 
     private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
         player.GetComponent<Player>().isConnected = connect;
-        player.GetComponent<Player>().playerID = conID;      
+        player.GetComponent<Player>().playerID = conID;
     }
 
     private void GameConnectOrDisconnect(GameObject player, bool connect, int conID) {
@@ -464,10 +464,8 @@ public class Server : MonoBehaviour {
         SceneManager.LoadScene("Character Selection");
     }
 
-    public void ClientNextScene()
-    {
-        foreach (GameObject player in players)
-        {
+    public void ClientNextScene() {
+        foreach (GameObject player in players) {
             tempPlayerID = player.GetComponent<Player>().playerID;
             SendChangeScene("Lobby");
         }
@@ -500,18 +498,193 @@ public class Server : MonoBehaviour {
 
     }
 
-# region Server Sent Messages
+    #region Server Sent Messages
 
     public void SendChangeScene(string SceneName) {
 
         SceneChange scene = new SceneChange();
         scene.SceneName = SceneName;
-        SendClient(scene);
+        foreach (GameObject player in players) {
+            tempPlayerID = player.GetComponent<Player>().playerID;        
+            SendClient(scene);
+        }
     }
+
+
+    public void SendCharacterBaseStats(int player, int brawn, int charm, int skill, int tech, string AbilityName, string AbilityDescription) {
+
+        CharacterInformation information = new CharacterInformation();
+        tempPlayerID = player;
+
+        information.Basebrawn = brawn;
+        information.Basecharm = charm;
+        information.Baseskill = skill;
+        information.Basetech = tech;
+        information.name = AbilityName;
+        information.AbilityDescription = AbilityDescription;
+
+        SendClient(information);
+
+    }
+
+    public void SendAbilityInformation(int player, bool canUse) {
+
+        AbilityInformation abilityInformation = new AbilityInformation();
+        tempPlayerID = player;
+
+        abilityInformation.CanUseAbility = canUse;
+
+        SendClient(abilityInformation);
+
+    }
+
+    public void SendAvailableRooms(int player, List<int> Roomnumbers) {
+
+        AvailableRooms rooms = new AvailableRooms();
+        tempPlayerID = player;
+
+        rooms.AvailableRoomsIDs = Roomnumbers;
+
+        SendClient(rooms);
+
+    }
+
+    public void SendRoomChoices(int player) {
+
+        RoomChoices choices = new RoomChoices();
+        tempPlayerID = player;
+
+
+        //need to understand what gets sent to the player
+
+    }
+
+    public void SendSpecChallenge(int player, bool specChallengeResult) {
+
+        SpecChallenge challenge = new SpecChallenge();
+        tempPlayerID = player;
+
+        challenge.result = specChallengeResult;
+        SendClient(challenge);
+
+    }
+
+    public void SendPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor) {
+
+        PlayerInformation playerInformation = new PlayerInformation();
+        tempPlayerID = player;
+        //does not send base stats, use other method to do so
+        playerInformation.scaledbrawn = Scaledbrawn;
+        playerInformation.scaledskill = Scaledskill;
+        playerInformation.scaledcharm = Scaledcharm;
+        playerInformation.scaledtech = Scaledtech;
+        playerInformation.scrap = scrap;
+        playerInformation.corruption = lifepoints;
+        playerInformation.EquippedItems = EquippedItems;
+        playerInformation.UnEquippedItems = UnEquippedItems;
+        playerInformation.isTraitor = isTraitor;
+
+        SendClient(playerInformation);
+    }
+
+    public void SendIsTraitor(int player) {
+
+        TraitorSelection traitor = new TraitorSelection();
+        tempPlayerID = player;
+
+        SendClient(traitor);
+
+    }
+
+    public void sendSurge(int SurgeAmount) {
+
+        SurgeInformation surge = new SurgeInformation();
+        surge.AiPowerIncrease = SurgeAmount;
+
+        foreach (GameObject player in players) {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+            SendClient(surge);
+        }
+    }
+
+    public void SendAIAttack(int player, int damage, int spec, string spectype ) {
+
+        AiAttacks ai = new AiAttacks();
+        tempPlayerID = player;
+        ai.damage = damage;
+        ai.specAmount = spec;
+        ai.spec = spectype;
+
+        SendClient(ai);
+    }
+
+    public void sendCombatResolution(int player, bool winorLoose, int damagetaken, List<string>Inventory) {
+
+        CombatResolution resolution = new CombatResolution();
+        tempPlayerID = player;
+        resolution.winbattle = winorLoose;
+        resolution.damagetaken = damagetaken;
+        resolution.LoserInventory = Inventory;
+
+        SendClient(resolution);
+
+    }
+
+    public void sendCombatAvailablity(int player, List<int>Targets) {
+
+        CombatAvailability combat = new CombatAvailability();
+        tempPlayerID = player;
+
+        combat.Players = Targets;
+
+        SendClient(combat);
+    }
+
+    public void sendBeingAttacked(int player) {
+
+        CombatBeingAttacked attacked = new CombatBeingAttacked();
+        tempPlayerID = player;
+
+        SendClient(attacked);
+
+    }
+
+    public void sendPlayerElimination(int player) {
+
+        PlayerElimination elimination = new PlayerElimination();
+        tempPlayerID = player;
+
+        SendClient(elimination);
+    }
+
+    public void sendNonTraitorVictory() {
+
+        InnocentVictory innocent = new InnocentVictory();
+        foreach (GameObject player in players) {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+            SendClient(innocent);
+        }
+    }
+
+
     #endregion
 
 
     #region Client Received Messages
+
+    private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene) {
+
+        SceneManager.LoadScene(scene.SceneName);
+
+    }
+
+    private void GetCharacterInformation(int conID, int chanID, int rHostID, CharacterInformation information) {
+
+        
+
+    }
+
+
 
 
     #endregion
@@ -521,7 +694,6 @@ public class Server : MonoBehaviour {
     public void SendPlayerInformation(int ConnectionId, string playerName) {
 
         PlayerDetails details = new PlayerDetails();
-        details.ConnectionID = connectionID;
         details.PlayerName = playerName;
 
         SendServer(details);
@@ -619,6 +791,9 @@ public class Server : MonoBehaviour {
             if (player.GetComponent<Player>().playerID == conID) {
 
                 player.GetComponent<Player>().playerName = details.PlayerName;
+                GameObject LobbyUiHandler = GameObject.Find("Canvas");
+                LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames();
+                
 
             }
         }
@@ -630,7 +805,7 @@ public class Server : MonoBehaviour {
             if (player.GetComponent<Player>().playerID == conID) {
 
                 GameManager.instance.SelectCharacter((Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), character.SelectedCharacter));
-
+                
               
             }
         }
@@ -752,4 +927,5 @@ public class Server : MonoBehaviour {
         }
     }
     #endregion
+>>>>>>> Reintergration
 }
