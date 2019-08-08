@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetProperties : MonoBehaviour
+public class NSTargetProperties : MonoBehaviour
 {
     public int playerID;
     public Character.CharacterTypes characterType;

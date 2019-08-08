@@ -5,7 +5,7 @@ using System;
 using TMPro;
 using UnityEngine.UI;
 
-public class InteractionManager : MonoBehaviour
+public class NSInteractionManager : MonoBehaviour
 {
     public GameObject standardChoiceUI;
     public GameObject escapeRoomUI;
@@ -115,21 +115,21 @@ public class InteractionManager : MonoBehaviour
         selectedChoiceID = choiceID;
         Choice selectedChoice = currentRoom.roomChoices[selectedChoiceID];
 
-        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = selectedChoice.choiceName;
+        choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = selectedChoice.choiceName;
 
         //If the choice is not a spec challenge, updates the display text to suit the choice.
         if (selectedChoice.specChallenge == GameManager.SpecScores.Default)
         {
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(true);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(false);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().nonSpecChoiceText.SetActive(true);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specChallengeGroup.SetActive(false);
 
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().nonSpecChoiceText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
         }
         //If the choice is a spec challenge, displays the success and failure state for the spec challenge choice
         else
         {
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
             float playerScore;
 
@@ -152,12 +152,12 @@ public class InteractionManager : MonoBehaviour
                     throw new NotImplementedException("Not a valid choice");
             }
 
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Chance: {0}%", Mathf.Round(GameManager.instance.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = selectedChoice.FailText();
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = selectedChoice.FailText();
         }
 
         //Test if the choice is available to the player and displays the reason it cannot be selected if not.
@@ -165,14 +165,14 @@ public class InteractionManager : MonoBehaviour
 
         if (isAvailable == Choice.IsAvailableTypes.available)
         {
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(false);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = true;
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().errorText.SetActive(false);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = true;
         }
         else
         {
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(true);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailable);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = false;
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().errorText.SetActive(true);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailable);
+            choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = false;
         }
     }
 
@@ -212,7 +212,7 @@ public class InteractionManager : MonoBehaviour
         //Loops through each of the target buttons and sets them to be non-interactable if the character is not a valid target
         foreach (GameObject targetButton in targetButtons)
         {
-            if (!attackablePlayers.Exists(x => x == targetButton.GetComponent<TargetProperties>().playerID))
+            if (!attackablePlayers.Exists(x => x == targetButton.GetComponent<NSTargetProperties>().playerID))
             {
                 targetButton.GetComponent<Button>().interactable = false;
             }
@@ -232,7 +232,7 @@ public class InteractionManager : MonoBehaviour
     public void SelectTarget(int buttonID)
     {
         //Gets the relevant player information
-        Player targetPlayer = GameManager.instance.GetPlayer(targetButtons[buttonID].GetComponent<TargetProperties>().playerID);
+        Player targetPlayer = GameManager.instance.GetPlayer(targetButtons[buttonID].GetComponent<NSTargetProperties>().playerID);
 
         selectedTarget = targetPlayer.playerID;
         targetName.GetComponent<TextMeshProUGUI>().text = targetPlayer.playerName;
@@ -256,20 +256,20 @@ public class InteractionManager : MonoBehaviour
         combatPanel.SetActive(true);
 
         //Sets the default screen status for the combats
-        combatPanel.GetComponent<CombatComponents>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.playerName;
-        combatPanel.GetComponent<CombatComponents>().defenderName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.playerName;
-        combatPanel.GetComponent<CombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.Character.CharacterType);
-        combatPanel.GetComponent<CombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.Character.CharacterType);
-        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = false;
+        combatPanel.GetComponent<NSCombatComponents>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.playerName;
+        combatPanel.GetComponent<NSCombatComponents>().defenderName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.playerName;
+        combatPanel.GetComponent<NSCombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<NSCombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.Character.CharacterType);
+        combatPanel.GetComponent<NSCombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<NSCombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<NSCombatComponents>().continueButton.GetComponent<Button>().interactable = false;
 
         //Reenables the spec score buttons
         for (int buttonID = 0; buttonID < 4; buttonID++)
         {
-            combatPanel.GetComponent<CombatComponents>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
-            combatPanel.GetComponent<CombatComponents>().defenderSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+            combatPanel.GetComponent<NSCombatComponents>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+            combatPanel.GetComponent<NSCombatComponents>().defenderSpecButtons[buttonID].GetComponent<Button>().interactable = true;
         }
 
         attackerSpecScore = GameManager.SpecScores.Default;
@@ -286,11 +286,11 @@ public class InteractionManager : MonoBehaviour
     {
         GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
 
-        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
+        combatPanel.GetComponent<NSCombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
         attackerSpecScore = chosenSpec;
 
         //Disables the buttons to prevent the value from being changed
-        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().attackerSpecButtons)
+        foreach (GameObject specButton in combatPanel.GetComponent<NSCombatComponents>().attackerSpecButtons)
         {
             specButton.GetComponent<Button>().interactable = false;
         }
@@ -312,11 +312,11 @@ public class InteractionManager : MonoBehaviour
     {
         GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
 
-        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = specScore;
+        combatPanel.GetComponent<NSCombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = specScore;
         defenderSpecScore = chosenSpec;
 
         //Disables the buttons to prevent the value from being changed
-        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().defenderSpecButtons)
+        foreach (GameObject specButton in combatPanel.GetComponent<NSCombatComponents>().defenderSpecButtons)
         {
             specButton.GetComponent<Button>().interactable = false;
         }
@@ -335,19 +335,19 @@ public class InteractionManager : MonoBehaviour
     /// </summary>
     private void DisplayWinner()
     {
-        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = true;
+        combatPanel.GetComponent<NSCombatComponents>().continueButton.GetComponent<Button>().interactable = true;
 
         //If perform combat returns true, means the attacker wins
         if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
         {
-            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+            combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
         }
         else
         {
-            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
+            combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
         }
 
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+        playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
     }
 
     /// <summary>

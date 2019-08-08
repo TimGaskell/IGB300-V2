@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComponentTrackerComponents : MonoBehaviour
+public class NSComponentTrackerComponents : MonoBehaviour
 {
     public GameObject header;
     public GameObject tracker;

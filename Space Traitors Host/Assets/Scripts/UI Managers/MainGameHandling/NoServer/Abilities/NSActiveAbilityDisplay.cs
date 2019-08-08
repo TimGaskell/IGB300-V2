@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ActiveAbilityDisplay : MonoBehaviour
+public class NSActiveAbilityDisplay : MonoBehaviour
 {
     public GameObject activeAbilityText;
 

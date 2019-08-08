@@ -6,7 +6,7 @@ using System;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class MainGameUIManager : MonoBehaviour
+public class NSMainGameUIManager : MonoBehaviour
 {
     public GameObject serverActivePanel;
     public GameObject noServerPanel;
@@ -38,8 +38,8 @@ public class MainGameUIManager : MonoBehaviour
         else
         {
             //Sets up targets for choosing other players on the combat and ability panels
-            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
-            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
+            SetupTargets(interactionPanel.GetComponent<NSInteractionManager>().targetButtons);
+            SetupTargets(abilityPanel.GetComponent<NSAbilityManager>().targetButtons);
 
             serverActivePanel.SetActive(false);
             noServerPanel.SetActive(true);
@@ -48,7 +48,7 @@ public class MainGameUIManager : MonoBehaviour
             actionPointPanel.SetActive(false);
             movementPanel.SetActive(false);
             interactionPanel.SetActive(true);
-            interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
+            interactionPanel.GetComponent<NSInteractionManager>().InitComponentPanel();
             interactionPanel.SetActive(false);
             basicSurgePanel.SetActive(false);
             attackSurgePanel.SetActive(false);
@@ -99,8 +99,8 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
-                abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
-                playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
+                abilityPanel.GetComponent<NSAbilityManager>().SetupAbilities();
+                playerCards.GetComponent<NSPlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -113,23 +113,23 @@ public class MainGameUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Interaction):
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
-                interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
+                interactionPanel.GetComponent<NSInteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
-                basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
+                playerCards.GetComponent<NSPlayerCardManager>().activePlayerPanel.SetActive(false);
+                playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
+                basicSurgePanel.GetComponent<NSBasicSurgeManager>().UpdateSurgeValues();
                 break;
             case (GameManager.TurnPhases.AttackSurge):
                 aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
-                attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
+                playerCards.GetComponent<NSPlayerCardManager>().activePlayerPanel.SetActive(false);
+                playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
+                attackSurgePanel.GetComponent<NSAttackSurgeManager>().UpdateTarget();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -166,8 +166,8 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void SelectChoice()
     {
-        interactionPanel.GetComponent<InteractionManager>().currentRoom.roomChoices[interactionPanel.GetComponent<InteractionManager>().selectedChoiceID].SelectChoice();
-        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        interactionPanel.GetComponent<NSInteractionManager>().currentRoom.roomChoices[interactionPanel.GetComponent<NSInteractionManager>().selectedChoiceID].SelectChoice();
+        playerCards.GetComponent<NSPlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }
 
@@ -179,25 +179,25 @@ public class MainGameUIManager : MonoBehaviour
     private void UpdateAIPower()
     {
         aiPowerPanel.SetActive(true);
-        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
-        aiPowerPanel.GetComponent<AIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
+        aiPowerPanel.GetComponent<NSAIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
+        aiPowerPanel.GetComponent<NSAIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
     }
 
     private void UpdateComponentTracker()
     {
         if (GameManager.instance.CheckInstalledComponents())
         {
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(false);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(false);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(true);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().header.SetActive(false);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().tracker.SetActive(false);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().victoryText.SetActive(true);
         }
         else
         {
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(true);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(true);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(false);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().header.SetActive(true);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().tracker.SetActive(true);
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().victoryText.SetActive(false);
 
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.GetComponent<TextMeshProUGUI>().text = 
+            componentTrackerPanel.GetComponent<NSComponentTrackerComponents>().tracker.GetComponent<TextMeshProUGUI>().text = 
                 string.Format("{0} / {1}", GameManager.instance.installedComponents, GameManager.instance.NumComponents);
         }
     }
@@ -214,7 +214,7 @@ public class MainGameUIManager : MonoBehaviour
             sabotagePanel.SetActive(true);
         }
         UpdateComponentTracker();
-        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        playerCards.GetComponent<NSPlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }
 
@@ -225,7 +225,7 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void EndCombat()
     {
-        interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+        interactionPanel.GetComponent<NSInteractionManager>().CloseCombat();
         GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
     }
@@ -247,8 +247,8 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void ConfirmSpecSelection()
     {
-        GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+        GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<NSAttackSurgeManager>().selectedSpec);
+        playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
         GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
     }
@@ -263,7 +263,7 @@ public class MainGameUIManager : MonoBehaviour
     {
         foreach (GameObject targetButton in targetButtons)
         {
-            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<NSTargetProperties>().characterType);
             //If the player of the particular type does not exist, disables the target button for the character of that type
             if (player == null)
             {
@@ -272,7 +272,7 @@ public class MainGameUIManager : MonoBehaviour
             else
             {
                 //Sets the player ID on the target image as well as their name above their image
-                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
+                targetButton.GetComponent<NSTargetProperties>().playerID = player.playerID;
                 targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
             }
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatComponents : MonoBehaviour
+public class NSCombatComponents : MonoBehaviour
 {
     public GameObject attackerName;
     public GameObject attackerPortrait;

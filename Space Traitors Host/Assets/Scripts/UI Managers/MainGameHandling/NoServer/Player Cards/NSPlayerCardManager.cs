@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 
-public class PlayerCardManager : MonoBehaviour
+public class NSPlayerCardManager : MonoBehaviour
 {
     public GameObject activePlayerPanel;
 
@@ -51,25 +51,25 @@ public class PlayerCardManager : MonoBehaviour
     {
         Player player = GameManager.instance.GetOrderedPlayer(playerIndex);
 
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.Corruption.ToString();
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.Corruption.ToString();
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
 
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().specCounters[0].GetComponent<TextMeshProUGUI>().text =
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[0].GetComponent<TextMeshProUGUI>().text =
             ObtainSpecInfo(player.ScaledBrawn, player.ModBrawn);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().specCounters[1].GetComponent<TextMeshProUGUI>().text =
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[1].GetComponent<TextMeshProUGUI>().text =
             ObtainSpecInfo(player.ScaledSkill, player.ModSkill);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().specCounters[2].GetComponent<TextMeshProUGUI>().text =
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[2].GetComponent<TextMeshProUGUI>().text =
             ObtainSpecInfo(player.ScaledTech, player.ModTech);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().specCounters[3].GetComponent<TextMeshProUGUI>().text =
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[3].GetComponent<TextMeshProUGUI>().text =
             ObtainSpecInfo(player.ScaledCharm, player.ModCharm);
 
         string lifePointsString = string.Format("{0} / {1}", player.lifePoints, player.maxLifePoints);
-        playerPanels[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
+        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
     }
 
     public void UpdateAllCards()

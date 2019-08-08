@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityButtonComponents : MonoBehaviour
+public class NSAbilityButtonComponents : MonoBehaviour
 {
     public GameObject abilityNameText;
     public GameObject corruptionText;

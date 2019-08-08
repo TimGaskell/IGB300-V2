@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIPowerComponents : MonoBehaviour
+public class NSAIPowerComponents : MonoBehaviour
 {
     public GameObject powerCounter;
     public GameObject powerSlider;

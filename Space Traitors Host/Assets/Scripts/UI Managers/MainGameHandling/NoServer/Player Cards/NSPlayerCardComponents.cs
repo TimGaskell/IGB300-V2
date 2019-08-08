@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCardComponents : MonoBehaviour
+public class NSPlayerCardComponents : MonoBehaviour
 {
     public GameObject nameText;
     public GameObject characterText;

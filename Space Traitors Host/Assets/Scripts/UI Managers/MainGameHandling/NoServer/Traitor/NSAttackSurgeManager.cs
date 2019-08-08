@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class AttackSurgeManager : MonoBehaviour
+public class NSAttackSurgeManager : MonoBehaviour
 {
     public GameObject playerPortrait;
     public GameObject playerName;
