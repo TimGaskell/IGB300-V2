@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
-public class LobbyUIManager : NetworkBehaviour
+public class NSLobbyUIManager : NetworkBehaviour
 {
     public GameObject ClientPanel;
     public GameObject ServerPanel;

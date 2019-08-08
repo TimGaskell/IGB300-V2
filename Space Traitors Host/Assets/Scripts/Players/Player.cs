@@ -101,8 +101,8 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 1000;
-        corruption = 100;
+        scrap = 0;
+        corruption = 0;
 
         items = new List<Item>();
 
@@ -232,6 +232,28 @@ public class Player
     #endregion
 
     #region Item Handling
+
+    /// <summary>
+    /// 
+    /// Gets a list of either the equipped or the unequipped items the player has in their inventory
+    /// 
+    /// </summary>
+    /// <param name="equipped">If true, will only return the equipped items. Will return false otherwise</param>
+    /// <returns>The list of equipped or unequipped items</returns>
+    public List<Item> GetItems(bool equipped)
+    {
+        List<Item> itemList = new List<Item>();
+
+        foreach (Item item in items)
+        {
+            if (item.isEquipped == equipped)
+            {
+                itemList.Add(item);
+            }
+        }
+
+        return itemList;
+    }
 
     /// <summary>
     /// 

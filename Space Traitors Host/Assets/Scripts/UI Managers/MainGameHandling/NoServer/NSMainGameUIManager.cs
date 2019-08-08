@@ -28,6 +28,8 @@ public class NSMainGameUIManager : MonoBehaviour
 
     public GameObject sabotagePanel;
 
+    public GameObject inventoryPanel;
+
     private void Start()
     {
         if (GameManager.instance.serverActive)
@@ -57,6 +59,8 @@ public class NSMainGameUIManager : MonoBehaviour
             traitorVictoryPanel.SetActive(false);
 
             sabotagePanel.SetActive(false);
+
+            inventoryPanel.SetActive(false);
 
             DisplayCurrentPhase();
             UpdateAIPower();
@@ -281,6 +285,19 @@ public class NSMainGameUIManager : MonoBehaviour
     public void CloseSabotagePanel()
     {
         sabotagePanel.SetActive(false);
+    }
+
+    public void OpenInventoryPanel(int buttonID)
+    {
+        inventoryPanel.SetActive(true);
+
+        inventoryPanel.GetComponent<NSInventoryManager>().selectedPlayer = GameManager.instance.GetOrderedPlayer(buttonID);
+        inventoryPanel.GetComponent<NSInventoryManager>().StartInventoryPanel();
+    }
+
+    public void CloseInventoryPanel()
+    {
+        inventoryPanel.SetActive(false);
     }
 
     #endregion

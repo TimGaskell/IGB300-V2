@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class CharacterSelectUIManager : MonoBehaviour
+public class NSCharacterSelectUIManager : MonoBehaviour
 {
     public GameObject serverActivePanel;
     public GameObject noServerPanel;
