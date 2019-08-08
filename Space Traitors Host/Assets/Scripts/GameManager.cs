@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviour
     public float aiPowerChange;
     private int aiTargetScore;
 
+    //Action Points provided to a player when they roll during their turn
+    public int actionPoints;
+
     //The ID of a player who has newly been selected as traitor
     public int newTraitor;
     //The ID of the Player being targeted during an AI attack
