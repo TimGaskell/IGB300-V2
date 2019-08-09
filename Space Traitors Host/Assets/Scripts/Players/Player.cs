@@ -132,6 +132,10 @@ public class Player : MonoBehaviour
 
         playerObject = null;
     }
+    void Start() {
+        DontDestroyOnLoad(this.gameObject);
+    }
+ 
 
     //Techie only, have player turn invisible on main screen
     public void MuddleSensors(bool visible)

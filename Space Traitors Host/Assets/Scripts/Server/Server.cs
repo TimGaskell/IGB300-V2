@@ -99,7 +99,6 @@ public class Server : MonoBehaviour {
     public GameObject[] ScrapTotals;
     public GameObject[] Components;
     private GameObject setter;
-    public GameObject PlayerObject;
     private Scene currentScene;
     public Text connectText;
     public Sprite[] portraits;
@@ -185,6 +184,7 @@ public class Server : MonoBehaviour {
         //Keep track of the current scene
         currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
+            
 
         //NetworkMessaging
         if (isServer) {
@@ -214,7 +214,6 @@ public class Server : MonoBehaviour {
             //When user connects to game
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
-                players.Add(PlayerObject);
                 //Loop through to find a player not already connected, and assign them their ID
                 foreach (GameObject player in players) {
                     if (player.GetComponent<Player>().isConnected == false) {
@@ -383,9 +382,6 @@ public class Server : MonoBehaviour {
     private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
         player.GetComponent<Player>().isConnected = connect;
         player.GetComponent<Player>().playerID = conID;
-    
-        Debug.Log(player.GetComponent<Player>().isConnected);
-        Debug.Log(player.GetComponent<Player>().playerID);
 
     }
 
