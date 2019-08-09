@@ -233,6 +233,8 @@ public class Player
 
     #region Item Handling
 
+    public enum EquipErrors { Default, }
+
     /// <summary>
     /// 
     /// Gets a list of either the equipped or the unequipped items the player has in their inventory
@@ -293,6 +295,7 @@ public class Player
     public void RemoveItem(int itemIndex)
     {
         items.RemoveAt(itemIndex);
+        
     }
 
     /// <summary>
