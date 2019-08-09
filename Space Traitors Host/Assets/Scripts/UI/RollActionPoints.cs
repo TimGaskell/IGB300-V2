@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class RollActionPoints : MonoBehaviour
 {
-    public Image[] barImages;
+    //Currently, the 8 bars must be the topmost children of the battery gameObject, in the correct order.
+    private GameObject[] barImages;
     public Text numberText;
     private GameObject gameManager;
 
@@ -31,15 +32,24 @@ public class RollActionPoints : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Image image in barImages)
+        barImages = new GameObject[MaxBars];
+        for (int i = 0; i < MaxBars; i++)
         {
-            image.enabled = false;
+            barImages[i] = transform.GetChild(i).gameObject; 
+            barImages[i].SetActive(false);
+           
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Show the display number
+        if (numberText != null)
+        {
+            numberText.text = actionPoints.ToString();
+        }
+
         if (!timerStop)
         {
             //Increment/decrement bars
@@ -57,12 +67,6 @@ public class RollActionPoints : MonoBehaviour
             if (actionPoints == rollValue)
             {
                 timerStop = true;
-            }
-
-            //Show the display number
-            if (numberText != null)
-            {
-                numberText.text = actionPoints.ToString();
             }
         }
     }
@@ -95,15 +99,15 @@ public class RollActionPoints : MonoBehaviour
     private void BarIncrement(int AP)
     {
         int i = 0;
-        foreach (Image image in barImages)
+        foreach (GameObject image in barImages)
         {
             if (i >= AP)
             {
-                image.enabled = false;
+                image.SetActive(false);
             }
             else
             {
-                image.enabled = true;
+                image.SetActive(true);
             }
 
             i++;
