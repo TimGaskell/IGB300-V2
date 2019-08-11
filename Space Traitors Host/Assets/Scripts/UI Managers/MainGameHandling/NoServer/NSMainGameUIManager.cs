@@ -233,7 +233,6 @@ public class NSMainGameUIManager : MonoBehaviour
     public void EndCombat()
     {
         interactionPanel.GetComponent<NSInteractionManager>().CloseCombat();
-        GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
     }
 
@@ -256,7 +255,6 @@ public class NSMainGameUIManager : MonoBehaviour
     {
         GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<NSAttackSurgeManager>().selectedSpec);
         playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
-        GameManager.instance.CheckTraitorVictory();
         IncrementPhase();
     }
 

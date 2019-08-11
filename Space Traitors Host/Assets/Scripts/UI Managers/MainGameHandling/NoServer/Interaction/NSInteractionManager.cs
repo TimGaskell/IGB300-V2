@@ -31,6 +31,7 @@ public class NSInteractionManager : MonoBehaviour
 
     public GameObject targetPanel;
     public GameObject combatPanel;
+    public GameObject stealPanel;
 
     public List<GameObject> targetButtons;
     public GameObject targetName;
@@ -57,6 +58,7 @@ public class NSInteractionManager : MonoBehaviour
         //Disable the combat panels
         targetPanel.SetActive(false);
         combatPanel.SetActive(false);
+        stealPanel.SetActive(false);
 
         //Escape room is for installing components, so requies a different screen. The Escape Room ID is where the players start
         if (roomIndex == Player.STARTING_ROOM_ID)
@@ -341,13 +343,30 @@ public class NSInteractionManager : MonoBehaviour
         if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
         {
             combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+            //Sends the IDs of the relevant players to the stealing manager
+            stealPanel.GetComponent<NSStealingManager>().winner = GameManager.instance.GetActivePlayer();
+            stealPanel.GetComponent<NSStealingManager>().loser = GameManager.instance.GetPlayer(selectedTarget);
         }
         else
         {
             combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
+            //Sends the IDs of the relevant players to the stealing manager
+            stealPanel.GetComponent<NSStealingManager>().winner = GameManager.instance.GetPlayer(selectedTarget);
+            stealPanel.GetComponent<NSStealingManager>().loser = GameManager.instance.GetActivePlayer();
         }
 
         playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
+    }
+
+    /// <summary>
+    /// 
+    /// Opens the steal panel for the winner
+    /// 
+    /// </summary>
+    public void OpenStealPanel()
+    {
+        stealPanel.SetActive(true);
+        stealPanel.GetComponent<NSStealingManager>().StartStealPanel();
     }
 
     /// <summary>
@@ -359,6 +378,7 @@ public class NSInteractionManager : MonoBehaviour
     {
         targetPanel.SetActive(false);
         combatPanel.SetActive(false);
+        stealPanel.SetActive(false);
     }
 
     #endregion
