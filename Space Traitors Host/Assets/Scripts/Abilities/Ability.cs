@@ -426,7 +426,7 @@ public class SuperCharge : Ability
     {
         SpendScrap();
         GameManager.instance.GetPlayer(targetIndex).maxLifePoints += LIFE_MOD;
-        GameManager.instance.GetPlayer(targetIndex).lifePoints += LIFE_MOD;
+        GameManager.instance.GetPlayer(targetIndex).ChangeLifePoints(LIFE_MOD);
     }
 }
 #endregion

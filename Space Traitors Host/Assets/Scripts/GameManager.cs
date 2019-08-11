@@ -28,8 +28,11 @@ public class GameManager : MonoBehaviour
     //A default player ID for dummy players (i.e. when a target is not needed). -1 should never be a valid player ID so it used here
     public const int DEFAULT_PLAYER_ID = -1;
 
+    //Amount of damage to deal during a combat, whether it be between players or from an AI Attack
+    public const int COMBAT_DAMAGE = -1;
+
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -962,7 +965,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerWin = false;
-            players[targetPlayer].lifePoints -= 1;
+            players[targetPlayer].ChangeLifePoints(COMBAT_DAMAGE);
         }
 
         //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
@@ -1048,12 +1051,12 @@ public class GameManager : MonoBehaviour
         //successful, then the attacker wins, otherwise the defender loses.
         if (PerformSpecChallenge(attackerScore, defenderScore))
         {
-            GetPlayer(defenderID).lifePoints -= 1;
+            GetPlayer(defenderID).ChangeLifePoints(COMBAT_DAMAGE);
             return true;
         }
         else
         {
-            GetActivePlayer().lifePoints -= 1;
+            GetActivePlayer().ChangeLifePoints(COMBAT_DAMAGE);
             return false;
         }
     }
@@ -1179,7 +1182,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            GetActivePlayer().lifePoints -= 1;
+            GetActivePlayer().ChangeLifePoints(COMBAT_DAMAGE);
             sabotageCharges--;
             return false;
         }

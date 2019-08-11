@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Choice
 {
@@ -198,11 +199,12 @@ public class Choice
 
     /// <summary>
     /// 
-    /// Updates the active players resources based on the choice they select
+    /// Updates the active players resources based on the choice they select. If they succeed on the selection, returns true.
+    /// Otherwise returns false
     /// 
     /// </summary>
     /// <param name="playerIndex">The player who is selecting the choice</param>
-    public void SelectChoice()
+    public bool SelectChoice()
     {
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
@@ -212,33 +214,29 @@ public class Choice
                 SuccessfulSelection();
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
-                break;
+                return true;
             case GameManager.SpecScores.Brawn:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
-                break;
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
             case GameManager.SpecScores.Skill:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
-                break;
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
             case GameManager.SpecScores.Tech:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
-                break;
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
             case GameManager.SpecScores.Charm:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
-                break;
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
             default:
-                Debug.Log("Failed Selection");
-                break;
+                throw new NotImplementedException("Not a valid spec score");
         }
     }
 
     /// <summary>
     /// 
-    /// Test whether a player is successful or not in a spec challenge when they select the choice
+    /// Test whether a player is successful or not in a spec challenge when they select the choice, updating their resources accordingly.
+    /// If they are successful, returns true. Otherwise false
     /// 
     /// </summary>
     /// <param name="specScore">The player's relevant spec score</param>
-    /// <returns>The updated player information</returns>
-    private void ApplySpecChallenge(float specScore)
+    /// <returns>True if the player succeeds on the spec challenge. False otherwise</returns>
+    private bool ApplySpecChallenge(float specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
@@ -248,10 +246,14 @@ public class Choice
 
             //Disable the choice if it can only be selected once. Only functions if the player is successful in a spec challenge
             disabled = oneOff;
+
+            return true;
         }
         else
         {
             FailedSelection();
+
+            return false;
         }
 
     }
@@ -276,7 +278,7 @@ public class Choice
         {
             GameManager.instance.GetActivePlayer().hasComponent = component;
         }
-        GameManager.instance.GetActivePlayer().lifePoints += lifeChange;
+        GameManager.instance.GetActivePlayer().ChangeLifePoints(lifeChange);
     }
 
     /// <summary>
@@ -287,7 +289,7 @@ public class Choice
     private void FailedSelection()
     {
         GameManager.instance.GetActivePlayer().Corruption += corruptionFail;
-        GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
+        GameManager.instance.GetActivePlayer().ChangeLifePoints(lifeFail);
     }
 
     #endregion

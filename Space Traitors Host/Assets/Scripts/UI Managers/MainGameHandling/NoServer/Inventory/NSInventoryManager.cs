@@ -7,104 +7,142 @@ using System;
 
 public class NSInventoryManager : MonoBehaviour
 {
+    public GameObject playerCards;
+
     public GameObject playerText;
     public GameObject itemText;
+    public GameObject errorText;
 
-    public List<GameObject> equippedButtons;
-    public List<GameObject> storageButtons;
-
-    private List<GameObject> itemButtons;
+    public List<GameObject> itemButtons;
 
     public GameObject discardButton;
+    public GameObject equipButton;
 
     private Item selectedItem;
+    private int selectedID;
     public Player selectedPlayer;
-
-    private enum ItemTypes { Default, Storage, Equipped };
-    private ItemTypes selectedItemType;
 
     public void StartInventoryPanel()
     {
-        selectedItemType = ItemTypes.Default;
-
         playerText.GetComponent<TextMeshProUGUI>().text = selectedPlayer.playerName;
-        ResetSelectedItem();
 
-        discardButton.GetComponent<Button>().interactable = false;
-
-        UpdateInventoryButtons();
-    }
-    
-    private void UpdateInventoryButtons()
-    {
-        List<Item> equippedItems = selectedPlayer.GetItems(true);
-        List<Item> storedItems = selectedPlayer.GetItems(false);
-
-        DisplayItemNames(equippedButtons, equippedItems);
-        DisplayItemNames(storageButtons, storedItems);
-
-
+        UpdateItemButtons();
     }
 
-    private void DisplayItemNames(List<GameObject> buttons, List<Item> items)
+    private void UpdateItemButtons()
     {
         int counter = 0;
         string displayText;
-        foreach (GameObject button in buttons)
+        SetErrorText("");
+        ResetSelectedItem();
+        foreach (GameObject itemButton in itemButtons)
         {
-            if(counter >= items.Count)
+            if(counter >= selectedPlayer.items.Count)
             {
                 displayText = "";
-                button.GetComponent<NSItemButtonComponents>().item = new Item();
+                itemButton.GetComponent<NSItemButtonComponents>().item = new Item();
+                itemButton.GetComponent<Image>().color = Color.white;
             }
             else
             {
-                displayText = items[counter].ItemName;
-                button.GetComponent<NSItemButtonComponents>().item = items[counter];
+                displayText = selectedPlayer.items[counter].ItemName;
+                itemButton.GetComponent<NSItemButtonComponents>().item = selectedPlayer.items[counter];
+                if (selectedPlayer.items[counter].isEquipped)
+                {
+                    itemButton.GetComponent<Image>().color = Color.green;
+                }
+                else
+                {
+                    itemButton.GetComponent<Image>().color = Color.red;
+                }
             }
 
-            button.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = displayText;
+            itemButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = displayText;
 
             counter++;
         }
-    }
 
-    public void SelectItemType(string ItemType)
-    {
-        selectedItemType = (ItemTypes)Enum.Parse(typeof(ItemTypes), ItemType);
+        playerCards.GetComponent<NSPlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
     }
 
     public void SelectItem(int buttonID)
     {
-        if(selectedItem.ItemType == Item.ItemTypes.Default)
-        {
-            switch (selectedItemType)
-            {
-                case (ItemTypes.Equipped):
-                    selectedItem = equippedButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
-                    break;
-                case (ItemTypes.Storage):
-                    selectedItem = storageButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
-                    break;
-                default:
-                    throw new NotImplementedException("Not a valid Item Type");
-            }
+        Item buttonItem = itemButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
 
-            if(selectedItem.ItemType != Item.ItemTypes.Default)
+        if(buttonItem.ItemType != Item.ItemTypes.Default)
+        {
+            if (selectedItem.ItemType == Item.ItemTypes.Default)
             {
+                selectedItem = buttonItem;
+                selectedID = buttonID;
                 itemText.GetComponent<TextMeshProUGUI>().text = selectedItem.ItemName;
+                discardButton.GetComponent<Button>().interactable = true;
+                equipButton.GetComponent<Button>().interactable = true;
+                SetErrorText("");
+
+                if (selectedItem.isEquipped)
+                {
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip Item";
+                }
+                else
+                {
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip Item";
+                }
+            }
+            else
+            {
+                SetErrorText("Item Already Selected");
+                ResetSelectedItem();
+            }
+        }
+    }
+
+    public void EquipItem()
+    {
+        if (selectedItem.isEquipped)
+        {
+            selectedPlayer.UnequipItem(selectedID);
+            UpdateItemButtons();
+        }
+        else
+        {
+            Player.EquipErrors equipStatus = selectedPlayer.EquipItem(selectedID);
+
+            switch (equipStatus)
+            {
+                case (Player.EquipErrors.Default):
+                    UpdateItemButtons();
+                    break;
+                case (Player.EquipErrors.AlreadyEquipped):
+                    SetErrorText("Item is already Equipped");
+                    ResetSelectedItem();
+                    break;
+                case (Player.EquipErrors.TooManyEquipped):
+                    SetErrorText("Too Many Items Equipped");
+                    ResetSelectedItem();
+                    break;
             }
         }
     }
 
     public void DiscardItem()
     {
-
+        selectedPlayer.DiscardItem(selectedID);
+        UpdateItemButtons();
     }
 
     private void ResetSelectedItem()
     {
         itemText.GetComponent<TextMeshProUGUI>().text = "";
         selectedItem = new Item();
+        selectedID = -1;
+        discardButton.GetComponent<Button>().interactable = false;
+        equipButton.GetComponent<Button>().interactable = false;
+    }
+
+
+    public void SetErrorText(string errorString)
+    {
+        errorText.GetComponent<TextMeshProUGUI>().text = errorString;
     }
 }
