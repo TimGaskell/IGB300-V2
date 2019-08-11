@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoiceInfoComponents : MonoBehaviour
+public class NSChoiceInfoComponents : MonoBehaviour
 {
     public GameObject choiceHeader;
 

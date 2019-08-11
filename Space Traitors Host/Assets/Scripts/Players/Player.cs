@@ -101,8 +101,8 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 1000;
-        corruption = 100;
+        scrap = 100;
+        corruption = 0;
 
         items = new List<Item>();
 
@@ -149,6 +149,22 @@ public class Player
     private float ApplyScaling(int baseScore, int itemModifier)
     {
         return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
+    }
+
+    /// <summary>
+    /// 
+    /// Modifies the players life points by a certain amount
+    /// 
+    /// </summary>
+    /// <param name="lifePointChange">The amount to change their life points by</param>
+    public void ChangeLifePoints(int lifePointChange)
+    {
+        lifePoints += lifePointChange;
+        //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
+        if (IsDead)
+        {
+            GameManager.instance.CheckTraitorVictory();
+        }
     }
 
     #region Abilitiy Handling
@@ -245,17 +261,9 @@ public class Player
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
-            //If the player has valid slots for the item to be equipped, equips the item.
-            //May need to be changed if forcing inventory management when picking up an item
-            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
-            {
-                item.isEquipped = true;
-            }
-            else
-            {
-                item.isEquipped = false;
-            }
             items.Add(item);
+            //Automatically equips the last given item if the player is able to
+            EquipItem(items.Count - 1);
             return true;
         }
 
@@ -271,17 +279,19 @@ public class Player
     public void RemoveItem(int itemIndex)
     {
         items.RemoveAt(itemIndex);
+        
     }
+
+    public enum EquipErrors { Default, AlreadyEquipped, TooManyEquipped };
 
     /// <summary>
     /// 
-    /// Equips an item for a player if it can be done. Reasons for failure are having too many items equipped or 
-    /// already having the same type of item equipped
+    /// Attempts to equip an itme 
     /// 
     /// </summary>
-    /// <param name="itemIndex">The index of the item within the items list</param>
-    /// <returns>If the equip action fails for any reason will return false</returns>
-    public bool EquipItem(int itemIndex)
+    /// <param name="itemIndex"></param>
+    /// <returns></returns>
+    public EquipErrors EquipItem(int itemIndex)
     {
         int numEquipped = 0;
         Item testingItem = items[itemIndex];
@@ -292,27 +302,24 @@ public class Player
             if (item.isEquipped)
             {
                 //If the item is already equipped, returns false
-                if (item == testingItem)
+                if (item.ItemType == testingItem.ItemType)
                 {
-                    Debug.Log("Item already Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.AlreadyEquipped;
                 }
-
 
                 numEquipped++;
 
                 //If the number of items equipped exceeds the maximum, returns false
                 if (numEquipped >= MAX_EQUIPPED_ITEMS)
                 {
-                    Debug.Log("Too many Items Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.TooManyEquipped;
                 }
             }
         }
 
         //Equips the items then returns true
         items[itemIndex].isEquipped = true;
-        return true;
+        return EquipErrors.Default;
     }
 
     /// <summary>

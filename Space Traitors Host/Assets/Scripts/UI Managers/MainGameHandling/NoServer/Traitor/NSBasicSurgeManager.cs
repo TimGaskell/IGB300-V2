@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class BasicSurgeManager : MonoBehaviour
+public class NSBasicSurgeManager : MonoBehaviour
 {
     public GameObject powerBar;
     public GameObject powerCounter;

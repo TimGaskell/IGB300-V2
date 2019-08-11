@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCardComponents : MonoBehaviour
+public class NSPlayerCardComponents : MonoBehaviour
 {
     public GameObject nameText;
     public GameObject characterText;
@@ -12,6 +12,7 @@ public class PlayerCardComponents : MonoBehaviour
     public GameObject lifePointsText;
     public GameObject traitorMarker;
     public GameObject componentMarker;
+    public GameObject inventoryButton;
 
     public List<GameObject> specCounters;
 }
