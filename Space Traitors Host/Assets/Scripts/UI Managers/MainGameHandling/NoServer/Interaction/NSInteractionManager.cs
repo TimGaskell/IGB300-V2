@@ -157,7 +157,7 @@ public class NSInteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
-                string.Format("Chance: {0}%", Mathf.Round(GameManager.instance.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
+                string.Format("Chance: {0}%", Mathf.Round(GameManager.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = selectedChoice.FailText();
         }

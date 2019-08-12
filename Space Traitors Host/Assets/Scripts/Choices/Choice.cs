@@ -240,7 +240,7 @@ public class Choice
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
-        if (GameManager.instance.PerformSpecChallenge(specScore, targetScore))
+        if (GameManager.PerformSpecChallenge(specScore, targetScore))
         {
             SuccessfulSelection();
 
