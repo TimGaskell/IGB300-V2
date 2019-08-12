@@ -718,6 +718,7 @@ public class GameManager : MonoBehaviour
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
+                newTraitor = DEFAULT_PLAYER_ID;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
