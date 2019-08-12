@@ -98,6 +98,7 @@ public class RollActionPoints : MonoBehaviour
 
     private void BarIncrement(int AP)
     {
+        //SetActive the number of bars required to be visibly displayed
         int i = 0;
         foreach (GameObject image in barImages)
         {
