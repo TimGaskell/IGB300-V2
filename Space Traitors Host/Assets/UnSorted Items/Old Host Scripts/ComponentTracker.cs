@@ -24,6 +24,6 @@ public class ComponentTracker : MonoBehaviour
 
     private void Update()
     {
-       // componentText.text = trackerString1 + server.InstalledComponents.ToString() + trackerString2;
+        //componentText.text = trackerString1 + server.InstalledComponents.ToString() + trackerString2;
     }
 }

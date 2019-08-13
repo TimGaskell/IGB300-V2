@@ -91,15 +91,14 @@ public class Player : MonoBehaviour
     public int ModTech { get { return Character.baseTech + TechChange; } }
     public int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
-
-    //Character Specific Variables
-    public bool ChefBuffed = false; //Used for Chef's 'Preparation' ability
-    public bool IsInvisible = false; //Used for Techie's 'Muddle Sensors' ability
-
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
     //Says if the player has been revealled as a traitor or not. Should always be false if player is not a traitor
     public bool isRevealed;
+
+    private List<Ability> abilities;
+    //If an abilities effects persist beyond the turn they are used in, will store the ability hear to deactivate at the start of their next turn
+    public Ability activeAbility;
 
     //Reference to the players model in the game world
     public GameObject playerObject;
@@ -130,18 +129,15 @@ public class Player : MonoBehaviour
         isTraitor = false;
         isRevealed = false;
 
+        abilities = new List<Ability>();
+        activeAbility = new Ability();
+
         playerObject = null;
     }
     void Start() {
         DontDestroyOnLoad(this.gameObject);
     }
  
-
-    //Techie only, have player turn invisible on main screen
-    public void MuddleSensors(bool visible)
-    {
-       // this.gameObject.GetComponent<MeshRenderer>().enabled = visible;
-    }
 
     /// <summary>
     /// 
@@ -151,6 +147,8 @@ public class Player : MonoBehaviour
     public Player(int PlayerID, string PlayerName, Character.CharacterTypes characterType) : this(PlayerID, PlayerName)
     {
         Character = new Character(characterType);
+        //If the character is predefined by the game manager, will not generate the ability list, so needs to be done here
+        GenerateAbilityList();
     }
 
     /// <summary>
@@ -166,6 +164,102 @@ public class Player : MonoBehaviour
         return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
     }
 
+    /// <summary>
+    /// 
+    /// Modifies the players life points by a certain amount
+    /// 
+    /// </summary>
+    /// <param name="lifePointChange">The amount to change their life points by</param>
+    public void ChangeLifePoints(int lifePointChange)
+    {
+        lifePoints += lifePointChange;
+        //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
+        if (IsDead)
+        {
+            GameManager.instance.CheckTraitorVictory();
+        }
+    }
+
+    #region Abilitiy Handling
+    /// <summary>
+    /// 
+    /// Generates a list of the players abilities to access
+    /// 
+    /// </summary>
+    public void GenerateAbilityList()
+    {
+        abilities = new List<Ability>
+        {
+            Character.characterAbility,
+            new SensorScan(),
+            new CodeInspection(),
+            new Sabotage(),
+            new SuperCharge()
+        };
+    }
+
+    /// <summary>
+    /// 
+    /// Gets an ability of a particular type
+    /// 
+    /// </summary>
+    /// <param name="abilityType">The type of the ability</param>
+    /// <returns>The ability</returns>
+    public Ability GetAbility(Ability.AbilityTypes abilityType)
+    {
+        return abilities.Find(x => x.abilityType == abilityType);
+    }
+
+    /// <summary>
+    /// 
+    /// Get an ability based on its ID in the list
+    /// 
+    /// </summary>
+    /// <param name="abilityID">The ID of the ability in the player ability list</param>
+    /// <returns>The ability</returns>
+    public Ability GetAbility(int abilityID)
+    {
+        return abilities[abilityID];
+    }
+
+    /// <summary>
+    /// 
+    /// Assigns the active ability to be deactivated later.
+    /// 
+    /// </summary>
+    /// <param name="ability"></param>
+    public void AssignActiveAbility(Ability ability)
+    {
+        activeAbility = ability;
+    }
+
+    /// <summary>
+    /// 
+    /// Checks if the active ability is of the type specified. If it is returns true. False otherwise
+    /// 
+    /// </summary>
+    /// <param name="abilityType">The type of ability to compare with</param>
+    /// <returns>True if the active ability is of this type. False otherwise</returns>
+    public bool CheckActiveAbility(Ability.AbilityTypes abilityType)
+    {
+        return activeAbility.abilityType == abilityType;
+    }
+
+    /// <summary>
+    /// 
+    /// Deactivate any active abilities a player may have
+    /// 
+    /// </summary>
+    public void DisableActiveAbility()
+    {
+        if(!CheckActiveAbility(Ability.AbilityTypes.Default))
+        {
+            activeAbility.Deactivate();
+            AssignActiveAbility(new Ability());
+        }
+    }
+    #endregion
+
     #region Item Handling
 
     /// <summary>
@@ -180,17 +274,9 @@ public class Player : MonoBehaviour
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
-            //If the player has valid slots for the item to be equipped, equips the item.
-            //May need to be changed if forcing inventory management when picking up an item
-            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
-            {
-                item.isEquipped = true;
-            }
-            else
-            {
-                item.isEquipped = false;
-            }
             items.Add(item);
+            //Automatically equips the last given item if the player is able to
+            EquipItem(items.Count - 1);
             return true;
         }
 
@@ -206,17 +292,19 @@ public class Player : MonoBehaviour
     public void RemoveItem(int itemIndex)
     {
         items.RemoveAt(itemIndex);
+        
     }
+
+    public enum EquipErrors { Default, AlreadyEquipped, TooManyEquipped };
 
     /// <summary>
     /// 
-    /// Equips an item for a player if it can be done. Reasons for failure are having too many items equipped or 
-    /// already having the same type of item equipped
+    /// Attempts to equip an itme 
     /// 
     /// </summary>
-    /// <param name="itemIndex">The index of the item within the items list</param>
-    /// <returns>If the equip action fails for any reason will return false</returns>
-    public bool EquipItem(int itemIndex)
+    /// <param name="itemIndex"></param>
+    /// <returns></returns>
+    public EquipErrors EquipItem(int itemIndex)
     {
         int numEquipped = 0;
         Item testingItem = items[itemIndex];
@@ -227,27 +315,24 @@ public class Player : MonoBehaviour
             if (item.isEquipped)
             {
                 //If the item is already equipped, returns false
-                if (item == testingItem)
+                if (item.ItemType == testingItem.ItemType)
                 {
-                    Debug.Log("Item already Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.AlreadyEquipped;
                 }
-
 
                 numEquipped++;
 
                 //If the number of items equipped exceeds the maximum, returns false
                 if (numEquipped >= MAX_EQUIPPED_ITEMS)
                 {
-                    Debug.Log("Too many Items Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.TooManyEquipped;
                 }
             }
         }
 
         //Equips the items then returns true
         items[itemIndex].isEquipped = true;
-        return true;
+        return EquipErrors.Default;
     }
 
     /// <summary>

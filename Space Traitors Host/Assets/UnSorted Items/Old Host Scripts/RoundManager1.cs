@@ -72,11 +72,11 @@ public class RoundManager : MonoBehaviour
     public void IncrementTurn()
     {
         //playersInGame[PlayerIndex].GetComponent<Player>().Turn = false;
-       // server.GetComponent<Server>().ClientTurnChange(playersInGame[PlayerIndex].GetComponent<Player>().playerID, false);
+        //server.GetComponent<Server>().ClientTurnChange(playersInGame[PlayerIndex].GetComponent<Player>().playerID, false);
         PlayerIndex++;
         TurnIncrement();
         //playersInGame[PlayerIndex].GetComponent<Player>().Turn = true;
-      //  server.GetComponent<Server>().ClientTurnChange(playersInGame[PlayerIndex].GetComponent<Player>().playerID, true);
+        //server.GetComponent<Server>().ClientTurnChange(playersInGame[PlayerIndex].GetComponent<Player>().playerID, true);
     }
 
     public void TurnIncrement()
