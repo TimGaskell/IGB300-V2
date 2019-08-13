@@ -464,7 +464,7 @@ public class Server : MonoBehaviour {
         //Send message to every player's client to move onto next scene
         SendChangeScene("Character Selection");
         //Change to the character select
-        SceneManager.LoadScene("Character Selection");
+        SceneManager.LoadScene("Server Character Selection");
     }
 
     public void ClientNextScene() {
@@ -702,7 +702,7 @@ public class Server : MonoBehaviour {
         SendServer(details);
     }
 
-    public void SendCharacterSelected(string Character) {
+    public void SendCharacterSelected(int Character) {
 
         CharacterSelection selection = new CharacterSelection();
         selection.SelectedCharacter = Character;
@@ -805,11 +805,11 @@ public class Server : MonoBehaviour {
     }
     private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character) {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in players) {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                GameManager.instance.SelectCharacter((Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), character.SelectedCharacter));
+                GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                 
               
             }
@@ -925,7 +925,7 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                GameManager.instance.InstallComponent(player.GetComponent<Player>().playerID);
+                GameManager.instance.InstallComponent();
 
 
             }

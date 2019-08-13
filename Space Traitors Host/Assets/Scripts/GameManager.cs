@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public const string MainMenuScene = "Main Menu";
 
     public const string LobbyScene = "Lobby";
-    public const string CharacterScene = "Character Selection";
+    public const string CharacterScene = "Server Character Selection";
     public const string MainGameScene = "Game Level";
 
     public const string NoServerLobbyScene = "NOSERVER Lobby";
@@ -160,7 +160,8 @@ public class GameManager : MonoBehaviour
     /// <returns>The relevant player</returns>
     public Player GetOrderedPlayer(int orderID)
     {
-        return players.Find(x => x.playerID == playerOrder[orderID]);
+
+        return players.Find(x => x.playerID == playerOrder[orderID-1]);
     }
 
     /// <summary>
@@ -291,7 +292,7 @@ public class GameManager : MonoBehaviour
     {
         if (serverActive)
         {
-            throw new NotImplementedException("Server Functionality not Implemented");
+            
             if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
@@ -300,8 +301,12 @@ public class GameManager : MonoBehaviour
             {
 
             }
-            else if (scene.name == CharacterScene)
+            else if (scene.name == CharacterScene )
             {
+                //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
+                activePlayer = numPlayers - 1;
+                RandomiseOrder();
+  
 
             }
             else if (scene.name == MainGameScene)
@@ -568,6 +573,8 @@ public class GameManager : MonoBehaviour
     public void GeneratePlayer(int playerID, string playerName)
     {
         players.Add(new Player(playerID, playerName));
+       
+
     }
 
     /// <summary>
@@ -594,7 +601,7 @@ public class GameManager : MonoBehaviour
             //do-while loop checks if the ordered list already contains the random player ID. If it does, then obtains a new random ID.
             do
             {
-                randomPlayer = UnityEngine.Random.Range(0, numPlayers);
+                randomPlayer = UnityEngine.Random.Range(1, numPlayers+1);
 
             } while (playerOrder.Contains(randomPlayer));
 

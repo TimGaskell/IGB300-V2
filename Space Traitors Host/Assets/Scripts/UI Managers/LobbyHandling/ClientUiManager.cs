@@ -8,8 +8,15 @@ using UnityEngine.Networking;
 public class ClientUiManager : MonoBehaviour
 {
     public GameObject PlayerInput;
-    
-   
+    private GameObject PlayerObject;
+
+    public void Start() {
+
+       PlayerObject =  GameObject.Find("PlayerInfoHolder");
+
+    }
+
+
     public void SubmitPlayerName(GameObject TextField) {
 
         string name = TextField.GetComponent<TMP_InputField>().text;
@@ -18,6 +25,7 @@ public class ClientUiManager : MonoBehaviour
 
             PlayerInput.GetComponent<CanvasGroup>().interactable = false;
             Server.Instance.SendPlayerInformation(name);
+            PlayerObject.GetComponent<Player>().playerName = name;
             
         }
         else {
