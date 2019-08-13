@@ -340,6 +340,9 @@ public class Server : MonoBehaviour {
             case NetOP.InstallComponent:
                 InstallComponent(conID, chanID, rHostID, (InstallComponent)msg);
                 break;
+            case NetOP.ChangeScenes:
+                GetSceneChange(conID, chanID, rHostID, (SceneChange)msg);
+                break;
 
         }
 
@@ -435,17 +438,19 @@ public class Server : MonoBehaviour {
 
         //If a player hasn't been assigned to one of the player objects, remove it from the server's array of players
         for (int k = 0; k < players.Count; k++) {
-            if (!players[k].GetComponent<PlayerConnect>().connected) {
+            if (!players[k].GetComponent<Player>().isConnected) {
                 playersRemoved.Add(players[k]);
             }
         }
 
+        
+
         if (playersRemoved != null) {
             foreach (GameObject player in playersRemoved) {
                 players.Remove(player);
+                Destroy(player);
             }
         }
-
 
         //Get the number of players based on how many remain
         playersJoined = players.Count;
@@ -453,13 +458,11 @@ public class Server : MonoBehaviour {
         foreach (GameObject player in players) {
             playerIDs[i] = player.GetComponent<Player>().playerID;
             player.transform.parent = null;
-            DontDestroyOnLoad(player);
             i++;
         }
 
         //Send message to every player's client to move onto next scene
         SendChangeScene("Character Selection");
-
         //Change to the character select
         SceneManager.LoadScene("Character Selection");
     }

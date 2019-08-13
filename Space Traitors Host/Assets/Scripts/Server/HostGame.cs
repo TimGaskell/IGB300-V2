@@ -44,7 +44,7 @@ public class HostGame : MonoBehaviour
     public void CreateRoom() {
 
         if(roomName != "" && roomName != null) {
-            Debug.Log("Creating Room: " + roomName + "with room for " + roomSize);
+            Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
             //create room
             if (SceneManager.GetActiveScene().name == "LobbyLan")
             {
