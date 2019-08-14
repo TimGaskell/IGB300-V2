@@ -471,7 +471,7 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         //Reset variables to their default state
-        activePlayer = 0;
+        activePlayer = 1;
         installedComponents = 0;
 
         aiPower = 0;

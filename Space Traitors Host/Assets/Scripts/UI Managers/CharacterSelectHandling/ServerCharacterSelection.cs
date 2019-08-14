@@ -35,6 +35,18 @@ public class ServerCharacterSelection : MonoBehaviour {
         }
     }
 
+    private void Update() {
+        
+        if(GameManager.instance.activePlayer == 0) {
+
+            //Send message to every player's client to move onto next scene
+            Server.Instance.SendChangeScene("GameLevel");
+            //Change to the character select
+            SceneManager.LoadScene("GameLevel");
+
+        }
+    }
+
 
 
     #region No ServerHandling
@@ -90,7 +102,7 @@ public class ServerCharacterSelection : MonoBehaviour {
     /// Updates the selected character text on the Active Player Panel
     /// 
     /// </summary>
-    private void DisplaySelectedCharacter() {
+    public void DisplaySelectedCharacter() {
         //If the character type is default, displays an empty string- otherwise displays the selected character
         activePlayerPanel.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = tempCharacterType == Character.CharacterTypes.Default ? "" : tempCharacterType.ToString();
     }
@@ -107,37 +119,7 @@ public class ServerCharacterSelection : MonoBehaviour {
         DisplaySelectedCharacter();
     }
 
-    /// <summary>
-    /// 
-    /// Return the selected character to the game manager and loops through to the next player in the character selection order
-    /// 
-    /// </summary>
-    public void ConfirmCharacter() {
-        //Checks if the player actually has selected a character
-        if (tempCharacterType != Character.CharacterTypes.Default) {
-            //Checks if the character has already been selected
-            if (!GameManager.instance.CheckCharacterSelected(tempCharacterType)) {
-                //Updates the player list with the new character selection and assigns the character in the game manager
-                UpdatePlayerCharacter();
-                GameManager.instance.SelectCharacter(tempCharacterType);
-                //If there are no more players to select moves into next scene, otherwise updates variables for next player selection
-                if (GameManager.instance.activePlayer < 0) {
-                    SceneManager.LoadScene(GameManager.MainGameScene);
-                }
-                else {
-                    tempCharacterType = Character.CharacterTypes.Default;
-                    DisplaySelectedCharacter();
-                    DisplayActivePlayer();
-                }
-            }
-            else {
-                Debug.Log("Character already selected. Please select another Character");
-            }
-        }
-        else {
-            Debug.Log("Please Select a Character");
-        }
-    }
+    
 
     /// <summary>
     /// 
