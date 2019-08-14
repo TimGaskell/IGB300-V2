@@ -346,6 +346,9 @@ public class Server : MonoBehaviour {
             case NetOP.IsActivePlayer:
                 AmActivePlayer(conID, chanID, rHostID, (IsActivePlayer)msg);
                 break;
+            case NetOP.ChangeCharacter:
+                NeedToChangeCharacter(conID, chanID, rHostID, (ChangeCharacter)msg);
+                break;
 
         }
 
