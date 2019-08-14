@@ -47,7 +47,7 @@ public class NSAttackSurgeManager : MonoBehaviour
         confirmButton.GetComponent<Button>().interactable = true;
         confirmButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Confirm: {0}", specScore);
         chanceText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%",
-            GameManager.instance.SpecChallengeChance(GameManager.instance.ObtainSpecScore(targetPlayer, selectedSpec), 
+            GameManager.SpecChallengeChance(GameManager.instance.ObtainSpecScore(targetPlayer, selectedSpec), 
             GameManager.instance.aiTargetScore).ToString());
     }
 }

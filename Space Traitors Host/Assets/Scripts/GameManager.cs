@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public const int COMBAT_DAMAGE = -1;
 
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -528,7 +528,7 @@ public class GameManager : MonoBehaviour
     /// <param name="playerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>The chance for the player or the attacker to succeed on the spec challenge</returns>
-    public float SpecChallengeChance(float playerScore, float targetScore)
+    public static float SpecChallengeChance(float playerScore, float targetScore)
     {
         if (targetScore == 0)
         {
@@ -546,7 +546,7 @@ public class GameManager : MonoBehaviour
     /// <param name="PlayerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>True if the player suceeded. False otherwise</returns>
-    public bool PerformSpecChallenge(float PlayerScore, float targetScore)
+    public static bool PerformSpecChallenge(float PlayerScore, float targetScore)
     {
         //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
         float successFactor = UnityEngine.Random.Range(0f, 100f);
@@ -718,6 +718,7 @@ public class GameManager : MonoBehaviour
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
+                newTraitor = DEFAULT_PLAYER_ID;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
