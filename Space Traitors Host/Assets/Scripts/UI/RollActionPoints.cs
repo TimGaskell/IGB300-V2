@@ -15,13 +15,13 @@ public class RollActionPoints : MonoBehaviour
     //Also acts as the speed of the bar
     public float MaxTime = 0.5f;
     //How slow the bar speed will become
-    public float decelerationRate = 1.25f;
+    public float decelerationRate = 1.7f;
 
-    private float timeInterval;
+    private float timeInterval = 0;
     private float acceleration = 1;
 
-    private int actionPoints, currentActionPoints;
-    private int rollValue, rollAdd;
+    private int actionPoints = 0, currentActionPoints = 0;
+    private int rollValue = 0, rollAdd = 0;
     private int MaxBars = 8;
     private int MinRandom = 2;
 
@@ -77,7 +77,14 @@ public class RollActionPoints : MonoBehaviour
         //Randomly decides an add on amount to the roll between 0 and 4 (inclusive)
         rollAdd = Random.Range(MinRandom, MaxBars);
         //the value of the roll is the current amount of action points plus the decided add on amount
-        rollValue = actionPoints + rollAdd;
+
+        if (increasing)
+            rollValue = actionPoints + rollAdd;
+        else
+        {
+            rollValue = actionPoints - rollAdd;
+            rollValue = -rollValue;
+        }
 
         //If the roll goes higher that the maximum amount, it will reverse by the number of its remainder. E.G. roll = 9, 9-8=1, roll-1=7
         if (rollValue > MaxBars)
@@ -94,6 +101,19 @@ public class RollActionPoints : MonoBehaviour
 
         //Assign Action Points to Game Manager
         GameManager.instance.actionPoints = rollValue;
+    }
+
+    public void ResetRoll()
+    {
+        rollStop = false;
+        timerStop = false;
+        increasing = true;
+        acceleration = 1;
+        rollAdd = 0;
+        timeInterval = 0;
+        decelerationRate = 1.7f;
+        currentActionPoints = 0;
+
     }
 
     private void BarIncrement(int AP)
