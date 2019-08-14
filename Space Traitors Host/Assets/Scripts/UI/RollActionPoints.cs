@@ -71,6 +71,8 @@ public class RollActionPoints : MonoBehaviour
         }
     }
 
+
+    #region Usable Methods 
     //CALL THIS when the player is rolling
     public void GetRoll()
     {
@@ -103,6 +105,7 @@ public class RollActionPoints : MonoBehaviour
         GameManager.instance.actionPoints = rollValue;
     }
 
+    //CALL THIS to reset the roll for next turn
     public void ResetRoll()
     {
         rollStop = false;
@@ -115,7 +118,9 @@ public class RollActionPoints : MonoBehaviour
         currentActionPoints = 0;
 
     }
+    #endregion
 
+    #region Back-End Methods
     private void BarIncrement(int AP)
     {
         //SetActive the number of bars required to be visibly displayed
@@ -198,6 +203,6 @@ public class RollActionPoints : MonoBehaviour
             increasing = true;
         }
     }
-    
-    
+
+    #endregion
 }
