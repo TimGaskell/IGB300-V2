@@ -128,6 +128,7 @@ public class NSLobbyUIManager : NetworkBehaviour
             if (counter == GameManager.instance.numPlayers)
             {
                 SceneManager.LoadScene(GameManager.NoServerCharacterScene);
+                break;
             }
 
         }
