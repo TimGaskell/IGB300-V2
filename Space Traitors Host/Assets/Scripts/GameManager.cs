@@ -304,7 +304,7 @@ public class GameManager : MonoBehaviour
             else if (scene.name == CharacterScene )
             {
                 //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
-                activePlayer = numPlayers - 1;
+                activePlayer = numPlayers;
                 RandomiseOrder();
   
 
