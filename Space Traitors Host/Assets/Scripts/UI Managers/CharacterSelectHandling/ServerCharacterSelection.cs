@@ -127,7 +127,6 @@ public class ServerCharacterSelection : MonoBehaviour {
     /// 
     /// </summary>
     public void UpdatePlayerCharacter() {
-        tempCharacterType = GameManager.instance.GetOrderedPlayer(GameManager.instance.activePlayer).Character.CharacterType;
         int currentPlayerPos = GameManager.instance.numPlayers - GameManager.instance.activePlayer;
         playerList.transform.GetChild(currentPlayerPos).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = tempCharacterType.ToString();
     }

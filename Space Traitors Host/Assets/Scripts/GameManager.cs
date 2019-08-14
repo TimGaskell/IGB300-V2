@@ -311,6 +311,7 @@ public class GameManager : MonoBehaviour
             }
             else if (scene.name == MainGameScene)
             {
+                StartGame();
 
             }
         }

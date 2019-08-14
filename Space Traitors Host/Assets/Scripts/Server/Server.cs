@@ -862,10 +862,10 @@ public class Server : MonoBehaviour {
                     SendChangeCharacter(player.GetComponent<Player>().playerID,true);
                 }
                 else {
-                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
+                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);                  
                     SendChangeCharacter(player.GetComponent<Player>().playerID, false);
                     SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                 }
