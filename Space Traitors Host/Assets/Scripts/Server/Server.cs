@@ -850,6 +850,7 @@ public class Server : MonoBehaviour {
                 }
                 else {
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
+                    SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                 }
                              
             }
