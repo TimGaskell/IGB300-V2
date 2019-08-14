@@ -10,5 +10,7 @@ public class ChangeCharacter : NetMessage {
 
     }
 
+    public bool AlreadySelected { get; set; }
+
 
 }

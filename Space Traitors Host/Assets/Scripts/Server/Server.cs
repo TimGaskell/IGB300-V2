@@ -523,10 +523,13 @@ public class Server : MonoBehaviour {
         SendClient(Activeplayer);
     }
 
-    public void SendChangeCharacter(int player) {
+    public void SendChangeCharacter(int player, bool istaken) {
 
         ChangeCharacter change = new ChangeCharacter();
         tempPlayerID = player;
+
+        change.AlreadySelected = istaken;
+
 
         SendClient(change);
 
@@ -712,7 +715,15 @@ public class Server : MonoBehaviour {
     private void NeedToChangeCharacter(int conID, int chanID, int rHostID, ChangeCharacter character) {
 
         GameObject Canvas = GameObject.Find("Canvas");
-        Canvas.GetComponent<CharacterSelectUIManager>().CharacterSelectedTaken = true;
+
+        if (character.AlreadySelected == false) {
+
+            Canvas.GetComponent<CharacterSelectUIManager>().EndSelection();
+        }
+        else {
+            Debug.Log("Choose another Character");
+        }
+        
 
     }
 
@@ -845,11 +856,12 @@ public class Server : MonoBehaviour {
             if (player.GetComponent<Player>().playerID == conID) {
 
                 if (GameManager.instance.CheckCharacterSelected((Character.CharacterTypes)character.SelectedCharacter)) {
-                    SendChangeCharacter(player.GetComponent<Player>().playerID);
+                    SendChangeCharacter(player.GetComponent<Player>().playerID,true);
 
                 }
                 else {
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
+                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
                     SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                 }
                              

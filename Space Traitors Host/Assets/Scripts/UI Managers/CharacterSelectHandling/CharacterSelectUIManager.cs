@@ -14,7 +14,6 @@ public class CharacterSelectUIManager : MonoBehaviour
     public GameObject activePlayerPanel;
     public GameObject SelectButton;
     private GameObject PlayerObject;
-    public bool CharacterSelectedTaken = false;
 
     private Character.CharacterTypes tempCharacterType;
 
@@ -79,7 +78,6 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     public void ConfirmCharacter()
     {
-        CharacterSelectedTaken = false;
         //Checks if the player actually has selected a character
         if(tempCharacterType != Character.CharacterTypes.Default)
         {
@@ -91,16 +89,11 @@ public class CharacterSelectUIManager : MonoBehaviour
             Debug.Log("Please Select a Character");
         }
 
-        if (CharacterSelectedTaken == true) {
-
-            Debug.Log("Select another Character");
-        }
-        else {
-            EndSelection();
-        }
+        
     }
 
     public void EndSelection() {
+        
         PlayerObject.GetComponent<Player>().Character = new Character((Character.CharacterTypes)(int)tempCharacterType);
         SelectButton.GetComponent<Button>().enabled = false;
         SelectButton.GetComponent<Image>().color = Color.gray;
