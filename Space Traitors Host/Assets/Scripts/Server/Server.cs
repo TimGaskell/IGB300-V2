@@ -343,6 +343,9 @@ public class Server : MonoBehaviour {
             case NetOP.ChangeScenes:
                 GetSceneChange(conID, chanID, rHostID, (SceneChange)msg);
                 break;
+            case NetOP.IsActivePlayer:
+                AmActivePlayer(conID, chanID, rHostID, (IsActivePlayer)msg);
+                break;
 
         }
 
@@ -511,6 +514,22 @@ public class Server : MonoBehaviour {
             tempPlayerID = player.GetComponent<Player>().playerID;        
             SendClient(scene);
         }
+    }
+    public void SendActivePlayer(int player) {
+
+        IsActivePlayer Activeplayer = new IsActivePlayer();
+        tempPlayerID = player;
+
+        SendClient(Activeplayer);
+    }
+
+    public void SendChangeCharacter(int player) {
+
+        ChangeCharacter change = new ChangeCharacter();
+        tempPlayerID = player;
+
+        SendClient(change);
+
     }
 
 
@@ -681,6 +700,22 @@ public class Server : MonoBehaviour {
 
     }
 
+    private void AmActivePlayer(int conID, int chanID, int rHostID, IsActivePlayer isActive) {
+
+        if(SceneManager.GetActiveScene().name == "Character Selection") {
+
+            GameObject Canvas = GameObject.Find("Canvas");
+            Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+        }
+    }
+
+    private void NeedToChangeCharacter(int conID, int chanID, int rHostID, ChangeCharacter character) {
+
+        GameObject Canvas = GameObject.Find("Canvas");
+        Canvas.GetComponent<CharacterSelectUIManager>().CharacterSelectedTaken = true;
+
+    }
+
     private void GetCharacterInformation(int conID, int chanID, int rHostID, CharacterInformation information) {
 
         
@@ -809,9 +844,14 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
-                
-              
+                if (GameManager.instance.CheckCharacterSelected((Character.CharacterTypes)character.SelectedCharacter)) {
+                    SendChangeCharacter(player.GetComponent<Player>().playerID);
+
+                }
+                else {
+                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
+                }
+                             
             }
         }
     }

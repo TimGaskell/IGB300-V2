@@ -47,31 +47,28 @@ public class ServerCharacterSelection : MonoBehaviour {
     private void SetupPlayerList() {
         //Since character selection is in the reverse order to the order of play, will need to start at the top end of the player order list
         int counter = GameManager.instance.numPlayers;
-        Debug.Log(counter);
         foreach (Transform playerPanels in playerList.transform) {
             if (counter > 0) {
                 playerPanels.gameObject.SetActive(true);
                 //Need to sort the panels by the order of the character selection, not by their ID, so need to get the information from an ordered player
                 Player playerInfo = GameManager.instance.GetOrderedPlayer(counter);
-                Debug.Log(playerInfo.playerID);
                 int playerID = playerInfo.playerID;
-                string playerName = playerInfo.playerName;
-                Debug.Log("wtf");
+                string playerName = playerInfo.playerName;    
                 //Set the player name to be their ID and their name
                 playerPanels.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);
                 //Sets the player's character name to be blank
-                playerPanels.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
-                Debug.Log("iswtf");
+                playerPanels.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";      
             }
             else {
                 //Disable any irrelevant player cards
                 playerPanels.gameObject.SetActive(false);
             }
-
             //Work backwards through the player order list
             counter--;
-            Debug.Log("wtfsfasf");
         }
+
+        Server.Instance.SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+
     }
 
     /// <summary>

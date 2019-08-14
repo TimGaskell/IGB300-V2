@@ -14,6 +14,7 @@ public class CharacterSelectUIManager : MonoBehaviour
     public GameObject activePlayerPanel;
     public GameObject SelectButton;
     private GameObject PlayerObject;
+    public bool CharacterSelectedTaken = false;
 
     private Character.CharacterTypes tempCharacterType;
 
@@ -30,34 +31,22 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     #region SeverHandeling
 
+
+
     /// <summary>
     /// 
     /// Activates the player when its their turn to pick
     /// 
     /// </summary>
-    public void DisplayActivePlayer(List<string>disabledCharacters)
-    {
-        DisablePlayers(disabledCharacters);
+    public void DisplayActivePlayer()
+    {       
         SelectButton.GetComponent<Button>().enabled = true;
+        SelectButton.GetComponent<Image>().color = Color.white;
         activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Your Turn");
     }
 
 
-    /// <summary>
-    /// Disables Characters that other people have selected
-    /// </summary>
-    /// <param name="disabledCharacters"></param>
-    private void DisablePlayers(List<string> disabledCharacters) {
-
-        for (int i = 0; i< disabledCharacters.Count; i++) {
-
-            GameObject disabledCharacter = GameObject.Find(disabledCharacters[i] + "Selection");
-            disabledCharacter.GetComponent<Button>().enabled = false;
-            disabledCharacter.GetComponent<Image>().color = Color.gray;
-
-
-        }
-    }
+   
     
     /// <summary>
     /// 
@@ -90,18 +79,32 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     public void ConfirmCharacter()
     {
+        CharacterSelectedTaken = false;
         //Checks if the player actually has selected a character
         if(tempCharacterType != Character.CharacterTypes.Default)
         {
             Server.Instance.SendCharacterSelected((int)tempCharacterType);
-            PlayerObject.GetComponent<Player>().Character =  new Character((Character.CharacterTypes)(int)tempCharacterType);
-            SelectButton.GetComponent<Button>().enabled = false;
-            activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");
+          
         }
         else
         {
             Debug.Log("Please Select a Character");
         }
+
+        if (CharacterSelectedTaken == true) {
+
+            Debug.Log("Select another Character");
+        }
+        else {
+            EndSelection();
+        }
+    }
+
+    public void EndSelection() {
+        PlayerObject.GetComponent<Player>().Character = new Character((Character.CharacterTypes)(int)tempCharacterType);
+        SelectButton.GetComponent<Button>().enabled = false;
+        SelectButton.GetComponent<Image>().color = Color.gray;
+        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");
     }
     #endregion
 
