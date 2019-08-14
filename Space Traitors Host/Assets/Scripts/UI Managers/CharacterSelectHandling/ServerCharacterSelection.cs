@@ -14,7 +14,7 @@ public class ServerCharacterSelection : MonoBehaviour {
 
     public List<String> DisabledCharacters;
 
-    private Character.CharacterTypes tempCharacterType;
+    public Character.CharacterTypes tempCharacterType;
 
     private void Start() {
         if (GameManager.instance.serverActive) {
@@ -127,7 +127,8 @@ public class ServerCharacterSelection : MonoBehaviour {
     /// 
     /// </summary>
     public void UpdatePlayerCharacter() {
-        int currentPlayerPos = GameManager.instance.numPlayers - GameManager.instance.activePlayer - 1;
+        tempCharacterType = GameManager.instance.GetOrderedPlayer(GameManager.instance.activePlayer).Character.CharacterType;
+        int currentPlayerPos = GameManager.instance.numPlayers - GameManager.instance.activePlayer;
         playerList.transform.GetChild(currentPlayerPos).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = tempCharacterType.ToString();
     }
 
