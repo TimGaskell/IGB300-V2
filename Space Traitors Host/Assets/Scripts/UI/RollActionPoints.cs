@@ -18,7 +18,8 @@ public class RollActionPoints : MonoBehaviour
     public float decelerationRate = 1.7f;
 
     private float timeInterval = 0;
-    private float acceleration = 1;
+    public float acceleration = 1;
+    public float minAcceleration = 0.3f;
 
     private int actionPoints = 0, currentActionPoints = 0;
     private int rollValue = 0, rollAdd = 0;
@@ -59,6 +60,13 @@ public class RollActionPoints : MonoBehaviour
                 timeInterval -= Time.deltaTime * acceleration;
         }
         
+        //Quick acceleration check, to prevent bar from becoming too sluggish
+        if (acceleration < minAcceleration)
+        {
+            acceleration = minAcceleration;
+        }
+
+
         TimeCheck();
 
         //Stops the bars from moving as soon as the value the player rolled has been found
@@ -85,6 +93,7 @@ public class RollActionPoints : MonoBehaviour
         else
         {
             rollValue = actionPoints - rollAdd;
+            if (rollValue < 0)
             rollValue = -rollValue;
         }
 

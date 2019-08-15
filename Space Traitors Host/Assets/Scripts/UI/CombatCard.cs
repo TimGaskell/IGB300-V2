@@ -7,7 +7,7 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     private GameObject flickLocation;
 
-    public float cardSpeed = 1700f;
+    public float pointerSpeed = 1700f;
     public float positionRange = 20f;
     public float maxFlickTime = 0.5f;
 
@@ -15,7 +15,7 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public enum Specs { Default, Brawn, Skill, Tech, Charm };
     public int specNumber = 0;
 
-    private Vector3 cardPos, startingPos;
+    private Vector3 pointerPos, startingPos;
     public float flickTime;
     private bool held = false, overCard = false;
 
@@ -23,7 +23,7 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     void Start()
     {
         startingPos = transform.position;
-        cardPos = transform.position;
+        pointerPos = transform.position;
         flickTime = 0;
         
     }
@@ -37,8 +37,8 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //When the card is held down by the player, have its new position be wherever the player chooses to hold
         if (held)
         {
-            cardPos.x = Input.mousePosition.x;
-            cardPos.y = Input.mousePosition.y;
+            pointerPos.x = Input.mousePosition.x;
+            pointerPos.y = Input.mousePosition.y;
         }
 
         CardMovement();
@@ -53,16 +53,16 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private void CardMovement()
     {
         //X Position
-        if ((int)transform.position.x < (int)cardPos.x - positionRange)
-            transform.position = new Vector3(transform.position.x + cardSpeed * Time.deltaTime, transform.position.y, transform.position.z);
-        else if ((int)transform.position.x > (int)cardPos.x + positionRange)
-            transform.position = new Vector3(transform.position.x - cardSpeed * Time.deltaTime, transform.position.y, transform.position.z);
+        if ((int)transform.position.x < (int)pointerPos.x - positionRange)
+            transform.position = new Vector3(transform.position.x + pointerSpeed * Time.deltaTime, transform.position.y, transform.position.z);
+        else if ((int)transform.position.x > (int)pointerPos.x + positionRange)
+            transform.position = new Vector3(transform.position.x - pointerSpeed * Time.deltaTime, transform.position.y, transform.position.z);
 
         //Y Position
-        if ((int)transform.position.y < (int)cardPos.y - positionRange)
-            transform.position = new Vector3(transform.position.x, transform.position.y + cardSpeed * Time.deltaTime, transform.position.z);
-        else if ((int)transform.position.y > (int)cardPos.y + positionRange)
-            transform.position = new Vector3(transform.position.x, transform.position.y - cardSpeed * Time.deltaTime, transform.position.z);
+        if ((int)transform.position.y < (int)pointerPos.y - positionRange)
+            transform.position = new Vector3(transform.position.x, transform.position.y + pointerSpeed * Time.deltaTime, transform.position.z);
+        else if ((int)transform.position.y > (int)pointerPos.y + positionRange)
+            transform.position = new Vector3(transform.position.x, transform.position.y - pointerSpeed * Time.deltaTime, transform.position.z);
     }
 
     //When the card hits the point it's supposed to 
@@ -129,8 +129,8 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (Input.GetMouseButtonUp(0))
         {
             held = false;
-            cardPos.x = startingPos.x;
-            cardPos.y = startingPos.y;
+            pointerPos.x = startingPos.x;
+            pointerPos.y = startingPos.y;
             flickTime = 0;
         }
     }

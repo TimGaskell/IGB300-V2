@@ -5,4 +5,6 @@ using UnityEngine;
 public class SpecIcon : MonoBehaviour
 {
     public string SpecType ="";
+    public int specScore = 0;
+
 }
