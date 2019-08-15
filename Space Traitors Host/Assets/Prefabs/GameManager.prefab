@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5873719605199779884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5873719605199779886}
+  - component: {fileID: 5873719605199779887}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5873719605199779886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5873719605199779884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5873719605199779887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5873719605199779884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3515ae1e82e1d44a16e303abf16ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverActive: 0
+  numPlayers: 0
+  playerOrder: 
+  activePlayer: 0
+  characterPortraits:
+  - {fileID: 21300000, guid: ef1bf2d82676be141aa07acef183c2f6, type: 3}
+  - {fileID: 21300000, guid: d93496687c4e3684e8c019836c9fab98, type: 3}
+  - {fileID: 21300000, guid: 763117e9d5bdd9e46aab75d9cf112292, type: 3}
+  - {fileID: 21300000, guid: 85f0f2e159c7fd5468d82c740ca93660, type: 3}
+  - {fileID: 21300000, guid: 6e04a008089186c458966b827d1521df, type: 3}
+  - {fileID: 21300000, guid: 6ca8b6ca382d25b408c8fb89adb23112, type: 3}
+  playerPrefabs:
+  - {fileID: 1862823256566978465, guid: 35d9668fa898e5946a69b7366cb06a0a, type: 3}
+  - {fileID: 6360680432793853041, guid: f68b670dcde064a44b748d10d7f04c82, type: 3}
+  - {fileID: 6669219779039221355, guid: 18b01baf96a94f3439aa8010320184b2, type: 3}
+  - {fileID: 5247153938033244923, guid: 83479216eed02bc4b8dac0c827b71d6f, type: 3}
+  - {fileID: 466992447494929638, guid: 13de5e2ca296fd048adec6adf56f681d, type: 3}
+  - {fileID: 5346825305467393570, guid: a00b81eb85753a64e8e70b5005611d7e, type: 3}
+  basePower: 0
+  playerPower: 0
+  aiPowerChange: 0
+  newTraitor: 0
+  targetPlayer: 0
+  roomList: {fileID: 0}
+  installedComponents: 0
+  currentPhase: 0
+  roomSelection: 0
+  playerMoving: 0
+  playerGoalIndex: 0
+  CurrentVictory: 0
+  traitorWinID: 0
