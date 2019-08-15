@@ -101,7 +101,7 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 0;
+        scrap = 1000;
         corruption = 0;
 
         items = new List<Item>();
@@ -295,13 +295,16 @@ public class Player
     {
         int numEquipped = 0;
         Item testingItem = items[itemIndex];
+        //If item is being stolen have to force the item to be unequipped when transferred between
+        //inventories.
+        testingItem.isEquipped = false;
 
         foreach (Item item in items)
         {
             //Only need to verify conditions if the item is already equipped
             if (item.isEquipped)
             {
-                //If the item is already equipped, returns false
+                //If the item is already equipped, returns error
                 if (item.ItemType == testingItem.ItemType)
                 {
                     return EquipErrors.AlreadyEquipped;
@@ -309,7 +312,7 @@ public class Player
 
                 numEquipped++;
 
-                //If the number of items equipped exceeds the maximum, returns false
+                //If the number of items equipped exceeds the maximum, returns error
                 if (numEquipped >= MAX_EQUIPPED_ITEMS)
                 {
                     return EquipErrors.TooManyEquipped;

@@ -220,6 +220,7 @@ public class NSStealingManager : MonoBehaviour
         //Attempts to give the item to the winner, the only reason for failure being they already have too many items
         if (winner.GiveItem(selectedItem))
         {
+            Debug.Log(selectedItem.isEquipped);
             //Removes the item from the losers inventory. Also sets the loser's inventory from being interactable so only one item can be stolen
             loser.RemoveItem(selectedID);
             loserItemParent.GetComponent<CanvasGroup>().interactable = false;
