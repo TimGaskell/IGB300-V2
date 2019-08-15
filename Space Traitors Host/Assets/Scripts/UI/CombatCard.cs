@@ -11,6 +11,10 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public float positionRange = 20f;
     public float maxFlickTime = 0.5f;
 
+    //Spec Variables
+    public enum Specs { Default, Brawn, Skill, Tech, Charm };
+    public int specNumber = 0;
+
     private Vector3 cardPos, startingPos;
     public float flickTime;
     private bool held = false, overCard = false;
@@ -21,6 +25,7 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         startingPos = transform.position;
         cardPos = transform.position;
         flickTime = 0;
+        
     }
 
     // Update is called once per frame
@@ -65,15 +70,39 @@ public class CombatCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (flickTime > 0)
         {
-            Debug.Log("Card Played");
-            CardPlayed();
+            SpecHit(collision);
         }
+    
     }
 
-    public void CardPlayed()
+    public void SpecHit(Collider2D specObject)
     {
+        //Code for when spec is hit
+        switch (specObject.GetComponent<SpecIcon>().SpecType)
+        {
+            case "" :
+                specNumber = (int)Specs.Default;
+                break;
 
+            case "Charm":
+                specNumber = (int)Specs.Charm;
+                break;
+
+            case "Brawn":
+                specNumber = (int)Specs.Brawn;
+                break;
+
+            case "Tech":
+                specNumber = (int)Specs.Tech;
+                break;
+
+            case "Skill":
+                specNumber = (int)Specs.Skill;
+                break;
+        }
+        Debug.Log("Spec Number is: " + specNumber);
     }
+
 
     #region Mouse Pointers
     public void OnPointerEnter(PointerEventData eventData)
