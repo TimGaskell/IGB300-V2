@@ -53,14 +53,14 @@ public class InventoryManager : MonoBehaviour
             if(counter >= selectedPlayer.items.Count)
             {
                 displayText = "";
-                itemButton.GetComponent<NSItemButtonComponents>().item = new Item();
+                itemButton.GetComponent<ItemButtonComponents>().item = new Item();
                 itemButton.GetComponent<Image>().color = Color.white;
             }
             else
             {
                 //Presents the information about the current item for the player
                 displayText = selectedPlayer.items[counter].ItemName;
-                itemButton.GetComponent<NSItemButtonComponents>().item = selectedPlayer.items[counter];
+                itemButton.GetComponent<ItemButtonComponents>().item = selectedPlayer.items[counter];
                 if (selectedPlayer.items[counter].isEquipped)
                 {
                     itemButton.GetComponent<Image>().color = Color.green;
@@ -77,7 +77,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         //Update the current players card with the new spec scores
-        playerCards.GetComponent<NSPlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public class InventoryManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button in the list of the item buttons</param>
     public void SelectItem(int buttonID)
     {
-        Item buttonItem = itemButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
+        Item buttonItem = itemButtons[buttonID].GetComponent<ItemButtonComponents>().item;
 
         //Need to check if the selected item is one of the empty "slots" in the inventory
         if(buttonItem.ItemType != Item.ItemTypes.Default)

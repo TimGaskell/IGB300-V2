@@ -54,28 +54,28 @@ public class AbilityManager : MonoBehaviour
             Ability currentAbility = GameManager.instance.GetActivePlayer().GetAbility(counter);
             abilityButton.GetComponent<Button>().interactable = true;
 
-            abilityButton.GetComponent<NSAbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
-            abilityButton.GetComponent<NSAbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
-            abilityButton.GetComponent<NSAbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = currentAbility.scrapCost.ToString();
+            abilityButton.GetComponent<AbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
+            abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
+            abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = currentAbility.scrapCost.ToString();
 
             if (currentAbility.CheckScrap())
             {
-                abilityButton.GetComponent<NSAbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.black;
+                abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.black;
             }
             else
             {
                 abilityButton.GetComponent<Button>().interactable = false;
-                abilityButton.GetComponent<NSAbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
 
             if (currentAbility.CheckCorruption())
             {                
-                abilityButton.GetComponent<NSAbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.black;
+                abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.black;
             }
             else
             {
                 abilityButton.GetComponent<Button>().interactable = false;
-                abilityButton.GetComponent<NSAbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
 
             counter++;
@@ -148,7 +148,7 @@ public class AbilityManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button being selected</param>
     public void SelectTarget(int buttonID)
     {
-        selectedPlayer = targetButtons[buttonID].GetComponent<NSTargetProperties>().playerID;
+        selectedPlayer = targetButtons[buttonID].GetComponent<TargetProperties>().playerID;
         playerSelectedButton.GetComponent<Button>().interactable = true;
         playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Selected: {0}", GameManager.instance.GetPlayer(selectedPlayer).playerName);
     }
@@ -244,7 +244,7 @@ public class AbilityManager : MonoBehaviour
     private void DisplayActiveAbility()
     {
         abilityActiveDisplay.SetActive(true);
-        abilityActiveDisplay.GetComponent<NSActiveAbilityDisplay>().UpdateActiveText(selectedAbility);
-        playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
+        abilityActiveDisplay.GetComponent<ActiveAbilityDisplay>().UpdateActiveText(selectedAbility);
+        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
     }
 }

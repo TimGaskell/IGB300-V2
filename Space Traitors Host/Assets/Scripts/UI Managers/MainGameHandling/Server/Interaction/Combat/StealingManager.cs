@@ -64,14 +64,14 @@ public class StealingManager : MonoBehaviour
             if(itemIndex >= winner.items.Count)
             {
                 winnerDisplayText = "";
-                winnerItemButtons[itemIndex].GetComponent<NSItemButtonComponents>().item = new Item();
+                winnerItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = new Item();
                 winnerItemButtons[itemIndex].GetComponent<Image>().color = Color.white;
             }
             //Otherwise displays the relevant information
             else
             {
                 winnerDisplayText = winner.items[itemIndex].ItemName;
-                winnerItemButtons[itemIndex].GetComponent<NSItemButtonComponents>().item = winner.items[itemIndex];
+                winnerItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = winner.items[itemIndex];
                 if (winner.items[itemIndex].isEquipped)
                 {
                     winnerItemButtons[itemIndex].GetComponent<Image>().color = Color.green;
@@ -88,13 +88,13 @@ public class StealingManager : MonoBehaviour
             if (itemIndex >= loser.items.Count)
             {
                 loserDisplayText = "";
-                loserItemButtons[itemIndex].GetComponent<NSItemButtonComponents>().item = new Item();
+                loserItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = new Item();
                 loserItemButtons[itemIndex].GetComponent<Image>().color = Color.white;
             }
             else
             {
                 loserDisplayText = loser.items[itemIndex].ItemName;
-                loserItemButtons[itemIndex].GetComponent<NSItemButtonComponents>().item = loser.items[itemIndex];
+                loserItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = loser.items[itemIndex];
                 if (loser.items[itemIndex].isEquipped)
                 {
                     loserItemButtons[itemIndex].GetComponent<Image>().color = Color.green;
@@ -108,7 +108,7 @@ public class StealingManager : MonoBehaviour
             loserItemButtons[itemIndex].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = loserDisplayText;
         }
 
-        playerCards.GetComponent<NSPlayerCardManager>().UpdateAllCards();
+        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public class StealingManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button in the panel</param>
     public void SelectLoserItem(int buttonID)
     {
-        Item buttonItem = loserItemButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
+        Item buttonItem = loserItemButtons[buttonID].GetComponent<ItemButtonComponents>().item;
 
         //Checks if the selected button isn't an "empty" slot
         if(buttonItem.ItemType != Item.ItemTypes.Default)
@@ -164,7 +164,7 @@ public class StealingManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button on the panel</param>
     public void SelectWinnerItem(int buttonID)
     {
-        Item buttonItem = winnerItemButtons[buttonID].GetComponent<NSItemButtonComponents>().item;
+        Item buttonItem = winnerItemButtons[buttonID].GetComponent<ItemButtonComponents>().item;
 
         if (buttonItem.ItemType != Item.ItemTypes.Default)
         {

@@ -106,7 +106,6 @@ public class MainGameUIManager : MonoBehaviour
                 abilityPanel.SetActive(true);
                 abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
                 playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
-                playerCards.GetComponent<PlayerCardManager>().UpdateInventoryButton(GameManager.instance.activePlayer, true);
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -120,7 +119,6 @@ public class MainGameUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
-                playerCards.GetComponent<PlayerCardManager>().UpdateInventoryButton(GameManager.instance.activePlayer, false);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 aiPowerPanel.SetActive(false);

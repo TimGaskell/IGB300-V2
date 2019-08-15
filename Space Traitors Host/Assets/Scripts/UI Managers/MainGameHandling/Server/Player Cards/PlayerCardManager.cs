@@ -9,25 +9,32 @@ public class PlayerCardManager : MonoBehaviour
 {
     public GameObject activePlayerPanel;
 
-    public List<GameObject> playerPanels;
+    public GameObject playerCardPrefab;
+    private List<GameObject> playerCards;
 
     public List<Sprite> playerPortraits;
 
     public void InitialisePlayerCards()
     {
+  
+        
+        for(int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
+        {
+            GameObject playercard = Instantiate(playerCardPrefab);
+            playercard.transform.parent = GameObject.Find("Cards").transform;
+            playerCards.Add(playercard);
+
+        }
+        
+        
         //Update the player cards to start the game
         for (int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
         {
             if (playerIndex < GameManager.instance.numPlayers)
             {
                 UpdatePlayerCard(playerIndex);
-                UpdateInventoryButton(playerIndex, false);
             }
-            else
-            {
-                //Disable player cards for players which arent playing
-                playerPanels[playerIndex].SetActive(false);
-            }
+
         }
     }
 
@@ -52,25 +59,14 @@ public class PlayerCardManager : MonoBehaviour
     {
         Player player = GameManager.instance.GetOrderedPlayer(playerIndex);
 
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = player.Corruption.ToString();
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().traitorMarker.SetActive(player.isTraitor);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
-
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[0].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledBrawn, player.ModBrawn);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[1].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledSkill, player.ModSkill);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[2].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledTech, player.ModTech);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[3].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledCharm, player.ModCharm);
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
 
         string lifePointsString = string.Format("{0} / {1}", player.lifePoints, player.maxLifePoints);
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
+        playerCards[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
     }
 
     public void UpdateAllCards()
@@ -95,9 +91,4 @@ public class PlayerCardManager : MonoBehaviour
         return string.Format("{0} / {1}", scaledSpec, modSpec);
     }
 
-
-    public void UpdateInventoryButton(int playerIndex, bool enable)
-    {
-        playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().inventoryButton.GetComponent<Button>().interactable = enable;
-    }
 }
