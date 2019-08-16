@@ -12,7 +12,8 @@ public class SurgeInformation : NetMessage
 
     }
 
-    public int AiPowerIncrease{ get; set; }
+    public float NewAiPower{ get; set; }
+    public float PowerIncrease { get; set; }
 
 }
 
