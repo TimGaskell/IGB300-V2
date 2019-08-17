@@ -709,6 +709,35 @@ public class Server : MonoBehaviour {
         }
     }
 
+    public void SyncPlayerData(int playerID)
+    {
+        PlayerDataSync playerData = new PlayerDataSync();
+        tempPlayerID = playerID;
+
+        Player player = GameManager.instance.GetPlayer(playerID);
+
+        playerData.Scrap = player.scrap;
+        playerData.Corruption = player.Corruption;
+        playerData.HasComponent = player.hasComponent;
+        playerData.LifePoints = player.lifePoints;
+        playerData.MaxLifePoints = player.maxLifePoints;
+        playerData.ScaledBrawn = player.ScaledBrawn;
+        playerData.ScaledSkill = player.ScaledSkill;
+        playerData.ScaledTech = player.ScaledTech;
+        playerData.ScaledCharm = player.ScaledCharm;
+        playerData.ModBrawn = player.ModBrawn;
+        playerData.ModSkill = player.ModSkill;
+        playerData.ModTech = player.ModTech;
+        playerData.ModCharm = player.ModCharm;
+
+        foreach (Item item in player.items)
+        {
+            playerData.Items.Add((int)item.ItemType);
+            playerData.ItemEquipped.Add(item.isEquipped);
+        }
+
+        SendClient(playerData);
+    }
 
     #endregion
 
@@ -750,7 +779,28 @@ public class Server : MonoBehaviour {
 
     }
 
+    private void SyncClientData(int conID, int chanID, int rHostID, PlayerDataSync playerData)
+    {
+        ClientManager.instance.scrap = playerData.Scrap;
+        ClientManager.instance.corruption = playerData.Corruption;
+        ClientManager.instance.hasComponent = playerData.HasComponent;
+        ClientManager.instance.lifePoints = playerData.LifePoints;
+        ClientManager.instance.maxLifePoints = playerData.MaxLifePoints;
+        ClientManager.instance.scaledBrawn = playerData.ScaledBrawn;
+        ClientManager.instance.scaledSkill = playerData.ScaledSkill;
+        ClientManager.instance.scaledTech = playerData.ScaledTech;
+        ClientManager.instance.scaledCharm = playerData.ScaledCharm;
+        ClientManager.instance.modBrawn = playerData.ModBrawn;
+        ClientManager.instance.modSkill = playerData.ModSkill;
+        ClientManager.instance.modTech = playerData.ModTech;
+        ClientManager.instance.modCharm = playerData.ModCharm;
 
+        for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
+        {
+            ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
+            ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
+        }
+    }
 
 
     #endregion
