@@ -26,6 +26,7 @@ public static class NetOP
     public const int ChangeCharacter = 28;
     public const int TraitorVictory = 30;
     public const int PlayerDataSync = 31;
+    public const int SendRoomCost = 32;
 
 
     #endregion

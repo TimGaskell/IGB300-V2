@@ -739,6 +739,17 @@ public class Server : MonoBehaviour {
         SendClient(playerData);
     }
 
+    public void SendRoomCost(int playerID, int RoomCost) {
+
+        SendRoomCost roomCost = new SendRoomCost();
+        tempPlayerID = playerID;
+
+        roomCost.RoomCost = RoomCost;
+
+        SendClient(roomCost);
+
+    }
+
     #endregion
 
     #region Client Received Messages
@@ -971,6 +982,32 @@ public class Server : MonoBehaviour {
             }
         }
     }
+
+    private void RoomCost(int conID, int chanID, int rHostID, Movement room) {
+
+        foreach (GameObject player in playerArray()) {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID) {
+
+                // Needs to assign Player to playerNavigation
+                // Needs to know what room that player is in
+
+                PlayerMovement PlayerNavigation = GameObject.Find("Players").GetComponent<PlayerMovement>() ;
+
+                PlayerNavigation.goalIndex = room.SelectedRoom;
+                PlayerNavigation.StartMoving = false;
+
+                PlayerNavigation.PlayerMoveViaNodes(room.SelectedRoom);
+
+                int roomCost = PlayerNavigation.currentPath.Count - 1;
+
+                SendRoomCost(player.GetComponent<Player>().playerID,roomCost);
+
+            }
+        }
+    }
+
+
     private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
 
         foreach (GameObject player in playerArray()) {
