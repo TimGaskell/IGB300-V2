@@ -832,9 +832,10 @@ public class Server : MonoBehaviour {
         SendServer(ability);
     }
 
-    public void SendActionPoints() {
+    public void SendActionPoints(int HowManyPoints) {
 
         ActionPoints actionPoints = new ActionPoints();
+        actionPoints.actionPoints = HowManyPoints;
      
         SendServer(actionPoints);
     }
@@ -963,7 +964,7 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                player.GetComponent<Player>().ActionPoints = GameManager.instance.RollActionPoints();
+                player.GetComponent<Player>().ActionPoints = points.actionPoints;
                 //Needs to call send Active rooms to the client here
 
 

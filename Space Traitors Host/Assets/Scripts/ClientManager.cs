@@ -17,6 +17,7 @@ public class ClientManager : MonoBehaviour
     public bool isTraitor;
     public int lifePoints;
     public int maxLifePoints;
+    public int ActionPoints;
 
     //Spec scores for player which are scaled due to corruption
     public float scaledBrawn;

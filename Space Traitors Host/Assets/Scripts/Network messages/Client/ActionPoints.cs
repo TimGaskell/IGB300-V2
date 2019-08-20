@@ -10,5 +10,7 @@ public class ActionPoints : NetMessage
         OperationCode = NetOP.ActionPoints;
 
     }
+
+    public int actionPoints { get; set; }
     
 }

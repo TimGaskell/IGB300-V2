@@ -1209,25 +1209,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 945012621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
+  m_Script: {fileID: 11500000, guid: ab691aeec6adceb48a7b24032873b092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
   playerName: 
-  roomPosition: 0
-  isConnected: 1
   scrap: 0
+  corruption: 0
   hasComponent: 0
+  isTraitor: 0
   lifePoints: 0
   maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
+  scaledBrawn: 0
+  scaledSkill: 0
+  scaledTech: 0
+  scaledCharm: 0
+  modBrawn: 0
+  modSkill: 0
+  modTech: 0
+  modCharm: 0
 --- !u!1 &1173016761
 GameObject:
   m_ObjectHideFlags: 0
