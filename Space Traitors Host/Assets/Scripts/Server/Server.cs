@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -349,6 +349,9 @@ public class Server : MonoBehaviour {
             case NetOP.ChangeCharacter:
                 NeedToChangeCharacter(conID, chanID, rHostID, (ChangeCharacter)msg);
                 break;
+            case NetOP.NewPhase:
+                NewPhase(conID, chanID, rHostID, (NewPhase)msg);
+                break;
 
         }
 
@@ -624,10 +627,11 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void sendSurge(int SurgeAmount) {
+    public void SendSurge() {
 
         SurgeInformation surge = new SurgeInformation();
-        surge.AiPowerIncrease = SurgeAmount;
+        surge.NewAiPower = GameManager.instance.AIPower;
+        surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
 
         foreach (GameObject player in players) {
             tempPlayerID = player.GetComponent<Player>().playerID;
@@ -646,7 +650,7 @@ public class Server : MonoBehaviour {
         SendClient(ai);
     }
 
-    public void sendCombatResolution(int player, bool winorLoose, int damagetaken, List<string>Inventory) {
+    public void SendCombatResolution(int player, bool winorLoose, int damagetaken, List<string>Inventory) {
 
         CombatResolution resolution = new CombatResolution();
         tempPlayerID = player;
@@ -658,7 +662,7 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void sendCombatAvailablity(int player, List<int>Targets) {
+    public void SendCombatAvailablity(int player, List<int>Targets) {
 
         CombatAvailability combat = new CombatAvailability();
         tempPlayerID = player;
@@ -668,7 +672,7 @@ public class Server : MonoBehaviour {
         SendClient(combat);
     }
 
-    public void sendBeingAttacked(int player) {
+    public void SendBeingAttacked(int player) {
 
         CombatBeingAttacked attacked = new CombatBeingAttacked();
         tempPlayerID = player;
@@ -677,7 +681,7 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void sendPlayerElimination(int player) {
+    public void SendPlayerElimination(int player) {
 
         PlayerElimination elimination = new PlayerElimination();
         tempPlayerID = player;
@@ -685,7 +689,7 @@ public class Server : MonoBehaviour {
         SendClient(elimination);
     }
 
-    public void sendNonTraitorVictory() {
+    public void SendNonTraitorVictory() {
 
         InnocentVictory innocent = new InnocentVictory();
         foreach (GameObject player in players) {
@@ -694,9 +698,48 @@ public class Server : MonoBehaviour {
         }
     }
 
+    public void SendTraitorVictory(int winnerID)
+    {
+        TraitorVictory traitor = new TraitorVictory();
+        traitor.WinnerID = winnerID;
+        foreach(GameObject player in players)
+        {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+            SendClient(traitor);
+        }
+    }
+
+    public void SyncPlayerData(int playerID)
+    {
+        PlayerDataSync playerData = new PlayerDataSync();
+        tempPlayerID = playerID;
+
+        Player player = GameManager.instance.GetPlayer(playerID);
+
+        playerData.Scrap = player.scrap;
+        playerData.Corruption = player.Corruption;
+        playerData.HasComponent = player.hasComponent;
+        playerData.LifePoints = player.lifePoints;
+        playerData.MaxLifePoints = player.maxLifePoints;
+        playerData.ScaledBrawn = player.ScaledBrawn;
+        playerData.ScaledSkill = player.ScaledSkill;
+        playerData.ScaledTech = player.ScaledTech;
+        playerData.ScaledCharm = player.ScaledCharm;
+        playerData.ModBrawn = player.ModBrawn;
+        playerData.ModSkill = player.ModSkill;
+        playerData.ModTech = player.ModTech;
+        playerData.ModCharm = player.ModCharm;
+
+        foreach (Item item in player.items)
+        {
+            playerData.Items.Add((int)item.ItemType);
+            playerData.ItemEquipped.Add(item.isEquipped);
+        }
+
+        SendClient(playerData);
+    }
 
     #endregion
-
 
     #region Client Received Messages
 
@@ -736,7 +779,28 @@ public class Server : MonoBehaviour {
 
     }
 
+    private void SyncClientData(int conID, int chanID, int rHostID, PlayerDataSync playerData)
+    {
+        ClientManager.instance.scrap = playerData.Scrap;
+        ClientManager.instance.corruption = playerData.Corruption;
+        ClientManager.instance.hasComponent = playerData.HasComponent;
+        ClientManager.instance.lifePoints = playerData.LifePoints;
+        ClientManager.instance.maxLifePoints = playerData.MaxLifePoints;
+        ClientManager.instance.scaledBrawn = playerData.ScaledBrawn;
+        ClientManager.instance.scaledSkill = playerData.ScaledSkill;
+        ClientManager.instance.scaledTech = playerData.ScaledTech;
+        ClientManager.instance.scaledCharm = playerData.ScaledCharm;
+        ClientManager.instance.modBrawn = playerData.ModBrawn;
+        ClientManager.instance.modSkill = playerData.ModSkill;
+        ClientManager.instance.modTech = playerData.ModTech;
+        ClientManager.instance.modCharm = playerData.ModCharm;
 
+        for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
+        {
+            ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
+            ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
+        }
+    }
 
 
     #endregion
@@ -831,6 +895,13 @@ public class Server : MonoBehaviour {
 
         SendServer(installComponent);
 
+    }
+
+    public void SendNewPhase()
+    {
+        NewPhase newPhase = new NewPhase();
+
+        SendServer(newPhase);
     }
     #endregion
 
@@ -987,6 +1058,51 @@ public class Server : MonoBehaviour {
 
 
             }
+        }
+    }
+
+    private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
+    {
+        GameManager.instance.IncrementPhase();
+
+        switch (GameManager.instance.CurrentVictory)
+        {
+            case (GameManager.VictoryTypes.NonTraitor):
+                //Display non-traitor victory screen
+                SendNonTraitorVictory();
+                break;
+            case (GameManager.VictoryTypes.Traitor):
+                //Display traitor victory screen
+                SendTraitorVictory(GameManager.instance.traitorWinID);
+                break;
+            case (GameManager.VictoryTypes.None):
+
+                //Need to insert UI elements into this
+                switch (GameManager.instance.currentPhase)
+                {
+                    case (GameManager.TurnPhases.Abilities):
+                        //Send Ability Information
+                        break;
+                    case (GameManager.TurnPhases.ActionPoints):
+                        //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
+                        break;
+                    case (GameManager.TurnPhases.Movement):
+                        //Send List of rooms
+                        break;
+                    case (GameManager.TurnPhases.Interaction):
+                        //Send choice information
+                        break;
+                    case (GameManager.TurnPhases.BasicSurge):
+                        SendSurge();
+                        break;
+                    case (GameManager.TurnPhases.AttackSurge):
+                        //Send AI Attack Target
+                        break;
+                    default:
+                        throw new NotImplementedException("Not a valid phase");
+                }
+
+                break;
         }
     }
     #endregion

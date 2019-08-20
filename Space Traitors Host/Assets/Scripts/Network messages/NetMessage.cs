@@ -24,6 +24,8 @@ public static class NetOP
     public const int ChangeScenes = 26;
     public const int IsActivePlayer = 27;
     public const int ChangeCharacter = 28;
+    public const int TraitorVictory = 30;
+    public const int PlayerDataSync = 31;
 
 
     #endregion
@@ -40,6 +42,7 @@ public static class NetOP
     public const int ItemSelection = 23;
     public const int InstallComponent = 24 ;
     public const int ActionPoints = 25;
+    public const int NewPhase = 29;
     #endregion
 }
 

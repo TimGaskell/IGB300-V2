@@ -751,7 +751,7 @@ public class GameManager : MonoBehaviour
             basePower = BASE_POWER_MOD / numPlayers;
             playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
-            AIPower += basePower + playerPower + aiPowerChange;
+            AIPower += AIPowerIncrease();
         }
         else
         {
@@ -769,6 +769,11 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
+    }
+
+    public float AIPowerIncrease()
+    {
+        return basePower + playerPower + aiPowerChange;
     }
 
     /// <summary>
