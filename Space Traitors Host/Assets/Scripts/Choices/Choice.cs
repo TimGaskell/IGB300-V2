@@ -216,13 +216,10 @@ public class Choice
                 disabled = oneOff;
                 return true;
             case GameManager.SpecScores.Brawn:
-                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
             case GameManager.SpecScores.Skill:
-                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
             case GameManager.SpecScores.Tech:
-                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
             case GameManager.SpecScores.Charm:
-                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().GetScaledSpecScore(specChallenge));
             default:
                 throw new NotImplementedException("Not a valid spec score");
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -81,15 +82,15 @@ public class Player : MonoBehaviour
     public int charmModTemp;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
-    public float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
-    public float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
-    public float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+    private float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    private float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    private float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    private float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
 
-    public int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
-    public int ModSkill { get { return Character.baseSkill + SkillChange; } }
-    public int ModTech { get { return Character.baseTech + TechChange; } }
-    public int ModCharm { get { return Character.baseCharm + CharmChange; } }
+    private int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
+    private int ModSkill { get { return Character.baseSkill + SkillChange; } }
+    private int ModTech { get { return Character.baseTech + TechChange; } }
+    private int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
@@ -177,6 +178,54 @@ public class Player : MonoBehaviour
         if (IsDead)
         {
             GameManager.instance.CheckTraitorVictory();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Gets a particular scaled spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public float GetScaledSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return ScaledBrawn;
+            case (GameManager.SpecScores.Skill):
+                return ScaledSkill;
+            case (GameManager.SpecScores.Tech):
+                return ScaledTech;
+            case (GameManager.SpecScores.Charm):
+                return ScaledCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Gets a particular modded spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public int GetModdedSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return ModBrawn;
+            case (GameManager.SpecScores.Skill):
+                return ModSkill;
+            case (GameManager.SpecScores.Tech):
+                return ModTech;
+            case (GameManager.SpecScores.Charm):
+                return ModCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
         }
     }
 
