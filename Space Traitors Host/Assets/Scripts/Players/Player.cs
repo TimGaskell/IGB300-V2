@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Player 
+public class Player : MonoBehaviour
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -21,6 +21,9 @@ public class Player
 
     public int roomPosition;
 
+    //Connection
+    public bool isConnected;
+
     //Player Resources
     public int scrap;
     private int corruption;
@@ -29,6 +32,7 @@ public class Player
     public bool hasComponent;
     public int lifePoints;
     public int maxLifePoints;
+    public int ActionPoints;
 
     public bool IsDead { get { return lifePoints == 0; } }
 
@@ -65,6 +69,11 @@ public class Player
         }
     }
     #endregion
+
+    public int BaseBrawn { get { return Character.baseBrawn; } }
+    public int BaseSkill { get { return Character.baseSkill; } }
+    public int BaseTech { get { return Character.baseTech; } }
+    public int BaseCharm { get { return Character.baseCharm; } }
 
     public int brawnModTemp;
     public int skillModTemp;

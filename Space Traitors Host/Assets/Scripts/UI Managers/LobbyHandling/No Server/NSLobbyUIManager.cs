@@ -15,8 +15,11 @@ public class NSLobbyUIManager : NetworkBehaviour
 
     private Transform nameEntryFields;
 
+    private int counter = 0;
+
     private void Start()
     {
+<<<<<<< HEAD:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/No Server/NSLobbyUIManager.cs
         if (GameManager.instance.serverActive)
         {
             if (NetworkServer.connections.Count > 0)
@@ -33,15 +36,29 @@ public class NSLobbyUIManager : NetworkBehaviour
         }
         else
         {
+=======
+
+>>>>>>> Lachlan's-Branch:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/LobbyUIManager.cs
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
+<<<<<<< HEAD:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/No Server/NSLobbyUIManager.cs
         }
+=======
+
+        
+>>>>>>> Lachlan's-Branch:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/LobbyUIManager.cs
     }
 
-   
+    void Update() {
+
+
+
+    }
+
+
 
 
     #region No Server Handling
@@ -71,6 +88,8 @@ public class NSLobbyUIManager : NetworkBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 
     /// Disables player entry fields if they are not to be used (i.e. leave only enough fields active for a particular number of players)
@@ -94,6 +113,27 @@ public class NSLobbyUIManager : NetworkBehaviour
             counter++;
         }
     }
+
+
+    public void AddPlayerNames() {
+
+
+        foreach (Transform entryField in nameEntryFields.transform) {
+
+            string tempPlayername = Server.Instance.players[counter].GetComponent<Player>().playerName;
+
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    counter++;
+                }
+
+
+            }
+        }
+    }
+
 
     /// <summary>
     /// 

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CombatAvilability: NetMessage
+public class CombatAvailability: NetMessage
 {
-    public CombatAvilability()
+    public CombatAvailability()
     {
 
         OperationCode = NetOP.CombatAvailablity;
 
     }
 
-    public List<GameObject>Players { get; set; } //list of gameobjects of the players nearby
+    public List<int>Players { get; set; } 
 
 }
 

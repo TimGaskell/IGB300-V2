@@ -12,8 +12,6 @@ public class AbilityInformation: NetMessage
 
     }
 
-   
-    public string AbilityDescription { set; get; }
     public bool CanUseAbility { set; get; }
 }
 
