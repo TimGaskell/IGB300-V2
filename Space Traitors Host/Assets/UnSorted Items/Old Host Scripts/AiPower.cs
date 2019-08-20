@@ -21,7 +21,6 @@ public class AiPower : MonoBehaviour
     }
 
     // Update is called once per frame
-<<<<<<< HEAD
     void Update()
     {
         AIPowerSliderUI.value = power;
@@ -34,20 +33,7 @@ public class AiPower : MonoBehaviour
             }
         }
     }
-=======
-   // void Update()
-    //{
-       // AIPowerSliderUI.value = power;
-        //if (power >= traitorAmount)
-        //{
-          //  if (!traitorSent)
-            //{
-            //    server.GetComponent<Server>().ChooseTraitor();
-              //  traitorSent = true;
-            //}
-       // }
-   // }
->>>>>>> Lachlan's-Branch
+
 
     public void incrementAIPower()
     {

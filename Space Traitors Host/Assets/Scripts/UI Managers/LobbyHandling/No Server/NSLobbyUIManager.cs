@@ -19,7 +19,6 @@ public class NSLobbyUIManager : NetworkBehaviour
 
     private void Start()
     {
-<<<<<<< HEAD:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/No Server/NSLobbyUIManager.cs
         if (GameManager.instance.serverActive)
         {
             if (NetworkServer.connections.Count > 0)
@@ -36,20 +35,15 @@ public class NSLobbyUIManager : NetworkBehaviour
         }
         else
         {
-=======
 
->>>>>>> Lachlan's-Branch:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/LobbyUIManager.cs
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
-<<<<<<< HEAD:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/No Server/NSLobbyUIManager.cs
-        }
-=======
 
-        
->>>>>>> Lachlan's-Branch:Space Traitors Host/Assets/Scripts/UI Managers/LobbyHandling/LobbyUIManager.cs
+        }
+
     }
 
     void Update() {
