@@ -72,6 +72,8 @@ public class PlayerMovement : Navigation
 
                 Debug.Log("finished Moving");
                 GameManager.instance.playerMoving = false;
+                Server.Instance.SendNewPhase();
+                GameManager.instance.IncrementPhase();
             }
         }
     }

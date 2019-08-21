@@ -858,12 +858,31 @@ public class Server : MonoBehaviour {
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
+
+        InteractionManager manager = GameObject.Find("InteractionPanel").GetComponent<InteractionManager>() ;
+
+        Choice.IsAvailableTypes[] isAvailables = new Choice.IsAvailableTypes[ChoiceRandomiser.CHOICES_PER_ROOM];
+        GameManager.SpecScores[] specScores = new GameManager.SpecScores[ChoiceRandomiser.CHOICES_PER_ROOM];
+
         for (int choiceIndex = 0; choiceIndex < ChoiceRandomiser.CHOICES_PER_ROOM; choiceIndex++)
         {
-            //Need to store values from this message on interaction manager. Variables are all set up however
-            //need to figure out best way to communicate with interaction manager.
+            isAvailables[choiceIndex] = (Choice.IsAvailableTypes)roomChoices.IsAvailables[choiceIndex];
+            specScores[choiceIndex] = (GameManager.SpecScores)roomChoices.SpecScores[choiceIndex];
+        
         }
+
+        manager.choiceNames = roomChoices.ChoiceNames;
+        manager.successTexts = roomChoices.SuccessTexts;
+        manager.failTexts = roomChoices.FailTexts;
+        manager.isAvailables = isAvailables;
+        manager.specScores = specScores;
+        manager.successChances = roomChoices.SuccessChances;
+        manager.attackablePlayers = roomChoices.AttackablePlayers;
     }
+
+
+
+
     private void AvailableRooms(int conID, int chanID, int rHostID,AvailableRooms rooms) {
 
        

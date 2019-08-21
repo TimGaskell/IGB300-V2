@@ -19,5 +19,6 @@ public class RoomChoices : NetMessage
     public int[] SpecScores { get; set; }
     public float[] SuccessChances { get; set; }
     public List<int> AttackablePlayers { get; set; }
+
 }
 

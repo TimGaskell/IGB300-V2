@@ -94,12 +94,11 @@ public class InteractionManager : MonoBehaviour
             currentRoom = GameManager.instance.GetRoom(roomIndex);
 
             //Update button text
-            choice0ButtonText.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[0].choiceName;
-            choice1ButtonText.GetComponent<TextMeshProUGUI>().text = currentRoom.roomChoices[1].choiceName;
+            choice0ButtonText.GetComponent<TextMeshProUGUI>().text = choiceNames[0];
+            choice1ButtonText.GetComponent<TextMeshProUGUI>().text = choiceNames[1];
         }
 
         //Checks is combat is available for the active player, enabling the attack button if it is
-        attackablePlayers = GameManager.instance.CheckCombat();
         if (attackablePlayers.Count == 0)
         {
             combatButton.GetComponent<Button>().interactable = false;
@@ -123,15 +122,15 @@ public class InteractionManager : MonoBehaviour
         selectedChoiceID = choiceID;
         Choice selectedChoice = currentRoom.roomChoices[selectedChoiceID];
 
-        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = selectedChoice.choiceName;
+        choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = choiceNames[selectedChoiceID];
 
         //If the choice is not a spec challenge, updates the display text to suit the choice.
-        if (selectedChoice.specChallenge == GameManager.SpecScores.Default)
+        if (specScores[selectedChoiceID] == GameManager.SpecScores.Default)
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(true);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(false);
 
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.GetComponent<TextMeshProUGUI>().text = successTexts[selectedChoiceID];
         }
         //If the choice is a spec challenge, displays the success and failure state for the spec challenge choice
         else
@@ -140,20 +139,19 @@ public class InteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
             //Find the players relevant spec score need for the choice
-            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(selectedChoice.specChallenge);
+            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(specScores[selectedChoiceID]);
 
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
-                string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());
+                string.Format("Spec: {0}", specScores[selectedChoiceID].ToString());
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
-                string.Format("Chance: {0}%", Mathf.Round(GameManager.SpecChallengeChance(playerScore, selectedChoice.targetScore)).ToString());
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = selectedChoice.SuccessText();
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = selectedChoice.FailText();
+                string.Format("Chance: {0}%", Mathf.Round(GameManager.SpecChallengeChance(playerScore, successChances[selectedChoiceID])).ToString());
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = successTexts[selectedChoiceID];
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = failTexts[selectedChoiceID];
         }
 
         //Test if the choice is available to the player and displays the reason it cannot be selected if not.
-        Choice.IsAvailableTypes isAvailable = selectedChoice.IsAvailable();
 
-        if (isAvailable == Choice.IsAvailableTypes.available)
+        if (isAvailables[selectedChoiceID] == Choice.IsAvailableTypes.available)
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(false);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = true;
@@ -161,7 +159,7 @@ public class InteractionManager : MonoBehaviour
         else
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(true);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailable);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailables[selectedChoiceID]);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = false;
         }
     }
