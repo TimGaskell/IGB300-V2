@@ -6,7 +6,7 @@ using UnityEngine;
 //Assigned to a Parent Object which contains all the room objects
 public class ChoiceRandomiser : MonoBehaviour
 {
-    private const int CHOICES_PER_ROOM = 2;
+    public const int CHOICES_PER_ROOM = 2;
     private const int ESCAPE_ROOM_ID = 9; //Escape Shuttle Bay does not have choices so needs to be ignored
     private const int MAX_ITERS = 1000; //Maximum number of iterations the assignment loops can repeat before restarting assignment
 

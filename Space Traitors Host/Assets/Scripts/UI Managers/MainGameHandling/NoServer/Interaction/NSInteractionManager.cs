@@ -133,26 +133,8 @@ public class NSInteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
-            float playerScore;
-
             //Find the players relevant spec score need for the choice
-            switch (selectedChoice.specChallenge)
-            {
-                case (GameManager.SpecScores.Brawn):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledBrawn;
-                    break;
-                case (GameManager.SpecScores.Skill):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledSkill;
-                    break;
-                case (GameManager.SpecScores.Tech):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledTech;
-                    break;
-                case (GameManager.SpecScores.Charm):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledCharm;
-                    break;
-                default:
-                    throw new NotImplementedException("Not a valid choice");
-            }
+            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(selectedChoice.specChallenge);
 
             choiceInfoPanel.GetComponent<NSChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());

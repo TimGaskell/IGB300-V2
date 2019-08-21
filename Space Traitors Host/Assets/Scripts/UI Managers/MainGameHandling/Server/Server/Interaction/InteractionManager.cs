@@ -20,8 +20,6 @@ public class InteractionManager : MonoBehaviour
     public Room currentRoom;
     public int selectedChoiceID;
 
-    private List<int> attackablePlayers;
-
     public GameObject componentPanelsParent;
     public GameObject componentPanelPrefab;
     private List<GameObject> componentPanels;
@@ -44,6 +42,14 @@ public class InteractionManager : MonoBehaviour
 
     private GameManager.SpecScores attackerSpecScore;
     private GameManager.SpecScores defenderSpecScore;
+
+    public string[] choiceNames;
+    public string[] successTexts;
+    public string[] failTexts;
+    public Choice.IsAvailableTypes[] isAvailables;
+    public GameManager.SpecScores[] specScores;
+    public float[] successChances;
+    public List<int> attackablePlayers;
 
     private enum ParticipantTypes { Attacker, Defender }
 
@@ -133,26 +139,8 @@ public class InteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().nonSpecChoiceText.SetActive(false);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
-            float playerScore;
-
             //Find the players relevant spec score need for the choice
-            switch (selectedChoice.specChallenge)
-            {
-                case (GameManager.SpecScores.Brawn):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledBrawn;
-                    break;
-                case (GameManager.SpecScores.Skill):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledSkill;
-                    break;
-                case (GameManager.SpecScores.Tech):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledTech;
-                    break;
-                case (GameManager.SpecScores.Charm):
-                    playerScore = GameManager.instance.GetActivePlayer().ScaledCharm;
-                    break;
-                default:
-                    throw new NotImplementedException("Not a valid choice");
-            }
+            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(selectedChoice.specChallenge);
 
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", selectedChoice.specChallenge.ToString());

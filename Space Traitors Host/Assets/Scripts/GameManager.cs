@@ -971,7 +971,7 @@ public class GameManager : MonoBehaviour
     {
         bool playerWin;
 
-        float targetSpecScore = ObtainSpecScore(GetPlayer(targetPlayer), specScore);
+        float targetSpecScore = GetPlayer(targetPlayer).GetScaledSpecScore(specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -1044,8 +1044,8 @@ public class GameManager : MonoBehaviour
         Player attackingPlayer = GetActivePlayer();
         Player defendingPlayer = GetPlayer(defenderID);
 
-        float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
-        float defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
+        float attackerScore = attackingPlayer.GetScaledSpecScore(attackerSpec);
+        float defenderScore = defendingPlayer.GetScaledSpecScore(defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
@@ -1075,31 +1075,6 @@ public class GameManager : MonoBehaviour
         {
             GetActivePlayer().ChangeLifePoints(COMBAT_DAMAGE);
             return false;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// Obtains the relevant spec score to be utilised from a particular player
-    /// 
-    /// </summary>
-    /// <param name="player">The player who is being tested</param>
-    /// <param name="specScore">The name of the spec score to be utilised</param>
-    /// <returns>The value of the relevant spec score for that player</returns>
-    public float ObtainSpecScore(Player player, SpecScores specScore)
-    {
-        switch (specScore)
-        {
-            case (SpecScores.Brawn):
-                return player.ScaledBrawn;
-            case (SpecScores.Skill):
-                return player.ScaledSkill;
-            case (SpecScores.Tech):
-                return player.ScaledTech;
-            case (SpecScores.Charm):
-                return player.ScaledCharm;
-            default:
-                throw new NotImplementedException("Not a valid Spec Score");
         }
     }
 

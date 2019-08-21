@@ -589,14 +589,48 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendRoomChoices(int player) {
+    public void SendRoomChoices(int player, int roomIndex) {
 
         RoomChoices choices = new RoomChoices();
         tempPlayerID = player;
 
+        int choicesPerRoom = ChoiceRandomiser.CHOICES_PER_ROOM;
 
-        //need to understand what gets sent to the player
+        Room selectedRoom = GameManager.instance.GetRoom(roomIndex);
 
+        choices.ChoiceNames = new string[choicesPerRoom];
+        choices.SuccessTexts = new string[choicesPerRoom];
+        choices.FailTexts = new string[choicesPerRoom];
+        choices.IsAvailables = new int[choicesPerRoom];
+        choices.SpecScores = new int[choicesPerRoom];
+        choices.SuccessChances = new float[choicesPerRoom];
+
+        for (int choiceIndex = 0; choiceIndex < choicesPerRoom; choiceIndex++)
+        {
+            Choice choice = selectedRoom.roomChoices[choiceIndex];
+
+            choices.ChoiceNames[choiceIndex] = choice.choiceName;
+            choices.SuccessTexts[choiceIndex] = choice.SuccessText();
+            choices.FailTexts[choiceIndex] = choice.FailText();
+            choices.IsAvailables[choiceIndex] = (int)choice.IsAvailable();
+            choices.SpecScores[choiceIndex] = (int)choice.specChallenge;
+            //If the choice is not a spec challenge, choice's target score is 0 which will cause
+            //a math error in GameManager.SpecChallengeChance, so need to be specific for those
+            //cases (since this will not be displayed regardless can arbitrarily set to 0).
+            if(choice.specChallenge == GameManager.SpecScores.Default)
+            {
+                choices.SuccessChances[choiceIndex] = 0;
+            }
+            else
+            {
+                float playerScore = GameManager.instance.GetPlayer(player).GetScaledSpecScore(choice.specChallenge);
+                choices.SuccessChances[choiceIndex] = GameManager.SpecChallengeChance(playerScore, choice.targetScore);
+            }
+        }
+
+        choices.AttackablePlayers = GameManager.instance.CheckCombat();
+
+        SendClient(choices);
     }
 
     public void SendSpecChallenge(int player, bool specChallengeResult) {
@@ -730,14 +764,14 @@ public class Server : MonoBehaviour {
         playerData.HasComponent = player.hasComponent;
         playerData.LifePoints = player.lifePoints;
         playerData.MaxLifePoints = player.maxLifePoints;
-        playerData.ScaledBrawn = player.ScaledBrawn;
-        playerData.ScaledSkill = player.ScaledSkill;
-        playerData.ScaledTech = player.ScaledTech;
-        playerData.ScaledCharm = player.ScaledCharm;
-        playerData.ModBrawn = player.ModBrawn;
-        playerData.ModSkill = player.ModSkill;
-        playerData.ModTech = player.ModTech;
-        playerData.ModCharm = player.ModCharm;
+        playerData.ScaledBrawn = player.GetScaledSpecScore(GameManager.SpecScores.Brawn);
+        playerData.ScaledSkill = player.GetScaledSpecScore(GameManager.SpecScores.Skill);
+        playerData.ScaledTech = player.GetScaledSpecScore(GameManager.SpecScores.Tech);
+        playerData.ScaledCharm = player.GetScaledSpecScore(GameManager.SpecScores.Charm);
+        playerData.ModBrawn = player.GetModdedSpecScore(GameManager.SpecScores.Brawn);
+        playerData.ModSkill = player.GetModdedSpecScore(GameManager.SpecScores.Skill);
+        playerData.ModTech = player.GetModdedSpecScore(GameManager.SpecScores.Tech);
+        playerData.ModCharm = player.GetModdedSpecScore(GameManager.SpecScores.Charm);
 
         foreach (Item item in player.items)
         {
@@ -822,6 +856,14 @@ public class Server : MonoBehaviour {
         }
     }
 
+    private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
+    {
+        for (int choiceIndex = 0; choiceIndex < ChoiceRandomiser.CHOICES_PER_ROOM; choiceIndex++)
+        {
+            //Need to store values from this message on interaction manager. Variables are all set up however
+            //need to figure out best way to communicate with interaction manager.
+        }
+    }
     private void AvailableRooms(int conID, int chanID, int rHostID,AvailableRooms rooms) {
 
        
