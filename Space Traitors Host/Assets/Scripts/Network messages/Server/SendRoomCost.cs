@@ -11,5 +11,6 @@ public class SendRoomCost : NetMessage {
     }
 
     public int RoomCost { get; set; }
+    public int ScrapReturn { get; set; }
 
 }

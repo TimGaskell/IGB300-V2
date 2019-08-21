@@ -39,4 +39,13 @@ public class ClientUIManager : MonoBehaviour
 
 
     }
+
+    public void MoveToRoom() {
+        
+        PlayerMovement.instance.StartMoving = true;
+        GameManager.instance.playerMoving = true;
+        Server.Instance.SendRoomChoice(GameManager.instance.playerGoalIndex);
+        
+
+    }
 }

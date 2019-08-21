@@ -130,6 +130,9 @@ public class GameManager : MonoBehaviour
         {
             ClickRoom();
         }
+        else if (roomSelection && serverActive) {
+            ClientClickRoom();
+        }
 
         if (playerMoving)
         {
@@ -1302,6 +1305,22 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ClientClickRoom() {
+
+        if (Input.GetMouseButtonDown(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges" && hit.transform.tag != "Unavailable") {
+
+                    playerGoalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    Server.Instance.SendRoomChoiceForCost(playerGoalIndex);
+                }
+            }
+        }
+
     }
 
     #endregion

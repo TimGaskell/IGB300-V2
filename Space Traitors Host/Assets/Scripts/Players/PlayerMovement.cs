@@ -63,6 +63,9 @@ public class PlayerMovement : Navigation
             //Check if reached end of path
             if (Player.transform.position == graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) {
 
+                StartMoving = false;
+                GameManager.instance.playerMoving = false;
+                
                 //If its at the end of the path look off to the side
                 Vector3 lookBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1000);
                 Player.transform.rotation = Quaternion.LookRotation(lookBack);

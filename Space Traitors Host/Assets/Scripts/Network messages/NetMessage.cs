@@ -44,6 +44,7 @@ public static class NetOP
     public const int InstallComponent = 24 ;
     public const int ActionPoints = 25;
     public const int NewPhase = 29;
+    public const int SelectRoom = 33;
     #endregion
 }
 

@@ -352,8 +352,17 @@ public class Server : MonoBehaviour {
             case NetOP.NewPhase:
                 NewPhase(conID, chanID, rHostID, (NewPhase)msg);
                 break;
+            case NetOP.AvailableRooms:
+                AvailableRooms(conID, chanID, rHostID, (AvailableRooms)msg);
+                break;
+            case NetOP.SendRoomCost:
+                RoomCost(conID, chanID, rHostID, (SelectRoom)msg);
+                break;
+
 
         }
+
+                
 
     }
     //Not sure which sendClient to use
@@ -740,7 +749,7 @@ public class Server : MonoBehaviour {
     }
 
     public void SendRoomCost(int playerID, int RoomCost) {
-
+        
         SendRoomCost roomCost = new SendRoomCost();
         tempPlayerID = playerID;
 
@@ -811,6 +820,28 @@ public class Server : MonoBehaviour {
             ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
             ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
         }
+    }
+
+    private void AvailableRooms(int conID, int chanID, int rHostID,AvailableRooms rooms) {
+
+       
+        for (int i=0; i< rooms.AvailableRoomsIDs.Count; i++) {
+
+            GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
+
+            room.transform.GetChild(1).gameObject.SetActive(true);
+                      
+        }
+          
+    }
+
+    private void RecieveRoomCost(int conID, int chanID, int rHostID, SendRoomCost cost) {
+
+
+
+
+
+
     }
 
 
@@ -915,7 +946,19 @@ public class Server : MonoBehaviour {
 
         SendServer(newPhase);
     }
+
+    public void SendRoomChoiceForCost(int roomId) {
+
+        SelectRoom select = new SelectRoom();
+
+        select.roomID = roomId;
+
+        SendServer(select);
+
+    }
     #endregion
+
+
 
     #region Server Received Messages
 
@@ -969,6 +1012,17 @@ public class Server : MonoBehaviour {
             }
         }
     }
+
+    /// <summary>
+    /// It goes through the players to find out who sent the original message.
+    /// It then assigns that players current room positon to the navigation.
+    /// It cycles through all the rooms in the map and sees if they are the same or below the amount of points the player has.
+    /// Returns all room ids that fit that criteria.
+    /// </summary>
+    /// <param name="conID">Connection ID of the player</param>
+    /// <param name="chanID">Channel ID of the player</param>
+    /// <param name="rHostID">Host ID of the server</param>
+    /// <param name="points">message sent over from client, holds the amount of points the player rolled</param>
     private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points) {
 
         foreach (GameObject player in playerArray()) {
@@ -976,30 +1030,52 @@ public class Server : MonoBehaviour {
             if (player.GetComponent<Player>().playerID == conID) {
 
                 player.GetComponent<Player>().ActionPoints = points.actionPoints;
-                //Needs to call send Active rooms to the client here
+                
+                PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>();
+                Playermovement.StartMoving = false;
+                Playermovement.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+
+                List<int> roomIds = new List<int>();
+
+                for(int i = 0; i < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; i++) {
+
+                    Playermovement.PlayerMoveViaNodes(i);
+                    int roomCost = Playermovement.currentPath.Count - 1;
+
+                    if(roomCost <= points.actionPoints) {
+                        roomIds.Add(roomCost);
+                    }
+                }
+
+                SendAvailableRooms(player.GetComponent<Player>().playerID, roomIds);
 
 
             }
         }
     }
-
-    private void RoomCost(int conID, int chanID, int rHostID, Movement room) {
+    /// <summary>
+    /// Once the player selects a room it calculates the amount of rooms it needs to cross to get there.
+    /// </summary>
+    /// <param name="conID">Connection ID of the player</param>
+    /// <param name="chanID">Channel ID of the player</param>
+    /// <param name="rHostID">Host ID of the server</param>
+    /// <param name="room">int id of the room the player wants to move to.
+    private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room) {
 
         foreach (GameObject player in playerArray()) {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                // Needs to assign Player to playerNavigation
-                // Needs to know what room that player is in
 
-                PlayerMovement PlayerNavigation = GameObject.Find("Players").GetComponent<PlayerMovement>() ;
+                PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>() ;
 
-                PlayerNavigation.goalIndex = room.SelectedRoom;
-                PlayerNavigation.StartMoving = false;
+                Playermovement.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+                Playermovement.goalIndex = room.roomID;
+                Playermovement.StartMoving = false;
 
-                PlayerNavigation.PlayerMoveViaNodes(room.SelectedRoom);
+                Playermovement.PlayerMoveViaNodes(room.roomID);
 
-                int roomCost = PlayerNavigation.currentPath.Count - 1;
+                int roomCost = Playermovement.currentPath.Count - 1;
 
                 SendRoomCost(player.GetComponent<Player>().playerID,roomCost);
 
@@ -1014,8 +1090,13 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                //Need to assign the player gameobject here
-                PlayerMovement.instance.PlayerMoveViaNodes(moveTo.SelectedRoom);
+                PlayerMovement.instance.Player = player;
+                PlayerMovement.instance.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+                PlayerMovement.instance.StartMoving = true;
+                GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
+                GameManager.instance.playerMoving = true;
+
+                player.GetComponent<Player>().roomPosition = moveTo.SelectedRoom;
 
 
             }
@@ -1023,7 +1104,7 @@ public class Server : MonoBehaviour {
     }
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice) {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray()) { 
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
