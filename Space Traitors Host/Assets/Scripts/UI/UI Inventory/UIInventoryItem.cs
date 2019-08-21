@@ -9,21 +9,25 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public float pointerSpeed = 1700f;
     public float positionRange = 20f;
+    public string itemName;
+    public bool isEqupped = false;
 
     private Vector3 pointerPos, origin;
     private bool held = false, overItem = false;
+
+    private GameObject inventory;
 
     // Start is called before the first frame update
     void Start()
     {
         origin = transform.position;
         pointerPos = transform.position;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         //Find whether mouse/touch is held down or not
         GetMouseState();
 
@@ -57,20 +61,31 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         else
         {
+            //If not held, snap to position of inventory slot centre
             transform.position = origin;
         }
     }
 
     public void OnTriggerEnter2D(Collider2D InventorySlot)
     {
+        //Centre the item
         origin = InventorySlot.transform.position;
+
+        //Get the inventory- placing this in start or update seems to often result in a null reference if item starts on a collider
+        if (!inventory)
+        {
+            inventory = GameObject.FindGameObjectWithTag("Inventory");
+        }
+
         if (InventorySlot.GetComponent<UIInventorySlot>().Equipped)
         {
-            //Equip item
+            //Equip Item
+            inventory.GetComponent<UIInventory>().EquipChange(itemName, true);
         }
         else
         {
             //Unequip Item
+            inventory.GetComponent<UIInventory>().EquipChange(itemName, false);
         }
     }
 
