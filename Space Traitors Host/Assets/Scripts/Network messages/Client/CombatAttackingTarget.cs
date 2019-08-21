@@ -11,5 +11,5 @@ public class CombatAttackingTarget : NetMessage {
     }
 
 
-    public int SelectedPlayer { set; get; }
+    public int TargetPlayer { set; get; }
 }

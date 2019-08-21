@@ -12,7 +12,7 @@ public class CombatBeingAttacked : NetMessage
 
     }
 
-
-
+    public int AttackerID { get; set; }
+    public int DefenderID { get; set; }
 }
 

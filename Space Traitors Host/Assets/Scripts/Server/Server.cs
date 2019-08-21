@@ -111,6 +111,8 @@ public class Server : MonoBehaviour {
 
     //Player Variables
     private int PlayerActionPoints;
+    private GameManager.SpecScores attackerSpec;
+    private GameManager.SpecScores defenderSpec;
 
 
 
@@ -708,6 +710,13 @@ public class Server : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// 
+    /// Message can be removed- handled through the SendRoomChoices message.
+    /// 
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="Targets"></param>
     public void SendCombatAvailablity(int player, List<int>Targets) {
 
         CombatAvailability combat = new CombatAvailability();
@@ -718,10 +727,13 @@ public class Server : MonoBehaviour {
         SendClient(combat);
     }
 
-    public void SendBeingAttacked(int player) {
+    public void SendBeingAttacked(int player, int attackerID, int defenderID) {
 
         CombatBeingAttacked attacked = new CombatBeingAttacked();
         tempPlayerID = player;
+
+        attacked.AttackerID = attackerID;
+        attacked.DefenderID = defenderID;
 
         SendClient(attacked);
 
@@ -871,6 +883,11 @@ public class Server : MonoBehaviour {
         }
     }
 
+    private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
+    {
+        //Need to display attacked and defender info to players and allow them to select spec score for combat
+    }
+
     #endregion
 
     #region Client Sent Messages
@@ -906,11 +923,12 @@ public class Server : MonoBehaviour {
 
         AbilityUsage ability = new AbilityUsage();
 
+        ability.AbilityType = (int)abilityType;
+
         switch (abilityType)
         {
             //Case for non-targeted abilities
             case (Ability.AbilityTypes.Sabotage):
-                ability.AbilityType = (int)abilityType;
                 ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
                 ability.ScanResource = (int)Ability.ScanResources.Default;
                 break;
@@ -921,13 +939,11 @@ public class Server : MonoBehaviour {
             case (Ability.AbilityTypes.Muddle_Sensors):
             case (Ability.AbilityTypes.Code_Inspection):
             case (Ability.AbilityTypes.Supercharge):
-                ability.AbilityType = (int)abilityType;
                 ability.TargetID = targetID;
                 ability.ScanResource = (int)Ability.ScanResources.Default;
                 break;
             //Case for resource targetted abilities
             case (Ability.AbilityTypes.Sensor_Scan):
-                ability.AbilityType = (int)abilityType;
                 ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
                 ability.ScanResource = (int)scanResource;
                 break;
@@ -969,18 +985,18 @@ public class Server : MonoBehaviour {
         SendServer(inventory);
     }
 
-    public void SendSpecSelection(string Spec) {
+    public void SendSpecSelection(GameManager.SpecScores specScore) {
 
         SpecSelection specSelection = new SpecSelection();
-        specSelection.SelectedSpec = Spec;
+        specSelection.SelectedSpec = (int)specScore;
 
         SendServer(specSelection);
     }
 
-    public void SendCombat(int Player) {
+    public void SendCombat(int targetID) {
 
         CombatAttackingTarget combat = new CombatAttackingTarget();
-        combat.SelectedPlayer = Player;
+        combat.TargetPlayer = targetID;
 
         SendServer(combat);
     }
@@ -1079,9 +1095,8 @@ public class Server : MonoBehaviour {
                         selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
                         break;
                 }
-                //May need to send a ping back to client after ability is activated- not sure if this
-                //is necessary, but may be in case client attempts to increment the phase before the 
-                //ability has finished activating
+                //Will need to send a ping back to client after ability is activated- not set up due
+                //to unknown operation codes for net messages
             }
         }
     }
@@ -1139,26 +1154,46 @@ public class Server : MonoBehaviour {
     }
     private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection) {
 
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+        //Only the active player can be the attacker in a combat. If this message is coming from the attacking
+        if(conID == GameManager.instance.GetActivePlayer().playerID)
+        {
+            attackerSpec = (GameManager.SpecScores)selection.SelectedSpec;
+        }
+        //Only the defending player which has the combat screen open can send this message so don't need to check which specific
+        //player sent this message as long as it is not the active player.
+        else
+        {
+            defenderSpec = (GameManager.SpecScores)selection.SelectedSpec;
+        }
 
-                
+        //If both the attacker and defender scores are set, can proceed with the combat
+        if (attackerSpec != GameManager.SpecScores.Default && defenderSpec != GameManager.SpecScores.Default)
+        {
+            //Need to add display of winner on main screen
 
-
-
-            }
+            //Need to send outcome of combat to combatant players here
         }
     }
     private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack) {
 
+        //Resets spec scores for combat in order to setup check that both players have sent combat spec
+        //scores back to server
+        attackerSpec = GameManager.SpecScores.Default;
+        defenderSpec = GameManager.SpecScores.Default;
+
+        //Need to display the state of the combat on the main screen
+
         foreach (GameObject player in playerArray()) {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-               
+                SendBeingAttacked(conID, conID, attack.TargetPlayer);
 
+            }
+            else if (player.GetComponent<Player>().playerID == attack.TargetPlayer)
+            {
 
+                SendBeingAttacked(attack.TargetPlayer, conID, attack.TargetPlayer);
 
             }
         }
@@ -1223,10 +1258,12 @@ public class Server : MonoBehaviour {
                         //Send choice information
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
+                        //Need to display surge information on main screen
                         SendSurge();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
-                        //Send AI Attack Target
+                        //Need to display surge information on main screen
+
                         break;
                     default:
                         throw new NotImplementedException("Not a valid phase");
