@@ -558,12 +558,24 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendAbilityInformation(int player, bool canUse) {
+    public void SendAbilityInformation(int player) {
 
         AbilityInformation abilityInformation = new AbilityInformation();
         tempPlayerID = player;
+        int numAbilities = Player.NUM_ABILITIES;
 
-        abilityInformation.CanUseAbility = canUse;
+        abilityInformation.AbilityTypes = new int[numAbilities];
+        abilityInformation.CheckCorruption = new bool[numAbilities];
+        abilityInformation.CheckScrap = new bool[numAbilities];
+
+        for (int abilityID = 0; abilityID < numAbilities; abilityID++)
+        {
+            Ability ability = GameManager.instance.GetPlayer(player).GetAbility(abilityID);
+
+            abilityInformation.AbilityTypes[abilityID] = (int)ability.abilityType;
+            abilityInformation.CheckCorruption[abilityID] = ability.CheckCorruption();
+            abilityInformation.CheckScrap[abilityID] = ability.CheckScrap();
+        }
 
         SendClient(abilityInformation);
 
@@ -845,6 +857,20 @@ public class Server : MonoBehaviour {
         }
     }
 
+    private void GetAbilityInfo(int conID, int chanID, int rHostID, AbilityInformation abilityInformation)
+    {
+        for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
+        {
+            Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);
+
+            //Need to send this information to the UI Manager to display to the player
+            //Displayed information would be the ability name, the scrap cost, the 
+            //corruption cost (stored within ability) as well as the booleans in
+            //abiltyInformation, CheckCorruptio and CheckScrap, which can determine
+            //whether or not the ability can be selected
+        }
+    }
+
     #endregion
 
     #region Client Sent Messages
@@ -865,11 +891,47 @@ public class Server : MonoBehaviour {
         SendServer(selection);
     }
 
-    public void SendAbilityUsed(string AbilityType, int SelectedTarget) {
+    /// <summary>
+    /// 
+    /// Send a particular ability being used back to the server.
+    /// Target ID is only required for SecretPaths, PowerBoost, Encouraging Song
+    /// Muddle Sensors, Code Inspection and Supercharge as they can target other players.
+    /// Should be set to GameManager.DEFAULT_PLAYER_ID if any other ability type
+    /// 
+    /// scanResource is only used for the Sensor Scan ability. Should be set to default
+    /// case for any other ability type
+    /// 
+    /// </summary>
+    public void SendAbilityUsed(Ability.AbilityTypes abilityType, int targetID, Ability.ScanResources scanResource) {
 
         AbilityUsage ability = new AbilityUsage();
-        ability.Ability = AbilityType;
-        ability.target = SelectedTarget;
+
+        switch (abilityType)
+        {
+            //Case for non-targeted abilities
+            case (Ability.AbilityTypes.Sabotage):
+                ability.AbilityType = (int)abilityType;
+                ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
+                ability.ScanResource = (int)Ability.ScanResources.Default;
+                break;
+            //Case for targetted abilities
+            case (Ability.AbilityTypes.Secret_Paths):
+            case (Ability.AbilityTypes.Power_Boost):
+            case (Ability.AbilityTypes.Encouraging_Song):
+            case (Ability.AbilityTypes.Muddle_Sensors):
+            case (Ability.AbilityTypes.Code_Inspection):
+            case (Ability.AbilityTypes.Supercharge):
+                ability.AbilityType = (int)abilityType;
+                ability.TargetID = targetID;
+                ability.ScanResource = (int)Ability.ScanResources.Default;
+                break;
+            //Case for resource targetted abilities
+            case (Ability.AbilityTypes.Sensor_Scan):
+                ability.AbilityType = (int)abilityType;
+                ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
+                ability.ScanResource = (int)scanResource;
+                break;
+        }
 
         SendServer(ability);
     }
@@ -992,10 +1054,34 @@ public class Server : MonoBehaviour {
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID) {
 
-                
+                Ability.AbilityTypes abilityType = (Ability.AbilityTypes)ability.AbilityType;
+                Ability selectedAbility = GameManager.instance.GetActivePlayer().GetAbility(abilityType);
 
-
-
+                switch (abilityType)
+                {
+                    case (Ability.AbilityTypes.Sabotage):
+                        selectedAbility.Activate();
+                        break;
+                    case (Ability.AbilityTypes.Secret_Paths):
+                    case (Ability.AbilityTypes.Power_Boost):
+                    case (Ability.AbilityTypes.Encouraging_Song):
+                    case (Ability.AbilityTypes.Muddle_Sensors):
+                    case (Ability.AbilityTypes.Supercharge):
+                        selectedAbility.Activate(ability.TargetID);
+                        break;
+                    case (Ability.AbilityTypes.Code_Inspection):
+                        selectedAbility.Activate(ability.TargetID, out bool isTraitor);
+                        //need to send state of isTraitor back to server to display to the player
+                        //Will need a different message to the regular ability active ping if that
+                        //is required
+                        break;
+                    case (Ability.AbilityTypes.Sensor_Scan):
+                        selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
+                        break;
+                }
+                //May need to send a ping back to client after ability is activated- not sure if this
+                //is necessary, but may be in case client attempts to increment the phase before the 
+                //ability has finished activating
             }
         }
     }
@@ -1107,6 +1193,8 @@ public class Server : MonoBehaviour {
     {
         GameManager.instance.IncrementPhase();
 
+        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
+
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
@@ -1123,7 +1211,7 @@ public class Server : MonoBehaviour {
                 switch (GameManager.instance.currentPhase)
                 {
                     case (GameManager.TurnPhases.Abilities):
-                        //Send Ability Information
+                        SendAbilityInformation(activePlayerID);
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
