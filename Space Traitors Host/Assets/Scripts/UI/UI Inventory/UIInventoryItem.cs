@@ -9,6 +9,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public float pointerSpeed = 1700f;
     public float positionRange = 20f;
+    public Item.ItemTypes itemType;
     public string itemName;
     public bool isEqupped = false;
 
@@ -22,6 +23,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         origin = transform.position;
         pointerPos = transform.position;
+        itemName = itemType.ToString();
     }
 
     // Update is called once per frame
