@@ -91,7 +91,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointerSpeed: 1700
   positionRange: 15
+  itemType: 1
   itemName: TEST
+  isEqupped: 0
 --- !u!61 &2186730759761737146
 BoxCollider2D:
   m_ObjectHideFlags: 0
