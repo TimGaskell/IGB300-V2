@@ -26,6 +26,9 @@ public static class NetOP
     public const int ChangeCharacter = 28;
     public const int TraitorVictory = 30;
     public const int PlayerDataSync = 31;
+    public const int AbilityActivated = 32;
+    public const int ComponentInstalled = 33;
+    public const int NumComponentsInstalled = 34;
 
 
     #endregion

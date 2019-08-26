@@ -43,6 +43,8 @@ public class ClientManager : MonoBehaviour
 
     List<Sprite> characterPortraits;
 
+    public int componentsInstalled;
+
     #region Client Initialisation
     private void Awake()
     {
