@@ -112,9 +112,11 @@ public class Server : MonoBehaviour
 
     //Player Variables
     private int PlayerActionPoints;
+
+    //Combat Variables
     private GameManager.SpecScores attackerSpec;
     private GameManager.SpecScores defenderSpec;
-
+    private int defenderID;
 
 
 
@@ -751,17 +753,36 @@ public class Server : MonoBehaviour
         SendClient(ai);
     }
 
-    public void SendCombatResolution(int player, bool winorLoose, int damagetaken, List<string> Inventory)
+    public void SendCombatWinner(int winnerID, int loserID)
     {
 
-        CombatResolution resolution = new CombatResolution();
-        tempPlayerID = player;
-        resolution.winbattle = winorLoose;
-        resolution.damagetaken = damagetaken;
-        resolution.LoserInventory = Inventory;
+        CombatWinner combatWinner = new CombatWinner();
+        tempPlayerID = winnerID;
 
-        SendClient(resolution);
+        combatWinner.LoserID = loserID;
 
+        List<Item> loserInventory = GameManager.instance.GetPlayer(loserID).items;
+
+        combatWinner.LoserInventory = new List<int>();
+
+        foreach (Item item in loserInventory)
+        {
+            int itemID = (int)item.ItemType;
+
+            combatWinner.LoserInventory.Add(itemID);
+        }
+
+        SendClient(combatWinner);
+    }
+
+    public void SendCombatLoser(int loserID, int winnerID)
+    {
+        CombatLoser combatLoser = new CombatLoser();
+        tempPlayerID = loserID;
+
+        combatLoser.WinnerID = winnerID;
+
+        SendClient(combatLoser);
     }
 
     /// <summary>
@@ -894,6 +915,16 @@ public class Server : MonoBehaviour
                 SendClient(numComponentsInstalled);
             }
         }
+    }
+
+    public void CanInstallComponent(int playerID)
+    {
+        CanInstallComponent canInstallComponent = new CanInstallComponent();
+        tempPlayerID = playerID;
+
+        canInstallComponent.CanInstall = GameManager.instance.CanInstallComponent();
+
+        SendClient(canInstallComponent);
     }
 
     #endregion
@@ -1053,6 +1084,32 @@ public class Server : MonoBehaviour
                 //Need to display to the player that all components are installed and they need to get to the escape shuttle
             }
         }
+    }
+
+    private void GetCanInstallComponent(int conID, int chanID, int rHostID, CanInstallComponent canInstallComponent)
+    {
+        //Activate whatever is neccessary for the player to install a component
+    }
+
+    private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)
+    {
+        //Need to display that they won the combat and who they won it against using combatWinner.loserID
+
+        //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
+        //Need to display the items on the stealing panel
+        List<int> loserItemIDs = combatWinner.LoserInventory;
+        List<Item> loserInventory = new List<Item>();
+
+        foreach (int itemID in loserItemIDs)
+        {
+            Item item = ClientManager.instance.GetItemInfo(itemID);
+            loserInventory.Add(item);
+        }
+    }
+
+    private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
+    {
+        //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
     }
 
     #endregion
@@ -1354,9 +1411,10 @@ public class Server : MonoBehaviour
     }
     private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection)
     {
+        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
 
         //Only the active player can be the attacker in a combat. If this message is coming from the attacking
-        if (conID == GameManager.instance.GetActivePlayer().playerID)
+        if (conID == activePlayerID)
         {
             attackerSpec = (GameManager.SpecScores)selection.SelectedSpec;
         }
@@ -1372,7 +1430,23 @@ public class Server : MonoBehaviour
         {
             //Need to add display of winner on main screen
 
-            //Need to send outcome of combat to combatant players here
+            bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec);
+
+            CombatWinner combatWinner = new CombatWinner();
+            CombatLoser combatLoser = new CombatLoser();
+
+            //If combat outcome is ture, means that the attacker won
+            //Need to add in main screen UI
+            if (combatOutcome)
+            {
+                SendCombatWinner(activePlayerID, defenderID);
+                SendCombatLoser(defenderID, activePlayerID);
+            }
+            else
+            {
+                SendCombatWinner(defenderID, activePlayerID);
+                SendCombatLoser(activePlayerID, defenderID);
+            }
         }
     }
     private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack)
@@ -1384,6 +1458,9 @@ public class Server : MonoBehaviour
         defenderSpec = GameManager.SpecScores.Default;
 
         //Need to display the state of the combat on the main screen
+
+        //Stores the target player ID to attack later
+        defenderID = attack.TargetPlayer;
 
         foreach (GameObject player in playerArray())
         {
