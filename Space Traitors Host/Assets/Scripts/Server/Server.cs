@@ -927,6 +927,43 @@ public class Server : MonoBehaviour
         SendClient(canInstallComponent);
     }
 
+    /// <summary>
+    /// 
+    /// Sends the relevant information about the other players to all clients
+    /// Relevant information is their ID, name and Character Type
+    /// Should be called after Character selection is complete, since this information
+    /// will not change from then
+    /// 
+    /// </summary>
+    public void SendAllPlayerData()
+    {
+        AllPlayerData allPlayerData = new AllPlayerData();
+
+        allPlayerData.numPlayers = GameManager.instance.numPlayers;
+        allPlayerData.PlayerIDs = new List<int>();
+        allPlayerData.PlayerNames = new List<string>();
+        allPlayerData.CharacterTypes = new List<int>();
+
+        //Setup the player data (need to clarify this is working properly since it pulls from the
+        //players list in the server rather than the game manager)
+        foreach (GameObject playerObject in players)
+        {
+            Player player = playerObject.GetComponent<Player>();
+
+            allPlayerData.PlayerIDs.Add(player.playerID);
+            allPlayerData.PlayerNames.Add(player.playerName);
+            allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+        }
+
+        //Send the player data to all players
+        foreach (GameObject player in players)
+        {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+
+            SendClient(allPlayerData);
+        }
+    }
+
     #endregion
 
     #region Client Received Messages
@@ -1110,6 +1147,20 @@ public class Server : MonoBehaviour
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
     {
         //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
+    }
+
+    private void GetAllPlayerData(int conID, int chanID, int rHostID, AllPlayerData allPlayerData)
+    {
+        ClientManager.instance.playerData = new List<PlayerData>();
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.numPlayers; playerIndex++)
+        {
+            int playerID = allPlayerData.PlayerIDs[playerIndex];
+            string playerName = allPlayerData.PlayerNames[playerIndex];
+            Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
+
+            ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
+        }
     }
 
     #endregion

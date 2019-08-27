@@ -44,6 +44,9 @@ public class ClientManager : MonoBehaviour
 
     public int componentsInstalled;
 
+    //Object for storing regularly needed information about other players in the game
+    private List<PlayerData> playerData;
+
     #region Client Initialisation
     private void Awake()
     {
@@ -177,4 +180,9 @@ public class ClientManager : MonoBehaviour
     }
 
     #endregion
+
+    public PlayerData GetPlayerData(int playerID)
+    {
+        return playerData.Find(x => x.PlayerID == playerID);
+    }
 }

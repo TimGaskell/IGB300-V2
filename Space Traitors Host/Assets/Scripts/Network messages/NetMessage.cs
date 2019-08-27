@@ -31,6 +31,7 @@ public static class NetOP
     public const int NumComponentsInstalled = 34;
     public const int CanInstallComponent = 35;
     public const int CombatLoser = 36;
+    public const int AllPlayerData = 37;
 
 
     #endregion
