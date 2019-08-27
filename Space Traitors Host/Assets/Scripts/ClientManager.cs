@@ -39,10 +39,14 @@ public class ClientManager : MonoBehaviour
 
     List<Character> allCharacters;
     List<Ability> allAbilities;
-    // All Items may not be needed, may work with just the sync functions
-    //List<Item> allItems;
+    List<Item> allItems;
 
     List<Sprite> characterPortraits;
+
+    public int componentsInstalled;
+
+    //Object for storing regularly needed information about other players in the game
+    private List<PlayerData> playerData;
 
     #region Client Initialisation
     private void Awake()
@@ -70,12 +74,12 @@ public class ClientManager : MonoBehaviour
     /// </summary>
     private void InitInfoLists()
     {
-        //List<Item.ItemTypes> itemTypes = Enum.GetValues(typeof(Item.ItemTypes)).Cast<Item.ItemTypes>().ToList();
+        List<Item.ItemTypes> itemTypes = Enum.GetValues(typeof(Item.ItemTypes)).Cast<Item.ItemTypes>().ToList();
 
-        //foreach (Item.ItemTypes itemType in itemTypes)
-        //{
-        //    allItems.Add(new Item(itemType));
-        //}
+        foreach (Item.ItemTypes itemType in itemTypes)
+        {
+            allItems.Add(new Item(itemType));
+        }
 
         List<Character.CharacterTypes> characterTypes = Enum.GetValues(typeof(Character.CharacterTypes)).Cast<Character.CharacterTypes>().ToList();
 
@@ -171,10 +175,15 @@ public class ClientManager : MonoBehaviour
         return allAbilities[abilityID];
     }
 
-    //public Item GetItemInfo(int itemID)
-    //{
-    //    return allItems[itemID];
-    //}
+    public Item GetItemInfo(int itemID)
+    {
+        return allItems[itemID];
+    }
 
     #endregion
+
+    public PlayerData GetPlayerData(int playerID)
+    {
+        return playerData.Find(x => x.PlayerID == playerID);
+    }
 }

@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
 
     private const int MAX_CORRUPTION = 100;
 
+    public const int NUM_ABILITIES = 5;
+
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
     public int playerID;
     //The name the player inputs when they start the game

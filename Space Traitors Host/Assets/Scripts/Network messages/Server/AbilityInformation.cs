@@ -12,6 +12,8 @@ public class AbilityInformation: NetMessage
 
     }
 
-    public bool CanUseAbility { set; get; }
+    public int[] AbilityTypes { get; set; }
+    public bool[] CheckCorruption { get; set; }
+    public bool [] CheckScrap { get; set; }
 }
 

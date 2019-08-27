@@ -16,7 +16,7 @@ public static class NetOP
     public const int TraitorSelction = 7;
     public const int SurgeInformation = 8;
     public const int AiAttacks = 9;
-    public const int CombatResolution = 10;
+    public const int CombatWinner = 10;
     public const int CombatAvailablity = 11;
     public const int CombatBeingAttacked = 12;
     public const int PlayerElimination = 13;
@@ -27,6 +27,12 @@ public static class NetOP
     public const int TraitorVictory = 30;
     public const int PlayerDataSync = 31;
     public const int SendRoomCost = 32;
+    public const int AbilityActivated = 33
+    public const int ComponentInstalled = 34;
+    public const int NumComponentsInstalled = 35;
+    public const int CanInstallComponent = 36;
+    public const int CombatLoser = 37;
+    public const int AllPlayerData = 38;
 
 
     #endregion

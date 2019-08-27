@@ -72,7 +72,8 @@ public enum ADDRESSFAM
     IPv4, IPv6
 }
 
-public class Server : MonoBehaviour {
+public class Server : MonoBehaviour
+{
     //Networking variables
     public static Server Instance { get; set; }
     private byte reliableChannel;
@@ -112,13 +113,18 @@ public class Server : MonoBehaviour {
     //Player Variables
     private int PlayerActionPoints;
 
+    //Combat Variables
+    private GameManager.SpecScores attackerSpec;
+    private GameManager.SpecScores defenderSpec;
+    private int defenderID;
 
 
 
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
@@ -126,7 +132,8 @@ public class Server : MonoBehaviour {
     }
 
     #region Connection Handling
-    public void HostInitialise() {
+    public void HostInitialise()
+    {
         NetworkTransport.Init();
 
         ConnectionConfig config = new ConnectionConfig();
@@ -143,7 +150,8 @@ public class Server : MonoBehaviour {
         isStarted = true;
     }
 
-    public void ClientInitialise() {
+    public void ClientInitialise()
+    {
         NetworkTransport.Init();
 
         ConnectionConfig config = new ConnectionConfig();
@@ -171,23 +179,26 @@ public class Server : MonoBehaviour {
 
 
 
-    public void ShutDown() {
+    public void ShutDown()
+    {
         isStarted = false;
         NetworkTransport.Shutdown();
     }
 
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
 
         //Keep track of the current scene
         currentScene = SceneManager.GetActiveScene();
         sceneName = currentScene.name;
-            
+
 
         //NetworkMessaging
-        if (isServer) {
+        if (isServer)
+        {
             ServerUpdateMessagePump();
         }
         ClientUpdateMessagePump();
@@ -195,8 +206,10 @@ public class Server : MonoBehaviour {
 
 
 
-    private void ServerUpdateMessagePump() {
-        if (!isStarted) {
+    private void ServerUpdateMessagePump()
+    {
+        if (!isStarted)
+        {
             return;
         }
         int recHostID;  //checks whether this is from Web or standalone
@@ -207,7 +220,8 @@ public class Server : MonoBehaviour {
         int dataSize;
 
         NetworkEventType type = NetworkTransport.Receive(out recHostID, out connectionID, out channelID, recBuffer, byteSize, out dataSize, out error);
-        switch (type) {
+        switch (type)
+        {
             case NetworkEventType.Nothing:
                 break;
 
@@ -215,8 +229,10 @@ public class Server : MonoBehaviour {
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
                 //Loop through to find a player not already connected, and assign them their ID
-                foreach (GameObject player in players) {
-                    if (player.GetComponent<Player>().isConnected == false) {
+                foreach (GameObject player in players)
+                {
+                    if (player.GetComponent<Player>().isConnected == false)
+                    {
                         if (sceneName == "ServerLobby")
                             LobbyConnectOrDisconnect(player, true, connectionID, true);
                         else if (sceneName == "GameLevel")
@@ -230,8 +246,10 @@ public class Server : MonoBehaviour {
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                foreach (GameObject player in players) {
-                    if (player.GetComponent<Player>().playerID == connectionID) {
+                foreach (GameObject player in players)
+                {
+                    if (player.GetComponent<Player>().playerID == connectionID)
+                    {
                         if (sceneName == "LobbyLan")
                             //Reset player variables
                             LobbyConnectOrDisconnect(player, false, 0, false);
@@ -258,9 +276,11 @@ public class Server : MonoBehaviour {
         }
     }
 
-    private void ClientUpdateMessagePump() {
+    private void ClientUpdateMessagePump()
+    {
 
-        if (!isStarted) {
+        if (!isStarted)
+        {
             return;
         }
         int recHostID;  //checks whether this is from Web or standalone
@@ -271,7 +291,8 @@ public class Server : MonoBehaviour {
         int dataSize;
 
         NetworkEventType type = NetworkTransport.Receive(out recHostID, out connectionID, out channelID, recBuffer, byteSize, out dataSize, out error);
-        switch (type) {
+        switch (type)
+        {
             case NetworkEventType.Nothing:
                 break;
 
@@ -302,8 +323,10 @@ public class Server : MonoBehaviour {
 
     #endregion 
 
-    private void OnData(int conID, int chanID, int rHostID, NetMessage msg) {
-        switch (msg.OperationCode) {
+    private void OnData(int conID, int chanID, int rHostID, NetMessage msg)
+    {
+        switch (msg.OperationCode)
+        {
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
@@ -366,7 +389,8 @@ public class Server : MonoBehaviour {
 
     }
     //Not sure which sendClient to use
-    public void SendClient(int recHost, int conID, NetMessage msg) {
+    public void SendClient(int recHost, int conID, NetMessage msg)
+    {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
 
@@ -374,10 +398,12 @@ public class Server : MonoBehaviour {
         MemoryStream ms = new MemoryStream(buffer);
         formatter.Serialize(ms, msg);
 
-        if (recHost == 0) {
+        if (recHost == 0)
+        {
             NetworkTransport.Send(hostID, conID, reliableChannel, buffer, byteSize, out error);
         }
-        else {
+        else
+        {
             NetworkTransport.Send(webHostID, conID, reliableChannel, buffer, byteSize, out error);
         }
 
@@ -387,35 +413,42 @@ public class Server : MonoBehaviour {
 
     //This needs to be updated
 
-    private List<GameObject> playerArray() {
+    private List<GameObject> playerArray()
+    {
 
         if ((sceneName == "LobbyLan") || (sceneName == "Character Select"))
             return players;
         //else if (sceneName == "server")
         //  return playerStorage.GetComponent<RoundManager>().playersInGame;
-        else {
+        else
+        {
             Debug.Log("Could not get the correct scene");
             return null;
         }
 
     }
 
-    private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable) {
+    private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable)
+    {
         player.GetComponent<Player>().isConnected = connect;
         player.GetComponent<Player>().playerID = conID;
 
     }
 
-    private void GameConnectOrDisconnect(GameObject player, bool connect, int conID) {
+    private void GameConnectOrDisconnect(GameObject player, bool connect, int conID)
+    {
         player.GetComponent<Player>().isConnected = connect;
         player.GetComponent<Player>().playerID = conID;
     }
 
     //This needs to be updated
-    private void SetPortraits() {
+    private void SetPortraits()
+    {
         setter = GameObject.FindGameObjectWithTag("Setter");
-        for (int i = 0; i < playerArray().Count; i++) {
-            switch (players[i].GetComponent<PlayerConnect>().characterName) {
+        for (int i = 0; i < playerArray().Count; i++)
+        {
+            switch (players[i].GetComponent<PlayerConnect>().characterName)
+            {
                 case "Brute":
                     portraitID = 0;
                     break;
@@ -440,7 +473,8 @@ public class Server : MonoBehaviour {
                     portraitID = 5;
                     break;
             }
-            if (portraitID >= 0) {
+            if (portraitID >= 0)
+            {
                 setter.GetComponent<ImageSetter>().images[i].sprite = portraits[portraitID];
             }
 
@@ -455,16 +489,20 @@ public class Server : MonoBehaviour {
         //TODO: cannot start game unless at least 3 (1 for purposes of testing) players are connected
 
         //If a player hasn't been assigned to one of the player objects, remove it from the server's array of players
-        for (int k = 0; k < players.Count; k++) {
-            if (!players[k].GetComponent<Player>().isConnected) {
+        for (int k = 0; k < players.Count; k++)
+        {
+            if (!players[k].GetComponent<Player>().isConnected)
+            {
                 playersRemoved.Add(players[k]);
             }
         }
 
-        
 
-        if (playersRemoved != null) {
-            foreach (GameObject player in playersRemoved) {
+
+        if (playersRemoved != null)
+        {
+            foreach (GameObject player in playersRemoved)
+            {
                 players.Remove(player);
                 Destroy(player);
             }
@@ -473,7 +511,8 @@ public class Server : MonoBehaviour {
         //Get the number of players based on how many remain
         playersJoined = players.Count;
         int i = 0;
-        foreach (GameObject player in players) {
+        foreach (GameObject player in players)
+        {
             playerIDs[i] = player.GetComponent<Player>().playerID;
             player.transform.parent = null;
             i++;
@@ -485,13 +524,16 @@ public class Server : MonoBehaviour {
         SceneManager.LoadScene("Server Character Selection");
     }
 
-    public void ClientNextScene() {
-        foreach (GameObject player in players) {
+    public void ClientNextScene()
+    {
+        foreach (GameObject player in players)
+        {
             tempPlayerID = player.GetComponent<Player>().playerID;
             SendChangeScene("Lobby");
         }
     }
-    public void SendClient(NetMessage msg) {
+    public void SendClient(NetMessage msg)
+    {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
 
@@ -506,7 +548,8 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendServer(NetMessage msg) {
+    public void SendServer(NetMessage msg)
+    {
         //This is where data is held
         byte[] buffer = new byte[byteSize];
 
@@ -521,16 +564,19 @@ public class Server : MonoBehaviour {
 
     #region Server Sent Messages
 
-    public void SendChangeScene(string SceneName) {
+    public void SendChangeScene(string SceneName)
+    {
 
         SceneChange scene = new SceneChange();
         scene.SceneName = SceneName;
-        foreach (GameObject player in players) {
-            tempPlayerID = player.GetComponent<Player>().playerID;        
+        foreach (GameObject player in players)
+        {
+            tempPlayerID = player.GetComponent<Player>().playerID;
             SendClient(scene);
         }
     }
-    public void SendActivePlayer(int player) {
+    public void SendActivePlayer(int player)
+    {
 
         IsActivePlayer Activeplayer = new IsActivePlayer();
         tempPlayerID = player;
@@ -538,7 +584,8 @@ public class Server : MonoBehaviour {
         SendClient(Activeplayer);
     }
 
-    public void SendChangeCharacter(int player, bool istaken) {
+    public void SendChangeCharacter(int player, bool istaken)
+    {
 
         ChangeCharacter change = new ChangeCharacter();
         tempPlayerID = player;
@@ -551,7 +598,8 @@ public class Server : MonoBehaviour {
     }
 
 
-    public void SendCharacterBaseStats(int player, int brawn, int charm, int skill, int tech, string AbilityName, string AbilityDescription) {
+    public void SendCharacterBaseStats(int player, int brawn, int charm, int skill, int tech, string AbilityName, string AbilityDescription)
+    {
 
         CharacterInformation information = new CharacterInformation();
         tempPlayerID = player;
@@ -567,18 +615,32 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendAbilityInformation(int player, bool canUse) {
+    public void SendAbilityInformation(int player)
+    {
 
         AbilityInformation abilityInformation = new AbilityInformation();
         tempPlayerID = player;
+        int numAbilities = Player.NUM_ABILITIES;
 
-        abilityInformation.CanUseAbility = canUse;
+        abilityInformation.AbilityTypes = new int[numAbilities];
+        abilityInformation.CheckCorruption = new bool[numAbilities];
+        abilityInformation.CheckScrap = new bool[numAbilities];
+
+        for (int abilityID = 0; abilityID < numAbilities; abilityID++)
+        {
+            Ability ability = GameManager.instance.GetPlayer(player).GetAbility(abilityID);
+
+            abilityInformation.AbilityTypes[abilityID] = (int)ability.abilityType;
+            abilityInformation.CheckCorruption[abilityID] = ability.CheckCorruption();
+            abilityInformation.CheckScrap[abilityID] = ability.CheckScrap();
+        }
 
         SendClient(abilityInformation);
 
     }
 
-    public void SendAvailableRooms(int player, List<int> Roomnumbers) {
+    public void SendAvailableRooms(int player, List<int> Roomnumbers)
+    {
 
         AvailableRooms rooms = new AvailableRooms();
         tempPlayerID = player;
@@ -589,7 +651,8 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendRoomChoices(int player, int roomIndex) {
+    public void SendRoomChoices(int player, int roomIndex)
+    {
 
         RoomChoices choices = new RoomChoices();
         tempPlayerID = player;
@@ -617,7 +680,7 @@ public class Server : MonoBehaviour {
             //If the choice is not a spec challenge, choice's target score is 0 which will cause
             //a math error in GameManager.SpecChallengeChance, so need to be specific for those
             //cases (since this will not be displayed regardless can arbitrarily set to 0).
-            if(choice.specChallenge == GameManager.SpecScores.Default)
+            if (choice.specChallenge == GameManager.SpecScores.Default)
             {
                 choices.SuccessChances[choiceIndex] = 0;
             }
@@ -633,7 +696,8 @@ public class Server : MonoBehaviour {
         SendClient(choices);
     }
 
-    public void SendSpecChallenge(int player, bool specChallengeResult) {
+    public void SendSpecChallenge(int player, bool specChallengeResult)
+    {
 
         SpecChallenge challenge = new SpecChallenge();
         tempPlayerID = player;
@@ -643,7 +707,8 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor) {
+    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor)
+    {
 
         PlayerInformation playerInformation = new PlayerInformation();
         tempPlayerID = player;
@@ -661,7 +726,8 @@ public class Server : MonoBehaviour {
         SendClient(playerInformation);
     }
 
-    public void SendIsTraitor(int player) {
+    public void SendIsTraitor(int player)
+    {
 
         TraitorSelection traitor = new TraitorSelection();
         tempPlayerID = player;
@@ -670,19 +736,22 @@ public class Server : MonoBehaviour {
 
     }
 
-    public void SendSurge() {
+    public void SendSurge()
+    {
 
         SurgeInformation surge = new SurgeInformation();
         surge.NewAiPower = GameManager.instance.AIPower;
         surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
 
-        foreach (GameObject player in players) {
+        foreach (GameObject player in players)
+        {
             tempPlayerID = player.GetComponent<Player>().playerID;
             SendClient(surge);
         }
     }
 
-    public void SendAIAttack(int player, int damage, int spec, string spectype ) {
+    public void SendAIAttack(int player, int damage, int spec, string spectype)
+    {
 
         AiAttacks ai = new AiAttacks();
         tempPlayerID = player;
@@ -693,19 +762,47 @@ public class Server : MonoBehaviour {
         SendClient(ai);
     }
 
-    public void SendCombatResolution(int player, bool winorLoose, int damagetaken, List<string>Inventory) {
+    public void SendCombatWinner(int winnerID, int loserID)
+    {
 
-        CombatResolution resolution = new CombatResolution();
-        tempPlayerID = player;
-        resolution.winbattle = winorLoose;
-        resolution.damagetaken = damagetaken;
-        resolution.LoserInventory = Inventory;
+        CombatWinner combatWinner = new CombatWinner();
+        tempPlayerID = winnerID;
 
-        SendClient(resolution);
+        combatWinner.LoserID = loserID;
 
+        List<Item> loserInventory = GameManager.instance.GetPlayer(loserID).items;
+
+        combatWinner.LoserInventory = new List<int>();
+
+        foreach (Item item in loserInventory)
+        {
+            int itemID = (int)item.ItemType;
+
+            combatWinner.LoserInventory.Add(itemID);
+        }
+
+        SendClient(combatWinner);
     }
 
-    public void SendCombatAvailablity(int player, List<int>Targets) {
+    public void SendCombatLoser(int loserID, int winnerID)
+    {
+        CombatLoser combatLoser = new CombatLoser();
+        tempPlayerID = loserID;
+
+        combatLoser.WinnerID = winnerID;
+
+        SendClient(combatLoser);
+    }
+
+    /// <summary>
+    /// 
+    /// Message can be removed- handled through the SendRoomChoices message.
+    /// 
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="Targets"></param>
+    public void SendCombatAvailablity(int player, List<int> Targets)
+    {
 
         CombatAvailability combat = new CombatAvailability();
         tempPlayerID = player;
@@ -715,16 +812,21 @@ public class Server : MonoBehaviour {
         SendClient(combat);
     }
 
-    public void SendBeingAttacked(int player) {
+    public void SendBeingAttacked(int player, int attackerID, int defenderID)
+    {
 
         CombatBeingAttacked attacked = new CombatBeingAttacked();
         tempPlayerID = player;
+
+        attacked.AttackerID = attackerID;
+        attacked.DefenderID = defenderID;
 
         SendClient(attacked);
 
     }
 
-    public void SendPlayerElimination(int player) {
+    public void SendPlayerElimination(int player)
+    {
 
         PlayerElimination elimination = new PlayerElimination();
         tempPlayerID = player;
@@ -732,10 +834,12 @@ public class Server : MonoBehaviour {
         SendClient(elimination);
     }
 
-    public void SendNonTraitorVictory() {
+    public void SendNonTraitorVictory()
+    {
 
         InnocentVictory innocent = new InnocentVictory();
-        foreach (GameObject player in players) {
+        foreach (GameObject player in players)
+        {
             tempPlayerID = player.GetComponent<Player>().playerID;
             SendClient(innocent);
         }
@@ -745,7 +849,7 @@ public class Server : MonoBehaviour {
     {
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
-        foreach(GameObject player in players)
+        foreach (GameObject player in players)
         {
             tempPlayerID = player.GetComponent<Player>().playerID;
             SendClient(traitor);
@@ -793,43 +897,137 @@ public class Server : MonoBehaviour {
 
     }
 
+    public void SendAbilityActivated(int playerID, Ability.AbilityTypes abilityType, bool isTraitor)
+    {
+        AbilityActivated abilityActivated = new AbilityActivated();
+        tempPlayerID = playerID;
+
+        abilityActivated.AbilityType = (int)abilityType;
+        abilityActivated.IsTraitor = isTraitor;
+
+        SendClient(abilityActivated);
+    }
+
+    public void SendComponentInstalled(int installerID, bool successfulInstall)
+    {
+        foreach (GameObject player in players)
+        {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+
+            bool allComponentsCheck = GameManager.instance.CheckInstalledComponents();
+
+            if (tempPlayerID == installerID)
+            {
+                ComponentInstalled componentInstalled = new ComponentInstalled();
+
+                componentInstalled.SuccessfulInstall = successfulInstall;
+                componentInstalled.AllComponentsInstalled = allComponentsCheck;
+
+                SendClient(componentInstalled);
+            }
+            else
+            {
+                NumComponentsInstalled numComponentsInstalled = new NumComponentsInstalled();
+
+                numComponentsInstalled.InstalledComponents = GameManager.instance.installedComponents;
+                numComponentsInstalled.AllComponentsInstalled = allComponentsCheck;
+
+                SendClient(numComponentsInstalled);
+            }
+        }
+    }
+
+    public void CanInstallComponent(int playerID)
+    {
+        CanInstallComponent canInstallComponent = new CanInstallComponent();
+        tempPlayerID = playerID;
+
+        canInstallComponent.CanInstall = GameManager.instance.CanInstallComponent();
+
+        SendClient(canInstallComponent);
+    }
+
+    /// <summary>
+    /// 
+    /// Sends the relevant information about the other players to all clients
+    /// Relevant information is their ID, name and Character Type
+    /// Should be called after Character selection is complete, since this information
+    /// will not change from then
+    /// 
+    /// </summary>
+    public void SendAllPlayerData()
+    {
+        AllPlayerData allPlayerData = new AllPlayerData();
+
+        allPlayerData.numPlayers = GameManager.instance.numPlayers;
+        allPlayerData.PlayerIDs = new List<int>();
+        allPlayerData.PlayerNames = new List<string>();
+        allPlayerData.CharacterTypes = new List<int>();
+
+        //Setup the player data (need to clarify this is working properly since it pulls from the
+        //players list in the server rather than the game manager)
+        foreach (GameObject playerObject in players)
+        {
+            Player player = playerObject.GetComponent<Player>();
+
+            allPlayerData.PlayerIDs.Add(player.playerID);
+            allPlayerData.PlayerNames.Add(player.playerName);
+            allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+        }
+
+        //Send the player data to all players
+        foreach (GameObject player in players)
+        {
+            tempPlayerID = player.GetComponent<Player>().playerID;
+
+            SendClient(allPlayerData);
+        }
+    }
+
     #endregion
 
     #region Client Received Messages
 
-    private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene) {
+    private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene)
+    {
 
         SceneManager.LoadScene(scene.SceneName);
 
     }
 
-    private void AmActivePlayer(int conID, int chanID, int rHostID, IsActivePlayer isActive) {
+    private void AmActivePlayer(int conID, int chanID, int rHostID, IsActivePlayer isActive)
+    {
 
-        if(SceneManager.GetActiveScene().name == "Character Selection") {
+        if (SceneManager.GetActiveScene().name == "Character Selection")
+        {
 
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
         }
     }
 
-    private void NeedToChangeCharacter(int conID, int chanID, int rHostID, ChangeCharacter character) {
+    private void NeedToChangeCharacter(int conID, int chanID, int rHostID, ChangeCharacter character)
+    {
 
         GameObject Canvas = GameObject.Find("Canvas");
 
-        if (character.AlreadySelected == false) {
+        if (character.AlreadySelected == false)
+        {
 
             Canvas.GetComponent<CharacterSelectUIManager>().EndSelection();
         }
-        else {
+        else
+        {
             Debug.Log("Choose another Character");
         }
-        
+
 
     }
 
-    private void GetCharacterInformation(int conID, int chanID, int rHostID, CharacterInformation information) {
+    private void GetCharacterInformation(int conID, int chanID, int rHostID, CharacterInformation information)
+    {
 
-        
+
 
     }
 
@@ -906,11 +1104,132 @@ public class Server : MonoBehaviour {
     }
 
 
+    private void GetAbilityInfo(int conID, int chanID, int rHostID, AbilityInformation abilityInformation)
+    {
+        for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
+        {
+            Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);
+
+            //Need to send this information to the UI Manager to display to the player
+            //Displayed information would be the ability name, the scrap cost, the 
+            //corruption cost (stored within ability) as well as the booleans in
+            //abiltyInformation, CheckCorruptio and CheckScrap, which can determine
+            //whether or not the ability can be selected
+        }
+    }
+
+    private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
+    {
+        //Need to display attacked and defender info to players and allow them to select spec score for combat
+    }
+
+    private void AbilityActivated(int conID, int chanID, int rHostID, AbilityActivated abilityActivated)
+    {
+        Ability.AbilityTypes abilityType = (Ability.AbilityTypes)abilityActivated.AbilityType;
+
+        if (abilityType == Ability.AbilityTypes.Code_Inspection)
+        {
+            //Need to display that the ability is activated
+            //In the case of code inspection, also need to display if the player is a traitor or not
+        }
+        else
+        {
+            //Need to display that the ability is activated
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Message for the player who installed the component to recieve when a component is installed
+    /// 
+    /// </summary>
+    private void GetComponentInstalled(int conID, int chanID, int rHostID, ComponentInstalled componentInstalled)
+    {
+        if (componentInstalled.SuccessfulInstall)
+        {
+            ClientManager.instance.componentsInstalled += 1;
+            //Need to display to the player that a component has been installed
+
+            if (componentInstalled.AllComponentsInstalled)
+            {
+                //Need to display to the player that all components have been installed and they can escape
+            }
+        }
+        else
+        {
+            //Need to display to the player that they have been sabotaged and lost life points equal to
+            //GameManager.COMBAT_DAMAGE.
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Message for other players when a component is installed
+    /// 
+    /// </summary>
+    private void GetNumComponentsInstalled(int conID, int chanID, int rHostID, NumComponentsInstalled numComponentsInstalled)
+    {
+        ClientManager.instance.componentsInstalled = numComponentsInstalled.InstalledComponents;
+
+        if (numComponentsInstalled.AllComponentsInstalled)
+        {
+            if (ClientManager.instance.isTraitor)
+            {
+                //Need to display to the player that they need to stop the non-traitors from escaping
+            }
+            else
+            {
+                //Need to display to the player that all components are installed and they need to get to the escape shuttle
+            }
+        }
+    }
+
+    private void GetCanInstallComponent(int conID, int chanID, int rHostID, CanInstallComponent canInstallComponent)
+    {
+        //Activate whatever is neccessary for the player to install a component
+    }
+
+    private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)
+    {
+        //Need to display that they won the combat and who they won it against using combatWinner.loserID
+
+        //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
+        //Need to display the items on the stealing panel
+        List<int> loserItemIDs = combatWinner.LoserInventory;
+        List<Item> loserInventory = new List<Item>();
+
+        foreach (int itemID in loserItemIDs)
+        {
+            Item item = ClientManager.instance.GetItemInfo(itemID);
+            loserInventory.Add(item);
+        }
+    }
+
+    private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
+    {
+        //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
+    }
+
+    private void GetAllPlayerData(int conID, int chanID, int rHostID, AllPlayerData allPlayerData)
+    {
+        ClientManager.instance.playerData = new List<PlayerData>();
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.numPlayers; playerIndex++)
+        {
+            int playerID = allPlayerData.PlayerIDs[playerIndex];
+            string playerName = allPlayerData.PlayerNames[playerIndex];
+            Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
+
+            ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
+        }
+    }
+
     #endregion
 
     #region Client Sent Messages
 
-    public void SendPlayerInformation(string playerName) {
+    public void SendPlayerInformation(string playerName)
+    {
 
         PlayerDetails details = new PlayerDetails();
         details.PlayerName = playerName;
@@ -918,7 +1237,8 @@ public class Server : MonoBehaviour {
         SendServer(details);
     }
 
-    public void SendCharacterSelected(int Character) {
+    public void SendCharacterSelected(int Character)
+    {
 
         CharacterSelection selection = new CharacterSelection();
         selection.SelectedCharacter = Character;
@@ -926,11 +1246,47 @@ public class Server : MonoBehaviour {
         SendServer(selection);
     }
 
-    public void SendAbilityUsed(string AbilityType, int SelectedTarget) {
+    /// <summary>
+    /// 
+    /// Send a particular ability being used back to the server.
+    /// Target ID is only required for SecretPaths, PowerBoost, Encouraging Song
+    /// Muddle Sensors, Code Inspection and Supercharge as they can target other players.
+    /// Should be set to GameManager.DEFAULT_PLAYER_ID if any other ability type
+    /// 
+    /// scanResource is only used for the Sensor Scan ability. Should be set to default
+    /// case for any other ability type
+    /// 
+    /// </summary>
+    public void SendAbilityUsed(Ability.AbilityTypes abilityType, int targetID, Ability.ScanResources scanResource)
+    {
 
         AbilityUsage ability = new AbilityUsage();
-        ability.Ability = AbilityType;
-        ability.target = SelectedTarget;
+
+        ability.AbilityType = (int)abilityType;
+
+        switch (abilityType)
+        {
+            //Case for non-targeted abilities
+            case (Ability.AbilityTypes.Sabotage):
+                ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
+                ability.ScanResource = (int)Ability.ScanResources.Default;
+                break;
+            //Case for targetted abilities
+            case (Ability.AbilityTypes.Secret_Paths):
+            case (Ability.AbilityTypes.Power_Boost):
+            case (Ability.AbilityTypes.Encouraging_Song):
+            case (Ability.AbilityTypes.Muddle_Sensors):
+            case (Ability.AbilityTypes.Code_Inspection):
+            case (Ability.AbilityTypes.Supercharge):
+                ability.TargetID = targetID;
+                ability.ScanResource = (int)Ability.ScanResources.Default;
+                break;
+            //Case for resource targetted abilities
+            case (Ability.AbilityTypes.Sensor_Scan):
+                ability.TargetID = GameManager.DEFAULT_PLAYER_ID;
+                ability.ScanResource = (int)scanResource;
+                break;
+        }
 
         SendServer(ability);
     }
@@ -943,7 +1299,8 @@ public class Server : MonoBehaviour {
         SendServer(actionPoints);
     }
 
-    public void SendRoomChoice(int Room) {
+    public void SendRoomChoice(int Room)
+    {
 
         Movement movement = new Movement();
         movement.SelectedRoom = Room;
@@ -951,7 +1308,8 @@ public class Server : MonoBehaviour {
         SendServer(movement);
     }
 
-    public void SendSelectedChoice(int ChoiceId) {
+    public void SendSelectedChoice(int ChoiceId)
+    {
 
         SelectedChoice choice = new SelectedChoice();
         choice.ChoiceId = ChoiceId;
@@ -959,7 +1317,8 @@ public class Server : MonoBehaviour {
         SendServer(choice);
     }
 
-    public void SendInventoryChanges(List<string> EquiptItems, List<string> UnEquiptItems, List<string> DiscardItems) {
+    public void SendInventoryChanges(List<string> EquiptItems, List<string> UnEquiptItems, List<string> DiscardItems)
+    {
 
         InventoryChanges inventory = new InventoryChanges();
         inventory.equipedItems = EquiptItems;
@@ -969,23 +1328,26 @@ public class Server : MonoBehaviour {
         SendServer(inventory);
     }
 
-    public void SendSpecSelection(string Spec) {
+    public void SendSpecSelection(GameManager.SpecScores specScore)
+    {
 
         SpecSelection specSelection = new SpecSelection();
-        specSelection.SelectedSpec = Spec;
+        specSelection.SelectedSpec = (int)specScore;
 
         SendServer(specSelection);
     }
 
-    public void SendCombat(int Player) {
+    public void SendCombat(int targetID)
+    {
 
         CombatAttackingTarget combat = new CombatAttackingTarget();
-        combat.SelectedPlayer = Player;
+        combat.TargetPlayer = targetID;
 
         SendServer(combat);
     }
 
-    public void ItemSelection(string Item) {
+    public void ItemSelection(string Item)
+    {
 
         ItemSelection selection = new ItemSelection();
         selection.SelectedItem = Item;
@@ -993,7 +1355,8 @@ public class Server : MonoBehaviour {
         SendServer(selection);
     }
 
-    public void InstallComponent() {
+    public void InstallComponent()
+    {
 
         InstallComponent installComponent = new InstallComponent();
 
@@ -1023,53 +1386,86 @@ public class Server : MonoBehaviour {
 
     #region Server Received Messages
 
-    private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details) {
+    private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
+    {
 
         Debug.Log("Recieved Player Name");
-        foreach (GameObject player in players) {
-            if (player.GetComponent<Player>().playerID == conID) {
-            //Find the correct player
+        foreach (GameObject player in players)
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                //Find the correct player
 
                 player.GetComponent<Player>().playerName = details.PlayerName;
                 GameObject LobbyUiHandler = GameObject.Find("Canvas");
                 LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames();
-              
-                
+
+
 
             }
         }
     }
-    private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character) {
+    private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character)
+    {
 
-        foreach (GameObject player in players) {
+        foreach (GameObject player in players)
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
-                if (GameManager.instance.CheckCharacterSelected((Character.CharacterTypes)character.SelectedCharacter)) {
-                    SendChangeCharacter(player.GetComponent<Player>().playerID,true);
+                if (GameManager.instance.CheckCharacterSelected((Character.CharacterTypes)character.SelectedCharacter))
+                {
+                    SendChangeCharacter(player.GetComponent<Player>().playerID, true);
                 }
-                else {
+                else
+                {
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
-                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);                  
+                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.GetComponent<Player>().playerID, false);
                     SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                 }
-                             
+
             }
         }
     }
-    private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability) {
+    private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
+    {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
-                
+                Ability.AbilityTypes abilityType = (Ability.AbilityTypes)ability.AbilityType;
+                Ability selectedAbility = GameManager.instance.GetActivePlayer().GetAbility(abilityType);
+                //Unless the ability is code inspection, state of isTraitor is irrelevant, so sets to dummy case
+                bool isTraitor = false;
 
+                switch (abilityType)
+                {
+                    case (Ability.AbilityTypes.Sabotage):
+                        selectedAbility.Activate();
+                        break;
+                    case (Ability.AbilityTypes.Secret_Paths):
+                    case (Ability.AbilityTypes.Power_Boost):
+                    case (Ability.AbilityTypes.Encouraging_Song):
+                    case (Ability.AbilityTypes.Muddle_Sensors):
+                    case (Ability.AbilityTypes.Supercharge):
+                        selectedAbility.Activate(ability.TargetID);
+                        break;
+                    case (Ability.AbilityTypes.Code_Inspection):
+                        selectedAbility.Activate(ability.TargetID, out isTraitor);
+                        break;
+                    case (Ability.AbilityTypes.Sensor_Scan):
+                        selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
+                        break;
+                }
 
-
+                SendAbilityActivated(conID, abilityType, isTraitor);
             }
         }
     }
@@ -1086,9 +1482,11 @@ public class Server : MonoBehaviour {
     /// <param name="points">message sent over from client, holds the amount of points the player rolled</param>
     private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points) {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
                 player.GetComponent<Player>().ActionPoints = points.actionPoints;
                 
@@ -1147,9 +1545,11 @@ public class Server : MonoBehaviour {
 
     private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
                 PlayerMovement.instance.Player = player;
                 PlayerMovement.instance.currentNodeIndex = player.GetComponent<Player>().roomPosition;
@@ -1163,11 +1563,13 @@ public class Server : MonoBehaviour {
             }
         }
     }
-    private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice) {
+    private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
+    {
 
         foreach (GameObject player in playerArray()) { 
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
 
 
@@ -1175,70 +1577,125 @@ public class Server : MonoBehaviour {
 
 
 
-            }
-        }
-    }
-    private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes) {
-
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
-
-               
-
-
 
             }
         }
     }
-    private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection) {
+    private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
+    {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
-                
+
 
 
 
             }
         }
     }
-    private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack) {
+    private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection)
+    {
+        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
 
-        foreach (GameObject player in playerArray()) {
+        //Only the active player can be the attacker in a combat. If this message is coming from the attacking
+        if (conID == activePlayerID)
+        {
+            attackerSpec = (GameManager.SpecScores)selection.SelectedSpec;
+        }
+        //Only the defending player which has the combat screen open can send this message so don't need to check which specific
+        //player sent this message as long as it is not the active player.
+        else
+        {
+            defenderSpec = (GameManager.SpecScores)selection.SelectedSpec;
+        }
+
+        //If both the attacker and defender scores are set, can proceed with the combat
+        if (attackerSpec != GameManager.SpecScores.Default && defenderSpec != GameManager.SpecScores.Default)
+        {
+            //Need to add display of winner on main screen
+
+            bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec);
+
+            CombatWinner combatWinner = new CombatWinner();
+            CombatLoser combatLoser = new CombatLoser();
+
+            //If combat outcome is ture, means that the attacker won
+            //Need to add in main screen UI
+            if (combatOutcome)
+            {
+                SendCombatWinner(activePlayerID, defenderID);
+                SendCombatLoser(defenderID, activePlayerID);
+            }
+            else
+            {
+                SendCombatWinner(defenderID, activePlayerID);
+                SendCombatLoser(activePlayerID, defenderID);
+            }
+        }
+    }
+    private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack)
+    {
+
+        //Resets spec scores for combat in order to setup check that both players have sent combat spec
+        //scores back to server
+        attackerSpec = GameManager.SpecScores.Default;
+        defenderSpec = GameManager.SpecScores.Default;
+
+        //Need to display the state of the combat on the main screen
+
+        //Stores the target player ID to attack later
+        defenderID = attack.TargetPlayer;
+
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
 
-               
+                SendBeingAttacked(conID, conID, attack.TargetPlayer);
+
+            }
+            else if (player.GetComponent<Player>().playerID == attack.TargetPlayer)
+            {
+
+                SendBeingAttacked(attack.TargetPlayer, conID, attack.TargetPlayer);
+
+            }
+        }
+    }
+    private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
+    {
+
+        foreach (GameObject player in playerArray())
+        {
+            //Find the correct player
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+
+
 
 
 
             }
         }
     }
-    private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection) {
+    private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component)
+    {
 
-        foreach (GameObject player in playerArray()) {
+        foreach (GameObject player in playerArray())
+        {
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+
+                bool outcome = GameManager.instance.InstallComponent();
 
 
-                
-
-
-            }
-        }
-    }
-    private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component) {
-
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
-
-                GameManager.instance.InstallComponent();
-
-
+                SendComponentInstalled(conID, outcome);
             }
         }
     }
@@ -1246,6 +1703,8 @@ public class Server : MonoBehaviour {
     private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
     {
         GameManager.instance.IncrementPhase();
+
+        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
 
         switch (GameManager.instance.CurrentVictory)
         {
@@ -1263,7 +1722,7 @@ public class Server : MonoBehaviour {
                 switch (GameManager.instance.currentPhase)
                 {
                     case (GameManager.TurnPhases.Abilities):
-                        //Send Ability Information
+                        SendAbilityInformation(activePlayerID);
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
@@ -1275,10 +1734,12 @@ public class Server : MonoBehaviour {
                         //Send choice information
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
+                        //Need to display surge information on main screen
                         SendSurge();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
-                        //Send AI Attack Target
+                        //Need to display surge information on main screen
+
                         break;
                     default:
                         throw new NotImplementedException("Not a valid phase");
