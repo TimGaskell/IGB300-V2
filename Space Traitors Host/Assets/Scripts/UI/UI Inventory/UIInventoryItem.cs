@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    //IMPORTANT: make sure any UI Item objects are tagged "UIitem"
+
     private GameObject flickLocation;
 
     public float pointerSpeed = 1700f;
@@ -13,15 +15,18 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public string itemName;
     public bool isEqupped = false;
 
-    private Vector3 pointerPos, origin;
+    private Vector3 pointerPos, origin, slotOrigin;
     private bool held = false, overItem = false;
 
     private GameObject inventory;
+    private GameObject currentStoredItem;
+    private Collider2D tempSlot;
 
     // Start is called before the first frame update
     void Start()
     {
         origin = transform.position;
+        slotOrigin = transform.position;
         pointerPos = transform.position;
         itemName = itemType.ToString();
     }
@@ -65,21 +70,23 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             //If not held, snap to position of inventory slot centre
             transform.position = origin;
+            slotOrigin = transform.position;
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D InventorySlot)
-    {
+    public void OnTriggerEnter2D(Collider2D other)
+    {   
         //Centre the item
-        origin = InventorySlot.transform.position;
+        origin = other.transform.position;
 
+        tempSlot = other;
         //Get the inventory- placing this in start or update seems to often result in a null reference if item starts on a collider
         if (!inventory)
         {
             inventory = GameObject.FindGameObjectWithTag("Inventory");
         }
 
-        if (InventorySlot.GetComponent<UIInventorySlot>().Equipped)
+        if (other.GetComponent<UIInventorySlot>().Equipped)
         {
             //Equip Item
             inventory.GetComponent<UIInventory>().EquipChange(itemName, true);
@@ -89,8 +96,19 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             //Unequip Item
             inventory.GetComponent<UIInventory>().EquipChange(itemName, false);
         }
-    }
 
+        if (currentStoredItem == null)
+        currentStoredItem = other.GetComponent<UIInventorySlot>().StoredItem;
+
+        //Item swapping- if an item already exists in the inv. slot's place, send it to the carried UI Item's original 
+        if ((other.GetComponent<UIInventorySlot>().StoredItem != null) && (other.GetComponent<UIInventorySlot>().StoredItem != currentStoredItem))
+        {
+            Debug.Log("oof");
+            other.GetComponent<UIInventorySlot>().StoredItem.transform.GetComponent<UIInventoryItem>().origin = slotOrigin;
+            //tempSlot.GetComponent<UIInventorySlot>().StoredItem = gameObject;
+            currentStoredItem = tempSlot.GetComponent<UIInventorySlot>().StoredItem;
+        }
+    }
 
     #region Mouse Pointers
     public void OnPointerEnter(PointerEventData eventData)

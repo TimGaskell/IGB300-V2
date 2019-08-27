@@ -6,17 +6,19 @@ using UnityEngine;
 public class UIInventory : MonoBehaviour
 {
     public int inventorySize = 0;
-    private int invIndexE = 0, invIndexU = 0;
+    public float posAdjustment = -100f, padding = 100f;
+    private float posAdjustmentE, posAdjustmentU;
     public GameObject inventorySlot;
     public GameObject UIitem;
 
     private Player player;
-    private GameObject[] IVSlotsE, IVSlotsU;
-    
-   // public GameObject[] UIitems = new GameObject[4];
+    private List<GameObject> UIitems;
+
+    // public GameObject[] UIitems = new GameObject[4];
     // Start is called before the first frame update
     void Start()
     {
+        //TEST: used for assigning the player items
         player = new Player(0, "TestPlayer");
         player.GiveItem(new Item(Item.ItemTypes.Boxing_Gloves));
         player.GiveItem(new Item(Item.ItemTypes.Dazzling_Outfit));
@@ -25,9 +27,11 @@ public class UIInventory : MonoBehaviour
 
         inventorySize = player.items.Count;
 
-        IVSlotsE = new GameObject[inventorySize];
-        IVSlotsU = new GameObject[inventorySize];
+        UIitems = new List<GameObject>(inventorySize);
 
+        //Adjustment variables for when inventory slots are instantiated
+        posAdjustmentE = posAdjustment;
+        posAdjustmentU = posAdjustment;
 
         foreach (Item item in player.items)
         {
@@ -46,7 +50,7 @@ public class UIInventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void EquipChange(string UIitemName, bool equipping)
@@ -62,6 +66,10 @@ public class UIInventory : MonoBehaviour
                     item.isEquipped = false;
             }
         }
+        foreach (GameObject UII in UIitems)
+        {
+            UII.transform.SetAsLastSibling();
+        }
     }
 
     private void CreateSlot(bool equip, Item item)
@@ -69,33 +77,43 @@ public class UIInventory : MonoBehaviour
         int row = 0;
         if (!equip)
             row = 1;
-        //Instantiate inventory slot
-        GameObject IVSlot = Instantiate(inventorySlot, transform.GetChild(row).transform.position, Quaternion.identity);
-        IVSlot.transform.parent = transform.GetChild(row);
-        IVSlot.GetComponent<UIInventorySlot>().Equipped = equip;
-        Vector3 UIitemPos;
+        //Instantiate inventory slot- both rows have to be adjusted seperately, to remain consistent with one another
+        GameObject IVSlot;
         if (equip)
         {
-            IVSlotsE[invIndexE] = IVSlot;
-            UIitemPos = IVSlotsE[invIndexE].transform.position;
-            invIndexE++;
+            IVSlot = Instantiate(inventorySlot, new Vector3(transform.GetChild(row).transform.position.x - posAdjustmentE, transform.GetChild(row).transform.position.y, transform.GetChild(row).transform.position.z), Quaternion.identity);
+            posAdjustmentE += padding;
         }
         else
         {
-            IVSlotsU[invIndexU] = IVSlot;
-            UIitemPos = IVSlotsU[invIndexU].transform.position;
-            invIndexU++;
-            Debug.Log(invIndexU);
+            IVSlot = Instantiate(inventorySlot, new Vector3(transform.GetChild(row).transform.position.x - posAdjustmentU, transform.GetChild(row).transform.position.y, transform.GetChild(row).transform.position.z), Quaternion.identity);
+            posAdjustmentU += padding;
         }
 
-        //Instantiate inventory item
+        //Assign slot to the correct parent within the canvas for positioning, then to the main gameobject for laying purposes (basically, makes everything look nice)
+        IVSlot.transform.parent = transform.GetChild(row);
+        IVSlot.transform.parent = gameObject.transform;
+        //Set the slot to equipped or unequipped based on what the item will be- important for later checks
+        IVSlot.GetComponent<UIInventorySlot>().Equipped = equip;
+        
+        //Set the position for the UI Item to appear (over its inventory slot)
+        Vector3 UIitemPos = IVSlot.transform.position;
+        
+        //Instantiate inventory item, assign it to canvas
         GameObject IVItem = Instantiate(UIitem, UIitemPos, Quaternion.identity);
         IVItem.transform.parent = transform.GetChild(row);
-        NameItem(IVItem, item);
+        IVItem.transform.parent = gameObject.transform;
 
+        //The item within the current inventory slot is the current inventory item- important for item swapping
+        IVSlot.GetComponent<UIInventorySlot>().StoredItem = IVItem;
+
+        //Add to a list for layering purposes later
+        UIitems.Add(IVItem);
+
+        NameItem(IVItem, item);
     }
 
-
+    //Gives the item entered its parameters so player knows what it is
     private void NameItem(GameObject UIitem, Item item)
     {
         switch (item.ItemType)

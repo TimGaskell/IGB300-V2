@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIInventorySlot : MonoBehaviour
 {
     public bool Equipped;
+    public GameObject StoredItem;
     // Start is called before the first frame update
     void Start()
     {
