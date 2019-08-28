@@ -12,6 +12,7 @@ public class PlayerDataSync : NetMessage
 
     }
 
+    public int ID { get; set; }
     public int Scrap { get; set; }
     public int Corruption { get; set; }
     public bool HasComponent { get; set; }

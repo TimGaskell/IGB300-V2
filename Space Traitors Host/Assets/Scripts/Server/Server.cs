@@ -849,6 +849,7 @@ public class Server : MonoBehaviour
 
         Player player = GameManager.instance.GetPlayer(playerID);
 
+        playerData.ID = playerID;
         playerData.Scrap = player.scrap;
         playerData.Corruption = player.Corruption;
         playerData.HasComponent = player.hasComponent;
@@ -870,6 +871,7 @@ public class Server : MonoBehaviour
         }
 
         SendClient(playerData);
+        Debug.Log("send data to" + tempPlayerID);
     }
 
     public void SendRoomCost(int playerID, int RoomCost) {
@@ -1019,6 +1021,7 @@ public class Server : MonoBehaviour
 
     private void SyncClientData(int conID, int chanID, int rHostID, PlayerDataSync playerData)
     {
+        ClientManager.instance.playerID = playerData.ID;
         ClientManager.instance.scrap = playerData.Scrap;
         ClientManager.instance.corruption = playerData.Corruption;
         ClientManager.instance.hasComponent = playerData.HasComponent;
