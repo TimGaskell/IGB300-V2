@@ -47,8 +47,6 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
 
         CardMovement();
-
-        Debug.Log(origin);
     }
 
     //Handles the card moving towards either the position the player is holding it, or its default position when it's let go
@@ -69,16 +67,10 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             else if ((int)transform.position.y > (int)pointerPos.y + positionRange)
                 transform.position = new Vector3(transform.position.x, transform.position.y - pointerSpeed * Time.deltaTime, transform.position.z);
         }
-        else
-        {
-            //If not held, snap to position of inventory slot centre
-           
-        }
     }
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        //tempSlot = other;
         //Get the inventory- placing this in start or update seems to often result in a null reference if item starts on a collider
         if (!inventory)
         {
@@ -98,7 +90,6 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         //Item swapping- if an item already exists in the inv. slot's place, send it to the carried UI Item's original 
         other.GetComponent<UIInventorySlot>().StoredItem.transform.GetComponent<UIInventoryItem>().transform.position = origin;
-        Debug.Log(other.GetComponent<UIInventorySlot>().StoredItem.name);
         other.GetComponent<UIInventorySlot>().StoredItem = gameObject;
         
         //Centre the item
