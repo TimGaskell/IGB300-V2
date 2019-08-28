@@ -727,6 +727,7 @@ public class GameManager : MonoBehaviour
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
                 newTraitor = DEFAULT_PLAYER_ID;
+                targetPlayer = DEFAULT_PLAYER_ID;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -983,9 +984,7 @@ public class GameManager : MonoBehaviour
         }
 
         //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
-        aiTargetScore += AI_TARGET_INCREASE;
-        //Resets target player back to the default case
-        targetPlayer = DEFAULT_PLAYER_ID;
+        aiTargetScore += AI_TARGET_INCREASE;       
 
         return playerWin;
     }

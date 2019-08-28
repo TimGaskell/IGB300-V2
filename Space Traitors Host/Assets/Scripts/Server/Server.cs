@@ -717,14 +717,15 @@ public class Server : MonoBehaviour
         SendClient(playerInformation);
     }
 
-    public void SendIsTraitor(int player)
+    public void SendIsTraitor()
     {
+        if (GameManager.instance.newTraitor != GameManager.DEFAULT_PLAYER_ID)
+        {
+            TraitorSelection traitor = new TraitorSelection();
+            tempPlayerID = GameManager.instance.newTraitor;
 
-        TraitorSelection traitor = new TraitorSelection();
-        tempPlayerID = player;
-
-        SendClient(traitor);
-
+            SendClient(traitor);
+        }
     }
 
     public void SendSurge()
@@ -741,16 +742,19 @@ public class Server : MonoBehaviour
         }
     }
 
-    public void SendAIAttack(int player, int damage, int spec, string spectype)
+    public void SendAIAttack(int targetPlayer)
     {
+        //Need to inform all players that someone is under attack by the AI
+        //IsTarget specifies which player actually is the target
+        foreach (GameObject player in playerArray())
+        {
+            AiAttacks ai = new AiAttacks();
 
-        AiAttacks ai = new AiAttacks();
-        tempPlayerID = player;
-        ai.damage = damage;
-        ai.specAmount = spec;
-        ai.spec = spectype;
+            ai.TargetID = targetPlayer;
+            ai.IsTarget = (player.GetComponent<Player>().playerID == targetPlayer);
 
-        SendClient(ai);
+            SendClient(ai);
+        }
     }
 
     public void SendCombatWinner(int winnerID, int loserID)
@@ -1018,7 +1022,15 @@ public class Server : MonoBehaviour
         SendClient(itemStolen);
     }
 
+    public void SendAIAttackResult(int playerID, bool wonAttack)
+    {
+        AIAttackResult aiAttackResult = new AIAttackResult();
+        tempPlayerID = playerID;
 
+        aiAttackResult.WonAttack = wonAttack;
+
+        SendClient(aiAttackResult);
+    }
 
     #endregion
 
@@ -1271,6 +1283,36 @@ public class Server : MonoBehaviour
         //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
     }
 
+    private void GetIsTraitor(int conID, int chanID, int rHostID, TraitorSelection traitorSelection)
+    {
+        //Update the UI to display to the player that they have been selected as traitor
+        ClientManager.instance.isTraitor = true;
+    }
+
+    private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
+    {
+        if (aiAttacks.IsTarget)
+        {
+            //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
+        }
+        else
+        {
+            //Need to display which player is under attack using aiAttacks.targetID
+        }
+    }
+
+    private void GetAIAttackResult(int conID, int chanID, int rHostID, AIAttackResult aiAttackResult)
+    {
+        if (aiAttackResult.WonAttack)
+        {
+            //Display that the player won the attack
+        }
+        else
+        {
+            //Display that they lost the attack
+        }
+    }
+
     #endregion
 
     #region Client Sent Messages
@@ -1382,7 +1424,7 @@ public class Server : MonoBehaviour
 
     public void SendSpecSelection(GameManager.SpecScores specScore)
     {
-
+        //Used in regular combat
         SpecSelection specSelection = new SpecSelection();
         specSelection.SelectedSpec = (int)specScore;
 
@@ -1455,6 +1497,15 @@ public class Server : MonoBehaviour
         stealDiscardItem.LoserID = loserID;
 
         SendServer(stealDiscardItem);
+    }
+
+    public void AISpecSelection(GameManager.SpecScores specScore)
+    {
+        //Used to defend against AI Attacks
+        AISpecSelection aiSpecSelection = new AISpecSelection();
+        aiSpecSelection.SelectedSpec = (int)specScore;
+
+        SendServer(aiSpecSelection);
     }
     #endregion
 
@@ -1591,6 +1642,12 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// Can be deleted
+    /// 
+    /// </summary>
     private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
     {
 
@@ -1674,6 +1731,12 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// Can probably be deleted
+    /// 
+    /// </summary>
     private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
     {
 
@@ -1743,14 +1806,18 @@ public class Server : MonoBehaviour
                     case (GameManager.TurnPhases.BasicSurge):
                         //Need to display surge information on main screen
                         SendSurge();
+                        SendIsTraitor();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen
-
+                        SendAIAttack(GameManager.instance.targetPlayer);
                         break;
                     default:
                         throw new NotImplementedException("Not a valid phase");
                 }
+
+                //Pings the client if they have been selected as a traitor
+                
 
                 break;
         }
@@ -1841,6 +1908,16 @@ public class Server : MonoBehaviour
         SyncPlayerData(loserID);
         SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
         SendStealDiscardSuccess(conID);
+    }
+
+    private void GetAISpecSelection(int conID, int chanID, int rHostID, AISpecSelection aISpecSelection)
+    {
+        GameManager.SpecScores selectedSpec = (GameManager.SpecScores)aISpecSelection.SelectedSpec;
+
+        bool attackOutcome = GameManager.instance.AIAttackPlayer(selectedSpec);
+
+        SendAIAttackResult(conID, attackOutcome);
+        SendIsTraitor();
     }
     #endregion
 }
