@@ -39,6 +39,8 @@ public static class NetOP
     public const int StealDiscardSuccess = 46;
     public const int ItemStolen = 47;
     public const int AIAttackResult = 49;
+    public const int SendRoomCost = 50;
+    
 
 
     #endregion
@@ -61,6 +63,7 @@ public static class NetOP
     public const int StealItem = 40;
     public const int StealDiscardItem = 41;
     public const int AISpecSelect = 48;
+    public const int SelectRoom = 49;
     #endregion
 }
 

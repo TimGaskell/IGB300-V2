@@ -731,7 +731,7 @@ public class Server : MonoBehaviour
         SendClient(playerInformation);
     }
 
-    public void SendIsTraitor(int player)
+    public void SendIsTraitor()
     {
         if (GameManager.instance.newTraitor != GameManager.DEFAULT_PLAYER_ID)
         {
