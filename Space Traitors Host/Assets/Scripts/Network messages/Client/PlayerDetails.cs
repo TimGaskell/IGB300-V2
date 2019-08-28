@@ -11,7 +11,5 @@ public class PlayerDetails : NetMessage {
 
     }
 
-
-    public int ConnectionID { set; get; }
     public string PlayerName { set; get; }
 }

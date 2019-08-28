@@ -8,7 +8,7 @@ public class AvailableRooms : NetMessage
     public AvailableRooms()
     {
 
-        OperationCode = NetOP.AvilableRooms;
+        OperationCode = NetOP.AvailableRooms;
 
     }
 

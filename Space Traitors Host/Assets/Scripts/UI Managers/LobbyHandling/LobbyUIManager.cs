@@ -13,34 +13,36 @@ public class LobbyUIManager : NetworkBehaviour
     public GameObject playerNumPanel;
     public GameObject playerNamePanel;
 
+    public GameObject NetworkManagerObject;
+
     private Transform nameEntryFields;
+
+    private int counter = 0;
 
     private void Start()
     {
 
-        if (NetworkServer.connections.Count > 0)
-        {
+        if (GameManager.instance.serverActive) {
             ServerPanel.SetActive(true);
-
-
+            ClientPanel.SetActive(false);
         }
-        else
-        {
-            ClientPanel.SetActive(true);
-
-        }
-       
-
-
+            NetworkManagerObject = GameObject.Find("NetworkManager");
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
+
         
     }
 
-   
+    void Update() {
+
+
+
+    }
+
+
 
 
     #region Server Handling
@@ -63,12 +65,16 @@ public class LobbyUIManager : NetworkBehaviour
             ChangeInputFields(convertedNum);
             playerNumPanel.GetComponent<CanvasGroup>().interactable = false;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = true;
+            NetworkManagerObject.GetComponent<CustomNetworkDiscovery>().StartHost();
+            
         }
         else
         {
             Debug.Log("Not a valid player number");
         }
     }
+
+
 
     /// <summary>
     /// 
@@ -94,6 +100,27 @@ public class LobbyUIManager : NetworkBehaviour
         }
     }
 
+
+    public void AddPlayerNames() {
+
+
+        foreach (Transform entryField in nameEntryFields.transform) {
+
+            string tempPlayername = Server.Instance.players[counter].GetComponent<Player>().playerName;
+
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    counter++;
+                }
+
+
+            }
+        }
+    }
+
+
     /// <summary>
     /// 
     /// Assigns the given player names to new players based on the given inputs
@@ -107,6 +134,7 @@ public class LobbyUIManager : NetworkBehaviour
         //Reset the players list for a new game
         GameManager.instance.ResetPlayers();
 
+        
         //Obtains each child object of the textFields object
         foreach (Transform entryField in textFields.transform)
         {
@@ -114,7 +142,7 @@ public class LobbyUIManager : NetworkBehaviour
             //If any of the input fields are empty, stops the process and presents an error. Otherwise generates a new player in the game manager
             if (tempPlayerName != "")
             {
-                GameManager.instance.GeneratePlayer(counter, tempPlayerName);
+                GameManager.instance.GeneratePlayer(counter+1, tempPlayerName);
             }
             else
             {
@@ -126,7 +154,8 @@ public class LobbyUIManager : NetworkBehaviour
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
             {
-                NetworkManager.singleton.ServerChangeScene("Character SelectionV2");
+                Server.Instance.StartGame();
+                
             }
 
         }

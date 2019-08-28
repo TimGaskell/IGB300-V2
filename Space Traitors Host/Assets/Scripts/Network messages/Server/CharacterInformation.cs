@@ -16,6 +16,8 @@ public class CharacterInformation : NetMessage
     public int Baseskill { set; get; }
     public int Basetech { set; get; }
     public int Basecharm { set; get; }
-   
+    public string name { set; get; }
+    public string AbilityDescription { set; get; }
+
 }
 

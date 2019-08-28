@@ -9,18 +9,30 @@ public static class NetOP
     #region ServerToClient
     public const int CharacterInformation = 1;
     public const int AbilityInformation = 2;
-    public const int AvilableRooms = 3;
+    public const int AvailableRooms = 3;
     public const int RoomChoices = 4;
     public const int SpecChallenge = 5;
     public const int PlayerInformation = 6;
     public const int TraitorSelction = 7;
     public const int SurgeInformation = 8;
     public const int AiAttacks = 9;
-    public const int CombatResolution = 10;
+    public const int CombatWinner = 10;
     public const int CombatAvailablity = 11;
     public const int CombatBeingAttacked = 12;
     public const int PlayerElimination = 13;
     public const int NonTraitorVictory = 14;
+    public const int ChangeScenes = 26;
+    public const int IsActivePlayer = 27;
+    public const int ChangeCharacter = 28;
+    public const int TraitorVictory = 30;
+    public const int PlayerDataSync = 31;
+    public const int SendRoomCost = 32;
+    public const int AbilityActivated = 33;
+    public const int ComponentInstalled = 34;
+    public const int NumComponentsInstalled = 35;
+    public const int CanInstallComponent = 36;
+    public const int CombatLoser = 37;
+    public const int AllPlayerData = 38;
 
 
     #endregion
@@ -36,6 +48,9 @@ public static class NetOP
     public const int CombatAttackingTarget = 22 ;
     public const int ItemSelection = 23;
     public const int InstallComponent = 24 ;
+    public const int ActionPoints = 25;
+    public const int NewPhase = 29;
+    public const int SelectRoom = 33;
     #endregion
 }
 
