@@ -327,15 +327,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d88916853cfa1954a9135e8fb6bf327b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1225,6 +1225,7 @@ MonoBehaviour:
   isTraitor: 0
   lifePoints: 0
   maxLifePoints: 0
+  ActionPoints: 0
   scaledBrawn: 0
   scaledSkill: 0
   scaledTech: 0
@@ -1233,6 +1234,8 @@ MonoBehaviour:
   modSkill: 0
   modTech: 0
   modCharm: 0
+  characterPortraits: []
+  componentsInstalled: 0
 --- !u!1 &1173016761
 GameObject:
   m_ObjectHideFlags: 0
