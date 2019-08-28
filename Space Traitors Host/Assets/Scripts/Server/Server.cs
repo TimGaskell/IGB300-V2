@@ -1657,12 +1657,15 @@ public class Server : MonoBehaviour
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
-                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
-                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
-                    SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
-
                     //Assign Character Stats to player
                     SyncPlayerData(player.GetComponent<Player>().playerID);
+
+                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
+                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
+                    if (GameManager.instance.activePlayer > 0) {
+                        SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+                    }
+                    
                 }
 
             }
