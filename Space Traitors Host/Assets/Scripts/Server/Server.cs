@@ -964,6 +964,62 @@ public class Server : MonoBehaviour
         }
     }
 
+    public void SendUnequipSuccess(int playerID)
+    {
+        UnequipSuccess unequipSuccess = new UnequipSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(unequipSuccess);
+    }
+
+    public void SendEquipState(int playerID, Player.EquipErrors equipError)
+    {
+        EquipState equipState = new EquipState();
+        tempPlayerID = playerID;
+
+        equipState.EquipError = (int)equipError;
+
+        SendClient(equipState);
+    }
+
+    public void SendDiscardSuccess(int playerID)
+    {
+        DiscardSuccess discardSuccess = new DiscardSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(discardSuccess);
+    }
+
+    public void SendStealSuccess(int playerID, bool isSuccessful)
+    {
+        StealSuccess stealSuccess = new StealSuccess();
+        tempPlayerID = playerID;
+
+        stealSuccess.IsSuccessful = isSuccessful;
+
+        SendClient(stealSuccess);
+    }
+
+    public void SendStealDiscardSuccess(int playerID)
+    {
+        StealDiscardSuccess stealDiscardSuccess = new StealDiscardSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(stealDiscardSuccess);
+    }
+
+    public void SendItemStolen(int playerID, string itemName)
+    {
+        ItemStolen itemStolen = new ItemStolen();
+        tempPlayerID = playerID;
+
+        itemStolen.ItemName = itemName;
+
+        SendClient(itemStolen);
+    }
+
+
+
     #endregion
 
     #region Client Received Messages
@@ -1131,6 +1187,7 @@ public class Server : MonoBehaviour
     private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)
     {
         //Need to display that they won the combat and who they won it against using combatWinner.loserID
+        //Also need to store the loser ID to send back to the server when stealing the items
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1161,6 +1218,57 @@ public class Server : MonoBehaviour
 
             ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
         }
+    }
+
+    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
+    {
+        //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+    }
+
+    private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
+    {
+        switch ((Player.EquipErrors)equipState.EquipError)
+        {
+            case (Player.EquipErrors.Default):
+                //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                break;
+            case (Player.EquipErrors.AlreadyEquipped):
+                //Display to the player that the item is already equipped
+                break;
+            case (Player.EquipErrors.TooManyEquipped):
+                //Display to the player that they have too many items equipped
+                break;
+        }
+    }
+
+    private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
+    {
+        //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+    }
+
+    private void GetStealSuccess(int conID, int chanID, int rHostID, StealSuccess stealSuccess)
+    {
+        if (stealSuccess.IsSuccessful)
+        {
+            //Update the UI for the inventory and spec scores (could be done using SyncClientData however)
+            //Prevent them from stealing any more items
+        }
+        else
+        {
+            //Display to player that they cannot hold any more items
+        }
+    }
+
+    private void GetStealDiscardSuccess(int conID, int chanID, int rHostID, StealDiscardSuccess stealDiscardSuccess)
+    {
+        //Display that they successfully discarded the item
+        //Prevent them from stealing any more items
+    }
+
+    private void GetItemStolen(int conID, int chanID, int rHostID, ItemStolen itemStolen)
+    {
+        //Tell the player that one of their items was stolen (the name is stored in itemStolen)
+        //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
     }
 
     #endregion
@@ -1256,6 +1364,11 @@ public class Server : MonoBehaviour
         SendServer(choice);
     }
 
+    /// <summary>
+    /// 
+    /// To be deleted- broken down into unique messages for each action
+    /// 
+    /// </summary>
     public void SendInventoryChanges(List<string> EquiptItems, List<string> UnEquiptItems, List<string> DiscardItems)
     {
 
@@ -1308,6 +1421,40 @@ public class Server : MonoBehaviour
         NewPhase newPhase = new NewPhase();
 
         SendServer(newPhase);
+    }
+
+    public void EquipItem(int itemID)
+    {
+        EquipItem equipItem = new EquipItem();
+        equipItem.ItemID = itemID;
+
+        SendServer(equipItem);
+    }
+
+    public void DiscardItem(int itemID)
+    {
+        DiscardItem discardItem = new DiscardItem();
+        discardItem.ItemID = itemID;
+
+        SendServer(discardItem);
+    }
+
+    public void StealItem(int itemID, int loserID)
+    {
+        StealItem stealItem = new StealItem();
+        stealItem.ItemID = itemID;
+        stealItem.LoserID = loserID;
+
+        SendServer(stealItem);
+    }
+
+    public void StealDiscardItem(int itemID, int loserID)
+    {
+        StealDiscardItem stealDiscardItem = new StealDiscardItem();
+        stealDiscardItem.ItemID = itemID;
+        stealDiscardItem.LoserID = loserID;
+
+        SendServer(stealDiscardItem);
     }
     #endregion
 
@@ -1483,9 +1630,6 @@ public class Server : MonoBehaviour
 
             bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec);
 
-            CombatWinner combatWinner = new CombatWinner();
-            CombatLoser combatLoser = new CombatLoser();
-
             //If combat outcome is ture, means that the attacker won
             //Need to add in main screen UI
             if (combatOutcome)
@@ -1610,6 +1754,93 @@ public class Server : MonoBehaviour
 
                 break;
         }
+    }
+
+    private void GetEquipItem(int conID, int chanID, int rHostID, EquipItem equipItem)
+    {
+        int itemID = equipItem.ItemID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
+                Item selectedItem = selectedPlayer.items[itemID];
+
+                if (selectedItem.isEquipped)
+                {
+                    selectedPlayer.UnequipItem(itemID);
+                    SyncPlayerData(conID);
+                    SendUnequipSuccess(conID);
+                }
+                else
+                {
+                    Player.EquipErrors equipStatus = selectedPlayer.EquipItem(itemID);
+                    SyncPlayerData(conID);
+                    SendEquipState(conID, equipStatus);
+                }
+            }
+        }
+
+
+    }
+
+    private void GetDiscardItem(int conID, int chanID, int rHostID, DiscardItem discardItem)
+    {
+        int itemID = discardItem.ItemID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
+                selectedPlayer.DiscardItem(itemID);
+                SyncPlayerData(conID);
+                SendDiscardSuccess(conID);
+            }
+        }
+    }
+
+    private void GetStealItem(int conID, int chanID, int rHostID, StealItem stealItem)
+    {
+        int itemID = stealItem.ItemID;
+        int loserID = stealItem.LoserID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player winningPlayer = GameManager.instance.GetPlayer(conID);
+                Player losingPlayer = GameManager.instance.GetPlayer(loserID);
+                Item selectedItem = losingPlayer.items[itemID];
+
+                bool successfulSteal = false;
+
+                if (winningPlayer.GiveItem(selectedItem))
+                {
+                    losingPlayer.RemoveItem(itemID);
+                    successfulSteal = true;
+                    SyncPlayerData(loserID);
+                    SendItemStolen(loserID, selectedItem.ItemName);
+                }
+
+                SyncPlayerData(conID);
+                SendStealSuccess(conID, successfulSteal);
+            }
+        }
+    }
+
+    private void GetStealDiscardItem(int conID, int chanID, int rHostID, StealDiscardItem stealDiscardItem)
+    {
+        int itemID = stealDiscardItem.ItemID;
+        int loserID = stealDiscardItem.LoserID;
+
+        Player losingPlayer = GameManager.instance.GetPlayer(loserID);
+
+        losingPlayer.DiscardItem(itemID);
+        SyncPlayerData(loserID);
+        SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
+        SendStealDiscardSuccess(conID);
     }
     #endregion
 }

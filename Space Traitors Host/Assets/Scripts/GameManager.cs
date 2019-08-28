@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
     /// <returns>The relevant player</returns>
     public Player GetPlayer(int playerID)
     {
-        return players[playerID];
+        return players.Find(x => x.playerID == playerID);
     }
 
     /// <summary>

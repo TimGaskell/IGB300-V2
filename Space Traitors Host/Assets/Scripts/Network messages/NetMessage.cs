@@ -32,6 +32,12 @@ public static class NetOP
     public const int CanInstallComponent = 35;
     public const int CombatLoser = 36;
     public const int AllPlayerData = 37;
+    public const int UnequipSuccess = 42;
+    public const int EquipState = 43;
+    public const int DiscardSuccess = 44;
+    public const int StealSuccess = 45;
+    public const int StealDiscardSuccess = 46;
+    public const int ItemStolen = 47;
 
 
     #endregion
@@ -49,6 +55,10 @@ public static class NetOP
     public const int InstallComponent = 24 ;
     public const int ActionPoints = 25;
     public const int NewPhase = 29;
+    public const int EquipItem = 38;
+    public const int DiscardItem = 39;
+    public const int StealItem = 40;
+    public const int StealDiscardItem = 41;
     #endregion
 }
 
