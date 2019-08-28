@@ -381,6 +381,10 @@ public class Server : MonoBehaviour
             case NetOP.SendRoomCost:
                 RoomCost(conID, chanID, rHostID, (SelectRoom)msg);
                 break;
+            case NetOP.PlayerDataSync:
+                SyncClientData(conID, chanID, rHostID, (PlayerDataSync)msg);
+                break;
+            
 
 
         }
@@ -1412,6 +1416,9 @@ public class Server : MonoBehaviour
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.GetComponent<Player>().playerID, false);
                     SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+
+                    //Assign Character Stats to player
+                    SyncPlayerData(player.GetComponent<Player>().playerID);
                 }
 
             }
