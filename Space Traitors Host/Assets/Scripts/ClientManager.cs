@@ -34,6 +34,7 @@ public class ClientManager : MonoBehaviour
 
     public List<Item> inventory;
     public List<Ability> abilities;
+    public Character PlayerCharacter;
 
     Character.CharacterTypes characterType;
 

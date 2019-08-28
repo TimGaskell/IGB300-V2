@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class ClientUIManager : MonoBehaviour
 {
+
+    public GameObject test;
     private ClientManager player;
 
     public GameObject serverActivePanel;
@@ -86,6 +88,7 @@ public class ClientUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdatePlayerStats();
         if (GameManager.instance.serverActive)
         {
             throw new NotImplementedException("Server Not Implemented");
@@ -101,7 +104,7 @@ public class ClientUIManager : MonoBehaviour
             }
         }
 
-        UpdatePlayerStats();
+      
 
     }
 
@@ -111,7 +114,6 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats() {
 
-        //Sets playercard to have current spec scores
         playerCards.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledBrawn.ToString();
         playerCards.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledSkill.ToString();
         playerCards.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledTech.ToString();

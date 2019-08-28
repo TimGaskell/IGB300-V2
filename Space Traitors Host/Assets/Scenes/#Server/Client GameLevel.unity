@@ -1310,6 +1310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65dcb3809217f2498da7ffa8b2d4655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  test: {fileID: 0}
   serverActivePanel: {fileID: 1803780941}
   noServerPanel: {fileID: 2066861653}
   playerCards: {fileID: 375587031}
@@ -1321,7 +1322,7 @@ MonoBehaviour:
   interactionPanel: {fileID: 886393713}
   basicSurgePanel: {fileID: 560285019}
   attackSurgePanel: {fileID: 1509444212}
-  ResultsPanel: {fileID: 0}
+  ResultsPanel: {fileID: 434394991}
   nonTraitorVictoryPanel: {fileID: 1528874941}
   traitorVictoryPanel: {fileID: 291035751}
   sabotagePanel: {fileID: 1232019822}
@@ -50068,70 +50069,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554434853}
   m_CullTransparentMesh: 0
---- !u!1 &1556055973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1556055975}
-  - component: {fileID: 1556055974}
-  m_Layer: 0
-  m_Name: Game Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1556055974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556055973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f3515ae1e82e1d44a16e303abf16ed6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverActive: 1
-  numPlayers: 0
-  playerOrder: 
-  activePlayer: 0
-  characterPortraits: []
-  playerPrefabs: []
-  basePower: 0
-  playerPower: 0
-  aiPowerChange: 0
-  aiTargetScore: 0
-  newTraitor: 0
-  targetPlayer: 0
-  roomList: {fileID: 0}
-  installedComponents: 0
-  sabotageCharges: 0
-  currentPhase: 0
-  roomSelection: 0
-  playerMoving: 0
-  playerGoalIndex: 0
-  CurrentVictory: 0
-  traitorWinID: 0
---- !u!4 &1556055975
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556055973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 446.646, y: 62.386284, z: 26.930878}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1569081302
 GameObject:
   m_ObjectHideFlags: 0
