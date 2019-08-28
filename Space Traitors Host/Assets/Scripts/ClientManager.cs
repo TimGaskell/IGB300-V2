@@ -41,7 +41,7 @@ public class ClientManager : MonoBehaviour
     List<Ability> allAbilities;
     List<Item> allItems;
 
-    List<Sprite> characterPortraits;
+    public List<Sprite> characterPortraits;
 
     public int componentsInstalled;
 
@@ -75,6 +75,7 @@ public class ClientManager : MonoBehaviour
     private void InitInfoLists()
     {
         List<Item.ItemTypes> itemTypes = Enum.GetValues(typeof(Item.ItemTypes)).Cast<Item.ItemTypes>().ToList();
+        allItems = new List<Item>();
 
         foreach (Item.ItemTypes itemType in itemTypes)
         {
@@ -82,6 +83,7 @@ public class ClientManager : MonoBehaviour
         }
 
         List<Character.CharacterTypes> characterTypes = Enum.GetValues(typeof(Character.CharacterTypes)).Cast<Character.CharacterTypes>().ToList();
+        allCharacters = new List<Character>();
 
         foreach (Character.CharacterTypes characterType in characterTypes)
         {
@@ -89,6 +91,7 @@ public class ClientManager : MonoBehaviour
         }
 
         List<Ability.AbilityTypes> abilityTypes = Enum.GetValues(typeof(Ability.AbilityTypes)).Cast<Ability.AbilityTypes>().ToList();
+        allAbilities = new List<Ability>();
 
         foreach (Ability.AbilityTypes abilityType in abilityTypes)
         {
