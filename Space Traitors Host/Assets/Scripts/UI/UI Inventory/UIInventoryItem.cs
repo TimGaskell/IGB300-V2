@@ -16,7 +16,8 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public bool isEqupped = false;
 
     private Vector3 pointerPos, origin, slotOrigin;
-    private bool held = false, overItem = false;
+    private bool held = false;
+    private bool overItem = false, overSlot = false;
 
     private GameObject inventory;
     private GameObject currentStoredItem;
@@ -46,6 +47,8 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
 
         CardMovement();
+
+        Debug.Log(origin);
     }
 
     //Handles the card moving towards either the position the player is holding it, or its default position when it's let go
@@ -69,17 +72,13 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         else
         {
             //If not held, snap to position of inventory slot centre
-            transform.position = origin;
-            slotOrigin = transform.position;
+           
         }
     }
 
     public void OnTriggerEnter2D(Collider2D other)
-    {   
-        //Centre the item
-        origin = other.transform.position;
-
-        tempSlot = other;
+    {
+        //tempSlot = other;
         //Get the inventory- placing this in start or update seems to often result in a null reference if item starts on a collider
         if (!inventory)
         {
@@ -97,17 +96,15 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             inventory.GetComponent<UIInventory>().EquipChange(itemName, false);
         }
 
-        if (currentStoredItem == null)
-        currentStoredItem = other.GetComponent<UIInventorySlot>().StoredItem;
-
         //Item swapping- if an item already exists in the inv. slot's place, send it to the carried UI Item's original 
-        if ((other.GetComponent<UIInventorySlot>().StoredItem != null) && (other.GetComponent<UIInventorySlot>().StoredItem != currentStoredItem))
-        {
-            Debug.Log("oof");
-            other.GetComponent<UIInventorySlot>().StoredItem.transform.GetComponent<UIInventoryItem>().origin = slotOrigin;
-            //tempSlot.GetComponent<UIInventorySlot>().StoredItem = gameObject;
-            currentStoredItem = tempSlot.GetComponent<UIInventorySlot>().StoredItem;
-        }
+        other.GetComponent<UIInventorySlot>().StoredItem.transform.GetComponent<UIInventoryItem>().transform.position = origin;
+        Debug.Log(other.GetComponent<UIInventorySlot>().StoredItem.name);
+        other.GetComponent<UIInventorySlot>().StoredItem = gameObject;
+        
+        //Centre the item
+        transform.position = other.transform.position;
+
+        origin = transform.position;
     }
 
     #region Mouse Pointers
@@ -119,6 +116,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void OnPointerExit(PointerEventData eventData)
     {
         overItem = false;
+        overSlot = false;
     }
 
     private void GetMouseState()
@@ -128,6 +126,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             if (overItem)
             {
                 held = true;
+                origin = transform.position;
             }
         }
 
@@ -136,6 +135,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             held = false;
             pointerPos.x = origin.x;
             pointerPos.y = origin.y;
+            transform.position = origin;
         }
     }
     #endregion
