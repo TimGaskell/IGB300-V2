@@ -33,6 +33,7 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject inventoryPanel;
 
+   
 
     public static ClientUIManager instance = null;
 
@@ -104,10 +105,33 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Updates all values on the player card based on what is in the client manager
+    /// </summary>
     public void UpdatePlayerStats() {
 
+        //Sets playercard to have current spec scores
+        playerCards.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledBrawn.ToString();
+        playerCards.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledSkill.ToString();
+        playerCards.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledTech.ToString();
+        playerCards.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledCharm.ToString();
 
+        //Sets amount of scrap and lifepoints of player
+        playerCards.transform.GetChild(6).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scrap.ToString();
+        playerCards.transform.GetChild(7).GetChild(0).GetComponent<Text>().text = ClientManager.instance.lifePoints.ToString();
 
+        //Sets component if the player currently has one
+        if (ClientManager.instance.hasComponent) {
+            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Have component";
+
+        }
+        else {
+            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Don't have component";
+        }
+
+        //Sets corruption of the player
+        playerCards.transform.GetChild(9).GetChild(0).GetComponent<Text>().text = ClientManager.instance.corruption.ToString();
 
     }
 
