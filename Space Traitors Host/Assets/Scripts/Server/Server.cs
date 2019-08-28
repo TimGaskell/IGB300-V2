@@ -1313,6 +1313,30 @@ public class Server : MonoBehaviour
         }
     }
 
+    private void GetNonTraitorVictory(int conID, int chanID, int rHostID, InnocentVictory innocentVictory)
+    {
+        if (ClientManager.instance.isTraitor)
+        {
+            //If the player is a traitor, display the loss screen
+        }
+        else
+        {
+            //If the player is not a traitor, display the victory screen
+        }
+    }
+
+    private void GetTraitorVictory(int conID, int chanID, int rHostID, TraitorVictory traitorVictory)
+    {
+        if (traitorVictory.WinnerID == ClientManager.instance.playerID)
+        {
+            //If this player is the winner, display the victory screen
+        }
+        else
+        {
+            //Otherwise, display the loss screen as well as w
+        }
+    }
+
     #endregion
 
     #region Client Sent Messages
@@ -1779,11 +1803,11 @@ public class Server : MonoBehaviour
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
-                //Display non-traitor victory screen
+                //Need to add display of non-traitor victory screen
                 SendNonTraitorVictory();
                 break;
             case (GameManager.VictoryTypes.Traitor):
-                //Display traitor victory screen
+                //Need to add display of traitor victory screen
                 SendTraitorVictory(GameManager.instance.traitorWinID);
                 break;
             case (GameManager.VictoryTypes.None):
