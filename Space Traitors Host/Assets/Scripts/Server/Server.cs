@@ -539,7 +539,7 @@ public class Server : MonoBehaviour
     public void SendClient(NetMessage msg)
     {
         //This is where data is held
-        byte[] buffer = new byte[byteSize];
+        byte[] buffer = new byte[byteSize*25];
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
