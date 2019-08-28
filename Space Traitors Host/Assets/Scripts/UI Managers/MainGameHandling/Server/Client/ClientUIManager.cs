@@ -24,6 +24,7 @@ public class ClientUIManager : MonoBehaviour
     public GameObject interactionPanel;
     public GameObject basicSurgePanel;
     public GameObject attackSurgePanel;
+    public GameObject ResultsPanel;
 
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
@@ -32,9 +33,13 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject inventoryPanel;
 
+
+    public static ClientUIManager instance = null;
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
 
         player = GameObject.Find("PlayerInfoHolder").GetComponent<ClientManager>();
 
@@ -95,6 +100,15 @@ public class ClientUIManager : MonoBehaviour
             }
         }
 
+        UpdatePlayerStats();
+
+    }
+
+    public void UpdatePlayerStats() {
+
+
+
+
     }
 
     /// <summary>
@@ -119,6 +133,34 @@ public class ClientUIManager : MonoBehaviour
         GameManager.instance.playerMoving = true;
         Server.Instance.SendRoomChoice(GameManager.instance.playerGoalIndex);
         
+
+    }
+
+
+    /// <summary>
+    /// Shows the result of their selected choice on another panel
+    /// </summary>
+    /// <param name="result">True or false of whether they completed the action successfuly on the server </param>
+    public void ShowResult(bool result) {
+
+        ResultsPanel.SetActive(true);
+        if (result) {
+
+            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Success";
+        }
+        else {
+            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Failed";
+        }
+    }
+
+    /// <summary>
+    /// Gets rid of the results panel and tells the server that they are moving onto the next phase
+    /// </summary>
+    public void ResultsButton() {
+
+        ResultsPanel.SetActive(false);
+        IncrementPhase();
+        Server.Instance.SendNewPhase();
 
     }
 
