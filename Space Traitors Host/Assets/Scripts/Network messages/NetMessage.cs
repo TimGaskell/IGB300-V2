@@ -27,7 +27,7 @@ public static class NetOP
     public const int TraitorVictory = 30;
     public const int PlayerDataSync = 31;
     public const int SendRoomCost = 32;
-    public const int AbilityActivated = 33
+    public const int AbilityActivated = 33;
     public const int ComponentInstalled = 34;
     public const int NumComponentsInstalled = 35;
     public const int CanInstallComponent = 36;

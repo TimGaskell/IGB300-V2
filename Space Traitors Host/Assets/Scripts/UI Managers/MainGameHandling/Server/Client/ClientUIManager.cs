@@ -24,6 +24,7 @@ public class ClientUIManager : MonoBehaviour
     public GameObject interactionPanel;
     public GameObject basicSurgePanel;
     public GameObject attackSurgePanel;
+    public GameObject ResultsPanel;
 
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
@@ -32,9 +33,14 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject inventoryPanel;
 
+   
+
+    public static ClientUIManager instance = null;
+
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
 
         player = GameObject.Find("PlayerInfoHolder").GetComponent<ClientManager>();
 
@@ -95,6 +101,38 @@ public class ClientUIManager : MonoBehaviour
             }
         }
 
+        UpdatePlayerStats();
+
+    }
+
+
+    /// <summary>
+    /// Updates all values on the player card based on what is in the client manager
+    /// </summary>
+    public void UpdatePlayerStats() {
+
+        //Sets playercard to have current spec scores
+        playerCards.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledBrawn.ToString();
+        playerCards.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledSkill.ToString();
+        playerCards.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledTech.ToString();
+        playerCards.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledCharm.ToString();
+
+        //Sets amount of scrap and lifepoints of player
+        playerCards.transform.GetChild(6).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scrap.ToString();
+        playerCards.transform.GetChild(7).GetChild(0).GetComponent<Text>().text = ClientManager.instance.lifePoints.ToString();
+
+        //Sets component if the player currently has one
+        if (ClientManager.instance.hasComponent) {
+            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Have component";
+
+        }
+        else {
+            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Don't have component";
+        }
+
+        //Sets corruption of the player
+        playerCards.transform.GetChild(9).GetChild(0).GetComponent<Text>().text = ClientManager.instance.corruption.ToString();
+
     }
 
     /// <summary>
@@ -119,6 +157,34 @@ public class ClientUIManager : MonoBehaviour
         GameManager.instance.playerMoving = true;
         Server.Instance.SendRoomChoice(GameManager.instance.playerGoalIndex);
         
+
+    }
+
+
+    /// <summary>
+    /// Shows the result of their selected choice on another panel
+    /// </summary>
+    /// <param name="result">True or false of whether they completed the action successfuly on the server </param>
+    public void ShowResult(bool result) {
+
+        ResultsPanel.SetActive(true);
+        if (result) {
+
+            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Success";
+        }
+        else {
+            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Failed";
+        }
+    }
+
+    /// <summary>
+    /// Gets rid of the results panel and tells the server that they are moving onto the next phase
+    /// </summary>
+    public void ResultsButton() {
+
+        ResultsPanel.SetActive(false);
+        IncrementPhase();
+        Server.Instance.SendNewPhase();
 
     }
 

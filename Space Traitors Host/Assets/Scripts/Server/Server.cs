@@ -381,6 +381,10 @@ public class Server : MonoBehaviour
             case NetOP.SendRoomCost:
                 RoomCost(conID, chanID, rHostID, (SelectRoom)msg);
                 break;
+            case NetOP.PlayerDataSync:
+                SyncClientData(conID, chanID, rHostID, (PlayerDataSync)msg);
+                break;
+            
 
 
         }
@@ -706,25 +710,7 @@ public class Server : MonoBehaviour
         SendClient(challenge);
 
     }
-
-    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor)
-    {
-
-        PlayerInformation playerInformation = new PlayerInformation();
-        tempPlayerID = player;
-        //does not send base stats, use other method to do so
-        playerInformation.scaledbrawn = Scaledbrawn;
-        playerInformation.scaledskill = Scaledskill;
-        playerInformation.scaledcharm = Scaledcharm;
-        playerInformation.scaledtech = Scaledtech;
-        playerInformation.scrap = scrap;
-        playerInformation.corruption = lifepoints;
-        playerInformation.EquippedItems = EquippedItems;
-        playerInformation.UnEquippedItems = UnEquippedItems;
-        playerInformation.isTraitor = isTraitor;
-
-        SendClient(playerInformation);
-    }
+ 
 
     public void SendIsTraitor(int player)
     {
@@ -1224,6 +1210,12 @@ public class Server : MonoBehaviour
         }
     }
 
+    private void SpecResult(int conID, int chanID, int rHostID, SpecChallenge challenge) {
+
+        ClientUIManager.instance.ShowResult(challenge.result);
+
+    }
+
     #endregion
 
     #region Client Sent Messages
@@ -1382,8 +1374,6 @@ public class Server : MonoBehaviour
     }
     #endregion
 
-
-
     #region Server Received Messages
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
@@ -1426,6 +1416,9 @@ public class Server : MonoBehaviour
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.GetComponent<Player>().playerID, false);
                     SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+
+                    //Assign Character Stats to player
+                    SyncPlayerData(player.GetComponent<Player>().playerID);
                 }
 
             }
@@ -1563,6 +1556,14 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="conID"></param>
+    /// <param name="chanID"></param>
+    /// <param name="rHostID"></param>
+    /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
 
@@ -1570,13 +1571,13 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.GetComponent<Player>().playerID == conID)
             {
+                int choiceID = choice.ChoiceId;
+                Player playerscript = player.GetComponent<Player>();
+                Room currentRoom = GameManager.instance.GetRoom(playerscript.roomPosition);
 
-
-
-               
-
-
-
+                bool result =  currentRoom.roomChoices[choiceID].SelectChoice();
+                SendSpecChallenge(player.GetComponent<Player>().playerID, result);
+                SyncPlayerData(player.GetComponent<Player>().playerID);
 
             }
         }
