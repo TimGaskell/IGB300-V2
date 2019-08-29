@@ -399,7 +399,7 @@ PrefabInstance:
     - target: {fileID: 8950295297466611791, guid: a3d0eb70724c58d408e83f6641726e9c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000005722
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8950295297466611791, guid: a3d0eb70724c58d408e83f6641726e9c,
         type: 3}
@@ -854,8 +854,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292fc4ba1534ebd46ab4e2075b718a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
+  status: {fileID: 0}
+  roomListItemPrefab: {fileID: 0}
+  roomListParent: {fileID: 0}
 --- !u!114 &624717559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1940,14 +1941,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.13456747, b: 0.13456747, a: 1}
+  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d88916853cfa1954a9135e8fb6bf327b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
