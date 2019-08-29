@@ -9,23 +9,28 @@ using UnityEngine.UI;
 public class CharacterSelectUIManager : MonoBehaviour
 {
     public GameObject serverActivePanel;
-    public GameObject noServerPanel;
 
-    public GameObject activePlayerPanel;
+    public GameObject activePlayerText;
     public GameObject SelectButton;
-    private GameObject PlayerObject;
+    public GameObject ErrorText;
 
-    private Character.CharacterTypes tempCharacterType;
+    public GameObject charInfoPanel;
+
+    public Character.CharacterTypes selectedCharacterType;
+
+    public List<GameObject> characterButtons;
 
     private void Start()
     {
         if (GameManager.instance.serverActive)
         {
             serverActivePanel.SetActive(true);
-            noServerPanel.SetActive(false);
            
         }
-       
+
+        InitCharacterSelection();
+
+        
     }
 
     #region SeverHandeling
@@ -39,36 +44,8 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     public void DisplayActivePlayer()
     {       
-        SelectButton.GetComponent<Button>().enabled = true;
-        SelectButton.GetComponent<Image>().color = Color.white;
-        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Your Turn");
-    }
-
-
-   
-    
-    /// <summary>
-    /// 
-    /// Updates the selected character text on the Active Player Panel
-    /// 
-    /// </summary>
-    private void DisplaySelectedCharacter()
-    {
-        //If the character type is default, displays an empty string- otherwise displays the selected character
-        activePlayerPanel.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = tempCharacterType == Character.CharacterTypes.Default ? "": tempCharacterType.ToString();
-    }
-
-    /// <summary>
-    /// 
-    /// Temporarily stores the character type the player has selected and displays it on the Active Player Panel
-    /// 
-    /// </summary>
-    /// <param name="characterType"></param>
-    public void SelectCharacter(string characterType)
-    {
-        //Button input functions cannot take enums as parameters. As such have to convert to enum from string input
-        tempCharacterType = (Character.CharacterTypes)Enum.Parse(typeof(Character.CharacterTypes), characterType);
-        DisplaySelectedCharacter();
+        SelectButton.GetComponent<Button>().interactable = true;
+        activePlayerText.GetComponent<TextMeshProUGUI>().text = string.Format("Your Turn");
     }
 
     /// <summary>
@@ -78,28 +55,94 @@ public class CharacterSelectUIManager : MonoBehaviour
     /// </summary>
     public void ConfirmCharacter()
     {
-        //Checks if the player actually has selected a character
-        if(tempCharacterType != Character.CharacterTypes.Default)
-        {
-            Server.Instance.SendCharacterSelected((int)tempCharacterType);
-          
-        }
-        else
-        {
-            Debug.Log("Please Select a Character");
-        }
+        Server.Instance.SendCharacterSelected((int)selectedCharacterType);
+        SelectButton.GetComponent<Button>().interactable = false;
 
-        
+        //Checks if the player actually has selected a character
+        //if(tempCharacterType != Character.CharacterTypes.Default)
+        //{
+        //    Server.Instance.SendCharacterSelected((int)tempCharacterType);
+
+        //}
+        //else
+        //{
+        //    Debug.Log("Please Select a Character");
+        //}
+
+
     }
 
     public void EndSelection() {
         
-        ClientManager.instance.PlayerCharacter = new Character((Character.CharacterTypes)(int)tempCharacterType);
-        SelectButton.GetComponent<Button>().enabled = false;
-        SelectButton.GetComponent<Image>().color = Color.gray;
-        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");
+        ClientManager.instance.PlayerCharacter = new Character(selectedCharacterType);
+        SelectButton.GetComponent<Button>().interactable = false;
+        activePlayerText.GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");
+        SetErrorText("");
+    }
+
+    private void InitCharacterSelection()
+    {
+        selectedCharacterType = Character.CharacterTypes.Default;
+
+        charInfoPanel.GetComponent<ClientUICharacterInfoComponents>().confirmButton.GetComponent<Button>().interactable = false;
+
+        charInfoPanel.SetActive(false);
+        ResetCharacterButtons();
+
+        activePlayerText.GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");
+
+        SetErrorText("");
+    }
+
+    public void DisplayCharacterInfo(int buttonID)
+    {
+        selectedCharacterType = characterButtons[buttonID].GetComponent<ClientUICharacterButton>().characterType;
+
+        foreach (GameObject characterButton in characterButtons)
+        {
+            if (characterButton.GetComponent<ClientUICharacterButton>().characterType != selectedCharacterType)
+            {
+                characterButton.SetActive(false);
+            }
+        }
+
+        Character selectedCharacter = ClientManager.instance.GetCharacterInfo((int)selectedCharacterType);
+
+        charInfoPanel.SetActive(true);
+        ClientUICharacterInfoComponents charInfoComponents = charInfoPanel.GetComponent<ClientUICharacterInfoComponents>();
+
+        charInfoComponents.nameText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.CharacterName;
+
+        charInfoComponents.brawnText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.baseBrawn.ToString();
+        charInfoComponents.skillText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.baseSkill.ToString();
+        charInfoComponents.techText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.baseTech.ToString();
+        charInfoComponents.charmText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.baseCharm.ToString();
+
+        charInfoComponents.abilityName.GetComponent<TextMeshProUGUI>().text = selectedCharacter.characterAbility.AbilityName;
+        charInfoComponents.abilityText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.characterAbility.abilityDescription;
+        //Need to add in retrieval for ability icons
+        //charInfoComponents.abilityIcon.GetComponent<Image>().sprite = 
+    }
+
+    public void CloseCharacterInfo()
+    {
+        charInfoPanel.SetActive(false);
+        ResetCharacterButtons();
+    }
+
+    private void ResetCharacterButtons()
+    {
+        foreach (GameObject characterButton in characterButtons)
+        {
+            characterButton.SetActive(true);
+        }
+    }
+
+    public void SetErrorText(string errorText)
+    {
+        ErrorText.GetComponent<TextMeshProUGUI>().text = errorText;
     }
     #endregion
 
-   
+
 }

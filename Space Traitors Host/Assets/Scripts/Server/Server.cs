@@ -1093,7 +1093,7 @@ public class Server : MonoBehaviour
         }
         else
         {
-            Debug.Log("Choose another Character");
+            Canvas.GetComponent<CharacterSelectUIManager>().SetErrorText("Please Select Another Character.");
         }
 
 
