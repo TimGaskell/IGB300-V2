@@ -14,4 +14,5 @@ public class StealItem : NetMessage
 
     public int ItemID { get; set; }
     public int LoserID { get; set; }
+    public bool StealComponent { get; set; }
 }

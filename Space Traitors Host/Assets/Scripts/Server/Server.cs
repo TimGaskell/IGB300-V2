@@ -1022,6 +1022,24 @@ public class Server : MonoBehaviour
         SendClient(itemStolen);
     }
 
+    public void SendComponentStealSuccess(int playerID, bool isSuccessful)
+    {
+        ComponentStealSuccess componentStealSuccess = new ComponentStealSuccess();
+        tempPlayerID = playerID;
+
+        componentStealSuccess.IsSuccessful = isSuccessful;
+
+        SendClient(componentStealSuccess);
+    }
+
+    public void SendComponentStolen(int playerID)
+    {
+        ComponentStolen componentStolen = new ComponentStolen();
+        tempPlayerID = playerID;
+
+        SendClient(componentStolen);
+    }
+
     public void SendAIAttackResult(int playerID, bool wonAttack)
     {
         AIAttackResult aiAttackResult = new AIAttackResult();
@@ -1505,11 +1523,13 @@ public class Server : MonoBehaviour
         SendServer(discardItem);
     }
 
-    public void StealItem(int itemID, int loserID)
+    public void StealItem(int itemID, int loserID, bool stealComponent)
     {
         StealItem stealItem = new StealItem();
         stealItem.ItemID = itemID;
         stealItem.LoserID = loserID;
+        //Used if the player is stealing a component
+        stealItem.StealComponent = stealComponent;
 
         SendServer(stealItem);
     }
@@ -1903,20 +1923,44 @@ public class Server : MonoBehaviour
             {
                 Player winningPlayer = GameManager.instance.GetPlayer(conID);
                 Player losingPlayer = GameManager.instance.GetPlayer(loserID);
-                Item selectedItem = losingPlayer.items[itemID];
 
                 bool successfulSteal = false;
 
-                if (winningPlayer.GiveItem(selectedItem))
+                if (stealItem.StealComponent)
                 {
-                    losingPlayer.RemoveItem(itemID);
-                    successfulSteal = true;
-                    SyncPlayerData(loserID);
-                    SendItemStolen(loserID, selectedItem.ItemName);
-                }
+                    if (!winningPlayer.hasComponent)
+                    {
+                        winningPlayer.hasComponent = true;
+                        losingPlayer.hasComponent = false;
+                        SyncPlayerData(loserID);
+                        SendComponentStolen(loserID);
 
-                SyncPlayerData(conID);
-                SendStealSuccess(conID, successfulSteal);
+                        successfulSteal = true;
+
+                        SyncPlayerData(conID);
+                    }
+
+                    SendComponentStealSuccess(conID, successfulSteal);
+                }
+                else
+                {
+                    Item selectedItem = losingPlayer.items[itemID];
+
+                    
+
+                    if (winningPlayer.GiveItem(selectedItem))
+                    {
+                        losingPlayer.RemoveItem(itemID);
+                        successfulSteal = true;
+                        SyncPlayerData(loserID);
+                        SendItemStolen(loserID, selectedItem.ItemName);
+
+                        SyncPlayerData(conID);
+                    }
+
+                    
+                    SendStealSuccess(conID, successfulSteal);
+                }
             }
         }
     }
