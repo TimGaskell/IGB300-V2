@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public class Player : MonoBehaviour
+public class Player 
 {
     public const int STARTING_ROOM_ID = 9; //Players always start in the escape room i.e. room 9
 
@@ -138,7 +138,7 @@ public class Player : MonoBehaviour
         playerObject = null;
     }
     void Start() {
-        DontDestroyOnLoad(this.gameObject);
+        
     }
  
 

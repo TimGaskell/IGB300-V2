@@ -94,7 +94,7 @@ public class Server : MonoBehaviour
 
     //Other
     public AudioSource connectSound;
-    public List<GameObject> players = new List<GameObject>();
+  
     private List<GameObject> ElminiatedPlayers = new List<GameObject>();
     private List<GameObject> playersRemoved = new List<GameObject>();
     public GameObject[] ScrapTotals;
@@ -228,37 +228,16 @@ public class Server : MonoBehaviour
             //When user connects to game
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
-                //Loop through to find a player not already connected, and assign them their ID
-                foreach (GameObject player in players)
-                {
-                    if (player.GetComponent<Player>().isConnected == false)
-                    {
-                        if (sceneName == "ServerLobby")
-                            LobbyConnectOrDisconnect(player, true, connectionID, true);
-                        else if (sceneName == "GameLevel")
-                            GameConnectOrDisconnect(player, true, connectionID);
-                        Debug.Log(player.name + " has connected through host " + recHostID);
-                        break;
-                    }
-                }
+                
+
+                GameManager.instance.GeneratePlayer(connectionID,"default");
+                Debug.Log("playerconnection of " + connectionID);
                 break;
 
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                foreach (GameObject player in players)
-                {
-                    if (player.GetComponent<Player>().playerID == connectionID)
-                    {
-                        if (sceneName == "LobbyLan")
-                            //Reset player variables
-                            LobbyConnectOrDisconnect(player, false, 0, false);
-                        else if (sceneName == "GameLevel")
-                            GameConnectOrDisconnect(player, false, 0);
-                        Debug.Log(player.name + " has disconnected");
-                        break;
-                    }
-                }
+                
                 Debug.Log(connectionID + " has disconnected");
                 break;
 
@@ -414,113 +393,10 @@ public class Server : MonoBehaviour
     }
 
 
-
-    //This needs to be updated
-
-    private List<GameObject> playerArray()
-    {
-
-        if ((sceneName == "LobbyLan") || (sceneName == "Character Select"))
-            return players;
-        //else if (sceneName == "server")
-        //  return playerStorage.GetComponent<RoundManager>().playersInGame;
-        else
-        {
-            Debug.Log("Could not get the correct scene");
-            return null;
-        }
-
-    }
-
-    private void LobbyConnectOrDisconnect(GameObject player, bool connect, int conID, bool imageEnable)
-    {
-        player.GetComponent<Player>().isConnected = connect;
-        player.GetComponent<Player>().playerID = conID;
-
-    }
-
-    private void GameConnectOrDisconnect(GameObject player, bool connect, int conID)
-    {
-        player.GetComponent<Player>().isConnected = connect;
-        player.GetComponent<Player>().playerID = conID;
-    }
-
-    //This needs to be updated
-    private void SetPortraits()
-    {
-        setter = GameObject.FindGameObjectWithTag("Setter");
-        for (int i = 0; i < playerArray().Count; i++)
-        {
-            switch (players[i].GetComponent<PlayerConnect>().characterName)
-            {
-                case "Brute":
-                    portraitID = 0;
-                    break;
-
-                case "Butler":
-                    portraitID = 1;
-                    break;
-
-                case "Singer":
-                    portraitID = 2;
-                    break;
-
-                case "Techie":
-                    portraitID = 3;
-                    break;
-
-                case "Engineer":
-                    portraitID = 4;
-                    break;
-
-                case "Chef":
-                    portraitID = 5;
-                    break;
-            }
-            if (portraitID >= 0)
-            {
-                setter.GetComponent<ImageSetter>().images[i].sprite = portraits[portraitID];
-            }
-
-
-        }
-
-    }
-
     //This needs to be updated
     public void StartGame() //This is called when a game is started in lobby
     {
-        //TODO: cannot start game unless at least 3 (1 for purposes of testing) players are connected
 
-        //If a player hasn't been assigned to one of the player objects, remove it from the server's array of players
-        for (int k = 0; k < players.Count; k++)
-        {
-            if (!players[k].GetComponent<Player>().isConnected)
-            {
-                playersRemoved.Add(players[k]);
-            }
-        }
-
-
-
-        if (playersRemoved != null)
-        {
-            foreach (GameObject player in playersRemoved)
-            {
-                players.Remove(player);
-                Destroy(player);
-            }
-        }
-
-        //Get the number of players based on how many remain
-        playersJoined = players.Count;
-        int i = 0;
-        foreach (GameObject player in players)
-        {
-            playerIDs[i] = player.GetComponent<Player>().playerID;
-            player.transform.parent = null;
-            i++;
-        }
 
         //Send message to every player's client to move onto next scene
         SendChangeScene("Character Selection");
@@ -528,14 +404,7 @@ public class Server : MonoBehaviour
         SceneManager.LoadScene("Server Character Selection");
     }
 
-    public void ClientNextScene()
-    {
-        foreach (GameObject player in players)
-        {
-            tempPlayerID = player.GetComponent<Player>().playerID;
-            SendChangeScene("Lobby");
-        }
-    }
+    
     public void SendClient(NetMessage msg)
     {
         //This is where data is held
@@ -573,9 +442,9 @@ public class Server : MonoBehaviour
 
         SceneChange scene = new SceneChange();
         scene.SceneName = SceneName;
-        foreach (GameObject player in players)
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(scene);
         }
     }
@@ -744,14 +613,14 @@ public class Server : MonoBehaviour
 
     public void SendSurge()
     {
-
         SurgeInformation surge = new SurgeInformation();
         surge.NewAiPower = GameManager.instance.AIPower;
         surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
 
-        foreach (GameObject player in players)
+
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(surge);
         }
     }
@@ -760,15 +629,17 @@ public class Server : MonoBehaviour
     {
         //Need to inform all players that someone is under attack by the AI
         //IsTarget specifies which player actually is the target
-        foreach (GameObject player in playerArray())
+
+
+        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
         {
             AiAttacks ai = new AiAttacks();
 
             ai.TargetID = targetPlayer;
-            ai.IsTarget = (player.GetComponent<Player>().playerID == targetPlayer);
-
+            ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
             SendClient(ai);
         }
+   
     }
 
     public void SendCombatWinner(int winnerID, int loserID)
@@ -847,20 +718,23 @@ public class Server : MonoBehaviour
     {
 
         InnocentVictory innocent = new InnocentVictory();
-        foreach (GameObject player in players)
+      
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(innocent);
         }
+
     }
 
     public void SendTraitorVictory(int winnerID)
     {
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
-        foreach (GameObject player in players)
+      
+        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(traitor);
         }
     }
@@ -921,9 +795,10 @@ public class Server : MonoBehaviour
 
     public void SendComponentInstalled(int installerID, bool successfulInstall)
     {
-        foreach (GameObject player in players)
+
+        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
             bool allComponentsCheck = GameManager.instance.CheckInstalledComponents();
 
@@ -945,7 +820,11 @@ public class Server : MonoBehaviour
 
                 SendClient(numComponentsInstalled);
             }
+
+
         }
+        
+        
     }
 
     public void CanInstallComponent(int playerID)
@@ -977,22 +856,25 @@ public class Server : MonoBehaviour
 
         //Setup the player data (need to clarify this is working properly since it pulls from the
         //players list in the server rather than the game manager)
-        foreach (GameObject playerObject in players)
-        {
-            Player player = playerObject.GetComponent<Player>();
 
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        {
+           
+
+            Player player = GameManager.instance.GetPlayer(i);
             allPlayerData.PlayerIDs.Add(player.playerID);
             allPlayerData.PlayerNames.Add(player.playerName);
             allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+
         }
 
-        //Send the player data to all players
-        foreach (GameObject player in players)
+        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
         {
-            tempPlayerID = player.GetComponent<Player>().playerID;
-
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(allPlayerData);
+
         }
+       
     }
 
     public void SendUnequipSuccess(int playerID)
@@ -1623,62 +1505,72 @@ public class Server : MonoBehaviour
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
     {
 
+        GameManager.instance.GetPlayer(conID).playerName = details.PlayerName;
+        
         Debug.Log("Recieved Player Name");
-        foreach (GameObject player in players)
-        {
-            if (player.GetComponent<Player>().playerID == conID)
-            {
-                //Find the correct player
-
-                player.GetComponent<Player>().playerName = details.PlayerName;
-                GameObject LobbyUiHandler = GameObject.Find("Canvas");
-                LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames();
+        
+        GameObject LobbyUiHandler = GameObject.Find("Canvas");
+        LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
 
 
-            }
-        }
+        
     }
     private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character)
     {
 
-        foreach (GameObject player in players)
+        GameManager.instance.GetPlayer(conID);
+
+
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
+            Player player = GameManager.instance.GetPlayer(i);
+
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            if (player.playerID == conID)
             {
 
                 if (GameManager.instance.CheckCharacterSelected((Character.CharacterTypes)character.SelectedCharacter))
                 {
-                    SendChangeCharacter(player.GetComponent<Player>().playerID, true);
+                    SendChangeCharacter(player.playerID, true);
                 }
                 else
                 {
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
-                    player.GetComponent<Player>().Character = new Character((Character.CharacterTypes)character.SelectedCharacter); 
+                    player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);                  
                     //Assign Character Stats to player
-                    SyncPlayerData(player.GetComponent<Player>().playerID);
-                    
+                    SyncPlayerData(player.playerID);
+
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
-                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
-                    if (GameManager.instance.activePlayer > 0) {
+                    SendChangeCharacter(player.playerID, false);
+                    if (GameManager.instance.activePlayer > 0)
+                    {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                     }
-                    
+
                 }
 
             }
+
+
         }
+
+
+              
+        
     }
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
+
+            Player player = GameManager.instance.GetPlayer(i);
+
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            if (player.playerID == conID)
             {
 
                 Ability.AbilityTypes abilityType = (Ability.AbilityTypes)ability.AbilityType;
@@ -1709,6 +1601,10 @@ public class Server : MonoBehaviour
                 SendAbilityActivated(conID, abilityType, isTraitor);
             }
         }
+
+
+
+
     }
 
     /// <summary>
@@ -1721,36 +1617,44 @@ public class Server : MonoBehaviour
     /// <param name="chanID">Channel ID of the player</param>
     /// <param name="rHostID">Host ID of the server</param>
     /// <param name="points">message sent over from client, holds the amount of points the player rolled</param>
-    private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points) {
+    private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points)
+    {
 
-        foreach (GameObject player in playerArray())
+
+
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
+            Player player = GameManager.instance.GetPlayer(i);
+
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            if (player.playerID == conID)
             {
 
-                player.GetComponent<Player>().ActionPoints = points.actionPoints;
-                
+                player.ActionPoints = points.actionPoints;
+
                 PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>();
                 Playermovement.StartMoving = false;
-                Playermovement.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+                Playermovement.currentNodeIndex = player.roomPosition;
 
                 List<int> roomIds = new List<int>();
 
-                for(int i = 0; i < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; i++) {
+                for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
+                {
 
-                    Playermovement.PlayerMoveViaNodes(i);
+                    Playermovement.PlayerMoveViaNodes(j);
                     int roomCost = Playermovement.currentPath.Count - 1;
 
-                    if(roomCost <= points.actionPoints) {
+                    if (roomCost <= points.actionPoints)
+                    {
                         roomIds.Add(roomCost);
                     }
                 }
 
-                SendAvailableRooms(player.GetComponent<Player>().playerID, roomIds);
+                SendAvailableRooms(player.playerID, roomIds);
 
 
             }
+
         }
     }
     /// <summary>
@@ -1762,14 +1666,16 @@ public class Server : MonoBehaviour
     /// <param name="room">int id of the room the player wants to move to.
     private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room) {
 
-        foreach (GameObject player in playerArray()) {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID) {
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        {
+            Player player = GameManager.instance.GetPlayer(i);
 
+            if (player.playerID == conID)
+            {
 
-                PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>() ;
+                PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>();
 
-                Playermovement.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+                Playermovement.currentNodeIndex = player.roomPosition;
                 Playermovement.goalIndex = room.roomID;
                 Playermovement.StartMoving = false;
 
@@ -1777,32 +1683,32 @@ public class Server : MonoBehaviour
 
                 int roomCost = Playermovement.currentPath.Count - 1;
 
-                SendRoomCost(player.GetComponent<Player>().playerID,roomCost);
-
+                SendRoomCost(player.playerID, roomCost);
             }
         }
+      
     }
 
 
     private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
+            Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            if (player.playerID == conID)
             {
 
-                PlayerMovement.instance.Player = player;
-                PlayerMovement.instance.currentNodeIndex = player.GetComponent<Player>().roomPosition;
+                PlayerMovement.instance.Player = player.playerObject;
+                PlayerMovement.instance.currentNodeIndex = player.roomPosition;
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-                player.GetComponent<Player>().roomPosition = moveTo.SelectedRoom;
-
+                player.roomPosition = moveTo.SelectedRoom;
 
             }
-        }
+        }             
     }
 
     /// <summary>
@@ -1814,21 +1720,23 @@ public class Server : MonoBehaviour
     /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
-
-        foreach (GameObject player in playerArray()) { 
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        {
+            Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+
+            if(player.playerID == conID)
             {
                 int choiceID = choice.ChoiceId;
-                Player playerscript = player.GetComponent<Player>();
-                Room currentRoom = GameManager.instance.GetRoom(playerscript.roomPosition);
+               
+                Room currentRoom = GameManager.instance.GetRoom(player.roomPosition);
 
-                bool result =  currentRoom.roomChoices[choiceID].SelectChoice();
-                SendSpecChallenge(player.GetComponent<Player>().playerID, result);
-                SyncPlayerData(player.GetComponent<Player>().playerID);
+                bool result = currentRoom.roomChoices[choiceID].SelectChoice();
+                SendSpecChallenge(player.playerID, result);
+                SyncPlayerData(player.playerID);
 
             }
-        }
+        }       
     }
 
     /// <summary>
@@ -1839,19 +1747,19 @@ public class Server : MonoBehaviour
     private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
     {
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            Player player = GameManager.instance.GetPlayer(i);
+            if(player.playerID == conID)
             {
-
-
-
-
 
             }
         }
+
+         
     }
+
+
     private void SpecSelection(int conID, int chanID, int rHostID, SpecSelection selection)
     {
         int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
@@ -1902,22 +1810,29 @@ public class Server : MonoBehaviour
         //Stores the target player ID to attack later
         defenderID = attack.TargetPlayer;
 
-        foreach (GameObject player in playerArray())
+
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
+            Player player = GameManager.instance.GetPlayer(i);
+
             //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            if (player.playerID == conID)
             {
 
                 SendBeingAttacked(conID, conID, attack.TargetPlayer);
 
             }
-            else if (player.GetComponent<Player>().playerID == attack.TargetPlayer)
+            else if (player.playerID == attack.TargetPlayer)
             {
 
                 SendBeingAttacked(attack.TargetPlayer, conID, attack.TargetPlayer);
 
             }
+
         }
+    
+           
+        
     }
 
     /// <summary>
@@ -1928,34 +1843,35 @@ public class Server : MonoBehaviour
     private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
     {
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
+            Player player = GameManager.instance.GetPlayer(i);
+
+            if (player.playerID == conID)
             {
 
-
-
-
-
             }
+
         }
     }
+
     private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component)
     {
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            //Find the correct player
-            if (player.GetComponent<Player>().playerID == conID)
-            {
+            Player player = GameManager.instance.GetPlayer(i);
 
+            if (player.playerID == conID)
+            {
                 bool outcome = GameManager.instance.InstallComponent();
 
 
                 SendComponentInstalled(conID, outcome);
             }
         }
+
+     
     }
 
     private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
@@ -2015,45 +1931,51 @@ public class Server : MonoBehaviour
     {
         int itemID = equipItem.ItemID;
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            if (player.GetComponent<Player>().playerID == conID)
+            Player player = GameManager.instance.GetPlayer(i);
+
+            if (player.playerID == conID)
             {
-                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
-                Item selectedItem = selectedPlayer.items[itemID];
+
+                Item selectedItem = player.items[itemID];
 
                 if (selectedItem.isEquipped)
                 {
-                    selectedPlayer.UnequipItem(itemID);
+                    player.UnequipItem(itemID);
                     SyncPlayerData(conID);
                     SendUnequipSuccess(conID);
                 }
                 else
                 {
-                    Player.EquipErrors equipStatus = selectedPlayer.EquipItem(itemID);
+                    Player.EquipErrors equipStatus = player.EquipItem(itemID);
                     SyncPlayerData(conID);
                     SendEquipState(conID, equipStatus);
                 }
+
             }
         }
 
-
+          
     }
 
     private void GetDiscardItem(int conID, int chanID, int rHostID, DiscardItem discardItem)
     {
         int itemID = discardItem.ItemID;
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            if (player.GetComponent<Player>().playerID == conID)
-            {
-                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
-                selectedPlayer.DiscardItem(itemID);
+            Player player = GameManager.instance.GetPlayer(i);
+
+            if (player.playerID == conID)
+            {               
+                player.DiscardItem(itemID);
                 SyncPlayerData(conID);
                 SendDiscardSuccess(conID);
             }
         }
+
+ 
     }
 
     private void GetStealItem(int conID, int chanID, int rHostID, StealItem stealItem)
@@ -2061,17 +1983,19 @@ public class Server : MonoBehaviour
         int itemID = stealItem.ItemID;
         int loserID = stealItem.LoserID;
 
-        foreach (GameObject player in playerArray())
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
-            if (player.GetComponent<Player>().playerID == conID)
+            Player player = GameManager.instance.GetPlayer(i);
+
+            if (player.playerID == conID)
             {
-                Player winningPlayer = GameManager.instance.GetPlayer(conID);
+              
                 Player losingPlayer = GameManager.instance.GetPlayer(loserID);
                 Item selectedItem = losingPlayer.items[itemID];
 
                 bool successfulSteal = false;
 
-                if (winningPlayer.GiveItem(selectedItem))
+                if (player.GiveItem(selectedItem))
                 {
                     losingPlayer.RemoveItem(itemID);
                     successfulSteal = true;
@@ -2083,6 +2007,7 @@ public class Server : MonoBehaviour
                 SendStealSuccess(conID, successfulSteal);
             }
         }
+               
     }
 
     private void GetStealDiscardItem(int conID, int chanID, int rHostID, StealDiscardItem stealDiscardItem)

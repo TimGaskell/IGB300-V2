@@ -191,7 +191,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2134034031}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -532,65 +532,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
---- !u!1 &279136832
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 279136833}
-  - component: {fileID: 279136834}
-  m_Layer: 0
-  m_Name: Player 4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &279136833
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279136832}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &279136834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279136832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
 --- !u!1 &414972538
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,65 +661,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414972538}
   m_CullTransparentMesh: 0
---- !u!1 &578118981
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 578118982}
-  - component: {fileID: 578118983}
-  m_Layer: 0
-  m_Name: Player 2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &578118982
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578118981}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &578118983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578118981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
 --- !u!1 &624717556
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,124 +740,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
---- !u!1 &688500065
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 688500066}
-  - component: {fileID: 688500067}
-  m_Layer: 0
-  m_Name: Player 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &688500066
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688500065}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &688500067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688500065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
---- !u!1 &779905797
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 779905798}
-  - component: {fileID: 779905799}
-  m_Layer: 0
-  m_Name: Player 5
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &779905798
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 779905797}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &779905799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 779905797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
 --- !u!1 &823256469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,32 +968,32 @@ PrefabInstance:
         type: 3}
       propertyPath: players.Array.data[0]
       value: 
-      objectReference: {fileID: 688500065}
+      objectReference: {fileID: 0}
     - target: {fileID: 6794828905484793841, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
       propertyPath: players.Array.data[1]
       value: 
-      objectReference: {fileID: 578118981}
+      objectReference: {fileID: 0}
     - target: {fileID: 6794828905484793841, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
       propertyPath: players.Array.data[2]
       value: 
-      objectReference: {fileID: 1239311048}
+      objectReference: {fileID: 0}
     - target: {fileID: 6794828905484793841, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
       propertyPath: players.Array.data[3]
       value: 
-      objectReference: {fileID: 279136832}
+      objectReference: {fileID: 0}
     - target: {fileID: 6794828905484793841, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
       propertyPath: players.Array.data[4]
       value: 
-      objectReference: {fileID: 779905797}
+      objectReference: {fileID: 0}
     - target: {fileID: 6794828905484793841, guid: 6e2f30af9fc739d4887766955637c307,
         type: 3}
       propertyPath: players.Array.data[5]
       value: 
-      objectReference: {fileID: 1345716563}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e2f30af9fc739d4887766955637c307, type: 3}
 --- !u!1 &1105381460
@@ -1647,65 +1411,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219258860}
   m_CullTransparentMesh: 0
---- !u!1 &1239311048
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1239311049}
-  - component: {fileID: 1239311050}
-  m_Layer: 0
-  m_Name: Player 3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1239311049
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239311048}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1239311050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239311048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
 --- !u!1 &1310805595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,65 +1490,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310805595}
   m_CullTransparentMesh: 0
---- !u!1 &1345716563
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1345716564}
-  - component: {fileID: 1345716565}
-  m_Layer: 0
-  m_Name: Player 6
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1345716564
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345716563}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.28162, y: 273.7122, z: 73.6886}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1345716565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345716563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750f1213105080048a8684a9b1b79134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 0
-  playerName: 
-  roomPosition: 0
-  isConnected: 0
-  scrap: 0
-  hasComponent: 0
-  lifePoints: 0
-  maxLifePoints: 0
-  ActionPoints: 0
-  brawnModTemp: 0
-  skillModTemp: 0
-  techModTemp: 0
-  charmModTemp: 0
-  isTraitor: 0
-  isRevealed: 0
-  playerObject: {fileID: 0}
 --- !u!1 &1367506950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,7 +1787,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00002142929, y: 0.0000023265206}
+  m_AnchoredPosition: {x: 0.00002142929, y: -0.00000042246546}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1728198663
