@@ -539,7 +539,7 @@ public class Server : MonoBehaviour
     public void SendClient(NetMessage msg)
     {
         //This is where data is held
-        byte[] buffer = new byte[byteSize];
+        byte[] buffer = new byte[byteSize*25];
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
@@ -712,14 +712,34 @@ public class Server : MonoBehaviour
     }
  
 
-    public void SendIsTraitor(int player)
+    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor)
     {
 
-        TraitorSelection traitor = new TraitorSelection();
+        PlayerInformation playerInformation = new PlayerInformation();
         tempPlayerID = player;
+        //does not send base stats, use other method to do so
+        playerInformation.scaledbrawn = Scaledbrawn;
+        playerInformation.scaledskill = Scaledskill;
+        playerInformation.scaledcharm = Scaledcharm;
+        playerInformation.scaledtech = Scaledtech;
+        playerInformation.scrap = scrap;
+        playerInformation.corruption = lifepoints;
+        playerInformation.EquippedItems = EquippedItems;
+        playerInformation.UnEquippedItems = UnEquippedItems;
+        playerInformation.isTraitor = isTraitor;
 
-        SendClient(traitor);
+        SendClient(playerInformation);
+    }
 
+    public void SendIsTraitor()
+    {
+        if (GameManager.instance.newTraitor != GameManager.DEFAULT_PLAYER_ID)
+        {
+            TraitorSelection traitor = new TraitorSelection();
+            tempPlayerID = GameManager.instance.newTraitor;
+
+            SendClient(traitor);
+        }
     }
 
     public void SendSurge()
@@ -736,16 +756,19 @@ public class Server : MonoBehaviour
         }
     }
 
-    public void SendAIAttack(int player, int damage, int spec, string spectype)
+    public void SendAIAttack(int targetPlayer)
     {
+        //Need to inform all players that someone is under attack by the AI
+        //IsTarget specifies which player actually is the target
+        foreach (GameObject player in playerArray())
+        {
+            AiAttacks ai = new AiAttacks();
 
-        AiAttacks ai = new AiAttacks();
-        tempPlayerID = player;
-        ai.damage = damage;
-        ai.specAmount = spec;
-        ai.spec = spectype;
+            ai.TargetID = targetPlayer;
+            ai.IsTarget = (player.GetComponent<Player>().playerID == targetPlayer);
 
-        SendClient(ai);
+            SendClient(ai);
+        }
     }
 
     public void SendCombatWinner(int winnerID, int loserID)
@@ -972,6 +995,70 @@ public class Server : MonoBehaviour
         }
     }
 
+    public void SendUnequipSuccess(int playerID)
+    {
+        UnequipSuccess unequipSuccess = new UnequipSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(unequipSuccess);
+    }
+
+    public void SendEquipState(int playerID, Player.EquipErrors equipError)
+    {
+        EquipState equipState = new EquipState();
+        tempPlayerID = playerID;
+
+        equipState.EquipError = (int)equipError;
+
+        SendClient(equipState);
+    }
+
+    public void SendDiscardSuccess(int playerID)
+    {
+        DiscardSuccess discardSuccess = new DiscardSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(discardSuccess);
+    }
+
+    public void SendStealSuccess(int playerID, bool isSuccessful)
+    {
+        StealSuccess stealSuccess = new StealSuccess();
+        tempPlayerID = playerID;
+
+        stealSuccess.IsSuccessful = isSuccessful;
+
+        SendClient(stealSuccess);
+    }
+
+    public void SendStealDiscardSuccess(int playerID)
+    {
+        StealDiscardSuccess stealDiscardSuccess = new StealDiscardSuccess();
+        tempPlayerID = playerID;
+
+        SendClient(stealDiscardSuccess);
+    }
+
+    public void SendItemStolen(int playerID, string itemName)
+    {
+        ItemStolen itemStolen = new ItemStolen();
+        tempPlayerID = playerID;
+
+        itemStolen.ItemName = itemName;
+
+        SendClient(itemStolen);
+    }
+
+    public void SendAIAttackResult(int playerID, bool wonAttack)
+    {
+        AIAttackResult aiAttackResult = new AIAttackResult();
+        tempPlayerID = playerID;
+
+        aiAttackResult.WonAttack = wonAttack;
+
+        SendClient(aiAttackResult);
+    }
+
     #endregion
 
     #region Client Received Messages
@@ -1181,6 +1268,7 @@ public class Server : MonoBehaviour
     private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)
     {
         //Need to display that they won the combat and who they won it against using combatWinner.loserID
+        //Also need to store the loser ID to send back to the server when stealing the items
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1210,6 +1298,111 @@ public class Server : MonoBehaviour
             Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
 
             ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
+        }
+    }
+
+    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
+    {
+        //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+    }
+
+    private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
+    {
+        switch ((Player.EquipErrors)equipState.EquipError)
+        {
+            case (Player.EquipErrors.Default):
+                //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                break;
+            case (Player.EquipErrors.AlreadyEquipped):
+                //Display to the player that the item is already equipped
+                break;
+            case (Player.EquipErrors.TooManyEquipped):
+                //Display to the player that they have too many items equipped
+                break;
+        }
+    }
+
+    private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
+    {
+        //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+    }
+
+    private void GetStealSuccess(int conID, int chanID, int rHostID, StealSuccess stealSuccess)
+    {
+        if (stealSuccess.IsSuccessful)
+        {
+            //Update the UI for the inventory and spec scores (could be done using SyncClientData however)
+            //Prevent them from stealing any more items
+        }
+        else
+        {
+            //Display to player that they cannot hold any more items
+        }
+    }
+
+    private void GetStealDiscardSuccess(int conID, int chanID, int rHostID, StealDiscardSuccess stealDiscardSuccess)
+    {
+        //Display that they successfully discarded the item
+        //Prevent them from stealing any more items
+    }
+
+    private void GetItemStolen(int conID, int chanID, int rHostID, ItemStolen itemStolen)
+    {
+        //Tell the player that one of their items was stolen (the name is stored in itemStolen)
+        //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
+    }
+
+    private void GetIsTraitor(int conID, int chanID, int rHostID, TraitorSelection traitorSelection)
+    {
+        //Update the UI to display to the player that they have been selected as traitor
+        ClientManager.instance.isTraitor = true;
+    }
+
+    private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
+    {
+        if (aiAttacks.IsTarget)
+        {
+            //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
+        }
+        else
+        {
+            //Need to display which player is under attack using aiAttacks.targetID
+        }
+    }
+
+    private void GetAIAttackResult(int conID, int chanID, int rHostID, AIAttackResult aiAttackResult)
+    {
+        if (aiAttackResult.WonAttack)
+        {
+            //Display that the player won the attack
+        }
+        else
+        {
+            //Display that they lost the attack
+        }
+    }
+
+    private void GetNonTraitorVictory(int conID, int chanID, int rHostID, InnocentVictory innocentVictory)
+    {
+        if (ClientManager.instance.isTraitor)
+        {
+            //If the player is a traitor, display the loss screen
+        }
+        else
+        {
+            //If the player is not a traitor, display the victory screen
+        }
+    }
+
+    private void GetTraitorVictory(int conID, int chanID, int rHostID, TraitorVictory traitorVictory)
+    {
+        if (traitorVictory.WinnerID == ClientManager.instance.playerID)
+        {
+            //If this player is the winner, display the victory screen
+        }
+        else
+        {
+            //Otherwise, display the loss screen as well as w
         }
     }
 
@@ -1312,6 +1505,11 @@ public class Server : MonoBehaviour
         SendServer(choice);
     }
 
+    /// <summary>
+    /// 
+    /// To be deleted- broken down into unique messages for each action
+    /// 
+    /// </summary>
     public void SendInventoryChanges(List<string> EquiptItems, List<string> UnEquiptItems, List<string> DiscardItems)
     {
 
@@ -1325,7 +1523,7 @@ public class Server : MonoBehaviour
 
     public void SendSpecSelection(GameManager.SpecScores specScore)
     {
-
+        //Used in regular combat
         SpecSelection specSelection = new SpecSelection();
         specSelection.SelectedSpec = (int)specScore;
 
@@ -1364,6 +1562,49 @@ public class Server : MonoBehaviour
         NewPhase newPhase = new NewPhase();
 
         SendServer(newPhase);
+    }
+
+    public void EquipItem(int itemID)
+    {
+        EquipItem equipItem = new EquipItem();
+        equipItem.ItemID = itemID;
+
+        SendServer(equipItem);
+    }
+
+    public void DiscardItem(int itemID)
+    {
+        DiscardItem discardItem = new DiscardItem();
+        discardItem.ItemID = itemID;
+
+        SendServer(discardItem);
+    }
+
+    public void StealItem(int itemID, int loserID)
+    {
+        StealItem stealItem = new StealItem();
+        stealItem.ItemID = itemID;
+        stealItem.LoserID = loserID;
+
+        SendServer(stealItem);
+    }
+
+    public void StealDiscardItem(int itemID, int loserID)
+    {
+        StealDiscardItem stealDiscardItem = new StealDiscardItem();
+        stealDiscardItem.ItemID = itemID;
+        stealDiscardItem.LoserID = loserID;
+
+        SendServer(stealDiscardItem);
+    }
+
+    public void AISpecSelection(GameManager.SpecScores specScore)
+    {
+        //Used to defend against AI Attacks
+        AISpecSelection aiSpecSelection = new AISpecSelection();
+        aiSpecSelection.SelectedSpec = (int)specScore;
+
+        SendServer(aiSpecSelection);
     }
 
     public void SendRoomChoiceForCost(int roomId) {
@@ -1416,12 +1657,16 @@ public class Server : MonoBehaviour
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
-                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
-                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
-                    SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
-
+                    player.GetComponent<Player>().Character = new Character((Character.CharacterTypes)character.SelectedCharacter); 
                     //Assign Character Stats to player
                     SyncPlayerData(player.GetComponent<Player>().playerID);
+                    
+                    GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
+                    SendChangeCharacter(player.GetComponent<Player>().playerID, false);
+                    if (GameManager.instance.activePlayer > 0) {
+                        SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+                    }
+                    
                 }
 
             }
@@ -1585,6 +1830,12 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// Can be deleted
+    /// 
+    /// </summary>
     private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
     {
 
@@ -1623,9 +1874,6 @@ public class Server : MonoBehaviour
             //Need to add display of winner on main screen
 
             bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec);
-
-            CombatWinner combatWinner = new CombatWinner();
-            CombatLoser combatLoser = new CombatLoser();
 
             //If combat outcome is ture, means that the attacker won
             //Need to add in main screen UI
@@ -1671,6 +1919,12 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// Can probably be deleted
+    /// 
+    /// </summary>
     private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
     {
 
@@ -1713,11 +1967,11 @@ public class Server : MonoBehaviour
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
-                //Display non-traitor victory screen
+                //Need to add display of non-traitor victory screen
                 SendNonTraitorVictory();
                 break;
             case (GameManager.VictoryTypes.Traitor):
-                //Display traitor victory screen
+                //Need to add display of traitor victory screen
                 SendTraitorVictory(GameManager.instance.traitorWinID);
                 break;
             case (GameManager.VictoryTypes.None):
@@ -1740,17 +1994,118 @@ public class Server : MonoBehaviour
                     case (GameManager.TurnPhases.BasicSurge):
                         //Need to display surge information on main screen
                         SendSurge();
+                        SendIsTraitor();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen
-
+                        SendAIAttack(GameManager.instance.targetPlayer);
                         break;
                     default:
                         throw new NotImplementedException("Not a valid phase");
                 }
 
+                //Pings the client if they have been selected as a traitor
+                
+
                 break;
         }
+    }
+
+    private void GetEquipItem(int conID, int chanID, int rHostID, EquipItem equipItem)
+    {
+        int itemID = equipItem.ItemID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
+                Item selectedItem = selectedPlayer.items[itemID];
+
+                if (selectedItem.isEquipped)
+                {
+                    selectedPlayer.UnequipItem(itemID);
+                    SyncPlayerData(conID);
+                    SendUnequipSuccess(conID);
+                }
+                else
+                {
+                    Player.EquipErrors equipStatus = selectedPlayer.EquipItem(itemID);
+                    SyncPlayerData(conID);
+                    SendEquipState(conID, equipStatus);
+                }
+            }
+        }
+
+
+    }
+
+    private void GetDiscardItem(int conID, int chanID, int rHostID, DiscardItem discardItem)
+    {
+        int itemID = discardItem.ItemID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player selectedPlayer = GameManager.instance.GetPlayer(conID);
+                selectedPlayer.DiscardItem(itemID);
+                SyncPlayerData(conID);
+                SendDiscardSuccess(conID);
+            }
+        }
+    }
+
+    private void GetStealItem(int conID, int chanID, int rHostID, StealItem stealItem)
+    {
+        int itemID = stealItem.ItemID;
+        int loserID = stealItem.LoserID;
+
+        foreach (GameObject player in playerArray())
+        {
+            if (player.GetComponent<Player>().playerID == conID)
+            {
+                Player winningPlayer = GameManager.instance.GetPlayer(conID);
+                Player losingPlayer = GameManager.instance.GetPlayer(loserID);
+                Item selectedItem = losingPlayer.items[itemID];
+
+                bool successfulSteal = false;
+
+                if (winningPlayer.GiveItem(selectedItem))
+                {
+                    losingPlayer.RemoveItem(itemID);
+                    successfulSteal = true;
+                    SyncPlayerData(loserID);
+                    SendItemStolen(loserID, selectedItem.ItemName);
+                }
+
+                SyncPlayerData(conID);
+                SendStealSuccess(conID, successfulSteal);
+            }
+        }
+    }
+
+    private void GetStealDiscardItem(int conID, int chanID, int rHostID, StealDiscardItem stealDiscardItem)
+    {
+        int itemID = stealDiscardItem.ItemID;
+        int loserID = stealDiscardItem.LoserID;
+
+        Player losingPlayer = GameManager.instance.GetPlayer(loserID);
+
+        losingPlayer.DiscardItem(itemID);
+        SyncPlayerData(loserID);
+        SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
+        SendStealDiscardSuccess(conID);
+    }
+
+    private void GetAISpecSelection(int conID, int chanID, int rHostID, AISpecSelection aISpecSelection)
+    {
+        GameManager.SpecScores selectedSpec = (GameManager.SpecScores)aISpecSelection.SelectedSpec;
+
+        bool attackOutcome = GameManager.instance.AIAttackPlayer(selectedSpec);
+
+        SendAIAttackResult(conID, attackOutcome);
+        SendIsTraitor();
     }
     #endregion
 }

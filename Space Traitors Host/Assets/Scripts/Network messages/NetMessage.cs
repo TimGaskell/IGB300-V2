@@ -26,13 +26,21 @@ public static class NetOP
     public const int ChangeCharacter = 28;
     public const int TraitorVictory = 30;
     public const int PlayerDataSync = 31;
-    public const int SendRoomCost = 32;
-    public const int AbilityActivated = 33;
-    public const int ComponentInstalled = 34;
-    public const int NumComponentsInstalled = 35;
-    public const int CanInstallComponent = 36;
-    public const int CombatLoser = 37;
-    public const int AllPlayerData = 38;
+    public const int AbilityActivated = 32;
+    public const int ComponentInstalled = 33;
+    public const int NumComponentsInstalled = 34;
+    public const int CanInstallComponent = 35;
+    public const int CombatLoser = 36;
+    public const int AllPlayerData = 37;
+    public const int UnequipSuccess = 42;
+    public const int EquipState = 43;
+    public const int DiscardSuccess = 44;
+    public const int StealSuccess = 45;
+    public const int StealDiscardSuccess = 46;
+    public const int ItemStolen = 47;
+    public const int AIAttackResult = 49;
+    public const int SendRoomCost = 50;
+    
 
 
     #endregion
@@ -50,7 +58,12 @@ public static class NetOP
     public const int InstallComponent = 24 ;
     public const int ActionPoints = 25;
     public const int NewPhase = 29;
-    public const int SelectRoom = 33;
+    public const int EquipItem = 38;
+    public const int DiscardItem = 39;
+    public const int StealItem = 40;
+    public const int StealDiscardItem = 41;
+    public const int AISpecSelect = 48;
+    public const int SelectRoom = 49;
     #endregion
 }
 

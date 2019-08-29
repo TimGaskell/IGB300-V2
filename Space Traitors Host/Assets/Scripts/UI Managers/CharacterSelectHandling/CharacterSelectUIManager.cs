@@ -23,7 +23,7 @@ public class CharacterSelectUIManager : MonoBehaviour
         {
             serverActivePanel.SetActive(true);
             noServerPanel.SetActive(false);
-            PlayerObject = GameObject.Find("PlayerInfoHolder");
+           
         }
        
     }
@@ -94,7 +94,7 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     public void EndSelection() {
         
-        PlayerObject.GetComponent<Player>().Character = new Character((Character.CharacterTypes)(int)tempCharacterType);
+        ClientManager.instance.PlayerCharacter = new Character((Character.CharacterTypes)(int)tempCharacterType);
         SelectButton.GetComponent<Button>().enabled = false;
         SelectButton.GetComponent<Image>().color = Color.gray;
         activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("Please wait");

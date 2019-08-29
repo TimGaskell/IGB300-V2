@@ -12,7 +12,7 @@ public class ClientUiManager : MonoBehaviour
 
     public void Start() {
 
-       PlayerObject =  GameObject.Find("PlayerInfoHolder");
+      
 
     }
 
@@ -26,7 +26,7 @@ public class ClientUiManager : MonoBehaviour
             PlayerInput.GetComponent<CanvasGroup>().interactable = false;
             Server.Instance.SendPlayerInformation(name);
             ClientManager.instance.playerName = name;
-            PlayerObject.GetComponent<Player>().playerName = name;
+           
             
         }
         else {

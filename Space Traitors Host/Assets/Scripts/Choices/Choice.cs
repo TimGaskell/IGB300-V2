@@ -120,7 +120,7 @@ public class Choice
     /// enum for outputting the reason a choice is not available to a player
     /// 
     /// </summary>
-    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available };
+    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available, maxItems };
 
     /// <summary>
     /// 
@@ -169,6 +169,11 @@ public class Choice
             return IsAvailableTypes.powerAtMax;
         }
 
+        if (specItem.ItemType != Item.ItemTypes.Default && checkedPlayer.items.Count == Player.MAX_ITEMS)
+        {
+            return IsAvailableTypes.maxItems;
+        }
+
         //If the choice has been determined that it is not unavailable for a reason, returns that it is available
         return IsAvailableTypes.available;
     }
@@ -189,6 +194,8 @@ public class Choice
                 return "You have no corruption";
             case (IsAvailableTypes.powerAtMax):
                 return "AI Power already at max";
+            case (IsAvailableTypes.maxItems):
+                return "You cannot carry any more items";
             default:
                 return "Not a valid Error Text";
         }
