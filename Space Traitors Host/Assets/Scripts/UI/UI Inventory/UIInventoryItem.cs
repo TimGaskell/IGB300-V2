@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -26,10 +27,15 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // Start is called before the first frame update
     void Start()
     {
+        //Set tranform defaults 
         origin = transform.position;
         slotOrigin = transform.position;
         pointerPos = transform.position;
+
+        //Get the item name
         itemName = itemType.ToString();
+        string displayName = itemName.Replace('_', ' ');
+        transform.GetChild(1).GetComponent<Text>().text = displayName;
     }
 
     // Update is called once per frame
@@ -54,6 +60,9 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (held)
         {
+            //Item label appears
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
 
             //X Position
             if ((int)transform.position.x < (int)pointerPos.x - positionRange)
@@ -66,6 +75,12 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
                 transform.position = new Vector3(transform.position.x, transform.position.y + pointerSpeed * Time.deltaTime, transform.position.z);
             else if ((int)transform.position.y > (int)pointerPos.y + positionRange)
                 transform.position = new Vector3(transform.position.x, transform.position.y - pointerSpeed * Time.deltaTime, transform.position.z);
+        }
+        else
+        {
+            //Item label disappears
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 
@@ -81,11 +96,13 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             //Equip Item
             inventory.GetComponent<UIInventory>().EquipChange(itemName, true);
+            isEqupped = true;
         }
         else
         {
             //Unequip Item
             inventory.GetComponent<UIInventory>().EquipChange(itemName, false);
+            isEqupped = false;
         }
 
         //Item swapping- if an item already exists in the inv. slot's place, send it to the carried UI Item's original 
@@ -127,6 +144,7 @@ public class UIInventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExit
             pointerPos.x = origin.x;
             pointerPos.y = origin.y;
             transform.position = origin;
+
         }
     }
     #endregion

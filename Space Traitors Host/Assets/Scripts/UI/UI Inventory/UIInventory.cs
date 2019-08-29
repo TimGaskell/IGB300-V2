@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class UIInventory : MonoBehaviour
 {
-    public int inventorySize = 0;
-    public float posAdjustment = -100f, padding = 100f;
+    public int inventorySize = 0; 
+    public float posAdjustment = -100f, padding = 100f;         //Use posAdjustment and padding to alter where inventory slots appear
     private float posAdjustmentE, posAdjustmentU;
     public GameObject inventorySlot;
     public GameObject UIitem;
