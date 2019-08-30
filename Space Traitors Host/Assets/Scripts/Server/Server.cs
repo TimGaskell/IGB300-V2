@@ -363,7 +363,11 @@ public class Server : MonoBehaviour
             case NetOP.PlayerDataSync:
                 SyncClientData(conID, chanID, rHostID, (PlayerDataSync)msg);
                 break;
-            
+            case NetOP.AbilityInformation:
+                GetAbilityInfo(conID, chanID, rHostID, (AbilityInformation)msg);
+                break;
+
+
 
 
         }
@@ -959,9 +963,16 @@ public class Server : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Character Selection")
         {
-
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+        }
+        else if(SceneManager.GetActiveScene().name == "Client GameLevel") {
+
+            Debug.Log("is your turn");
+            GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
+            SendNewPhase();
+            ClientUIManager.instance.DisplayCurrentPhase();
+
         }
     }
 
@@ -1066,16 +1077,23 @@ public class Server : MonoBehaviour
 
     private void GetAbilityInfo(int conID, int chanID, int rHostID, AbilityInformation abilityInformation)
     {
+        Debug.Log("recieved ability information");
+        ClientManager.instance.abilities = new List<Ability>();
         for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
         {
             Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);
+            ClientManager.instance.abilities.Add(ability);
 
             //Need to send this information to the UI Manager to display to the player
             //Displayed information would be the ability name, the scrap cost, the 
             //corruption cost (stored within ability) as well as the booleans in
             //abiltyInformation, CheckCorruptio and CheckScrap, which can determine
             //whether or not the ability can be selected
+           
         }
+        AbilityManager.instance.CheckCorruption = abilityInformation.CheckCorruption;
+        AbilityManager.instance.CheckCorruption = abilityInformation.CheckScrap;
+        AbilityManager.instance.SetupAbilities();
     }
 
     private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
@@ -1444,7 +1462,7 @@ public class Server : MonoBehaviour
     public void SendNewPhase()
     {
         NewPhase newPhase = new NewPhase();
-
+        Debug.Log("sent newphase");
         SendServer(newPhase);
     }
 
@@ -1880,7 +1898,7 @@ public class Server : MonoBehaviour
     private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
     {
         GameManager.instance.IncrementPhase();
-
+        Debug.Log("current Phase " + GameManager.instance.currentPhase);
         int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
 
         switch (GameManager.instance.CurrentVictory)
@@ -1900,6 +1918,7 @@ public class Server : MonoBehaviour
                 {
                     case (GameManager.TurnPhases.Abilities):
                         SendAbilityInformation(activePlayerID);
+                        Debug.Log("sent ability information");
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points

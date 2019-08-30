@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     public const string LobbyScene = "Lobby";
     public const string CharacterScene = "Server Character Selection";
-    public const string MainGameScene = "Game Level";
+    public const string MainGameScene = "Server GameLevel";
 
     public const string NoServerLobbyScene = "NOSERVER Lobby";
     public const string NoServerCharacterScene = "NOSERVER Character Selection";
@@ -476,7 +476,7 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         //Reset variables to their default state
-        activePlayer = 0;
+        activePlayer = 1;
         installedComponents = 0;
 
         aiPower = 0;
@@ -502,6 +502,9 @@ public class GameManager : MonoBehaviour
         traitorWinID = DEFAULT_PLAYER_ID;
 
         sabotageCharges = 0;
+        Debug.Log("Sent Start Game to " + activePlayer);
+        Server.Instance.SendActivePlayer(activePlayer);
+        
     }
 
     /// <summary>
@@ -680,9 +683,9 @@ public class GameManager : MonoBehaviour
         
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers)
+        if (activePlayer == numPlayers+1)
         {
-            activePlayer = 0;
+            activePlayer = 1;
             if (CheckNonTraitorVictory())
             {
                 CurrentVictory = VictoryTypes.NonTraitor;
@@ -696,6 +699,8 @@ public class GameManager : MonoBehaviour
         {
             //When the players turn starts, disables any active abilities they may have
             GetActivePlayer().DisableActiveAbility();
+
+            Server.Instance.SendActivePlayer(activePlayer);
         }
     }
 
@@ -712,7 +717,10 @@ public class GameManager : MonoBehaviour
     {
         switch (currentPhase)
         {
+            case (TurnPhases.Default):
+                break;
             case (TurnPhases.Abilities):
+                break;               
             case (TurnPhases.Movement):
                 currentPhase += 1;
                 break;

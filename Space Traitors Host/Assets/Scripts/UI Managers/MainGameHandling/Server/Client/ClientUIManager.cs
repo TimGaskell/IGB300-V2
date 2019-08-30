@@ -50,6 +50,23 @@ public class ClientUIManager : MonoBehaviour
         {
             serverActivePanel.SetActive(true);
             noServerPanel.SetActive(false);
+
+            abilityPanel.SetActive(false);
+            actionPointPanel.SetActive(false);
+            movementPanel.SetActive(false);
+            interactionPanel.SetActive(true);
+            interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
+            interactionPanel.SetActive(false);
+            basicSurgePanel.SetActive(false);
+            attackSurgePanel.SetActive(false);
+
+            nonTraitorVictoryPanel.SetActive(false);
+            traitorVictoryPanel.SetActive(false);
+
+            sabotagePanel.SetActive(false);
+            inventoryPanel.SetActive(false);
+            DisplayCurrentPhase();
+  
         }
         else
         {
@@ -78,8 +95,6 @@ public class ClientUIManager : MonoBehaviour
 
             playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
             DisplayCurrentPhase();
-            UpdateAIPower();
-            UpdateComponentTracker();
         }
 
 
@@ -91,7 +106,7 @@ public class ClientUIManager : MonoBehaviour
         UpdatePlayerStats();
         if (GameManager.instance.serverActive)
         {
-            throw new NotImplementedException("Server Not Implemented");
+            
         }
         else
         {
@@ -199,18 +214,16 @@ public class ClientUIManager : MonoBehaviour
     /// Enables or disables the panels pertaining to the current phase of the game
     /// 
     /// </summary>
-    private void DisplayCurrentPhase()
+    public void DisplayCurrentPhase()
     {
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Abilities):
-                UpdateAIPower();
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
                 abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
-                playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -281,36 +294,8 @@ public class ClientUIManager : MonoBehaviour
        
     }
 
-    /// <summary>
-    /// 
-    /// Update the AI Power panel with the current AI Power for the slider and the counter
-    /// 
-    /// </summary>
-    private void UpdateAIPower()
-    {
-        aiPowerPanel.SetActive(true);
-        aiPowerPanel.GetComponent<AIPowerComponents>().powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
-        aiPowerPanel.GetComponent<AIPowerComponents>().powerSlider.GetComponent<Slider>().value = GameManager.instance.AIPower;
-    }
-
-    private void UpdateComponentTracker()
-    {
-        if (GameManager.instance.CheckInstalledComponents())
-        {
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(false);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(false);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(true);
-        }
-        else
-        {
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().header.SetActive(true);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.SetActive(true);
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().victoryText.SetActive(false);
-
-            componentTrackerPanel.GetComponent<ComponentTrackerComponents>().tracker.GetComponent<TextMeshProUGUI>().text =
-                string.Format("{0} / {1}", GameManager.instance.installedComponents, GameManager.instance.NumComponents);
-        }
-    }
+  
+   
 
     /// <summary>
     /// 
@@ -323,7 +308,7 @@ public class ClientUIManager : MonoBehaviour
         {
             sabotagePanel.SetActive(true);
         }
-        UpdateComponentTracker();
+ 
         playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }

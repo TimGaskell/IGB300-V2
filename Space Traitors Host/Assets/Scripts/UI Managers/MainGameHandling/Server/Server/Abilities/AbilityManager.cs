@@ -7,6 +7,8 @@ using System;
 
 public class AbilityManager : MonoBehaviour
 {
+
+    public static AbilityManager instance = null;
     public List<GameObject> abilityButtons;
     public GameObject selectedText;
     public GameObject selectButton;
@@ -28,6 +30,13 @@ public class AbilityManager : MonoBehaviour
 
     public GameObject playerCards;
 
+    public bool[] CheckCorruption;
+    public bool[] CheckScrap;
+
+    private void Start() {
+        instance = this;
+    }
+
     /// <summary>
     /// 
     /// Setup the abilities panel to display the abilities avaialble to the player, including disabling abilities which they do
@@ -36,6 +45,7 @@ public class AbilityManager : MonoBehaviour
     /// </summary>
     public void SetupAbilities()
     {
+        Debug.Log("setting up abilities");
         selectedAbility = new Ability();
 
         abilityInfoText.SetActive(false);
@@ -51,14 +61,16 @@ public class AbilityManager : MonoBehaviour
 
         foreach (GameObject abilityButton in abilityButtons)
         {
-            Ability currentAbility = GameManager.instance.GetActivePlayer().GetAbility(counter);
+            Ability currentAbility = ClientManager.instance.abilities[counter];
+
+            Debug.Log("Ability " + ClientManager.instance.abilities[counter]);
             abilityButton.GetComponent<Button>().interactable = true;
 
             abilityButton.GetComponent<AbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
             abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
             abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = currentAbility.scrapCost.ToString();
 
-            if (currentAbility.CheckScrap())
+            if (CheckScrap[counter])
             {
                 abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.black;
             }
@@ -68,7 +80,7 @@ public class AbilityManager : MonoBehaviour
                 abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
 
-            if (currentAbility.CheckCorruption())
+            if (CheckCorruption[counter])
             {                
                 abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.black;
             }

@@ -167,6 +167,8 @@ public class ClientManager : MonoBehaviour
         }
     }
 
+   
+
     #region Enum Converters
 
     public Character GetCharacterInfo(int characterID)
