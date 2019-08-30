@@ -402,7 +402,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -1725,7 +1725,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 35892599}
         m_MethodName: IncrementPhase
         m_Mode: 1
         m_Arguments:
@@ -2969,7 +2969,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -3841,6 +3841,7 @@ GameObject:
   - component: {fileID: 103062792}
   - component: {fileID: 103062791}
   - component: {fileID: 103062790}
+  - component: {fileID: 103062795}
   m_Layer: 5
   m_Name: Ability3Button
   m_TagString: Untagged
@@ -3903,7 +3904,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectAbility
         m_Mode: 3
         m_Arguments:
@@ -3975,6 +3976,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &103062795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103062789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88345939194657245aad76c1d080bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityNameText: {fileID: 1108014158}
+  corruptionText: {fileID: 1510279318}
+  scrapText: {fileID: 1597656054}
 --- !u!1 &106925116
 GameObject:
   m_ObjectHideFlags: 0
@@ -11970,6 +11986,7 @@ GameObject:
   - component: {fileID: 377592704}
   - component: {fileID: 377592703}
   - component: {fileID: 377592702}
+  - component: {fileID: 377592706}
   m_Layer: 5
   m_Name: EngineerTarget
   m_TagString: Untagged
@@ -12051,7 +12068,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -12101,6 +12118,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377592700}
   m_CullTransparentMesh: 0
+--- !u!114 &377592706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377592700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 4
 --- !u!1 &387836950
 GameObject:
   m_ObjectHideFlags: 0
@@ -13661,6 +13692,7 @@ GameObject:
   - component: {fileID: 458691428}
   - component: {fileID: 458691427}
   - component: {fileID: 458691426}
+  - component: {fileID: 458691431}
   m_Layer: 5
   m_Name: Ability1Button
   m_TagString: Untagged
@@ -13723,7 +13755,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectAbility
         m_Mode: 3
         m_Arguments:
@@ -13795,6 +13827,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &458691431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458691425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88345939194657245aad76c1d080bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityNameText: {fileID: 430614967}
+  corruptionText: {fileID: 631824721}
+  scrapText: {fileID: 483368433}
 --- !u!1 &464164662
 GameObject:
   m_ObjectHideFlags: 0
@@ -14166,7 +14213,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -17262,6 +17309,7 @@ GameObject:
   - component: {fileID: 540105342}
   - component: {fileID: 540105341}
   - component: {fileID: 540105340}
+  - component: {fileID: 540105345}
   m_Layer: 5
   m_Name: Ability4Button
   m_TagString: Untagged
@@ -17324,7 +17372,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectAbility
         m_Mode: 3
         m_Arguments:
@@ -17396,6 +17444,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &540105345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540105339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88345939194657245aad76c1d080bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityNameText: {fileID: 784575683}
+  corruptionText: {fileID: 151812122}
+  scrapText: {fileID: 1344822818}
 --- !u!1 &542067145
 GameObject:
   m_ObjectHideFlags: 0
@@ -18296,11 +18359,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -20799,6 +20862,7 @@ GameObject:
   - component: {fileID: 661003107}
   - component: {fileID: 661003106}
   - component: {fileID: 661003105}
+  - component: {fileID: 661003110}
   m_Layer: 5
   m_Name: Ability2Button
   m_TagString: Untagged
@@ -20861,7 +20925,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectAbility
         m_Mode: 3
         m_Arguments:
@@ -20933,6 +20997,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &661003110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661003104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88345939194657245aad76c1d080bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityNameText: {fileID: 123100086}
+  corruptionText: {fileID: 2022373397}
+  scrapText: {fileID: 1254226301}
 --- !u!1 &661359325
 GameObject:
   m_ObjectHideFlags: 0
@@ -23634,11 +23713,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -24324,7 +24403,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -24883,7 +24962,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -25269,6 +25348,7 @@ GameObject:
   - component: {fileID: 820649034}
   - component: {fileID: 820649033}
   - component: {fileID: 820649032}
+  - component: {fileID: 820649035}
   m_Layer: 5
   m_Name: AbilityActivePanel
   m_TagString: Untagged
@@ -25348,6 +25428,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 820649030}
   m_CullTransparentMesh: 0
+--- !u!114 &820649035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820649030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d32135d11918de479b0bf9c276dc3b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeAbilityText: {fileID: 1443353808}
 --- !u!1 &825513327
 GameObject:
   m_ObjectHideFlags: 0
@@ -26802,7 +26895,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4ee393794574d40ab6c516401c48c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityButtons: []
+  abilityButtons:
+  - {fileID: 458691425}
+  - {fileID: 661003104}
+  - {fileID: 103062789}
+  - {fileID: 540105339}
+  - {fileID: 1783592364}
   selectedText: {fileID: 1819015018}
   selectButton: {fileID: 2008687418}
   abilityActiveDisplay: {fileID: 820649030}
@@ -35372,7 +35470,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -37623,6 +37721,7 @@ GameObject:
   - component: {fileID: 1206463705}
   - component: {fileID: 1206463704}
   - component: {fileID: 1206463703}
+  - component: {fileID: 1206463707}
   m_Layer: 5
   m_Name: ButlerTarget
   m_TagString: Untagged
@@ -37704,7 +37803,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -37754,6 +37853,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206463701}
   m_CullTransparentMesh: 0
+--- !u!114 &1206463707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206463701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 2
 --- !u!1 &1206752173
 GameObject:
   m_ObjectHideFlags: 0
@@ -39285,7 +39398,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectResource
         m_Mode: 3
         m_Arguments:
@@ -39666,7 +39779,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: CancelSelection
         m_Mode: 1
         m_Arguments:
@@ -41076,6 +41189,7 @@ GameObject:
   - component: {fileID: 1300252546}
   - component: {fileID: 1300252545}
   - component: {fileID: 1300252544}
+  - component: {fileID: 1300252548}
   m_Layer: 5
   m_Name: SingerTarget
   m_TagString: Untagged
@@ -41157,7 +41271,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -41207,6 +41321,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300252542}
   m_CullTransparentMesh: 0
+--- !u!114 &1300252548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300252542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 5
 --- !u!1 &1301156393
 GameObject:
   m_ObjectHideFlags: 0
@@ -41896,7 +42024,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -45012,11 +45140,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -45334,7 +45462,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -47227,7 +47355,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -47407,7 +47535,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: CancelSelection
         m_Mode: 1
         m_Arguments:
@@ -47470,6 +47598,7 @@ GameObject:
   - component: {fileID: 1503672361}
   - component: {fileID: 1503672360}
   - component: {fileID: 1503672359}
+  - component: {fileID: 1503672364}
   m_Layer: 5
   m_Name: TechieTarget
   m_TagString: Untagged
@@ -47531,7 +47660,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -47601,6 +47730,20 @@ RectTransform:
   m_AnchoredPosition: {x: 785, y: -250}
   m_SizeDelta: {x: 180, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1503672364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503672358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 6
 --- !u!1 &1509444212
 GameObject:
   m_ObjectHideFlags: 0
@@ -51682,7 +51825,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: ConfirmTarget
         m_Mode: 1
         m_Arguments:
@@ -53641,7 +53784,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -54863,7 +55006,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 35892599}
         m_MethodName: IncrementPhase
         m_Mode: 1
         m_Arguments:
@@ -55813,7 +55956,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -56269,7 +56412,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -57014,7 +57157,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectResource
         m_Mode: 3
         m_Arguments:
@@ -59239,6 +59382,7 @@ GameObject:
   - component: {fileID: 1783592367}
   - component: {fileID: 1783592366}
   - component: {fileID: 1783592365}
+  - component: {fileID: 1783592370}
   m_Layer: 5
   m_Name: Ability5Button
   m_TagString: Untagged
@@ -59301,7 +59445,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectAbility
         m_Mode: 3
         m_Arguments:
@@ -59373,6 +59517,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1783592370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783592364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88345939194657245aad76c1d080bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityNameText: {fileID: 1920054669}
+  corruptionText: {fileID: 1253586826}
+  scrapText: {fileID: 1859362086}
 --- !u!1 &1787058255
 GameObject:
   m_ObjectHideFlags: 0
@@ -60069,7 +60228,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: SelectResource
         m_Mode: 3
         m_Arguments:
@@ -61390,7 +61549,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -67457,7 +67616,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: ConfirmAbility
         m_Mode: 1
         m_Arguments:
@@ -71411,7 +71570,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 854275126}
         m_MethodName: ConfirmResource
         m_Mode: 1
         m_Arguments:

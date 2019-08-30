@@ -1093,7 +1093,7 @@ public class Server : MonoBehaviour
            
         }
         AbilityManager.instance.CheckCorruption = abilityInformation.CheckCorruption;
-        AbilityManager.instance.CheckCorruption = abilityInformation.CheckScrap;
+        AbilityManager.instance.CheckScrap = abilityInformation.CheckScrap;
         AbilityManager.instance.SetupAbilities();
     }
 
@@ -1900,7 +1900,7 @@ public class Server : MonoBehaviour
     {
         GameManager.instance.IncrementPhase();
         Debug.Log("current Phase " + GameManager.instance.currentPhase);
-        int activePlayerID = GameManager.instance.activePlayer;
+        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
         Debug.Log("Current player " + activePlayerID);
 
         switch (GameManager.instance.CurrentVictory)

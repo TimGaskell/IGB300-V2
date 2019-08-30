@@ -266,6 +266,7 @@ public class ClientUIManager : MonoBehaviour
     public void IncrementPhase()
     {
         GameManager.instance.IncrementPhase();
+        Server.Instance.SendNewPhase();
         if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
         {
             nonTraitorVictoryPanel.SetActive(true);

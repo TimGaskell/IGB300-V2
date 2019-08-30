@@ -59,13 +59,15 @@ public class AbilityManager : MonoBehaviour
 
         int counter = 0;
 
+        Debug.Log("it gets here");
+
         foreach (GameObject abilityButton in abilityButtons)
         {
             Ability currentAbility = ClientManager.instance.abilities[counter];
 
             Debug.Log("Ability " + ClientManager.instance.abilities[counter]);
             abilityButton.GetComponent<Button>().interactable = true;
-
+            
             abilityButton.GetComponent<AbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
             abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
             abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = currentAbility.scrapCost.ToString();
@@ -102,7 +104,7 @@ public class AbilityManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button selected, which relates to the index of the ability in the players ability list</param>
     public void SelectAbility(int buttonID)
     {
-        selectedAbility = GameManager.instance.GetActivePlayer().GetAbility(buttonID);
+        selectedAbility = ClientManager.instance.abilities[buttonID];
 
         selectedText.GetComponent<TextMeshProUGUI>().text = selectedAbility.AbilityName;
         selectButton.GetComponent<Button>().interactable = true;
@@ -124,6 +126,7 @@ public class AbilityManager : MonoBehaviour
             case (Ability.AbilityTypes.Sabotage):
                 selectedAbility.Activate();
                 DisplayActiveAbility();
+                Server.Instance.SendAbilityUsed(selectedAbility.abilityType, GameManager.DEFAULT_PLAYER_ID, Ability.ScanResources.Default);
                 break;
             
             //Case for abilities which require a player to be targetted
@@ -133,7 +136,6 @@ public class AbilityManager : MonoBehaviour
             case (Ability.AbilityTypes.Muddle_Sensors):
             case (Ability.AbilityTypes.Code_Inspection):
             case (Ability.AbilityTypes.Supercharge):
-
                 playerTargetDisplay.SetActive(true);
                 playerSelectedButton.GetComponent<Button>().interactable = false;
                 playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "No target selected";
@@ -162,7 +164,7 @@ public class AbilityManager : MonoBehaviour
     {
         selectedPlayer = targetButtons[buttonID].GetComponent<TargetProperties>().playerID;
         playerSelectedButton.GetComponent<Button>().interactable = true;
-        playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Selected: {0}", GameManager.instance.GetPlayer(selectedPlayer).playerName);
+        playerSelectedButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Selected: {0}", ClientManager.instance.GetPlayerData(selectedPlayer).PlayerName);  
     }
 
     /// <summary>
@@ -176,6 +178,7 @@ public class AbilityManager : MonoBehaviour
         if(selectedAbility.abilityType == Ability.AbilityTypes.Code_Inspection)
         {
             selectedAbility.Activate(selectedPlayer, out bool isTraitor);
+            Server.Instance.SendAbilityUsed(selectedAbility.abilityType, selectedPlayer, Ability.ScanResources.Default);
             //Set up the modifier to the traitor string
             string traitorString = "";
             if (!isTraitor)
@@ -183,11 +186,12 @@ public class AbilityManager : MonoBehaviour
                 traitorString = "not ";
             }
             abilityInfoText.SetActive(true);
-            abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", GameManager.instance.GetPlayer(selectedPlayer), traitorString);
+            abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", ClientManager.instance.GetPlayerData(selectedPlayer).PlayerName, traitorString);
         }
         else
         {
             selectedAbility.Activate(selectedPlayer);
+            Server.Instance.SendAbilityUsed(selectedAbility.abilityType, selectedPlayer, Ability.ScanResources.Default);
         }
 
         DisplayActiveAbility();
@@ -227,6 +231,7 @@ public class AbilityManager : MonoBehaviour
     {
         //Find the rooms which contain the selected resource and display it to the player
         List<int> scannedRooms = selectedAbility.Activate(selectedResource);
+        Server.Instance.SendAbilityUsed(selectedAbility.abilityType, GameManager.DEFAULT_PLAYER_ID, selectedResource);
         List<string> scannedRoomsString = new List<string>();
         foreach (int roomID in scannedRooms)
         {
