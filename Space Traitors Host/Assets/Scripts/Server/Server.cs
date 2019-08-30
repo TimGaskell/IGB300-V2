@@ -1900,7 +1900,7 @@ public class Server : MonoBehaviour
     {
         GameManager.instance.IncrementPhase();
         Debug.Log("current Phase " + GameManager.instance.currentPhase);
-        int activePlayerID = GameManager.instance.GetActivePlayer().playerID -1;
+        int activePlayerID = GameManager.instance.activePlayer;
         Debug.Log("Current player " + activePlayerID);
 
         switch (GameManager.instance.CurrentVictory)
