@@ -1082,6 +1082,7 @@ public class Server : MonoBehaviour
         for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
         {
             Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);
+            Debug.Log(ability.abilityDescription);
             ClientManager.instance.abilities.Add(ability);
 
             //Need to send this information to the UI Manager to display to the player
