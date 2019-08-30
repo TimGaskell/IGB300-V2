@@ -492,7 +492,7 @@ public class GameManager : MonoBehaviour
 
         InstantiatePlayers();
 
-        currentPhase = TurnPhases.Abilities;
+        currentPhase = TurnPhases.Default;
 
         roomSelection = false;
         playerMoving = false;
@@ -502,8 +502,8 @@ public class GameManager : MonoBehaviour
         traitorWinID = DEFAULT_PLAYER_ID;
 
         sabotageCharges = 0;
-        Debug.Log("Sent Start Game to " + activePlayer);
-        Server.Instance.SendActivePlayer(activePlayer);
+        Debug.Log("Sent Start Game to " + GetActivePlayer().playerID);
+        Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
         
     }
 
@@ -718,8 +718,10 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case (TurnPhases.Default):
+                currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
+                currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):
                 currentPhase += 1;
