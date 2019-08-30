@@ -223,7 +223,6 @@ public class ClientUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
-                abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
