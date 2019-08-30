@@ -442,8 +442,10 @@ public class Server : MonoBehaviour
 
         SceneChange scene = new SceneChange();
         scene.SceneName = SceneName;
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
+
+            Debug.Log("Send Change Scene to " + i);
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(scene);
         }
@@ -618,7 +620,7 @@ public class Server : MonoBehaviour
         surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(surge);
@@ -719,7 +721,7 @@ public class Server : MonoBehaviour
 
         InnocentVictory innocent = new InnocentVictory();
       
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(innocent);
@@ -857,7 +859,7 @@ public class Server : MonoBehaviour
         //Setup the player data (need to clarify this is working properly since it pulls from the
         //players list in the server rather than the game manager)
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
            
 
@@ -868,7 +870,7 @@ public class Server : MonoBehaviour
 
         }
 
-        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1 ; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(allPlayerData);
@@ -1508,6 +1510,7 @@ public class Server : MonoBehaviour
         GameManager.instance.GetPlayer(conID).playerName = details.PlayerName;
         
         Debug.Log("Recieved Player Name");
+        Debug.Log("Set name to " + GameManager.instance.GetPlayer(conID).playerName);
         
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
@@ -1522,7 +1525,7 @@ public class Server : MonoBehaviour
         GameManager.instance.GetPlayer(conID);
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1564,7 +1567,7 @@ public class Server : MonoBehaviour
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
 
             Player player = GameManager.instance.GetPlayer(i);
@@ -1622,7 +1625,7 @@ public class Server : MonoBehaviour
 
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1666,7 +1669,7 @@ public class Server : MonoBehaviour
     /// <param name="room">int id of the room the player wants to move to.
     private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room) {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1692,7 +1695,7 @@ public class Server : MonoBehaviour
 
     private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
@@ -1720,7 +1723,7 @@ public class Server : MonoBehaviour
     /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
@@ -1747,7 +1750,7 @@ public class Server : MonoBehaviour
     private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
             if(player.playerID == conID)
@@ -1811,7 +1814,7 @@ public class Server : MonoBehaviour
         defenderID = attack.TargetPlayer;
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1843,7 +1846,7 @@ public class Server : MonoBehaviour
     private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1858,7 +1861,7 @@ public class Server : MonoBehaviour
     private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1931,7 +1934,7 @@ public class Server : MonoBehaviour
     {
         int itemID = equipItem.ItemID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1963,7 +1966,7 @@ public class Server : MonoBehaviour
     {
         int itemID = discardItem.ItemID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1983,7 +1986,7 @@ public class Server : MonoBehaviour
         int itemID = stealItem.ItemID;
         int loserID = stealItem.LoserID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 

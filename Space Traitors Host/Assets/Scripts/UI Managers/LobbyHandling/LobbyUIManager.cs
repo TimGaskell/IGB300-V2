@@ -36,7 +36,7 @@ public class LobbyUIManager : NetworkBehaviour
 
     void Update() {
 
-        AddPlayerNames(2);
+        
 
     }
 
@@ -101,27 +101,21 @@ public class LobbyUIManager : NetworkBehaviour
 
     public void AddPlayerNames(int playerID ) {
 
-        // string tempPlayername = GameManager.instance.GetPlayer(playerID).playerName;
+        string tempPlayername = GameManager.instance.GetPlayer(playerID).playerName;
 
-        Debug.Log(nameEntryFields.GetChild(0).name);
+                  
+        foreach(Transform entryField in nameEntryFields.transform)
+        {
             
-        //foreach(Transform entryField in nameEntryFields.transform)
-        //{
-        //    string tempPlayername = GameManager.instance.GetPlayer(playerID).playerName;
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    break;
+                    
+                }
+            }
 
-        //    if(tempPlayername != "")
-        //    {
-        //        if(entryField.GetComponent<TMP_InputField>().text == "")
-        //        {
-        //            entryField.GetComponent<TMP_InputField>().text = tempPlayername;
-        //            counter++;
-        //        }
-        //    }
-
-        //}
-
-
-
+        }
 
     }
 
@@ -136,10 +130,7 @@ public class LobbyUIManager : NetworkBehaviour
     {
         //counter for keeping track of the playerIDs
         int counter = 0;
-        //Reset the players list for a new game
-        GameManager.instance.ResetPlayers();
-
-        
+       
         //Obtains each child object of the textFields object
         foreach (Transform entryField in textFields.transform)
         {
@@ -147,14 +138,14 @@ public class LobbyUIManager : NetworkBehaviour
             //If any of the input fields are empty, stops the process and presents an error. Otherwise generates a new player in the game manager
             if (tempPlayerName != "")
             {
-                GameManager.instance.GeneratePlayer(counter+1, tempPlayerName);
+                counter++;
             }
             else
             {
                 Debug.Log(string.Format("Invalid Player Name for Player {0}", counter));
                 break;
             }
-            counter++;
+           
 
             //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
             if (counter == GameManager.instance.numPlayers)
