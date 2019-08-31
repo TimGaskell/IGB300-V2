@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RollActionPoints : MonoBehaviour
 {
     //Currently, the 8 bars must be the topmost children of the battery gameObject, in the correct order.
     private GameObject[] barImages;
-    public Text numberText;
+    public GameObject numberText;
     private GameObject gameManager;
 
     public float timeRange = 0.5f;
@@ -48,7 +49,7 @@ public class RollActionPoints : MonoBehaviour
         //Show the display number
         if (numberText != null)
         {
-            numberText.text = actionPoints.ToString();
+            numberText.GetComponent<TextMeshProUGUI>().text = actionPoints.ToString();
         }
 
         if (!timerStop)
