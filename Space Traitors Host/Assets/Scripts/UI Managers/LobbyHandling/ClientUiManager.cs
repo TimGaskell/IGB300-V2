@@ -8,7 +8,6 @@ using UnityEngine.Networking;
 public class ClientUiManager : MonoBehaviour
 {
     public GameObject PlayerInput;
-    private GameObject PlayerObject;
 
     public void Start() {
 
