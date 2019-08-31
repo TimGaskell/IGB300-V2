@@ -94,7 +94,7 @@ public class Server : MonoBehaviour
 
     //Other
     public AudioSource connectSound;
-  
+
     private List<GameObject> ElminiatedPlayers = new List<GameObject>();
     private List<GameObject> playersRemoved = new List<GameObject>();
     public GameObject[] ScrapTotals;
@@ -228,16 +228,16 @@ public class Server : MonoBehaviour
             //When user connects to game
             case NetworkEventType.ConnectEvent:
                 connectSound.Play();
-                
 
-                GameManager.instance.GeneratePlayer(connectionID,"default");
+
+                GameManager.instance.GeneratePlayer(connectionID, "default");
                 Debug.Log("playerconnection of " + connectionID);
                 break;
 
             //When user disconnects from game
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
-                
+
                 Debug.Log(connectionID + " has disconnected");
                 break;
 
@@ -372,7 +372,7 @@ public class Server : MonoBehaviour
 
         }
 
-                
+
 
     }
     //Not sure which sendClient to use
@@ -408,11 +408,11 @@ public class Server : MonoBehaviour
         SceneManager.LoadScene("Server Character Selection");
     }
 
-    
+
     public void SendClient(NetMessage msg)
     {
         //This is where data is held
-        byte[] buffer = new byte[byteSize*25];
+        byte[] buffer = new byte[byteSize * 25];
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
@@ -446,7 +446,7 @@ public class Server : MonoBehaviour
 
         SceneChange scene = new SceneChange();
         scene.SceneName = SceneName;
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
             Debug.Log("Send Change Scene to " + i);
@@ -585,10 +585,7 @@ public class Server : MonoBehaviour
         SendClient(challenge);
 
     }
- 
 
-    public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor)
-    {
 
     public void SendServerPlayerInformation(int player, int Scaledbrawn, int Scaledskill, int Scaledcharm, int Scaledtech, int scrap, float corruption, int lifepoints, List<string> EquippedItems, List<string> UnEquippedItems, bool isTraitor)
     {
@@ -627,7 +624,7 @@ public class Server : MonoBehaviour
         surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
 
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(surge);
@@ -640,7 +637,7 @@ public class Server : MonoBehaviour
         //IsTarget specifies which player actually is the target
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
             AiAttacks ai = new AiAttacks();
 
@@ -648,7 +645,7 @@ public class Server : MonoBehaviour
             ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
             SendClient(ai);
         }
-   
+
     }
 
     public void SendCombatWinner(int winnerID, int loserID)
@@ -727,8 +724,8 @@ public class Server : MonoBehaviour
     {
 
         InnocentVictory innocent = new InnocentVictory();
-      
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(innocent);
@@ -740,8 +737,8 @@ public class Server : MonoBehaviour
     {
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
-      
-        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
+
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(traitor);
@@ -780,8 +777,9 @@ public class Server : MonoBehaviour
         Debug.Log("send data to" + tempPlayerID);
     }
 
-    public void SendRoomCost(int playerID, int RoomCost) {
-        
+    public void SendRoomCost(int playerID, int RoomCost)
+    {
+
         SendRoomCost roomCost = new SendRoomCost();
         tempPlayerID = playerID;
 
@@ -805,7 +803,7 @@ public class Server : MonoBehaviour
     public void SendComponentInstalled(int installerID, bool successfulInstall)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers ; i++)
+        for (int i = 0; i < GameManager.instance.numPlayers; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
@@ -832,8 +830,8 @@ public class Server : MonoBehaviour
 
 
         }
-        
-        
+
+
     }
 
     public void CanInstallComponent(int playerID)
@@ -866,9 +864,9 @@ public class Server : MonoBehaviour
         //Setup the player data (need to clarify this is working properly since it pulls from the
         //players list in the server rather than the game manager)
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
-           
+
 
             Player player = GameManager.instance.GetPlayer(i);
             allPlayerData.PlayerIDs.Add(player.playerID);
@@ -877,13 +875,13 @@ public class Server : MonoBehaviour
 
         }
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1 ; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(allPlayerData);
 
         }
-       
+
     }
 
     public void SendUnequipSuccess(int playerID)
@@ -987,7 +985,8 @@ public class Server : MonoBehaviour
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
         }
-        else if(SceneManager.GetActiveScene().name == "Client GameLevel") {
+        else if (SceneManager.GetActiveScene().name == "Client GameLevel")
+        {
 
             Debug.Log("is your turn");
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
@@ -1049,7 +1048,7 @@ public class Server : MonoBehaviour
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
 
-        InteractionManager manager = GameObject.Find("InteractionPanel").GetComponent<InteractionManager>() ;
+        InteractionManager manager = GameObject.Find("InteractionPanel").GetComponent<InteractionManager>();
 
         Choice.IsAvailableTypes[] isAvailables = new Choice.IsAvailableTypes[ChoiceRandomiser.CHOICES_PER_ROOM];
         GameManager.SpecScores[] specScores = new GameManager.SpecScores[ChoiceRandomiser.CHOICES_PER_ROOM];
@@ -1058,7 +1057,7 @@ public class Server : MonoBehaviour
         {
             isAvailables[choiceIndex] = (Choice.IsAvailableTypes)roomChoices.IsAvailables[choiceIndex];
             specScores[choiceIndex] = (GameManager.SpecScores)roomChoices.SpecScores[choiceIndex];
-        
+
         }
 
         manager.choiceNames = roomChoices.ChoiceNames;
@@ -1070,28 +1069,26 @@ public class Server : MonoBehaviour
         manager.attackablePlayers = roomChoices.AttackablePlayers;
     }
 
-    private void NeedToChangeCharacter(int conID, int chanID, int rHostID, ChangeCharacter character)
+
+
+
+    private void AvailableRooms(int conID, int chanID, int rHostID, AvailableRooms rooms)
     {
 
-        GameObject Canvas = GameObject.Find("Canvas");
 
-        if (character.AlreadySelected == false)
+        for (int i = 0; i < rooms.AvailableRoomsIDs.Count; i++)
         {
-
-    private void AvailableRooms(int conID, int chanID, int rHostID,AvailableRooms rooms) {
-
-       
-        for (int i=0; i< rooms.AvailableRoomsIDs.Count; i++) {
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
 
             room.transform.GetChild(1).gameObject.SetActive(true);
-                      
+
         }
-          
+
     }
 
-    private void RecieveRoomCost(int conID, int chanID, int rHostID, SendRoomCost cost) {
+    private void RecieveRoomCost(int conID, int chanID, int rHostID, SendRoomCost cost)
+    {
 
 
 
@@ -1116,7 +1113,7 @@ public class Server : MonoBehaviour
             //corruption cost (stored within ability) as well as the booleans in
             //abiltyInformation, CheckCorruptio and CheckScrap, which can determine
             //whether or not the ability can be selected
-           
+
         }
         AbilityManager.instance.CheckCorruption = abilityInformation.CheckCorruption;
         AbilityManager.instance.CheckScrap = abilityInformation.CheckScrap;
@@ -1335,7 +1332,8 @@ public class Server : MonoBehaviour
         }
     }
 
-    private void SpecResult(int conID, int chanID, int rHostID, SpecChallenge challenge) {
+    private void SpecResult(int conID, int chanID, int rHostID, SpecChallenge challenge)
+    {
 
         ClientUIManager.instance.ShowResult(challenge.result);
 
@@ -1408,11 +1406,12 @@ public class Server : MonoBehaviour
         SendServer(ability);
     }
 
-    public void SendActionPoints(int HowManyPoints) {
+    public void SendActionPoints(int HowManyPoints)
+    {
 
         ActionPoints actionPoints = new ActionPoints();
         actionPoints.actionPoints = HowManyPoints;
-     
+
         SendServer(actionPoints);
     }
 
@@ -1538,7 +1537,8 @@ public class Server : MonoBehaviour
         SendServer(aiSpecSelection);
     }
 
-    public void SendRoomChoiceForCost(int roomId) {
+    public void SendRoomChoiceForCost(int roomId)
+    {
 
         SelectRoom select = new SelectRoom();
 
@@ -1555,16 +1555,16 @@ public class Server : MonoBehaviour
     {
 
         GameManager.instance.GetPlayer(conID).playerName = details.PlayerName;
-        
+
         Debug.Log("Recieved Player Name");
         Debug.Log("Set name to " + GameManager.instance.GetPlayer(conID).playerName);
-        
+
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
 
 
-        
+
     }
     private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character)
     {
@@ -1572,7 +1572,7 @@ public class Server : MonoBehaviour
         GameManager.instance.GetPlayer(conID);
 
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1589,7 +1589,7 @@ public class Server : MonoBehaviour
                     GameObject canvas = GameObject.Find("Canvas");
                     canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
                     canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
-                    player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);                  
+                    player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);
                     //Assign Character Stats to player
                     SyncPlayerData(player.playerID);
 
@@ -1608,13 +1608,13 @@ public class Server : MonoBehaviour
         }
 
 
-              
-        
+
+
     }
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
             Player player = GameManager.instance.GetPlayer(i);
@@ -1672,7 +1672,7 @@ public class Server : MonoBehaviour
 
 
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1714,9 +1714,10 @@ public class Server : MonoBehaviour
     /// <param name="chanID">Channel ID of the player</param>
     /// <param name="rHostID">Host ID of the server</param>
     /// <param name="room">int id of the room the player wants to move to.
-    private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room) {
+    private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room)
+    {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1736,13 +1737,14 @@ public class Server : MonoBehaviour
                 SendRoomCost(player.playerID, roomCost);
             }
         }
-      
+
     }
 
 
-    private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo) {
+    private void AssignRoomMovement(int conID, int chanID, int rHostID, Movement moveTo)
+    {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
@@ -1758,7 +1760,7 @@ public class Server : MonoBehaviour
                 player.roomPosition = moveTo.SelectedRoom;
 
             }
-        }             
+        }
     }
 
     /// <summary>
@@ -1770,15 +1772,15 @@ public class Server : MonoBehaviour
     /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
             //Find the correct player
 
-            if(player.playerID == conID)
+            if (player.playerID == conID)
             {
                 int choiceID = choice.ChoiceId;
-               
+
                 Room currentRoom = GameManager.instance.GetRoom(player.roomPosition);
 
                 bool result = currentRoom.roomChoices[choiceID].SelectChoice();
@@ -1786,7 +1788,7 @@ public class Server : MonoBehaviour
                 SyncPlayerData(player.playerID);
 
             }
-        }       
+        }
     }
 
     /// <summary>
@@ -1797,16 +1799,16 @@ public class Server : MonoBehaviour
     private void Inventory(int conID, int chanID, int rHostID, InventoryChanges changes)
     {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
-            if(player.playerID == conID)
+            if (player.playerID == conID)
             {
 
             }
         }
 
-         
+
     }
 
 
@@ -1861,7 +1863,7 @@ public class Server : MonoBehaviour
         defenderID = attack.TargetPlayer;
 
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1880,9 +1882,9 @@ public class Server : MonoBehaviour
             }
 
         }
-    
-           
-        
+
+
+
     }
 
     /// <summary>
@@ -1893,7 +1895,7 @@ public class Server : MonoBehaviour
     private void ItemSelection(int conID, int chanID, int rHostID, ItemSelection selection)
     {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1908,7 +1910,7 @@ public class Server : MonoBehaviour
     private void InstallComponent(int conID, int chanID, int rHostID, InstallComponent component)
     {
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -1921,7 +1923,7 @@ public class Server : MonoBehaviour
             }
         }
 
-     
+
     }
 
     private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
@@ -1973,7 +1975,7 @@ public class Server : MonoBehaviour
                 }
 
                 //Pings the client if they have been selected as a traitor
-                
+
 
                 break;
         }
@@ -1983,7 +1985,7 @@ public class Server : MonoBehaviour
     {
         int itemID = equipItem.ItemID;
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -2008,26 +2010,26 @@ public class Server : MonoBehaviour
             }
         }
 
-          
+
     }
 
     private void GetDiscardItem(int conID, int chanID, int rHostID, DiscardItem discardItem)
     {
         int itemID = discardItem.ItemID;
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
             if (player.playerID == conID)
-            {               
+            {
                 player.DiscardItem(itemID);
                 SyncPlayerData(conID);
                 SendDiscardSuccess(conID);
             }
         }
 
- 
+
     }
 
     private void GetStealItem(int conID, int chanID, int rHostID, StealItem stealItem)
@@ -2035,7 +2037,7 @@ public class Server : MonoBehaviour
         int itemID = stealItem.ItemID;
         int loserID = stealItem.LoserID;
 
-        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
 
@@ -2076,13 +2078,13 @@ public class Server : MonoBehaviour
                         SyncPlayerData(conID);
                     }
 
-                    
+
                     SendStealSuccess(conID, successfulSteal);
                 }
 
             }
         }
-               
+
     }
 
     private void GetStealDiscardItem(int conID, int chanID, int rHostID, StealDiscardItem stealDiscardItem)

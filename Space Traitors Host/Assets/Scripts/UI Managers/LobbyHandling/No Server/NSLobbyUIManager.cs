@@ -114,7 +114,8 @@ public class NSLobbyUIManager : NetworkBehaviour
 
         foreach (Transform entryField in nameEntryFields.transform) {
 
-            string tempPlayername = Server.Instance.players[counter].GetComponent<Player>().playerName;
+            string tempPlayername = "";
+                //Server.Instance.players[counter].GetComponent<Player>().playerName;
 
             if (tempPlayername != "") {
                 if (entryField.GetComponent<TMP_InputField>().text == "") {
