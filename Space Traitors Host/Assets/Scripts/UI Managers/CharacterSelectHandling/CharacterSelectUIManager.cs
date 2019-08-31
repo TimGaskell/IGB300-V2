@@ -22,12 +22,6 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.instance.serverActive)
-        {
-            serverActivePanel.SetActive(true);
-           
-        }
-
         InitCharacterSelection();
 
         
