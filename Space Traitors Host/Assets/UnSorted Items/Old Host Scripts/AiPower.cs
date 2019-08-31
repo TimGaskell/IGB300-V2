@@ -21,18 +21,18 @@ public class AiPower : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        AIPowerSliderUI.value = power;
-        if (power >= traitorAmount)
-        {
-            if (!traitorSent)
-            {
-                //server.GetComponent<Server>().ChooseTraitor();
-                traitorSent = true;
-            }
-        }
-    }
+   // void Update()
+    //{
+       // AIPowerSliderUI.value = power;
+        //if (power >= traitorAmount)
+        //{
+          //  if (!traitorSent)
+            //{
+            //    server.GetComponent<Server>().ChooseTraitor();
+              //  traitorSent = true;
+            //}
+       // }
+   // }
 
 
     public void incrementAIPower()

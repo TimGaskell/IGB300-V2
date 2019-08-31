@@ -12,10 +12,8 @@ public class AiAttacks : NetMessage
 
     }
 
-    public string spec { get; set; }
-    public int specAmount { get; set; }
-    public int damage { get; set; }
-
+    public int TargetID { get; set; }
+    public bool IsTarget { get; set; }
 
 }
 

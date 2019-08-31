@@ -136,7 +136,7 @@ public class SecretPaths : Ability
     public SecretPaths()
     {
         abilityType = AbilityTypes.Secret_Paths;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Reduce action point cost of all paths by 1 for a player on their next turn.";
 
         scrapCost = 6;
         corruptionRequirement = 0;
@@ -171,7 +171,7 @@ public class PowerBoost : Ability
     public PowerBoost()
     {
         abilityType = AbilityTypes.Power_Boost;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Give a player +1 in all their spec scores until the start of your next turn.";
 
         scrapCost = 8;
         corruptionRequirement = 0;
@@ -241,7 +241,7 @@ public class EncouragingSong : Ability
     public EncouragingSong()
     {
         abilityType = AbilityTypes.Encouraging_Song;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Reduce a player's corruption by 15%.";
 
         scrapCost = 5;
         corruptionRequirement = 0;
@@ -272,7 +272,7 @@ public class MuddleSensors : Ability
     public MuddleSensors()
     {
         abilityType = AbilityTypes.Muddle_Sensors;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Turn a player invisible until the start of your next turn.";
 
         scrapCost = 5;
         corruptionRequirement = 0;
@@ -307,7 +307,7 @@ public class SensorScan : Ability
     public SensorScan()
     {
         abilityType = AbilityTypes.Sensor_Scan;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Scan the adjacent rooms to you for scrap, items or components.";
 
         scrapCost = 3;
         corruptionRequirement = 25;
@@ -364,7 +364,7 @@ public class CodeInspection : Ability
     public CodeInspection()
     {
         abilityType = AbilityTypes.Code_Inspection;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Inspect a players code to see if they are a traitor or not.";
 
         scrapCost = 5;
         corruptionRequirement = 50;
@@ -389,7 +389,7 @@ public class Sabotage : Ability
     public Sabotage()
     {
         abilityType = AbilityTypes.Sabotage;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Sabotage the escape shuttle so the next player to install a component takes damage.";
 
         scrapCost = 10;
         corruptionRequirement = 75;
@@ -416,7 +416,7 @@ public class SuperCharge : Ability
     public SuperCharge()
     {
         abilityType = AbilityTypes.Supercharge;
-        abilityDescription = "DESCRIPTION TO ADD";
+        abilityDescription = "Increase a player's max life points by 1 and gain a life point.";
 
         scrapCost = 15;
         corruptionRequirement = 100;

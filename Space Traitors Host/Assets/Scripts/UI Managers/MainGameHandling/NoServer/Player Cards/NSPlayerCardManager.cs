@@ -61,13 +61,13 @@ public class NSPlayerCardManager : MonoBehaviour
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
 
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[0].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledBrawn, player.ModBrawn);
+            ObtainSpecInfo(player.GetScaledSpecScore(GameManager.SpecScores.Brawn), player.GetModdedSpecScore(GameManager.SpecScores.Brawn));
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[1].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledSkill, player.ModSkill);
+            ObtainSpecInfo(player.GetScaledSpecScore(GameManager.SpecScores.Skill), player.GetModdedSpecScore(GameManager.SpecScores.Skill));
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[2].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledTech, player.ModTech);
+            ObtainSpecInfo(player.GetScaledSpecScore(GameManager.SpecScores.Tech), player.GetModdedSpecScore(GameManager.SpecScores.Tech));
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().specCounters[3].GetComponent<TextMeshProUGUI>().text =
-            ObtainSpecInfo(player.ScaledCharm, player.ModCharm);
+            ObtainSpecInfo(player.GetScaledSpecScore(GameManager.SpecScores.Charm), player.GetModdedSpecScore(GameManager.SpecScores.Charm));
 
         string lifePointsString = string.Format("{0} / {1}", player.lifePoints, player.maxLifePoints);
         playerPanels[playerIndex].GetComponent<NSPlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;

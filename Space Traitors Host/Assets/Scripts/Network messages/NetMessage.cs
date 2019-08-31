@@ -16,12 +16,32 @@ public static class NetOP
     public const int TraitorSelction = 7;
     public const int SurgeInformation = 8;
     public const int AiAttacks = 9;
-    public const int CombatResolution = 10;
+    public const int CombatWinner = 10;
     public const int CombatAvailablity = 11;
     public const int CombatBeingAttacked = 12;
     public const int PlayerElimination = 13;
     public const int NonTraitorVictory = 14;
     public const int ChangeScenes = 26;
+    public const int IsActivePlayer = 27;
+    public const int ChangeCharacter = 28;
+    public const int TraitorVictory = 30;
+    public const int PlayerDataSync = 31;
+    public const int AbilityActivated = 32;
+    public const int ComponentInstalled = 33;
+    public const int NumComponentsInstalled = 34;
+    public const int CanInstallComponent = 35;
+    public const int CombatLoser = 36;
+    public const int AllPlayerData = 37;
+    public const int UnequipSuccess = 42;
+    public const int EquipState = 43;
+    public const int DiscardSuccess = 44;
+    public const int StealSuccess = 45;
+    public const int StealDiscardSuccess = 46;
+    public const int ItemStolen = 47;
+    public const int AIAttackResult = 49;
+    public const int ComponentStealSuccess = 50;
+    public const int SendRoomCost = 51;
+    public const int ComponentStolen = 52;
 
 
     #endregion
@@ -38,6 +58,13 @@ public static class NetOP
     public const int ItemSelection = 23;
     public const int InstallComponent = 24 ;
     public const int ActionPoints = 25;
+    public const int NewPhase = 29;
+    public const int EquipItem = 38;
+    public const int DiscardItem = 39;
+    public const int StealItem = 40;
+    public const int StealDiscardItem = 41;
+    public const int AISpecSelect = 48;
+    public const int SelectRoom = 53;
     #endregion
 }
 

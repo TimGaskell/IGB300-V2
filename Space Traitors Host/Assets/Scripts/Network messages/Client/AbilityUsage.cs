@@ -11,6 +11,7 @@ public class AbilityUsage : NetMessage {
     }
 
 
-    public string Ability { set; get; }
-    public int target { set; get; }
+    public int AbilityType { set; get; }
+    public int TargetID { set; get; }
+    public int ScanResource { set; get; }
 }

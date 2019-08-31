@@ -93,6 +93,7 @@ public class PlayerNavigation : Navigation
             //Check if reached end of path
             if (transform.position == graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) {
 
+                startMoving = false;
                 isMoving = false;
                 Begin = false;
                 sent = false;
