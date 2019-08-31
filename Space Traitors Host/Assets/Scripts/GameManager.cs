@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public const int COMBAT_DAMAGE = -1;
 
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -69,6 +69,9 @@ public class GameManager : MonoBehaviour
     public float aiPowerChange;
     //The target score for the player when the AI attacks them
     public int aiTargetScore;
+
+    //Action Points provided to a player when they roll during their turn
+    public int actionPoints;
 
     //The ID of a player who has newly been selected as traitor
     public int newTraitor;

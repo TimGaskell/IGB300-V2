@@ -30,6 +30,8 @@ public class NSStealingManager : MonoBehaviour
 
     public GameObject equipButton;
 
+    public GameObject stealComponentButton;
+
     /// <summary>
     /// 
     /// Sets up the stealing panel to present the relevant player's information
@@ -42,6 +44,7 @@ public class NSStealingManager : MonoBehaviour
 
         UpdateItemButtons();
         loserItemParent.GetComponent<CanvasGroup>().interactable = true;
+        stealComponentButton.GetComponent<Button>().interactable = loser.hasComponent;
     }
 
     /// <summary>
@@ -217,9 +220,11 @@ public class NSStealingManager : MonoBehaviour
         //Attempts to give the item to the winner, the only reason for failure being they already have too many items
         if (winner.GiveItem(selectedItem))
         {
+            Debug.Log(selectedItem.isEquipped);
             //Removes the item from the losers inventory. Also sets the loser's inventory from being interactable so only one item can be stolen
             loser.RemoveItem(selectedID);
             loserItemParent.GetComponent<CanvasGroup>().interactable = false;
+            stealComponentButton.GetComponent<Button>().interactable = false;
             UpdateItemButtons();
         }
         else
@@ -237,6 +242,7 @@ public class NSStealingManager : MonoBehaviour
     {
         loser.DiscardItem(selectedID);
         loserItemParent.GetComponent<CanvasGroup>().interactable = false;
+        stealComponentButton.GetComponent<Button>().interactable = false;
         UpdateItemButtons();
     }
 
@@ -285,5 +291,29 @@ public class NSStealingManager : MonoBehaviour
     {
         winner.DiscardItem(selectedID);
         UpdateItemButtons();
+    }
+
+    /// <summary>
+    /// 
+    /// Steal a component from the loser of the combat to give to the winner.
+    /// 
+    /// </summary>
+    public void StealComponent()
+    {
+        ResetSelectedItem();
+        if (winner.hasComponent)
+        {
+            SetErrorText("Already have a component");
+        }
+        else
+        {
+            winner.hasComponent = true;
+            loser.hasComponent = false;
+
+            loserItemParent.GetComponent<CanvasGroup>().interactable = false;
+            stealComponentButton.GetComponent<Button>().interactable = false;
+
+            UpdateItemButtons();
+        }
     }
 }

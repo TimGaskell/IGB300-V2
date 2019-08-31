@@ -7,3 +7,4 @@ public class NSAIPowerComponents : MonoBehaviour
     public GameObject powerCounter;
     public GameObject powerSlider;
 }
+

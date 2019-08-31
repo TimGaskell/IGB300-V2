@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -440,8 +440,10 @@ RectTransform:
   m_Children:
   - {fileID: 1803780942}
   - {fileID: 2066861654}
+  - {fileID: 1003077358}
+  - {fileID: 1978800525}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -949,12 +951,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  - component: {fileID: 122237391}
+  - component: {fileID: 122237390}
+  - component: {fileID: 122237389}
+  - component: {fileID: 122237392}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+=======
   - component: {fileID: 88364937}
   - component: {fileID: 88364939}
   - component: {fileID: 88364938}
   m_Layer: 5
   m_Name: CharmText
   m_TagString: Untagged
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -965,7 +977,109 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_GameObject: {fileID: 122237388}
+  m_Enabled: 1
+--- !u!20 &122237390
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122237388}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &122237391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122237388}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 475, y: 540, z: -250}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+--- !u!114 &122237392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122237388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2524b29905ee4654095623f7976b95a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 500
+  ZoomInLevel_Y: 400
+  ZoomInLevel_Z: 200
+  testObject: {fileID: 1928568077}
+--- !u!1 &147543505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 147543506}
+  - component: {fileID: 147543508}
+  - component: {fileID: 147543507}
+  m_Layer: 5
+  m_Name: TextMeshPro Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &147543506
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147543505}
+=======
   m_GameObject: {fileID: 88364936}
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1772,7 +1886,94 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!222 &215746889
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215746886}
+  m_CullTransparentMesh: 0
+--- !u!1 &228939945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 228939946}
+  - component: {fileID: 228939948}
+  - component: {fileID: 228939947}
+  - component: {fileID: 228939949}
+  m_Layer: 5
+  m_Name: Player0Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &228939946
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228939945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 584196150}
+  - {fileID: 1470471464}
+  - {fileID: 245257149}
+  - {fileID: 247098551}
+  - {fileID: 1644813268}
+  - {fileID: 25499956}
+  - {fileID: 1613607241}
+  - {fileID: 562514088}
+  m_Father: {fileID: 346304681}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 585, y: -75}
+  m_SizeDelta: {x: 575, y: 150}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &228939947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228939945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &228939948
+=======
 --- !u!222 &147101702
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5444,12 +5645,39 @@ RectTransform:
   m_Father: {fileID: 1652913183}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 585, y: -585}
+  m_SizeDelta: {x: 575, y: 150}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &459962363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459962361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dda1ef4156da424ab189fcbe9fd587b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1509804249}
+  characterText: {fileID: 1914067996}
+  scrapText: {fileID: 1002970499}
+  corruptionText: {fileID: 361057880}
+  lifePointsText: {fileID: 1713907262}
+  traitorMarker: {fileID: 953551964}
+--- !u!114 &459962364
+=======
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -50.000244}
   m_SizeDelta: {x: 500, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &355572773
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5795,9 +6023,21 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_GameObject: {fileID: 477446976}
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &479685208
+=======
   m_GameObject: {fileID: 364960687}
   m_CullTransparentMesh: 0
 --- !u!1 &375042886
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6926,12 +7166,76 @@ RectTransform:
   m_Father: {fileID: 346304681}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!114 &556819793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556819791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomType: 6
+--- !u!114 &556819794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556819791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29711a6eff4414598ced5b3a94c399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 3
+  linkedNodeObjects:
+  - {fileID: 2094281630}
+  linkedNodesIndex: 
+--- !u!1 &557755230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 557755231}
+  - component: {fileID: 557755232}
+  m_Layer: 0
+  m_Name: Players
+  m_TagString: PlayerList
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &557755231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557755230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &557755232
+=======
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 220}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &459962363
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12823,7 +13127,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 912791041}
   m_CullTransparentMesh: 0
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!224 &1003077358 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1148135579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1015492184
+=======
 --- !u!1 &924180912
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16701,7 +17015,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!4 &1091087938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091087937}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 309839087}
+  - {fileID: 1037434063}
+  - {fileID: 2094281631}
+  - {fileID: 556819792}
+  - {fileID: 1242384741}
+  - {fileID: 1775959502}
+  - {fileID: 479685209}
+  - {fileID: 506071040}
+  - {fileID: 2068220856}
+  - {fileID: 1897344789}
+  - {fileID: 101958798}
+  - {fileID: 894687513}
+  - {fileID: 938201213}
+  - {fileID: 1759711759}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1091087939
+=======
 --- !u!114 &1176601933
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17200,7 +17546,145 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194190378}
   m_CullTransparentMesh: 0
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!1001 &1148135579
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 35892597}
+    m_Modifications:
+    - target: {fileID: 8450372780744371788, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_Name
+      value: Zoom In
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -728
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 344
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 545.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 415.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371789, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371790, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 122237392}
+    - target: {fileID: 8450372780744371790, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ZoomIn2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8450372780744371790, guid: 522d1e777a40136428b2e282e0989d2c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1928568077}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 522d1e777a40136428b2e282e0989d2c, type: 3}
+--- !u!1 &1152500501
+=======
 --- !u!1 &1198123196
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17467,8 +17951,13 @@ Transform:
   m_LocalPosition: {x: 300, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 3.5}
   m_Children: []
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+=======
   m_Father: {fileID: 1759711759}
   m_RootOrder: 2
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1206752175
 MeshCollider:
@@ -18773,12 +19262,39 @@ RectTransform:
   m_Father: {fileID: 355572772}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 585, y: -245}
+  m_SizeDelta: {x: 575, y: 150}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1236948939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236948937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dda1ef4156da424ab189fcbe9fd587b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 463739429}
+  characterText: {fileID: 1015492184}
+  scrapText: {fileID: 989508732}
+  corruptionText: {fileID: 318947506}
+  lifePointsText: {fileID: 1532880149}
+  traitorMarker: {fileID: 215746886}
+--- !u!114 &1236948940
+=======
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1285708537
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28224,7 +28740,109 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916290455}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!1 &1928568077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3252958001378915573, guid: 0bc5f69a5b1edb047946bdb724333625,
+    type: 3}
+  m_PrefabInstance: {fileID: 1963058773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1928729963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1928729964}
+  - component: {fileID: 1928729967}
+  - component: {fileID: 1928729966}
+  - component: {fileID: 1928729965}
+  m_Layer: 0
+  m_Name: Bridge
+  m_TagString: Bridges
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1928729964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928729963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 60, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 1, z: 3.5}
+  m_Children: []
+  m_Father: {fileID: 1759711759}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &1928729965
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928729963}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1928729966
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928729963}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ccf3fb59da205244c902710771461050, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1928729967
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928729963}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1934684682
+=======
 --- !u!1 &1918668730
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28482,6 +29100,81 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959024221}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1963058773
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3252958001378915573, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_Name
+      value: TestPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.525
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2898936068013891101, guid: 0bc5f69a5b1edb047946bdb724333625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0bc5f69a5b1edb047946bdb724333625, type: 3}
+--- !u!224 &1978800525 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2105330566}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2011345679
 GameObject:
   m_ObjectHideFlags: 0
@@ -28890,7 +29583,70 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+--- !u!222 &2055793929
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055793926}
+  m_CullTransparentMesh: 0
+--- !u!1 &2066861653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066861654}
+  - component: {fileID: 2066861656}
+  - component: {fileID: 2066861655}
+  m_Layer: 5
+  m_Name: NoServerPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2066861654
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066861653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 375587032}
+  - {fileID: 828337579}
+  m_Father: {fileID: 35892597}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2066861655
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066861653}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!222 &2066861656
+=======
 --- !u!222 &2043334538
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29340,6 +30096,135 @@ MonoBehaviour:
   - {fileID: 556819791}
   - {fileID: 1775959501}
   linkedNodesIndex: 
+--- !u!1001 &2105330566
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 35892597}
+    m_Modifications:
+    - target: {fileID: 6631211100054794186, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_Name
+      value: Zoom Out
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -727.99994
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 545.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 415.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794187, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6631211100054794180, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 122237392}
+    - target: {fileID: 6631211100054794180, guid: 6e3aab578dc00c14483574483056204f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ZoomOut
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e3aab578dc00c14483574483056204f, type: 3}
 --- !u!1 &2106724334
 GameObject:
   m_ObjectHideFlags: 0
@@ -29664,10 +30549,17 @@ RectTransform:
   m_Father: {fileID: 346304681}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Space Traitors Host/Assets/Scenes/Game LevelV2.unity
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 585, y: -415}
+  m_SizeDelta: {x: 575, y: 150}
+=======
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 220}
+>>>>>>> Reintergration:Space Traitors Host/Assets/Scenes/ServerLess Scenes/Game LevelV2.unity
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2125297860
 MonoBehaviour:

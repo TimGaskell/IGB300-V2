@@ -16,7 +16,7 @@ public class AiPower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        server = GameObject.FindGameObjectWithTag("Server");
+        //server = GameObject.FindGameObjectWithTag("Server");
         power = 0;   
     }
 
@@ -33,6 +33,7 @@ public class AiPower : MonoBehaviour
             //}
        // }
    // }
+
 
     public void incrementAIPower()
     {

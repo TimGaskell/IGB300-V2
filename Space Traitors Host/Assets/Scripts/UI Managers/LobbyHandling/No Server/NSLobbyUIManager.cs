@@ -15,6 +15,8 @@ public class NSLobbyUIManager : NetworkBehaviour
 
     private Transform nameEntryFields;
 
+    private int counter = 0;
+
     private void Start()
     {
         if (GameManager.instance.serverActive)
@@ -33,15 +35,24 @@ public class NSLobbyUIManager : NetworkBehaviour
         }
         else
         {
+
             playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
             nameEntryFields = playerNamePanel.transform.GetChild(1);
             ChangeInputFields(0);
+
         }
+
     }
 
-   
+    void Update() {
+
+
+
+    }
+
+
 
 
     #region No Server Handling
@@ -71,6 +82,8 @@ public class NSLobbyUIManager : NetworkBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 
     /// Disables player entry fields if they are not to be used (i.e. leave only enough fields active for a particular number of players)
@@ -94,6 +107,28 @@ public class NSLobbyUIManager : NetworkBehaviour
             counter++;
         }
     }
+
+
+    public void AddPlayerNames() {
+
+
+        foreach (Transform entryField in nameEntryFields.transform) {
+
+            string tempPlayername = "";
+                //Server.Instance.players[counter].GetComponent<Player>().playerName;
+
+            if (tempPlayername != "") {
+                if (entryField.GetComponent<TMP_InputField>().text == "") {
+
+                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                    counter++;
+                }
+
+
+            }
+        }
+    }
+
 
     /// <summary>
     /// 
@@ -128,6 +163,7 @@ public class NSLobbyUIManager : NetworkBehaviour
             if (counter == GameManager.instance.numPlayers)
             {
                 SceneManager.LoadScene(GameManager.NoServerCharacterScene);
+                break;
             }
 
         }
