@@ -1701,7 +1701,7 @@ public class Server : MonoBehaviour
 
                     if (roomCost <= points.actionPoints)
                     {
-                        roomIds.Add(roomCost);
+                        roomIds.Add(j);
                     }
                 }
 
