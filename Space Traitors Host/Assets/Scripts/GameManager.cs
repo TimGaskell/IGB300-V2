@@ -515,7 +515,7 @@ public class GameManager : MonoBehaviour
     /// Instantiate the player objects in the game world
     /// 
     /// </summary>
-    private void InstantiatePlayers()
+    public void InstantiatePlayers()
     {
         playerList = GameObject.FindWithTag("PlayerList");
         Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;

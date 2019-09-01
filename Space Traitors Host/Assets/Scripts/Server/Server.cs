@@ -981,6 +981,11 @@ public class Server : MonoBehaviour
 
         SceneManager.LoadScene(scene.SceneName);
 
+        if (SceneManager.GetActiveScene().name == "Client GameLevel") {
+
+            GameManager.instance.InstantiatePlayers();
+        }
+
     }
 
     private void AmActivePlayer(int conID, int chanID, int rHostID, IsActivePlayer isActive)
