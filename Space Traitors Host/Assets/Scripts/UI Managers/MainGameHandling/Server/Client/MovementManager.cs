@@ -23,6 +23,7 @@ public class MovementManager : MonoBehaviour
     {
         instance = this;
         Movement = GameObject.Find("Players").GetComponent<PlayerMovement>();
+        GameManager.instance.playerList = GameObject.FindWithTag("PlayerList");
     }
 
     // Update is called once per frame

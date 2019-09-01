@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     public List<Sprite> characterPortraits;
 
-    private GameObject playerList;
+    public GameObject playerList;
     public List<GameObject> playerPrefabs;
 
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
