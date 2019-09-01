@@ -1056,7 +1056,10 @@ public class Server : MonoBehaviour
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
         Debug.Log("recieved choices");
+        GameManager.instance.currentPhase = GameManager.TurnPhases.Interaction;
 
+        ClientUIManager.instance.interactionPanel.SetActive(true);
+        InteractionManager manager = GameObject.Find("GamePanels").transform.Find("InteractionPanel").gameObject.GetComponent<InteractionManager>();
 
         Choice.IsAvailableTypes[] isAvailables = new Choice.IsAvailableTypes[ChoiceRandomiser.CHOICES_PER_ROOM];
         GameManager.SpecScores[] specScores = new GameManager.SpecScores[ChoiceRandomiser.CHOICES_PER_ROOM];
@@ -1067,17 +1070,16 @@ public class Server : MonoBehaviour
             specScores[choiceIndex] = (GameManager.SpecScores)roomChoices.SpecScores[choiceIndex];
 
         }
-
-        InteractionManager.instance.choiceNames = roomChoices.ChoiceNames;
-        InteractionManager.instance.successTexts = roomChoices.SuccessTexts;
-        InteractionManager.instance.failTexts = roomChoices.FailTexts;
-        InteractionManager.instance.isAvailables = isAvailables;
-        InteractionManager.instance.specScores = specScores;
-        InteractionManager.instance.successChances = roomChoices.SuccessChances;
-        InteractionManager.instance.attackablePlayers = roomChoices.AttackablePlayers;
-
-        GameManager.instance.currentPhase = GameManager.TurnPhases.Interaction;
+        
+        manager.choiceNames = roomChoices.ChoiceNames;
+        manager.successTexts = roomChoices.SuccessTexts;
+        manager.failTexts = roomChoices.FailTexts;
+        manager.isAvailables = isAvailables;
+        manager.specScores = specScores;
+        manager.successChances = roomChoices.SuccessChances;
+        manager.attackablePlayers = roomChoices.AttackablePlayers;
         ClientUIManager.instance.DisplayCurrentPhase();
+
     }
 
 
@@ -1982,9 +1984,7 @@ public class Server : MonoBehaviour
                         //Handled in player movement to send once they arrive at the room.
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
-                        //Need to display surge information on main screen
-                        SendSurge();
-                        SendIsTraitor();
+                        GameManager.instance.IncrementTurn();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen

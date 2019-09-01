@@ -4366,6 +4366,7 @@ GameObject:
   - component: {fileID: 122237391}
   - component: {fileID: 122237390}
   - component: {fileID: 122237389}
+  - component: {fileID: 122237392}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4437,6 +4438,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+--- !u!114 &122237392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122237388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835e33753ba269d45be2878b200a8bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &123100086
 GameObject:
   m_ObjectHideFlags: 0
@@ -4735,7 +4748,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -7459,6 +7472,7 @@ GameObject:
   - component: {fileID: 252627981}
   - component: {fileID: 252627980}
   - component: {fileID: 252627979}
+  - component: {fileID: 252627983}
   m_Layer: 5
   m_Name: EngineerTarget
   m_TagString: Untagged
@@ -7540,7 +7554,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -7590,6 +7604,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252627977}
   m_CullTransparentMesh: 0
+--- !u!114 &252627983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252627977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 4
 --- !u!1 &252803566
 GameObject:
   m_ObjectHideFlags: 0
@@ -13466,7 +13494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &434394992
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14554,6 +14582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 477446978}
   - component: {fileID: 477446977}
+  - component: {fileID: 477446979}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -14613,6 +14642,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &477446979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477446976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273dac803d4155b439388a3c8acecba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &479320712
 GameObject:
   m_ObjectHideFlags: 0
@@ -14895,7 +14936,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -19496,7 +19537,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -28275,7 +28316,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &886393714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29208,7 +29249,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: DisplayTargets
         m_Mode: 1
         m_Arguments:
@@ -33637,7 +33678,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -34194,7 +34235,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -34417,6 +34458,7 @@ GameObject:
   - component: {fileID: 1091087938}
   - component: {fileID: 1091087940}
   - component: {fileID: 1091087939}
+  - component: {fileID: 1091087941}
   m_Layer: 0
   m_Name: Rooms
   m_TagString: RoomList
@@ -34505,6 +34547,18 @@ MonoBehaviour:
   - {fileID: 101958797}
   - {fileID: 894687512}
   - {fileID: 938201212}
+--- !u!114 &1091087941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091087937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835e33753ba269d45be2878b200a8bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1091160284
 GameObject:
   m_ObjectHideFlags: 0
@@ -34671,7 +34725,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 35892599}
         m_MethodName: IncrementPhase
         m_Mode: 1
         m_Arguments:
@@ -47231,7 +47285,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -51317,7 +51371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2352, y: 0}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1571829447
@@ -51934,7 +51988,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -52919,6 +52973,7 @@ GameObject:
   - component: {fileID: 1606363324}
   - component: {fileID: 1606363323}
   - component: {fileID: 1606363322}
+  - component: {fileID: 1606363326}
   m_Layer: 5
   m_Name: ButlerTarget
   m_TagString: Untagged
@@ -53000,7 +53055,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -53050,6 +53105,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606363320}
   m_CullTransparentMesh: 0
+--- !u!114 &1606363326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606363320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 2
 --- !u!1 &1607983478
 GameObject:
   m_ObjectHideFlags: 0
@@ -57147,7 +57216,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: ConfirmTarget
         m_Mode: 1
         m_Arguments:
@@ -62675,6 +62744,7 @@ GameObject:
   - component: {fileID: 1840757384}
   - component: {fileID: 1840757383}
   - component: {fileID: 1840757382}
+  - component: {fileID: 1840757386}
   m_Layer: 5
   m_Name: TechieTarget
   m_TagString: Untagged
@@ -62756,7 +62826,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -62806,6 +62876,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840757380}
   m_CullTransparentMesh: 0
+--- !u!114 &1840757386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840757380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 6
 --- !u!1 &1841693670
 GameObject:
   m_ObjectHideFlags: 0
@@ -65452,7 +65536,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -70876,6 +70960,7 @@ GameObject:
   - component: {fileID: 2063945086}
   - component: {fileID: 2063945085}
   - component: {fileID: 2063945084}
+  - component: {fileID: 2063945088}
   m_Layer: 5
   m_Name: SingerTarget
   m_TagString: Untagged
@@ -70957,7 +71042,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: SelectTarget
         m_Mode: 3
         m_Arguments:
@@ -71007,6 +71092,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063945082}
   m_CullTransparentMesh: 0
+--- !u!114 &2063945088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063945082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4600cd58f714439f73ba093ce35df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  characterType: 5
 --- !u!1 &2065117240
 GameObject:
   m_ObjectHideFlags: 0
@@ -71594,7 +71693,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -72773,7 +72872,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 886393715}
         m_MethodName: CloseCombat
         m_Mode: 1
         m_Arguments:

@@ -679,14 +679,14 @@ public class GameManager : MonoBehaviour
     /// Increment the turn order to the next player. Starts a new round if the current player is the last player in the order
     /// 
     /// </summary>
-    private void IncrementTurn()
+    public void IncrementTurn()
     {
         activePlayer++;
 
         
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers+1)
+        if (activePlayer == numPlayers)
         {
             activePlayer = 1;
             if (CheckNonTraitorVictory())
@@ -787,6 +787,7 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
+        Server.Instance.SendActivePlayer(activePlayer);
     }
 
     public float AIPowerIncrease()

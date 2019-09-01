@@ -56,6 +56,7 @@ public class InteractionManager : MonoBehaviour
     private enum ParticipantTypes { Attacker, Defender }
 
     private void Start() {
+        
         instance = this;
     }
 
