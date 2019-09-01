@@ -42,6 +42,8 @@ public class ClientUIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
         player = GameObject.Find("PlayerInfoHolder").GetComponent<ClientManager>();

@@ -1080,10 +1080,12 @@ public class Server : MonoBehaviour
         {
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
-
-            room.transform.GetChild(1).gameObject.SetActive(true);
+            Debug.Log(room.name);
+            room.transform.GetChild(1).gameObject.SetActive(false);
 
         }
+        GameManager.instance.currentPhase = GameManager.TurnPhases.Movement;
+        ClientUIManager.instance.DisplayCurrentPhase();
 
     }
 
@@ -1679,12 +1681,13 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
-
+                GameManager.instance.actionPoints = points.actionPoints;
                 player.ActionPoints = points.actionPoints;
 
                 PlayerMovement Playermovement = GameObject.Find("Players").GetComponent<PlayerMovement>();
                 Playermovement.StartMoving = false;
                 Playermovement.currentNodeIndex = player.roomPosition;
+                Playermovement.Player = player.playerObject;
 
                 List<int> roomIds = new List<int>();
 
@@ -1692,7 +1695,9 @@ public class Server : MonoBehaviour
                 {
 
                     Playermovement.PlayerMoveViaNodes(j);
+                    
                     int roomCost = Playermovement.currentPath.Count - 1;
+                    Debug.Log("Cost to get to room " + j + " " + roomCost);
 
                     if (roomCost <= points.actionPoints)
                     {
