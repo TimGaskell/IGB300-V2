@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovement : Navigation
 {
     public static PlayerMovement instance = null;
-
+    public bool ServerVersion = false;
 
     //Movement Variables
     public float moveSpeed = 100.0f;
@@ -70,10 +70,13 @@ public class PlayerMovement : Navigation
                 Vector3 lookBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1000);
                 Player.transform.rotation = Quaternion.LookRotation(lookBack);
 
+                if (ServerVersion) {
+                    Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
+                }
+
                 Debug.Log("finished Moving");
-                GameManager.instance.playerMoving = false;
-                Server.Instance.SendNewPhase();
-                GameManager.instance.IncrementPhase();
+               
+
             }
         }
     }

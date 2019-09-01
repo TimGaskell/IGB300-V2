@@ -357,7 +357,7 @@ public class Server : MonoBehaviour
             case NetOP.AvailableRooms:
                 AvailableRooms(conID, chanID, rHostID, (AvailableRooms)msg);
                 break;
-            case NetOP.SendRoomCost:
+            case NetOP.SelectRoom:
                 RoomCost(conID, chanID, rHostID, (SelectRoom)msg);
                 break;
             case NetOP.PlayerDataSync:
@@ -365,6 +365,12 @@ public class Server : MonoBehaviour
                 break;
             case NetOP.AbilityInformation:
                 GetAbilityInfo(conID, chanID, rHostID, (AbilityInformation)msg);
+                break;
+            case NetOP.SendRoomCost:
+                RecieveRoomCost(conID, chanID, rHostID, (SendRoomCost)msg);
+                break;
+            case NetOP.RoomChoices:
+                StoreRoomChoices(conID, chanID, rHostID, (RoomChoices)msg);
                 break;
 
 
@@ -1067,6 +1073,9 @@ public class Server : MonoBehaviour
         manager.specScores = specScores;
         manager.successChances = roomChoices.SuccessChances;
         manager.attackablePlayers = roomChoices.AttackablePlayers;
+
+        GameManager.instance.currentPhase = GameManager.TurnPhases.Interaction;
+        ClientUIManager.instance.DisplayCurrentPhase();
     }
 
 
@@ -1085,16 +1094,19 @@ public class Server : MonoBehaviour
 
         }
         GameManager.instance.currentPhase = GameManager.TurnPhases.Movement;
+        GameManager.instance.roomSelection = true;
         ClientUIManager.instance.DisplayCurrentPhase();
+        
 
     }
 
     private void RecieveRoomCost(int conID, int chanID, int rHostID, SendRoomCost cost)
     {
 
-
-
-
+        MovementManager.instance.roomCost = cost.RoomCost;
+        MovementManager.instance.roomID = GameManager.instance.playerGoalIndex;
+        MovementManager.instance.scrapReturn = cost.ScrapReturn;
+        MovementManager.instance.SetupMoveToRoom(); 
 
 
     }
@@ -1721,7 +1733,7 @@ public class Server : MonoBehaviour
     /// <param name="room">int id of the room the player wants to move to.
     private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room)
     {
-
+        Debug.Log("recieved room " + room.roomID);
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
@@ -1935,8 +1947,8 @@ public class Server : MonoBehaviour
     {
         GameManager.instance.IncrementPhase();
         Debug.Log("current Phase " + GameManager.instance.currentPhase);
-        int activePlayerID = GameManager.instance.GetActivePlayer().playerID;
-        Debug.Log("Current player " + activePlayerID);
+        Player activePlayer= GameManager.instance.GetActivePlayer();
+        Debug.Log("Current player " + activePlayer.playerID);
 
         switch (GameManager.instance.CurrentVictory)
         {
@@ -1954,7 +1966,7 @@ public class Server : MonoBehaviour
                 switch (GameManager.instance.currentPhase)
                 {
                     case (GameManager.TurnPhases.Abilities):
-                        SendAbilityInformation(activePlayerID);
+                        SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
@@ -1965,6 +1977,7 @@ public class Server : MonoBehaviour
                         break;
                     case (GameManager.TurnPhases.Interaction):
                         //Send choice information
+                        //Handled in player movement to send once they arrive at the room.
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
                         //Need to display surge information on main screen
