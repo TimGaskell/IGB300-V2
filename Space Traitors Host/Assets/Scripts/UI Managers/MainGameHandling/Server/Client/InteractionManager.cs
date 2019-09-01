@@ -10,6 +10,8 @@ public class InteractionManager : MonoBehaviour
     public GameObject standardChoiceUI;
     public GameObject escapeRoomUI;
 
+    public static InteractionManager instance = null;
+
     public GameObject playerCards;
 
     public GameObject choice0ButtonText;
@@ -52,6 +54,10 @@ public class InteractionManager : MonoBehaviour
     public List<int> attackablePlayers;
 
     private enum ParticipantTypes { Attacker, Defender }
+
+    private void Start() {
+        instance = this;
+    }
 
     /// <summary>
     /// 

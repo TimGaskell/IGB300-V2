@@ -43,6 +43,7 @@ public class MovementManager : MonoBehaviour
 
     public void MoveToRoom() {
 
+        GameManager.instance.roomSelection = false;
         Movement.goalIndex = roomID;
         Movement.StartMoving = true;
               

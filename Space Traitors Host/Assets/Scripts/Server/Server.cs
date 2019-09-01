@@ -1056,7 +1056,7 @@ public class Server : MonoBehaviour
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
         Debug.Log("recieved choices");
-        InteractionManager manager = GameObject.Find("InteractionPanel").GetComponent<InteractionManager>();
+
 
         Choice.IsAvailableTypes[] isAvailables = new Choice.IsAvailableTypes[ChoiceRandomiser.CHOICES_PER_ROOM];
         GameManager.SpecScores[] specScores = new GameManager.SpecScores[ChoiceRandomiser.CHOICES_PER_ROOM];
@@ -1068,13 +1068,13 @@ public class Server : MonoBehaviour
 
         }
 
-        manager.choiceNames = roomChoices.ChoiceNames;
-        manager.successTexts = roomChoices.SuccessTexts;
-        manager.failTexts = roomChoices.FailTexts;
-        manager.isAvailables = isAvailables;
-        manager.specScores = specScores;
-        manager.successChances = roomChoices.SuccessChances;
-        manager.attackablePlayers = roomChoices.AttackablePlayers;
+        InteractionManager.instance.choiceNames = roomChoices.ChoiceNames;
+        InteractionManager.instance.successTexts = roomChoices.SuccessTexts;
+        InteractionManager.instance.failTexts = roomChoices.FailTexts;
+        InteractionManager.instance.isAvailables = isAvailables;
+        InteractionManager.instance.specScores = specScores;
+        InteractionManager.instance.successChances = roomChoices.SuccessChances;
+        InteractionManager.instance.attackablePlayers = roomChoices.AttackablePlayers;
 
         GameManager.instance.currentPhase = GameManager.TurnPhases.Interaction;
         ClientUIManager.instance.DisplayCurrentPhase();
