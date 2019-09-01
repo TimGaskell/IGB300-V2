@@ -46,6 +46,7 @@ public class MovementManager : MonoBehaviour
 
         Server.Instance.SendRoomChoice(roomID);
         Server.Instance.SendNewPhase();
+        MoveToRoomPanel.SetActive(false);
 
     }
 
