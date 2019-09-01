@@ -22,7 +22,7 @@ public class GameButton: MonoBehaviour
         if (Server.Instance.connected)
         {
             NetworkManager.singleton.GetComponent<CustomNetworkDiscovery>().StopBroadcast();
-            SceneManager.LoadScene("ClientLobby");
+            SceneManager.LoadScene("Client NameEntry");
             
         }
 

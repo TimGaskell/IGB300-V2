@@ -403,7 +403,7 @@ public class Server : MonoBehaviour
 
 
         //Send message to every player's client to move onto next scene
-        SendChangeScene("Character Selection");
+        SendChangeScene("Client CharacterSelect");
         //Change to the character select
         SceneManager.LoadScene("Server Character Selection");
     }
@@ -980,7 +980,7 @@ public class Server : MonoBehaviour
     private void AmActivePlayer(int conID, int chanID, int rHostID, IsActivePlayer isActive)
     {
 
-        if (SceneManager.GetActiveScene().name == "Character Selection")
+        if (SceneManager.GetActiveScene().name == "Client CharacterSelect")
         {
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
@@ -1075,7 +1075,7 @@ public class Server : MonoBehaviour
     private void AvailableRooms(int conID, int chanID, int rHostID, AvailableRooms rooms)
     {
 
-
+        Debug.Log("recieved available rooms");
         for (int i = 0; i < rooms.AvailableRoomsIDs.Count; i++)
         {
 
@@ -1670,7 +1670,7 @@ public class Server : MonoBehaviour
     private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points)
     {
 
-
+        Debug.Log("recieved actionpoints");
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
@@ -1956,7 +1956,7 @@ public class Server : MonoBehaviour
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
                         break;
                     case (GameManager.TurnPhases.Movement):
-                        //Send List of rooms
+                        //Dont send anything, it sends roomlost on retreaval off action points of the player
                         break;
                     case (GameManager.TurnPhases.Interaction):
                         //Send choice information

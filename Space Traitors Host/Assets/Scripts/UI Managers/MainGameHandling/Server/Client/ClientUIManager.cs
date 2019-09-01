@@ -152,21 +152,7 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Does the action roll for the player and sends the number to the server.
-    /// </summary>
-    public void ActionRoll() {
-
-        int roll = 0;
-
-        roll = GameManager.instance.RollActionPoints();
-
-        player.ActionPoints = roll;
-
-        Server.Instance.SendActionPoints(roll);
-
-
-    }
+  
 
     public void MoveToRoom() {
         

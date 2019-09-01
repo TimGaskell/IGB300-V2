@@ -27,6 +27,8 @@ public class RollActionPoints : MonoBehaviour
     private int MaxBars = 8;
     private int MinRandom = 2;
 
+    private bool sent = false;
+
     private bool increasing = true;
     private bool rollStop = false,  timerStop = false;
 
@@ -73,9 +75,15 @@ public class RollActionPoints : MonoBehaviour
         //Stops the bars from moving as soon as the value the player rolled has been found
         if (rollStop)
         {
-            if (actionPoints == rollValue)
-            {
+            if (actionPoints == rollValue) {
                 timerStop = true;
+
+                if (!sent) { 
+                Server.Instance.SendActionPoints(actionPoints);
+                Server.Instance.SendNewPhase();
+                    sent = true;
+                }
+
             }
         }
     }
@@ -85,6 +93,7 @@ public class RollActionPoints : MonoBehaviour
     //CALL THIS when the player is rolling
     public void GetRoll()
     {
+        sent = false;
         //Randomly decides an add on amount to the roll between 0 and 4 (inclusive)
         rollAdd = Random.Range(MinRandom, MaxBars);
         //the value of the roll is the current amount of action points plus the decided add on amount
@@ -113,6 +122,7 @@ public class RollActionPoints : MonoBehaviour
 
         //Assign Action Points to Game Manager
         GameManager.instance.actionPoints = rollValue;
+        
     }
 
     //CALL THIS to reset the roll for next turn
