@@ -11,6 +11,8 @@ public class MovementManager : MonoBehaviour
     public GameObject CostText;
     public GameObject ScrapReturnText;
 
+    private PlayerMovement Movement;
+
     public int roomCost;
     public int roomID;
     public int scrapReturn;
@@ -20,6 +22,7 @@ public class MovementManager : MonoBehaviour
     void Start()
     {
         instance = this;
+        Movement = GameObject.Find("Players").GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -39,8 +42,8 @@ public class MovementManager : MonoBehaviour
 
     public void MoveToRoom() {
 
- 
-        PlayerMovement.instance.StartMoving = true;
+        Movement.goalIndex = roomID;
+        
         GameManager.instance.playerGoalIndex = roomID;
         GameManager.instance.playerMoving = true;
 
