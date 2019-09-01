@@ -24,6 +24,8 @@ public class PlayerMovement : Navigation
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+        
         //Find waypoint graph
         //graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
         graphNodes = GameManager.instance.roomList.GetComponent<WayPointGraph>();

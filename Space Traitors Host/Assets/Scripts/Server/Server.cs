@@ -1055,7 +1055,7 @@ public class Server : MonoBehaviour
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
-
+        Debug.Log("recieved choices");
         InteractionManager manager = GameObject.Find("InteractionPanel").GetComponent<InteractionManager>();
 
         Choice.IsAvailableTypes[] isAvailables = new Choice.IsAvailableTypes[ChoiceRandomiser.CHOICES_PER_ROOM];
