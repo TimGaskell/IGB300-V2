@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -320,6 +320,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1145785847 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 14820890, guid: 0ebd68556a9b3e44480d139504b27668,
+    type: 3}
+  m_PrefabInstance: {fileID: 656490724}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1145785848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145785847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc62d4e9327d974ebb449e9bba29f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleAnims: []
+  RunAnims: []
+  IntroAnims: []
+--- !u!1 &1826997143 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 698711389, guid: 42b64447bcba8be4d8b7c60ae1fdcafd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2105273286}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1826997144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826997143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc62d4e9327d974ebb449e9bba29f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleAnims: []
+  RunAnims: []
+  IntroAnims: []
 --- !u!1001 &2105273286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,6 +415,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 698711391, guid: 42b64447bcba8be4d8b7c60ae1fdcafd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 698711390, guid: 42b64447bcba8be4d8b7c60ae1fdcafd, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 698711390, guid: 42b64447bcba8be4d8b7c60ae1fdcafd, type: 3}
+      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

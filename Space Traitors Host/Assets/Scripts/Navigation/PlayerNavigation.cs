@@ -70,6 +70,9 @@ public class PlayerNavigation : Navigation
 
                 isMoving = true;
 
+                //Set moving animation
+                gameObject.GetComponent<AnimationSwitcher>().RunAnimation(characterName);
+
                 if (sent == false) {
                     //server.GetComponent<Server>().SendAllowMovement(playerID, false);
                     sent = true;
@@ -100,11 +103,10 @@ public class PlayerNavigation : Navigation
                 transform.rotation = Quaternion.LookRotation(lookBack);
                 //server.GetComponent<Server>().SendAllowMovement(playerID, true);
 
-
+                //Return to idle animation
+                gameObject.GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
             }
         }
-
-        
     }
     
               
