@@ -27,6 +27,7 @@ public class PlayerNavigation : Navigation
     public GameObject playerStorage;
     public GameObject[] inventory;
     private GameObject server;
+    private GameObject player;
 
      void Start() {
 
@@ -43,6 +44,9 @@ public class PlayerNavigation : Navigation
     // Update is called once per frame
     void Update()
     {
+        //Get the Player GameObject from the inherited script
+        player = gameObject.GetComponent<PlayerMovement>().Player;
+
         if (!spawned)
         {
             playerStorage = GameObject.FindGameObjectWithTag("RoundManager");
@@ -71,7 +75,7 @@ public class PlayerNavigation : Navigation
                 isMoving = true;
 
                 //Set moving animation
-                gameObject.GetComponent<AnimationSwitcher>().RunAnimation(characterName);
+                player.GetComponent<AnimationSwitcher>().RunAnimation(characterName);
 
                 if (sent == false) {
                     //server.GetComponent<Server>().SendAllowMovement(playerID, false);
@@ -105,7 +109,7 @@ public class PlayerNavigation : Navigation
                 //server.GetComponent<Server>().SendAllowMovement(playerID, true);
 
                 //Return to idle animation
-                gameObject.GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
+                player .GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
             }
         }
     }

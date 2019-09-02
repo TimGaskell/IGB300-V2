@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimationSwitcher : MonoBehaviour
 {
     private Animator animations;
+    private GameObject player;
 
     //Lists for storing names of the animations
     public List<string> IdleAnims = new List<string>();
@@ -14,7 +15,7 @@ public class AnimationSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animations = GetComponent<Animator>();
+        animations = gameObject.GetComponent<Animator>();
 
         //Add current animation names- more can be added publicly
         IdleAnims.Add("Techie-Run-End");
