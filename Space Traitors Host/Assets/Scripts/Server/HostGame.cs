@@ -14,6 +14,8 @@ public class HostGame : MonoBehaviour
 
     private NetworkManager networkManager;
 
+    public Scene NextScene;
+
 
     void Start() {
         networkManager = NetworkManager.singleton;
@@ -42,14 +44,17 @@ public class HostGame : MonoBehaviour
     public void CreateRoom() {
 
         if(roomName != "" && roomName != null) {
-            Debug.Log("Creating Room: " + roomName + "with room for " + roomSize);
+            Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
             //create room
             if (SceneManager.GetActiveScene().name == "LobbyLan")
             {
                 networkManager.StopAllCoroutines();
                 networkManager.networkPort = 7777;
-                networkManager.StartHost();
+               // networkManager.StartHost();
                 networkManager.networkAddress = roomName;
+                Server.Instance.HostInitialise();
+                SceneManager.LoadScene("ServerLobby");
+                GameManager.instance.ResetPlayers();
             }
             else
             {

@@ -12,8 +12,8 @@ public class AiAttacks : NetMessage
 
     }
 
-    public int damage { get; set; }
-
+    public int TargetID { get; set; }
+    public bool IsTarget { get; set; }
 
 }
 

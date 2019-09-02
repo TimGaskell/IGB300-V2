@@ -58,45 +58,45 @@ public class Character
         switch (CharacterType)
         {
             case CharacterTypes.Brute:
-                baseBrawn = 6;
-                baseSkill = 3;
-                baseTech = 2;
-                baseCharm = 4;
+                baseBrawn = 0;
+                baseSkill = 0;
+                baseTech = 0;
+                baseCharm = 0;
                 characterAbility = new Shove();
                 break;
             case CharacterTypes.Butler:
                 baseBrawn = 4;
-                baseSkill = 5;
-                baseTech = 3;
+                baseSkill = 6;
+                baseTech = 2;
                 baseCharm = 3;
                 characterAbility = new SecretPaths();
                 break;
             case CharacterTypes.Chef:
-                baseBrawn = 3;
-                baseSkill = 6;
+                baseBrawn = 0;
+                baseSkill = 0;
+                baseTech = 0;
+                baseCharm = 0;
+                characterAbility = new PowerBoost();
+                break;
+            case CharacterTypes.Engineer:
+                baseBrawn = 6;
+                baseSkill = 3;
                 baseTech = 4;
                 baseCharm = 2;
                 characterAbility = new PowerBoost();
                 break;
-            case CharacterTypes.Engineer:
-                baseBrawn = 4;
-                baseSkill = 3;
-                baseTech = 5;
-                baseCharm = 3;
-                characterAbility = new PowerBoost();
-                break;
             case CharacterTypes.Singer:
                 baseBrawn = 2;
-                baseSkill = 5;
-                baseTech = 2;
+                baseSkill = 4;
+                baseTech = 3;
                 baseCharm = 6;
                 characterAbility = new EncouragingSong();
                 break;
             case CharacterTypes.Techie:
-                baseBrawn = 2;
+                baseBrawn = 3;
                 baseSkill = 2;
                 baseTech = 6;
-                baseCharm = 5;
+                baseCharm = 4;
                 characterAbility = new MuddleSensors();
                 break;
             default:

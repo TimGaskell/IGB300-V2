@@ -11,5 +11,5 @@ public class SpecSelection : NetMessage {
     }
 
 
-    public string SelectedSpec { set; get; }
+    public int SelectedSpec { set; get; }
 }

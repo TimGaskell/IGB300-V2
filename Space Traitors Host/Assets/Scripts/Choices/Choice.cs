@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Choice
 {
@@ -119,7 +120,7 @@ public class Choice
     /// enum for outputting the reason a choice is not available to a player
     /// 
     /// </summary>
-    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available };
+    public enum IsAvailableTypes { hasComponent, hasNoDamage, hasNoCorruption, powerAtMax, hasScrap, disabled, available, maxItems };
 
     /// <summary>
     /// 
@@ -168,6 +169,11 @@ public class Choice
             return IsAvailableTypes.powerAtMax;
         }
 
+        if (specItem.ItemType != Item.ItemTypes.Default && checkedPlayer.items.Count == Player.MAX_ITEMS)
+        {
+            return IsAvailableTypes.maxItems;
+        }
+
         //If the choice has been determined that it is not unavailable for a reason, returns that it is available
         return IsAvailableTypes.available;
     }
@@ -188,6 +194,8 @@ public class Choice
                 return "You have no corruption";
             case (IsAvailableTypes.powerAtMax):
                 return "AI Power already at max";
+            case (IsAvailableTypes.maxItems):
+                return "You cannot carry any more items";
             default:
                 return "Not a valid Error Text";
         }
@@ -198,11 +206,12 @@ public class Choice
 
     /// <summary>
     /// 
-    /// Updates the active players resources based on the choice they select
+    /// Updates the active players resources based on the choice they select. If they succeed on the selection, returns true.
+    /// Otherwise returns false
     /// 
     /// </summary>
     /// <param name="playerIndex">The player who is selecting the choice</param>
-    public void SelectChoice()
+    public bool SelectChoice()
     {
         //Test whether the choice is a spec challenge and what type of spec challenge it is
         //If the choice is not a spec challenge will simply apply the resource changes
@@ -212,46 +221,43 @@ public class Choice
                 SuccessfulSelection();
                 //Disable the choice if it can only be selected once
                 disabled = oneOff;
-                break;
+                return true;
             case GameManager.SpecScores.Brawn:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledBrawn);
-                break;
             case GameManager.SpecScores.Skill:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledSkill);
-                break;
             case GameManager.SpecScores.Tech:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledTech);
-                break;
             case GameManager.SpecScores.Charm:
-                ApplySpecChallenge(GameManager.instance.GetActivePlayer().ScaledCharm);
-                break;
+                return ApplySpecChallenge(GameManager.instance.GetActivePlayer().GetScaledSpecScore(specChallenge));
             default:
-                Debug.Log("Failed Selection");
-                break;
+                throw new NotImplementedException("Not a valid spec score");
         }
     }
 
     /// <summary>
     /// 
-    /// Test whether a player is successful or not in a spec challenge when they select the choice
+    /// Test whether a player is successful or not in a spec challenge when they select the choice, updating their resources accordingly.
+    /// If they are successful, returns true. Otherwise false
     /// 
     /// </summary>
     /// <param name="specScore">The player's relevant spec score</param>
-    /// <returns>The updated player information</returns>
-    private void ApplySpecChallenge(float specScore)
+    /// <returns>True if the player succeeds on the spec challenge. False otherwise</returns>
+    private bool ApplySpecChallenge(float specScore)
     {
         //If the player suceeds on the spec challenge, then will apply the resource changes for a success. IF they failed
         //then will apply the resource changes for a failure.
-        if (GameManager.instance.PerformSpecChallenge(specScore, targetScore))
+        if (GameManager.PerformSpecChallenge(specScore, targetScore))
         {
             SuccessfulSelection();
 
             //Disable the choice if it can only be selected once. Only functions if the player is successful in a spec challenge
             disabled = oneOff;
+
+            return true;
         }
         else
         {
             FailedSelection();
+
+            return false;
         }
 
     }
@@ -276,7 +282,7 @@ public class Choice
         {
             GameManager.instance.GetActivePlayer().hasComponent = component;
         }
-        GameManager.instance.GetActivePlayer().lifePoints += lifeChange;
+        GameManager.instance.GetActivePlayer().ChangeLifePoints(lifeChange);
     }
 
     /// <summary>
@@ -287,7 +293,7 @@ public class Choice
     private void FailedSelection()
     {
         GameManager.instance.GetActivePlayer().Corruption += corruptionFail;
-        GameManager.instance.GetActivePlayer().lifePoints += lifeFail;
+        GameManager.instance.GetActivePlayer().ChangeLifePoints(lifeFail);
     }
 
     #endregion

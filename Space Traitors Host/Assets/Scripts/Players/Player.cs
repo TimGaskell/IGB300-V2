@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Player 
 {
@@ -14,12 +15,17 @@ public class Player
 
     private const int MAX_CORRUPTION = 100;
 
+    public const int NUM_ABILITIES = 5;
+
     //playerID should mirror the connection ID of the player to know which client information needs to be passed to
     public int playerID;
     //The name the player inputs when they start the game
     public string playerName;
 
     public int roomPosition;
+
+    //Connection
+    public bool isConnected;
 
     //Player Resources
     public int scrap;
@@ -29,6 +35,7 @@ public class Player
     public bool hasComponent;
     public int lifePoints;
     public int maxLifePoints;
+    public int ActionPoints;
 
     public bool IsDead { get { return lifePoints == 0; } }
 
@@ -66,21 +73,26 @@ public class Player
     }
     #endregion
 
+    public int BaseBrawn { get { return Character.baseBrawn; } }
+    public int BaseSkill { get { return Character.baseSkill; } }
+    public int BaseTech { get { return Character.baseTech; } }
+    public int BaseCharm { get { return Character.baseCharm; } }
+
     public int brawnModTemp;
     public int skillModTemp;
     public int techModTemp;
     public int charmModTemp;
 
     //Output the spec scores scaled by their corruption. Should be readonly so only get is defined
-    public float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
-    public float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
-    public float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
-    public float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
+    private float ScaledBrawn { get { return ApplyScaling(Character.baseBrawn, BrawnChange); } }
+    private float ScaledSkill { get { return ApplyScaling(Character.baseSkill, SkillChange); } }
+    private float ScaledTech { get { return ApplyScaling(Character.baseTech, TechChange); } }
+    private float ScaledCharm { get { return ApplyScaling(Character.baseCharm, CharmChange); } }
 
-    public int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
-    public int ModSkill { get { return Character.baseSkill + SkillChange; } }
-    public int ModTech { get { return Character.baseTech + TechChange; } }
-    public int ModCharm { get { return Character.baseCharm + CharmChange; } }
+    private int ModBrawn { get { return Character.baseBrawn + BrawnChange; } }
+    private int ModSkill { get { return Character.baseSkill + SkillChange; } }
+    private int ModTech { get { return Character.baseTech + TechChange; } }
+    private int ModCharm { get { return Character.baseCharm + CharmChange; } }
 
     //Says if the player has been selected as traitor or not
     public bool isTraitor;
@@ -94,6 +106,7 @@ public class Player
     //Reference to the players model in the game world
     public GameObject playerObject;
 
+
     public Player(int PlayerID, string PlayerName)
     {
         playerID = PlayerID;
@@ -102,7 +115,7 @@ public class Player
         roomPosition = STARTING_ROOM_ID;
 
         scrap = 1000;
-        corruption = 100;
+        corruption = 0;
 
         items = new List<Item>();
 
@@ -125,6 +138,10 @@ public class Player
 
         playerObject = null;
     }
+    void Start() {
+        
+    }
+ 
 
     /// <summary>
     /// 
@@ -149,6 +166,70 @@ public class Player
     private float ApplyScaling(int baseScore, int itemModifier)
     {
         return baseScore * ((100.0f - 0.5f * corruption) / 100.0f) + itemModifier;
+    }
+
+    /// <summary>
+    /// 
+    /// Modifies the players life points by a certain amount
+    /// 
+    /// </summary>
+    /// <param name="lifePointChange">The amount to change their life points by</param>
+    public void ChangeLifePoints(int lifePointChange)
+    {
+        lifePoints += lifePointChange;
+        //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
+        if (IsDead)
+        {
+            GameManager.instance.CheckTraitorVictory();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Gets a particular scaled spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public float GetScaledSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return ScaledBrawn;
+            case (GameManager.SpecScores.Skill):
+                return ScaledSkill;
+            case (GameManager.SpecScores.Tech):
+                return ScaledTech;
+            case (GameManager.SpecScores.Charm):
+                return ScaledCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Gets a particular modded spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public int GetModdedSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return ModBrawn;
+            case (GameManager.SpecScores.Skill):
+                return ModSkill;
+            case (GameManager.SpecScores.Tech):
+                return ModTech;
+            case (GameManager.SpecScores.Charm):
+                return ModCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
+        }
     }
 
     #region Abilitiy Handling
@@ -245,17 +326,9 @@ public class Player
         //Cannot give the player the item if there are more than the maximum number of items in their inventory
         if (items.Count < MAX_ITEMS)
         {
-            //If the player has valid slots for the item to be equipped, equips the item.
-            //May need to be changed if forcing inventory management when picking up an item
-            if(items.Where(x => x.isEquipped).Count() < MAX_EQUIPPED_ITEMS)
-            {
-                item.isEquipped = true;
-            }
-            else
-            {
-                item.isEquipped = false;
-            }
             items.Add(item);
+            //Automatically equips the last given item if the player is able to
+            EquipItem(items.Count - 1);
             return true;
         }
 
@@ -271,48 +344,50 @@ public class Player
     public void RemoveItem(int itemIndex)
     {
         items.RemoveAt(itemIndex);
+        
     }
+
+    public enum EquipErrors { Default, AlreadyEquipped, TooManyEquipped };
 
     /// <summary>
     /// 
-    /// Equips an item for a player if it can be done. Reasons for failure are having too many items equipped or 
-    /// already having the same type of item equipped
+    /// Attempts to equip an itme 
     /// 
     /// </summary>
-    /// <param name="itemIndex">The index of the item within the items list</param>
-    /// <returns>If the equip action fails for any reason will return false</returns>
-    public bool EquipItem(int itemIndex)
+    /// <param name="itemIndex"></param>
+    /// <returns></returns>
+    public EquipErrors EquipItem(int itemIndex)
     {
         int numEquipped = 0;
         Item testingItem = items[itemIndex];
+        //If item is being stolen have to force the item to be unequipped when transferred between
+        //inventories.
+        testingItem.isEquipped = false;
 
         foreach (Item item in items)
         {
             //Only need to verify conditions if the item is already equipped
             if (item.isEquipped)
             {
-                //If the item is already equipped, returns false
-                if (item == testingItem)
+                //If the item is already equipped, returns error
+                if (item.ItemType == testingItem.ItemType)
                 {
-                    Debug.Log("Item already Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.AlreadyEquipped;
                 }
-
 
                 numEquipped++;
 
-                //If the number of items equipped exceeds the maximum, returns false
+                //If the number of items equipped exceeds the maximum, returns error
                 if (numEquipped >= MAX_EQUIPPED_ITEMS)
                 {
-                    Debug.Log("Too many Items Equipped."); //Can replace this with some other form of output to give feedback to player if needed
-                    return false;
+                    return EquipErrors.TooManyEquipped;
                 }
             }
         }
 
         //Equips the items then returns true
         items[itemIndex].isEquipped = true;
-        return true;
+        return EquipErrors.Default;
     }
 
     /// <summary>

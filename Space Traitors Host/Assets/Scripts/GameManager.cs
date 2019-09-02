@@ -11,15 +11,15 @@ public class GameManager : MonoBehaviour
     public const string MainMenuScene = "Main Menu";
 
     public const string LobbyScene = "Lobby";
-    public const string CharacterScene = "Character Selection";
-    public const string MainGameScene = "Game Level";
+    public const string CharacterScene = "Server Character Selection";
+    public const string MainGameScene = "Server GameLevel";
 
     public const string NoServerLobbyScene = "NOSERVER Lobby";
     public const string NoServerCharacterScene = "NOSERVER Character Selection";
     public const string NoServerMainGameScene = "NOSERVER Game Level";
 
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
-    public bool serverActive = false;
+    public bool serverActive = true;
 
     //Used to detect if the game has been initialised or not. This is to prevent InitialiseGame being called twice when the game begins
     //(i.e. in awake and loading into main menu). Should be set true after initialisation is complete and false after leaving the main menu
@@ -28,8 +28,11 @@ public class GameManager : MonoBehaviour
     //A default player ID for dummy players (i.e. when a target is not needed). -1 should never be a valid player ID so it used here
     public const int DEFAULT_PLAYER_ID = -1;
 
+    //Amount of damage to deal during a combat, whether it be between players or from an AI Attack
+    public const int COMBAT_DAMAGE = -1;
+
     //Used for generating default player information if loading into a scene later than the lobby
-    private const int DEFAULT_NUM_PLAYERS = 4;
+    private const int DEFAULT_NUM_PLAYERS = 2;
     private static readonly string[] DEFAULT_NAMES = { "ButlerTest", "EngineerTest", "SingerTest", "TechieTest", "BruteTest", "ChefTest" };
     private static readonly Character.CharacterTypes[] CHARACTER_TYPES = { Character.CharacterTypes.Butler, Character.CharacterTypes.Engineer,
         Character.CharacterTypes.Singer, Character.CharacterTypes.Techie, Character.CharacterTypes.Brute, Character.CharacterTypes.Chef };
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     public List<Sprite> characterPortraits;
 
-    private GameObject playerList;
+    public GameObject playerList;
     public List<GameObject> playerPrefabs;
 
     //The number of components is always equal to the number of players (if increasing number of components in a game, change here)
@@ -66,6 +69,9 @@ public class GameManager : MonoBehaviour
     public float aiPowerChange;
     //The target score for the player when the AI attacks them
     public int aiTargetScore;
+
+    //Action Points provided to a player when they roll during their turn
+    public int actionPoints;
 
     //The ID of a player who has newly been selected as traitor
     public int newTraitor;
@@ -127,6 +133,9 @@ public class GameManager : MonoBehaviour
         {
             ClickRoom();
         }
+        else if (roomSelection && serverActive) {
+            ClientClickRoom();
+        }
 
         if (playerMoving)
         {
@@ -145,7 +154,8 @@ public class GameManager : MonoBehaviour
     /// <returns>The relevant player</returns>
     public Player GetPlayer(int playerID)
     {
-        return players[playerID];
+        //return players.Find(x => x.playerID == playerID);
+        return players[playerID - 1];
     }
 
     /// <summary>
@@ -157,7 +167,8 @@ public class GameManager : MonoBehaviour
     /// <returns>The relevant player</returns>
     public Player GetOrderedPlayer(int orderID)
     {
-        return players.Find(x => x.playerID == playerOrder[orderID]);
+
+        return players.Find(x => x.playerID == playerOrder[orderID-1]);
     }
 
     /// <summary>
@@ -288,7 +299,7 @@ public class GameManager : MonoBehaviour
     {
         if (serverActive)
         {
-            throw new NotImplementedException("Server Functionality not Implemented");
+            
             if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
@@ -297,12 +308,17 @@ public class GameManager : MonoBehaviour
             {
 
             }
-            else if (scene.name == CharacterScene)
+            else if (scene.name == CharacterScene )
             {
+                //Character Selection should be done in the reverse order to the way the game is played, so should start at the end of the player order list
+                activePlayer = numPlayers;
+                RandomiseOrder();
+  
 
             }
             else if (scene.name == MainGameScene)
             {
+                StartGame();
 
             }
         }
@@ -463,7 +479,7 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         //Reset variables to their default state
-        activePlayer = 0;
+        activePlayer = 1;
         installedComponents = 0;
 
         aiPower = 0;
@@ -479,7 +495,7 @@ public class GameManager : MonoBehaviour
 
         InstantiatePlayers();
 
-        currentPhase = TurnPhases.Abilities;
+        currentPhase = TurnPhases.Default;
 
         roomSelection = false;
         playerMoving = false;
@@ -489,6 +505,9 @@ public class GameManager : MonoBehaviour
         traitorWinID = DEFAULT_PLAYER_ID;
 
         sabotageCharges = 0;
+        Debug.Log("Sent Start Game to " + GetActivePlayer().playerID);
+        Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
+        
     }
 
     /// <summary>
@@ -496,7 +515,7 @@ public class GameManager : MonoBehaviour
     /// Instantiate the player objects in the game world
     /// 
     /// </summary>
-    private void InstantiatePlayers()
+    public void InstantiatePlayers()
     {
         playerList = GameObject.FindWithTag("PlayerList");
         Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;
@@ -525,7 +544,7 @@ public class GameManager : MonoBehaviour
     /// <param name="playerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>The chance for the player or the attacker to succeed on the spec challenge</returns>
-    public float SpecChallengeChance(float playerScore, float targetScore)
+    public static float SpecChallengeChance(float playerScore, float targetScore)
     {
         if (targetScore == 0)
         {
@@ -543,7 +562,7 @@ public class GameManager : MonoBehaviour
     /// <param name="PlayerScore">The player performing the spec challenge's relevant spec score. Also the attacker's score in a combat</param>
     /// <param name="targetScore">The target score of the spec challenge, or the defender's relevant spce score</param>
     /// <returns>True if the player suceeded. False otherwise</returns>
-    public bool PerformSpecChallenge(float PlayerScore, float targetScore)
+    public static bool PerformSpecChallenge(float PlayerScore, float targetScore)
     {
         //Pick a random number between 0 and 100. This determines if the player is successful in the spec challenge or not
         float successFactor = UnityEngine.Random.Range(0f, 100f);
@@ -565,6 +584,8 @@ public class GameManager : MonoBehaviour
     public void GeneratePlayer(int playerID, string playerName)
     {
         players.Add(new Player(playerID, playerName));
+       
+
     }
 
     /// <summary>
@@ -591,7 +612,7 @@ public class GameManager : MonoBehaviour
             //do-while loop checks if the ordered list already contains the random player ID. If it does, then obtains a new random ID.
             do
             {
-                randomPlayer = UnityEngine.Random.Range(0, numPlayers);
+                randomPlayer = UnityEngine.Random.Range(1, numPlayers+1);
 
             } while (playerOrder.Contains(randomPlayer));
 
@@ -658,7 +679,7 @@ public class GameManager : MonoBehaviour
     /// Increment the turn order to the next player. Starts a new round if the current player is the last player in the order
     /// 
     /// </summary>
-    private void IncrementTurn()
+    public void IncrementTurn()
     {
         activePlayer++;
 
@@ -667,7 +688,7 @@ public class GameManager : MonoBehaviour
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers)
         {
-            activePlayer = 0;
+            activePlayer = 1;
             if (CheckNonTraitorVictory())
             {
                 CurrentVictory = VictoryTypes.NonTraitor;
@@ -681,6 +702,8 @@ public class GameManager : MonoBehaviour
         {
             //When the players turn starts, disables any active abilities they may have
             GetActivePlayer().DisableActiveAbility();
+
+            Server.Instance.SendActivePlayer(activePlayer);
         }
     }
 
@@ -697,7 +720,12 @@ public class GameManager : MonoBehaviour
     {
         switch (currentPhase)
         {
+            case (TurnPhases.Default):
+                currentPhase += 1;
+                break;
             case (TurnPhases.Abilities):
+                currentPhase += 1;
+                break;               
             case (TurnPhases.Movement):
                 currentPhase += 1;
                 break;
@@ -715,6 +743,8 @@ public class GameManager : MonoBehaviour
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
+                newTraitor = DEFAULT_PLAYER_ID;
+                targetPlayer = DEFAULT_PLAYER_ID;
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -739,7 +769,7 @@ public class GameManager : MonoBehaviour
             basePower = BASE_POWER_MOD / numPlayers;
             playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
-            AIPower += basePower + playerPower + aiPowerChange;
+            AIPower += AIPowerIncrease();
         }
         else
         {
@@ -757,6 +787,12 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
+        Server.Instance.SendActivePlayer(activePlayer);
+    }
+
+    public float AIPowerIncrease()
+    {
+        return basePower + playerPower + aiPowerChange;
     }
 
     /// <summary>
@@ -951,7 +987,7 @@ public class GameManager : MonoBehaviour
     {
         bool playerWin;
 
-        float targetSpecScore = ObtainSpecScore(GetPlayer(targetPlayer), specScore);
+        float targetSpecScore = GetPlayer(targetPlayer).GetScaledSpecScore(specScore);
 
         //Determines if the target player wins the combat against the AI. If they do, there is no change. However if they lose, then
         //the target player loses a life point
@@ -962,13 +998,11 @@ public class GameManager : MonoBehaviour
         else
         {
             playerWin = false;
-            players[targetPlayer].lifePoints -= 1;
+            players[targetPlayer].ChangeLifePoints(COMBAT_DAMAGE);
         }
 
         //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
-        aiTargetScore += AI_TARGET_INCREASE;
-        //Resets target player back to the default case
-        targetPlayer = DEFAULT_PLAYER_ID;
+        aiTargetScore += AI_TARGET_INCREASE;       
 
         return playerWin;
     }
@@ -1024,8 +1058,8 @@ public class GameManager : MonoBehaviour
         Player attackingPlayer = GetActivePlayer();
         Player defendingPlayer = GetPlayer(defenderID);
 
-        float attackerScore = ObtainSpecScore(attackingPlayer, attackerSpec);
-        float defenderScore = ObtainSpecScore(defendingPlayer, defenderSpec);
+        float attackerScore = attackingPlayer.GetScaledSpecScore(attackerSpec);
+        float defenderScore = defendingPlayer.GetScaledSpecScore(defenderSpec);
 
         //If the attacking player is a traitor but has not been revealed, that player is revealed as the traitor
         if (attackingPlayer.isTraitor && !attackingPlayer.isRevealed)
@@ -1048,38 +1082,13 @@ public class GameManager : MonoBehaviour
         //successful, then the attacker wins, otherwise the defender loses.
         if (PerformSpecChallenge(attackerScore, defenderScore))
         {
-            GetPlayer(defenderID).lifePoints -= 1;
+            GetPlayer(defenderID).ChangeLifePoints(COMBAT_DAMAGE);
             return true;
         }
         else
         {
-            GetActivePlayer().lifePoints -= 1;
+            GetActivePlayer().ChangeLifePoints(COMBAT_DAMAGE);
             return false;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// Obtains the relevant spec score to be utilised from a particular player
-    /// 
-    /// </summary>
-    /// <param name="player">The player who is being tested</param>
-    /// <param name="specScore">The name of the spec score to be utilised</param>
-    /// <returns>The value of the relevant spec score for that player</returns>
-    public float ObtainSpecScore(Player player, SpecScores specScore)
-    {
-        switch (specScore)
-        {
-            case (SpecScores.Brawn):
-                return player.ScaledBrawn;
-            case (SpecScores.Skill):
-                return player.ScaledSkill;
-            case (SpecScores.Tech):
-                return player.ScaledTech;
-            case (SpecScores.Charm):
-                return player.ScaledCharm;
-            default:
-                throw new NotImplementedException("Not a valid Spec Score");
         }
     }
 
@@ -1179,7 +1188,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            GetActivePlayer().lifePoints -= 1;
+            GetActivePlayer().ChangeLifePoints(COMBAT_DAMAGE);
             sabotageCharges--;
             return false;
         }
@@ -1285,6 +1294,22 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ClientClickRoom() {
+
+        if (Input.GetMouseButtonDown(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges" && hit.transform.tag != "Unavailable") {
+
+                    playerGoalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    Server.Instance.SendRoomChoiceForCost(playerGoalIndex);
+                }
+            }
+        }
+
     }
 
     #endregion

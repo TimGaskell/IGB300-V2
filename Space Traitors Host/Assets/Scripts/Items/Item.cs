@@ -142,6 +142,6 @@ public class Item
         }
 
         //Reassigns the choice
-        GameManager.instance.GetComponent<ChoiceRandomiser>().SetChoice(roomOrigin[0], roomOrigin[1], tempChoice);
+        GameManager.instance.roomList.GetComponent<ChoiceRandomiser>().SetChoice(roomOrigin[0], roomOrigin[1], tempChoice);
     }
 }

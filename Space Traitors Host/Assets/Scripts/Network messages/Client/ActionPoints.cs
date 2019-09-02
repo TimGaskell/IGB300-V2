@@ -11,6 +11,6 @@ public class ActionPoints : NetMessage
 
     }
 
-    public int Points { set; get; }
+    public int actionPoints { get; set; }
     
 }

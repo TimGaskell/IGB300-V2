@@ -16,23 +16,24 @@ public class AiPower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        server = GameObject.FindGameObjectWithTag("Server");
+        //server = GameObject.FindGameObjectWithTag("Server");
         power = 0;   
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        AIPowerSliderUI.value = power;
-        if (power >= traitorAmount)
-        {
-            if (!traitorSent)
-            {
-                //server.GetComponent<Server>().ChooseTraitor();
-                traitorSent = true;
-            }
-        }
-    }
+   // void Update()
+    //{
+       // AIPowerSliderUI.value = power;
+        //if (power >= traitorAmount)
+        //{
+          //  if (!traitorSent)
+            //{
+            //    server.GetComponent<Server>().ChooseTraitor();
+              //  traitorSent = true;
+            //}
+       // }
+   // }
+
 
     public void incrementAIPower()
     {

@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerMovement : Navigation
 {
+    public static PlayerMovement instance = null;
+    public bool ServerVersion = false;
+
     //Movement Variables
     public float moveSpeed = 100.0f;
     public float minDistance = 0.1f;
     public int goalIndex = 0;
+    public bool StartMoving = false;
 
     //Player Variables
     public GameObject Player;
@@ -20,6 +24,8 @@ public class PlayerMovement : Navigation
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+        
         //Find waypoint graph
         //graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
         graphNodes = GameManager.instance.roomList.GetComponent<WayPointGraph>();
@@ -29,46 +35,51 @@ public class PlayerMovement : Navigation
 
     }
 
-    public void PlayerMoveViaNodes(int goalIndex)
-    {
+    public void PlayerMoveViaNodes(int goalIndex) {
 
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
 
-        //Move player
-        if (currentPath.Count > 0)
-        {
+        if (StartMoving == true) {
+            //Move player
+            if (currentPath.Count > 0) {
 
-            //Looks at the Graph Node it is heading towards
-            Vector3 direction = (graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position - Player.transform.position).normalized;
-            Quaternion look = Quaternion.LookRotation(direction);
-            Player.transform.rotation = look;
+                //Looks at the Graph Node it is heading towards
+                Vector3 direction = (graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position - Player.transform.position).normalized;
+                Quaternion look = Quaternion.LookRotation(direction);
+                Player.transform.rotation = look;
 
-            //Start Moving towards that Graph Node
-            Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position, moveSpeed * Time.deltaTime);
+                //Start Moving towards that Graph Node
+                Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position, moveSpeed * Time.deltaTime);
 
-            //Increase path index
-            if (Vector3.Distance(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) <= minDistance)
-            {
+                //Increase path index
+                if (Vector3.Distance(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) <= minDistance) {
 
-                if (currentPathIndex < currentPath.Count - 1)
+                    if (currentPathIndex < currentPath.Count - 1)
 
-                    currentPathIndex++;
+                        currentPathIndex++;
+                }
+
+                currentNodeIndex = graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>().index;   //Store current node index
             }
+            //Check if reached end of path
+            if (Player.transform.position == graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) {
 
-            currentNodeIndex = graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>().index;   //Store current node index
-        }
-        //Check if reached end of path
-        if (Player.transform.position == graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position)
-        {
+                StartMoving = false;
+                GameManager.instance.playerMoving = false;
+                
+                //If its at the end of the path look off to the side
+                Vector3 lookBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1000);
+                Player.transform.rotation = Quaternion.LookRotation(lookBack);
 
-            //If its at the end of the path look off to the side
-            Vector3 lookBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1000);
-            Player.transform.rotation = Quaternion.LookRotation(lookBack);
+                if (ServerVersion) {
+                    Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
+                }
 
-            Debug.Log("finished Moving");
-            GameManager.instance.playerMoving = false;
+                Debug.Log("finished Moving");
+               
+
+            }
         }
     }
-
 }

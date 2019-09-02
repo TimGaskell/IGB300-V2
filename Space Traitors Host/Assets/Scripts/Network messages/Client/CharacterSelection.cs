@@ -10,6 +10,6 @@ public class CharacterSelection : NetMessage {
         OperationCode = NetOP.CharacterSelection;
 
     }
-    public string SelectedCharacter{ set; get; }
+    public int SelectedCharacter{ set; get; }
     
 }
