@@ -884,6 +884,7 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            Debug.Log("Sent all player Data " + i);
             SendClient(allPlayerData);
 
         }
