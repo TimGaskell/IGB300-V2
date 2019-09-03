@@ -215,6 +215,7 @@ public class ClientUIManager : MonoBehaviour
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
+                RollActionPoints.instance.ResetRoll();
                 break;
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);

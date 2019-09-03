@@ -1467,11 +1467,12 @@ public class Server : MonoBehaviour
         SendServer(inventory);
     }
 
-    public void SendSpecSelection(GameManager.SpecScores specScore)
+    public void SendSpecSelection(GameManager.SpecScores specScore, bool attacker)
     {
         //Used in regular combat
         SpecSelection specSelection = new SpecSelection();
         specSelection.SelectedSpec = (int)specScore;
+        specSelection.Attacker = attacker;
 
         SendServer(specSelection);
     }

@@ -54,6 +54,7 @@ public class InteractionManager : MonoBehaviour
     public List<int> attackablePlayers;
 
     private enum ParticipantTypes { Attacker, Defender }
+    public bool AreAttacker;
 
     private void Start() {
         
@@ -246,29 +247,46 @@ public class InteractionManager : MonoBehaviour
         //Gets the relevant player information. The attacker will always be the active player and the defending will be the selected target
         //from the target panel.
         Player attackingPlayer = GameManager.instance.GetActivePlayer();
-        Player defendingPlayer = GameManager.instance.GetPlayer(selectedTarget);
+        PlayerData defendingPlayer = ClientManager.instance.GetPlayerData(selectedTarget);
 
         combatPanel.SetActive(true);
 
         //Sets the default screen status for the combats
-        combatPanel.GetComponent<CombatComponents>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.playerName;
-        combatPanel.GetComponent<CombatComponents>().defenderName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.playerName;
-        combatPanel.GetComponent<CombatComponents>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.Character.CharacterType);
-        combatPanel.GetComponent<CombatComponents>().defenderPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.Character.CharacterType);
-        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
-        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = false;
+        combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "ATTACKING";
+        combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.PlayerName;      
+        combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.CharacterType);
+        combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = false;
 
         //Reenables the spec score buttons
         for (int buttonID = 0; buttonID < 4; buttonID++)
         {
-            combatPanel.GetComponent<CombatComponents>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
-            combatPanel.GetComponent<CombatComponents>().defenderSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+            combatPanel.GetComponent<CombatComponentsClient>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
         }
 
-        attackerSpecScore = GameManager.SpecScores.Default;
-        defenderSpecScore = GameManager.SpecScores.Default;
+    }
+
+    public void SetupDefence() {
+
+        int attackingID = 0;
+        PlayerData attackingPlayer = ClientManager.instance.GetPlayerData(attackingID);
+
+        combatPanel.SetActive(true);
+
+        //Sets the default screen status for the combats
+        combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "DEFENDING";
+        combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.PlayerName;
+        combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.CharacterType);
+        combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = false;
+
+        //Reenables the spec score buttons
+        for (int buttonID = 0; buttonID < 4; buttonID++) {
+            combatPanel.GetComponent<CombatComponentsClient>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+        }
+
     }
 
     /// <summary>
@@ -281,47 +299,20 @@ public class InteractionManager : MonoBehaviour
     {
         GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
 
-        combatPanel.GetComponent<CombatComponents>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
+        combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = specScore;
         attackerSpecScore = chosenSpec;
 
         //Disables the buttons to prevent the value from being changed
-        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().attackerSpecButtons)
+        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponentsClient>().attackerSpecButtons)
         {
             specButton.GetComponent<Button>().interactable = false;
         }
 
-        //If both spec scores have been selected, starts the combat and displays the combat
-        if (!(defenderSpecScore == GameManager.SpecScores.Default))
-        {
-            DisplayWinner();
-        }
+        Server.Instance.SendSpecSelection(chosenSpec,AreAttacker);
+
     }
 
-    /// <summary>
-    /// 
-    /// If one of the defender spec scores is selected updates the display and store the spec score to use in the combat
-    /// 
-    /// </summary>
-    /// <param name="specScore">The name of the spec score for the button</param>
-    public void DefenderSpec(string specScore)
-    {
-        GameManager.SpecScores chosenSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
-
-        combatPanel.GetComponent<CombatComponents>().defenderSpec.GetComponent<TextMeshProUGUI>().text = specScore;
-        defenderSpecScore = chosenSpec;
-
-        //Disables the buttons to prevent the value from being changed
-        foreach (GameObject specButton in combatPanel.GetComponent<CombatComponents>().defenderSpecButtons)
-        {
-            specButton.GetComponent<Button>().interactable = false;
-        }
-
-        //If both spec scores have been selected, starts the combat and displays the combat
-        if (!(attackerSpecScore == GameManager.SpecScores.Default))
-        {
-            DisplayWinner();
-        }
-    }
+  
 
     /// <summary>
     /// 
@@ -330,19 +321,19 @@ public class InteractionManager : MonoBehaviour
     /// </summary>
     private void DisplayWinner()
     {
-        combatPanel.GetComponent<CombatComponents>().continueButton.GetComponent<Button>().interactable = true;
+        combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = true;
 
         //If perform combat returns true, means the attacker wins
         if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
         {
-            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+            combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
             //Sends the IDs of the relevant players to the stealing manager
             stealPanel.GetComponent<StealingManager>().winner = GameManager.instance.GetActivePlayer();
             stealPanel.GetComponent<StealingManager>().loser = GameManager.instance.GetPlayer(selectedTarget);
         }
         else
         {
-            combatPanel.GetComponent<CombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
+            combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
             //Sends the IDs of the relevant players to the stealing manager
             stealPanel.GetComponent<StealingManager>().winner = GameManager.instance.GetPlayer(selectedTarget);
             stealPanel.GetComponent<StealingManager>().loser = GameManager.instance.GetActivePlayer();
