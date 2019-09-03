@@ -24,10 +24,8 @@ public class AnimationSwitcher : MonoBehaviour
         RunAnims.Add("Techie-Run-Start");
         RunAnims.Add("Engineer-Walk");
 
-        RunAnims.Add("Techie-Intro");
-        RunAnims.Add("Engineer-Intro");
-
-        RunAnimation("Techie");
+        IntroAnims.Add("Techie-Intro");
+        IntroAnims.Add("Engineer-Intro");
     }
 
     //Note: Pass in name of the character from wherever these methods are called- 
@@ -80,7 +78,6 @@ public class AnimationSwitcher : MonoBehaviour
                 animationIndex = 1;
                 break;
         }
-
         animations.Play(IntroAnims[animationIndex]);
     }
 
