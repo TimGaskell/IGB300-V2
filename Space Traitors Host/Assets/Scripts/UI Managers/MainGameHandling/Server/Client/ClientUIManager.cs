@@ -46,7 +46,7 @@ public class ClientUIManager : MonoBehaviour
         GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
-        player = GameObject.Find("PlayerInfoHolder").GetComponent<ClientManager>();
+        player = GameObject.Find("ClientManager").GetComponent<ClientManager>();
 
         if (GameManager.instance.serverActive)
         {

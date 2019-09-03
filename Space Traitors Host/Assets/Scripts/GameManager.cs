@@ -318,6 +318,7 @@ public class GameManager : MonoBehaviour
             }
             else if (scene.name == MainGameScene)
             {
+                Server.Instance.SendAllPlayerData();
                 StartGame();
 
             }
