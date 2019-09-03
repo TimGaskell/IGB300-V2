@@ -25,7 +25,7 @@ public class JoinGame : MonoBehaviour {
     void Start() {
 
         networkManager = NetworkManager.singleton;
-        if (SceneManager.GetActiveScene().name == "LobbyLan")
+        if (SceneManager.GetActiveScene().name == "LobbyLan Client")
         {
             cnd = GameObject.Find("NetworkManager").GetComponent<CustomNetworkDiscovery>();
             cnd.Initialize();
@@ -45,7 +45,7 @@ public class JoinGame : MonoBehaviour {
     public void RefreshRoomList() {
 
         ClearRoomList();
-        if (SceneManager.GetActiveScene().name == "LobbyLan")
+        if (SceneManager.GetActiveScene().name == "LobbyLan Client")
         {
             if (cnd.broadcastsReceived.Values != null)
             {

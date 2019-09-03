@@ -46,7 +46,7 @@ public class HostGame : MonoBehaviour
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
             //create room
-            if (SceneManager.GetActiveScene().name == "LobbyLan")
+            if (SceneManager.GetActiveScene().name == "LobbyLan Host")
             {
                 networkManager.StopAllCoroutines();
                 networkManager.networkPort = 7777;
