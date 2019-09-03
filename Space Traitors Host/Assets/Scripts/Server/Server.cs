@@ -372,6 +372,9 @@ public class Server : MonoBehaviour
             case NetOP.RoomChoices:
                 StoreRoomChoices(conID, chanID, rHostID, (RoomChoices)msg);
                 break;
+            case NetOP.AllPlayerData:
+                GetAllPlayerData(conID, chanID, rHostID,(AllPlayerData)msg);
+                break;
 
 
 
@@ -1244,12 +1247,14 @@ public class Server : MonoBehaviour
     private void GetAllPlayerData(int conID, int chanID, int rHostID, AllPlayerData allPlayerData)
     {
         ClientManager.instance.playerData = new List<PlayerData>();
+        Debug.Log("recieved player data");
 
         for (int playerIndex = 0; playerIndex < allPlayerData.numPlayers; playerIndex++)
         {
             int playerID = allPlayerData.PlayerIDs[playerIndex];
             string playerName = allPlayerData.PlayerNames[playerIndex];
             Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
+            Debug.Log(playerID + " " + playerName + " " + characterType);
 
             ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
         }
