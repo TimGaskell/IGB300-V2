@@ -1984,7 +1984,6 @@ public class Server : MonoBehaviour
                         //Handled in player movement to send once they arrive at the room.
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
-                        GameManager.instance.IncrementTurn();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen

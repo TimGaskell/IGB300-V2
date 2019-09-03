@@ -702,6 +702,7 @@ public class GameManager : MonoBehaviour
         {
             //When the players turn starts, disables any active abilities they may have
             GetActivePlayer().DisableActiveAbility();
+            currentPhase = TurnPhases.Abilities;
 
             Server.Instance.SendActivePlayer(activePlayer);
         }
@@ -736,10 +737,11 @@ public class GameManager : MonoBehaviour
                 playerList.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
                 break;
             case (TurnPhases.Interaction):
-                currentPhase = TurnPhases.Abilities;
-                IncrementTurn();
+                currentPhase += 1;
                 break;
             case (TurnPhases.BasicSurge):
+                IncrementTurn();
+                break;
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
