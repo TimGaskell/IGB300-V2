@@ -9,31 +9,16 @@ public class PlayerCardManager : MonoBehaviour
 {
     public GameObject activePlayerPanel;
 
-    public GameObject playerCardPrefab;
+    public GameObject initialPlayerCard;
     private List<GameObject> playerCards;
-
-    public List<Sprite> playerPortraits;
 
     public void InitialisePlayerCards()
     {
-  
-        
-        for(int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
+        for(int playerIndex = 0; playerIndex < GameManager.instance.numPlayers; playerIndex++)
         {
-            GameObject playercard = Instantiate(playerCardPrefab);
-            playercard.transform.parent = GameObject.Find("Cards").transform;
+            GameObject playercard = Instantiate(initialPlayerCard, initialPlayerCard.transform.parent);
             playerCards.Add(playercard);
-
-        }
-        
-        
-        //Update the player cards to start the game
-        for (int playerIndex = 0; playerIndex < GameManager.instance.MAX_PLAYERS; playerIndex++)
-        {
-            if (playerIndex < GameManager.instance.numPlayers)
-            {
-                UpdatePlayerCard(playerIndex);
-            }
+            UpdatePlayerCard(playerIndex);
 
         }
     }
@@ -60,7 +45,6 @@ public class PlayerCardManager : MonoBehaviour
         Player player = GameManager.instance.GetOrderedPlayer(playerIndex);
 
         playerCards[playerIndex].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().characterText.GetComponent<TextMeshProUGUI>().text = player.Character.CharacterName;
         playerCards[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
         playerCards[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
         playerCards[playerIndex].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
