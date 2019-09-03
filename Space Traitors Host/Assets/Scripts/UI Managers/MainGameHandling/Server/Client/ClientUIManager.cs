@@ -206,6 +206,11 @@ public class ClientUIManager : MonoBehaviour
     {
         switch (GameManager.instance.currentPhase)
         {
+            case (GameManager.TurnPhases.Default):
+                basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
+                interactionPanel.SetActive(false);
+                break;
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);

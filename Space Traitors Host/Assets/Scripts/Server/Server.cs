@@ -244,6 +244,7 @@ public class Server : MonoBehaviour
             case NetworkEventType.DataEvent:
                 BinaryFormatter formatter = new BinaryFormatter();
                 MemoryStream ms = new MemoryStream(recBuffer);
+                ms.Position = 0;
                 NetMessage msg = (NetMessage)formatter.Deserialize(ms);
 
                 OnData(connectionID, channelID, recHostID, msg);
@@ -288,6 +289,7 @@ public class Server : MonoBehaviour
             case NetworkEventType.DataEvent:
                 BinaryFormatter formatter = new BinaryFormatter();
                 MemoryStream ms = new MemoryStream(recBuffer);
+                ms.Position = 0;
                 NetMessage msg = (NetMessage)formatter.Deserialize(ms);
 
                 OnData(connectionID, channelID, recHostID, msg);
@@ -392,6 +394,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         if (recHost == 0)
@@ -425,6 +428,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         int connectionID = tempPlayerID;
@@ -441,6 +445,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         Debug.Log("sent");
@@ -876,18 +881,18 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
-
             Player player = GameManager.instance.GetPlayer(i);
             allPlayerData.PlayerIDs.Add(player.playerID);
             allPlayerData.PlayerNames.Add(player.playerName);
             allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+
 
         }
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
-            Debug.Log("Sent all player Data " + i);
+            Debug.Log("Sent all player Data " + tempPlayerID);
             SendClient(allPlayerData);
 
         }
