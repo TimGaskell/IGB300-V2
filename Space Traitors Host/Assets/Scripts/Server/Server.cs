@@ -1141,6 +1141,12 @@ public class Server : MonoBehaviour
     private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
     {
         //Need to display attacked and defender info to players and allow them to select spec score for combat
+
+        InteractionManager.instance.attackingID = beingAttacked.AttackerID;
+        InteractionManager.instance.SetupDefence();
+
+
+
     }
 
     private void AbilityActivated(int conID, int chanID, int rHostID, AbilityActivated abilityActivated)
@@ -1213,6 +1219,7 @@ public class Server : MonoBehaviour
     {
         //Need to display that they won the combat and who they won it against using combatWinner.loserID
         //Also need to store the loser ID to send back to the server when stealing the items
+        
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1224,6 +1231,8 @@ public class Server : MonoBehaviour
             Item item = ClientManager.instance.GetItemInfo(itemID);
             loserInventory.Add(item);
         }
+        StealingManager.instance.losersItems = loserInventory;
+        StealingManager.instance.StartStealPanel();
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)

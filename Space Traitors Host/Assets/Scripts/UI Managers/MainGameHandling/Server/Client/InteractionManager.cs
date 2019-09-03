@@ -55,6 +55,9 @@ public class InteractionManager : MonoBehaviour
 
     private enum ParticipantTypes { Attacker, Defender }
     public bool AreAttacker;
+    public int attackingID;
+    public int combatwinnerID;
+    public int combatLoserID;
 
     private void Start() {
         
@@ -248,7 +251,7 @@ public class InteractionManager : MonoBehaviour
         //from the target panel.
         Player attackingPlayer = GameManager.instance.GetActivePlayer();
         PlayerData defendingPlayer = ClientManager.instance.GetPlayerData(selectedTarget);
-
+        AreAttacker = true;
         combatPanel.SetActive(true);
 
         //Sets the default screen status for the combats
@@ -265,11 +268,13 @@ public class InteractionManager : MonoBehaviour
             combatPanel.GetComponent<CombatComponentsClient>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
         }
 
+        Server.Instance.SendCombat(defendingPlayer.PlayerID);
+
     }
 
     public void SetupDefence() {
 
-        int attackingID = 0;
+        AreAttacker = false;
         PlayerData attackingPlayer = ClientManager.instance.GetPlayerData(attackingID);
 
         combatPanel.SetActive(true);
@@ -329,14 +334,14 @@ public class InteractionManager : MonoBehaviour
             combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
             //Sends the IDs of the relevant players to the stealing manager
             stealPanel.GetComponent<StealingManager>().winner = GameManager.instance.GetActivePlayer();
-            stealPanel.GetComponent<StealingManager>().loser = GameManager.instance.GetPlayer(selectedTarget);
+           
         }
         else
         {
             combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(selectedTarget).playerName;
             //Sends the IDs of the relevant players to the stealing manager
             stealPanel.GetComponent<StealingManager>().winner = GameManager.instance.GetPlayer(selectedTarget);
-            stealPanel.GetComponent<StealingManager>().loser = GameManager.instance.GetActivePlayer();
+       
         }
 
         playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
