@@ -329,7 +329,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ConfirmSpecSelection()
     {
-        GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
+        //GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
         playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
         IncrementPhase();
     }

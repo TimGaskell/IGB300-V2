@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class BasicSurgeManager : MonoBehaviour
 {
     public GameObject powerBar;
-    public GameObject powerCounter;
     public GameObject baseIncrease;
     public GameObject playerIncrease;
     public GameObject choiceIncrease;
     public GameObject totalIncrease;
+    public GameObject confirmButton;
 
     public void UpdateSurgeValues()
     {
@@ -20,5 +20,13 @@ public class BasicSurgeManager : MonoBehaviour
         playerIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.playerPower.ToString());
         choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.aiPowerChange.ToString());
         totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", (GameManager.instance.basePower + GameManager.instance.playerPower + GameManager.instance.aiPowerChange).ToString());
+    }
+
+    public void EndBasicSurge()
+    {
+        //I believe this should work but might be a better way of doing it
+        //Would ideally be handled using the clients confirming they are all finished then
+        //having the server update from there.
+        Server.Instance.NewPhase(0, 0, 0, new NewPhase());
     }
 }

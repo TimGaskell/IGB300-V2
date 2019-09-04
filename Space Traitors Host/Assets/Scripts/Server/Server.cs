@@ -1952,7 +1952,7 @@ public class Server : MonoBehaviour
 
     }
 
-    private void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
+    public void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
     {
         GameManager.instance.IncrementPhase();
         Debug.Log("current Phase " + GameManager.instance.currentPhase);
@@ -1960,16 +1960,15 @@ public class Server : MonoBehaviour
         Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
+        //Below function will handle displaying the new panels for the phase as well as victory condition screens
         canvas.GetComponent<MainGameUIManager>().IncrementPhase();
 
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
-                //Need to add display of non-traitor victory screen
                 SendNonTraitorVictory();
                 break;
             case (GameManager.VictoryTypes.Traitor):
-                //Need to add display of traitor victory screen
                 SendTraitorVictory(GameManager.instance.traitorWinID);
                 break;
             case (GameManager.VictoryTypes.None):
@@ -2132,6 +2131,10 @@ public class Server : MonoBehaviour
         GameManager.SpecScores selectedSpec = (GameManager.SpecScores)aISpecSelection.SelectedSpec;
 
         bool attackOutcome = GameManager.instance.AIAttackPlayer(selectedSpec);
+
+        GameObject canvas = GameObject.Find("Canvas");
+        canvas.GetComponent<MainGameUIManager>().attackSurgePanel.GetComponent<AttackSurgeManager>().SetWinText(attackOutcome);
+        canvas.GetComponent<MainGameUIManager>().attackSurgePanel.GetComponent<AttackSurgeManager>().confirmButton.GetComponent<Button>().interactable = true;
 
         SendAIAttackResult(conID, attackOutcome);
         SendIsTraitor();

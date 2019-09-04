@@ -46,6 +46,7 @@ public class MainGameUIManager : MonoBehaviour
 
         sabotagePanel.SetActive(false);
 
+        playerCards.SetActive(true);
         playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
         DisplayCurrentPhase();
         UpdateAIPower();
@@ -75,9 +76,9 @@ public class MainGameUIManager : MonoBehaviour
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Abilities):
+                aiPowerPanel.SetActive(true);
                 UpdateAIPower();
                 playerCards.SetActive(true);
-                aiPowerPanel.SetActive(true);
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
@@ -179,6 +180,16 @@ public class MainGameUIManager : MonoBehaviour
     public void ExitGame()
     {
         SceneManager.LoadScene(GameManager.MainMenuScene);
+    }
+
+    public void SetBasicSurgeButton(bool enabled)
+    {
+        basicSurgePanel.GetComponent<BasicSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
+    }
+
+    public void SetAttackSurgeButton(bool enabled)
+    {
+        attackSurgePanel.GetComponent<AttackSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
     }
 
     #endregion
