@@ -50,6 +50,10 @@ public class ClientUIManager : MonoBehaviour
 
         if (GameManager.instance.serverActive)
         {
+            //Sets up targets for choosing other players on the combat and ability panels
+            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
+            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
+
             serverActivePanel.SetActive(true);
             noServerPanel.SetActive(false);
 
@@ -72,9 +76,7 @@ public class ClientUIManager : MonoBehaviour
         }
         else
         {
-            //Sets up targets for choosing other players on the combat and ability panels
-            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
-            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
+           
 
             serverActivePanel.SetActive(false);
             noServerPanel.SetActive(true);
@@ -350,7 +352,7 @@ public class ClientUIManager : MonoBehaviour
     {
         foreach (GameObject targetButton in targetButtons)
         {
-            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            PlayerData player = ClientManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);  // GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
             //If the player of the particular type does not exist, disables the target button for the character of that type
             if (player == null)
             {
@@ -359,8 +361,8 @@ public class ClientUIManager : MonoBehaviour
             else
             {
                 //Sets the player ID on the target image as well as their name above their image
-                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
-                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
+                targetButton.GetComponent<TargetProperties>().playerID = player.PlayerID;
+                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.PlayerName;
             }
         }
     }

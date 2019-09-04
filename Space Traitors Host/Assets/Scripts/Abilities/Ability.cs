@@ -39,7 +39,7 @@ public class Ability
     /// <returns>Returns true if the player has enough scrap to use the ability. False otherwise</returns>
     public bool CheckScrap()
     {
-        return ClientManager.instance.scrap - scrapCost >= 0;
+        return GameManager.instance.GetActivePlayer().scrap - scrapCost >= 0;
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class Ability
     /// </summary>
     public void SpendScrap()
     {
-        ClientManager.instance.scrap -= scrapCost;
+        GameManager.instance.GetActivePlayer().scrap -= scrapCost;
     }
 
     /// <summary>

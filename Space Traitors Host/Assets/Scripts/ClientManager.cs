@@ -201,4 +201,9 @@ public class ClientManager : MonoBehaviour
     {
         return playerData.Find(x => x.PlayerID == playerID);
     }
+
+    public PlayerData GetPlayer(Character.CharacterTypes characterType) {
+       return playerData.Find(x => x.CharacterType == characterType);
+    }
+
 }

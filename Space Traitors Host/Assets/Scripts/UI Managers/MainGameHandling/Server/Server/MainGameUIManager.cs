@@ -73,7 +73,7 @@ public class MainGameUIManager : MonoBehaviour
     {
         if (GameManager.instance.serverActive)
         {
-            throw new NotImplementedException("Server Not Implemented");
+
         }
         else
         {

@@ -724,6 +724,9 @@ public class GameManager : MonoBehaviour
     {
         switch (currentPhase)
         {
+            case (TurnPhases.Default):
+                currentPhase += 1;
+                break;
             case (TurnPhases.Abilities):
                 currentPhase += 1;
                 break;               
