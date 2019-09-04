@@ -12,4 +12,5 @@ public class SpecSelection : NetMessage {
 
 
     public int SelectedSpec { set; get; }
+    public bool Attacker { set; get; }
 }

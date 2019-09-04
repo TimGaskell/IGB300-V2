@@ -46,7 +46,7 @@ public class ClientUIManager : MonoBehaviour
         GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
-        player = GameObject.Find("PlayerInfoHolder").GetComponent<ClientManager>();
+        player = GameObject.Find("ClientManager").GetComponent<ClientManager>();
 
         if (GameManager.instance.serverActive)
         {
@@ -72,9 +72,7 @@ public class ClientUIManager : MonoBehaviour
         }
         else
         {
-            //Sets up targets for choosing other players on the combat and ability panels
-            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
-            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
+           
 
             serverActivePanel.SetActive(false);
             noServerPanel.SetActive(true);
@@ -206,6 +204,11 @@ public class ClientUIManager : MonoBehaviour
     {
         switch (GameManager.instance.currentPhase)
         {
+            case (GameManager.TurnPhases.Default):
+                basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
+                interactionPanel.SetActive(false);
+                break;
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
@@ -215,6 +218,7 @@ public class ClientUIManager : MonoBehaviour
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
+                RollActionPoints.instance.ResetRoll();
                 break;
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);
@@ -340,11 +344,11 @@ public class ClientUIManager : MonoBehaviour
     /// their portraits. Only needs to be called once when the game is started
     /// 
     /// </summary>
-    private void SetupTargets(List<GameObject> targetButtons)
+    public void SetupTargets(List<GameObject> targetButtons)
     {
         foreach (GameObject targetButton in targetButtons)
         {
-            Player player = GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
+            PlayerData player = ClientManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);  // GameManager.instance.GetPlayer(targetButton.GetComponent<TargetProperties>().characterType);
             //If the player of the particular type does not exist, disables the target button for the character of that type
             if (player == null)
             {
@@ -353,8 +357,8 @@ public class ClientUIManager : MonoBehaviour
             else
             {
                 //Sets the player ID on the target image as well as their name above their image
-                targetButton.GetComponent<TargetProperties>().playerID = player.playerID;
-                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.playerName;
+                targetButton.GetComponent<TargetProperties>().playerID = player.PlayerID;
+                targetButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = player.PlayerName;
             }
         }
     }

@@ -23,7 +23,7 @@ public class AbilityManager : MonoBehaviour
     public GameObject playerSelectedButton;
     public GameObject resourceSelectedButton;
 
-    private int selectedPlayer;
+    public int selectedPlayer;
     private Ability.ScanResources selectedResource;
 
     public GameObject abilityInfoText;
@@ -177,20 +177,20 @@ public class AbilityManager : MonoBehaviour
         //For code inspection, need to display if the player is or isn't a traitor
         if(selectedAbility.abilityType == Ability.AbilityTypes.Code_Inspection)
         {
-            selectedAbility.Activate(selectedPlayer, out bool isTraitor);
+            //selectedAbility.Activate(selectedPlayer, out bool isTraitor);
             Server.Instance.SendAbilityUsed(selectedAbility.abilityType, selectedPlayer, Ability.ScanResources.Default);
             //Set up the modifier to the traitor string
-            string traitorString = "";
-            if (!isTraitor)
-            {
-                traitorString = "not ";
-            }
-            abilityInfoText.SetActive(true);
-            abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", ClientManager.instance.GetPlayerData(selectedPlayer).PlayerName, traitorString);
+            //string traitorString = "";
+            //if (!isTraitor)
+            //{
+            //    traitorString = "not ";
+            //}
+            //abilityInfoText.SetActive(true);
+            //abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", ClientManager.instance.GetPlayerData(selectedPlayer).PlayerName, traitorString);
         }
         else
         {
-            selectedAbility.Activate(selectedPlayer);
+            //selectedAbility.Activate(selectedPlayer);
             Server.Instance.SendAbilityUsed(selectedAbility.abilityType, selectedPlayer, Ability.ScanResources.Default);
         }
 
@@ -258,10 +258,10 @@ public class AbilityManager : MonoBehaviour
     /// Displays the activated ability to the player
     /// 
     /// </summary>
-    private void DisplayActiveAbility()
+    public void DisplayActiveAbility()
     {
         abilityActiveDisplay.SetActive(true);
         abilityActiveDisplay.GetComponent<ActiveAbilityDisplay>().UpdateActiveText(selectedAbility);
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+       
     }
 }

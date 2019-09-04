@@ -6,10 +6,13 @@ using UnityEngine.UI;
 
 public class StealingManager : MonoBehaviour
 {
+    public static StealingManager instance = null;
     public GameObject playerCards;
+    public GameObject stealComponentButton;
 
     public Player winner;
-    public Player loser;
+    public List<Item> losersItems;
+    public int loserID;
 
     public GameObject winnerText;
     public GameObject loserText;
@@ -30,6 +33,10 @@ public class StealingManager : MonoBehaviour
 
     public GameObject equipButton;
 
+
+    private void Start() {
+        instance = this;
+    }
     /// <summary>
     /// 
     /// Sets up the stealing panel to present the relevant player's information
@@ -37,8 +44,8 @@ public class StealingManager : MonoBehaviour
     /// </summary>
     public void StartStealPanel()
     {
-        winnerText.GetComponent<TextMeshProUGUI>().text = winner.playerName;
-        loserText.GetComponent<TextMeshProUGUI>().text = loser.playerName;
+        winnerText.GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerName;
+        loserText.GetComponent<TextMeshProUGUI>().text =  ClientManager.instance.GetPlayerData(loserID).PlayerName;
 
         UpdateItemButtons();
         loserItemParent.GetComponent<CanvasGroup>().interactable = true;
@@ -61,7 +68,7 @@ public class StealingManager : MonoBehaviour
         for (int itemIndex = 0; itemIndex < Player.MAX_ITEMS; itemIndex++)
         {
             //If the current button is one of the empty "slots" in the player's inventory, leaves it blank
-            if(itemIndex >= winner.items.Count)
+            if(itemIndex >= ClientManager.instance.inventory.Count)
             {
                 winnerDisplayText = "";
                 winnerItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = new Item();
@@ -70,9 +77,9 @@ public class StealingManager : MonoBehaviour
             //Otherwise displays the relevant information
             else
             {
-                winnerDisplayText = winner.items[itemIndex].ItemName;
-                winnerItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = winner.items[itemIndex];
-                if (winner.items[itemIndex].isEquipped)
+                winnerDisplayText = ClientManager.instance.inventory[itemIndex].ItemName;
+                winnerItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = ClientManager.instance.inventory[itemIndex];
+                if (ClientManager.instance.inventory[itemIndex].isEquipped)
                 {
                     winnerItemButtons[itemIndex].GetComponent<Image>().color = Color.green;
                 }
@@ -85,7 +92,7 @@ public class StealingManager : MonoBehaviour
             winnerItemButtons[itemIndex].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = winnerDisplayText;
 
             //Statements below as above for winner, just applied to loser of combat
-            if (itemIndex >= loser.items.Count)
+            if (itemIndex >= losersItems.Count)
             {
                 loserDisplayText = "";
                 loserItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = new Item();
@@ -93,9 +100,9 @@ public class StealingManager : MonoBehaviour
             }
             else
             {
-                loserDisplayText = loser.items[itemIndex].ItemName;
-                loserItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = loser.items[itemIndex];
-                if (loser.items[itemIndex].isEquipped)
+                loserDisplayText = losersItems[itemIndex].ItemName;
+                loserItemButtons[itemIndex].GetComponent<ItemButtonComponents>().item = losersItems[itemIndex];
+                if (losersItems[itemIndex].isEquipped)
                 {
                     loserItemButtons[itemIndex].GetComponent<Image>().color = Color.green;
                 }
@@ -107,8 +114,6 @@ public class StealingManager : MonoBehaviour
 
             loserItemButtons[itemIndex].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = loserDisplayText;
         }
-
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
     }
 
     /// <summary>
@@ -218,7 +223,7 @@ public class StealingManager : MonoBehaviour
         if (winner.GiveItem(selectedItem))
         {
             //Removes the item from the losers inventory. Also sets the loser's inventory from being interactable so only one item can be stolen
-            loser.RemoveItem(selectedID);
+            Server.Instance.StealItem(selectedID, loserID, false);
             loserItemParent.GetComponent<CanvasGroup>().interactable = false;
             UpdateItemButtons();
         }
@@ -235,7 +240,7 @@ public class StealingManager : MonoBehaviour
     /// </summary>
     public void StealDiscardItem()
     {
-        loser.DiscardItem(selectedID);
+        Server.Instance.StealDiscardItem(selectedID, loserID);
         loserItemParent.GetComponent<CanvasGroup>().interactable = false;
         UpdateItemButtons();
     }
@@ -285,5 +290,26 @@ public class StealingManager : MonoBehaviour
     {
         winner.DiscardItem(selectedID);
         UpdateItemButtons();
+    }
+
+    /// <summary>
+    /// 
+    /// Steal a component from the loser of the combat to give to the winner.
+    /// 
+    /// </summary>
+    public void StealComponent() {
+        ResetSelectedItem();
+        if (ClientManager.instance.hasComponent) {
+            SetErrorText("Already have a component");
+        }
+        else {
+            ClientManager.instance.hasComponent = true;
+            Server.Instance.StealItem(0,loserID,true);
+
+            loserItemParent.GetComponent<CanvasGroup>().interactable = false;
+            stealComponentButton.GetComponent<Button>().interactable = false;
+
+            UpdateItemButtons();
+        }
     }
 }

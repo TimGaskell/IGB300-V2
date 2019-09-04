@@ -39,7 +39,6 @@ public class ServerCharacterSelection : MonoBehaviour {
         
         if(GameManager.instance.activePlayer == 0) {
 
-            Server.Instance.SendAllPlayerData();
             //Send message to every player's client to move onto next scene
             Server.Instance.SendChangeScene("Client GameLevel");
             //Change to the character select

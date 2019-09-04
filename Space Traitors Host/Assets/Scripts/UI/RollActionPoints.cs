@@ -6,6 +6,8 @@ using TMPro;
 
 public class RollActionPoints : MonoBehaviour
 {
+    public static RollActionPoints instance = null;
+    
     //Currently, the 8 bars must be the topmost children of the battery gameObject, in the correct order.
     private GameObject[] barImages;
     public GameObject numberText;
@@ -36,6 +38,8 @@ public class RollActionPoints : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
         barImages = new GameObject[MaxBars];
         for (int i = 0; i < MaxBars; i++)
         {

@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 using System.Net;
 using System.Net.NetworkInformation;
@@ -244,6 +245,7 @@ public class Server : MonoBehaviour
             case NetworkEventType.DataEvent:
                 BinaryFormatter formatter = new BinaryFormatter();
                 MemoryStream ms = new MemoryStream(recBuffer);
+                ms.Position = 0;
                 NetMessage msg = (NetMessage)formatter.Deserialize(ms);
 
                 OnData(connectionID, channelID, recHostID, msg);
@@ -288,6 +290,7 @@ public class Server : MonoBehaviour
             case NetworkEventType.DataEvent:
                 BinaryFormatter formatter = new BinaryFormatter();
                 MemoryStream ms = new MemoryStream(recBuffer);
+                ms.Position = 0;
                 NetMessage msg = (NetMessage)formatter.Deserialize(ms);
 
                 OnData(connectionID, channelID, recHostID, msg);
@@ -372,6 +375,17 @@ public class Server : MonoBehaviour
             case NetOP.RoomChoices:
                 StoreRoomChoices(conID, chanID, rHostID, (RoomChoices)msg);
                 break;
+            case NetOP.SendAllPlayerIDS:
+                GetAllPlayerIDS(conID, chanID, rHostID, (SendAllPlayerIDS)msg);
+                break;
+            case NetOP.SendAllPlayerNames:
+                GetAllPlayersNames(conID, chanID, rHostID, (SendAllPlayerNames)msg);
+                break;
+            case NetOP.SendAllPlayerCharacterTypes:
+                GetAllPlayersCharacters(conID, chanID, rHostID, (SendAllPlayerCharacters)msg);
+                break;
+
+
 
 
 
@@ -389,6 +403,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         if (recHost == 0)
@@ -422,6 +437,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         int connectionID = tempPlayerID;
@@ -438,6 +454,7 @@ public class Server : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream ms = new MemoryStream(buffer);
+        ms.Position = 0;
         formatter.Serialize(ms, msg);
 
         Debug.Log("sent");
@@ -858,35 +875,114 @@ public class Server : MonoBehaviour
     /// will not change from then
     /// 
     /// </summary>
-    public void SendAllPlayerData()
+    //public void SendAllPlayerData()
+    //{
+    //    AllPlayerData allPlayerData = new AllPlayerData();
+
+    //    allPlayerData.numPlayers = GameManager.instance.numPlayers;
+    //    allPlayerData.PlayerIDs = new List<int>();
+    //    allPlayerData.PlayerNames = new List<string>();
+    //    allPlayerData.CharacterTypes = new List<int>();
+
+    //    //Setup the player data (need to clarify this is working properly since it pulls from the
+    //    //players list in the server rather than the game manager)
+
+    //    for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+    //    {
+
+    //        Player player = GameManager.instance.GetPlayer(i);
+    //        allPlayerData.PlayerIDs.Add(player.playerID);
+    //        allPlayerData.PlayerNames.Add(player.playerName);
+    //        allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+
+
+    //    }
+
+    //    for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+    //    {
+    //        tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+    //        Debug.Log("Sent all player Data " + tempPlayerID);
+    //        SendClient(allPlayerData);
+
+    //    }
+
+    //}
+
+
+    public void sendplayerIDS()
     {
-        AllPlayerData allPlayerData = new AllPlayerData();
 
-        allPlayerData.numPlayers = GameManager.instance.numPlayers;
-        allPlayerData.PlayerIDs = new List<int>();
-        allPlayerData.PlayerNames = new List<string>();
-        allPlayerData.CharacterTypes = new List<int>();
-
-        //Setup the player data (need to clarify this is working properly since it pulls from the
-        //players list in the server rather than the game manager)
+        SendAllPlayerIDS ids = new SendAllPlayerIDS();
+        ids.PlayerIDS = new List<int>();
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
-
             Player player = GameManager.instance.GetPlayer(i);
-            allPlayerData.PlayerIDs.Add(player.playerID);
-            allPlayerData.PlayerNames.Add(player.playerName);
-            allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+            ids.PlayerIDS.Add(player.playerID);
+
 
         }
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
-            SendClient(allPlayerData);
+            Debug.Log("Sent all player Data " + tempPlayerID);
+            SendClient(ids);
 
         }
+
+
+
+    }
+
+    public void sendAllPlayerNames()
+    {
+        SendAllPlayerNames names = new SendAllPlayerNames();
+        names.PlayerNames = new List<string>();
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+
+            Player player = GameManager.instance.GetPlayer(i);
+            names.PlayerNames.Add(player.playerName);
+
+
+        }
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            Debug.Log("Sent all player Data " + tempPlayerID);
+            SendClient(names);
+
+        }
+
+    }
+
+
+    public void sendallCharacterTypes()
+    {
+        SendAllPlayerCharacters characters = new SendAllPlayerCharacters();
+         characters.CharacterTypes = new List<int>();
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+
+            Player player = GameManager.instance.GetPlayer(i);
+            characters.CharacterTypes.Add((int)player.Character.CharacterType);
+
+
+        }
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            Debug.Log("Sent all player Data " + tempPlayerID);
+            SendClient(characters);
+
+        }
+
 
     }
 
@@ -1141,20 +1237,38 @@ public class Server : MonoBehaviour
     private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
     {
         //Need to display attacked and defender info to players and allow them to select spec score for combat
+
+        InteractionManager.instance.attackingID = beingAttacked.AttackerID;
+        InteractionManager.instance.SetupDefence();
+
+
+
     }
 
     private void AbilityActivated(int conID, int chanID, int rHostID, AbilityActivated abilityActivated)
     {
+        Debug.Log("Recieved ability activated");
+
         Ability.AbilityTypes abilityType = (Ability.AbilityTypes)abilityActivated.AbilityType;
 
         if (abilityType == Ability.AbilityTypes.Code_Inspection)
         {
-            //Need to display that the ability is activated
-            //In the case of code inspection, also need to display if the player is a traitor or not
+            //Set up the modifier to the traitor string
+            string traitorString = "";
+            if (!abilityActivated.IsTraitor) {
+                traitorString = "not ";
+            }
+            AbilityManager.instance.abilityInfoText.SetActive(true);
+            AbilityManager.instance.abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", ClientManager.instance.GetPlayerData(AbilityManager.instance.selectedPlayer).PlayerName, traitorString);
+
+            AbilityManager.instance.DisplayActiveAbility();
+
         }
         else
         {
-            //Need to display that the ability is activated
+
+           AbilityManager.instance.DisplayActiveAbility();
+
         }
     }
 
@@ -1213,6 +1327,7 @@ public class Server : MonoBehaviour
     {
         //Need to display that they won the combat and who they won it against using combatWinner.loserID
         //Also need to store the loser ID to send back to the server when stealing the items
+        
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1224,6 +1339,8 @@ public class Server : MonoBehaviour
             Item item = ClientManager.instance.GetItemInfo(itemID);
             loserInventory.Add(item);
         }
+        StealingManager.instance.losersItems = loserInventory;
+        StealingManager.instance.StartStealPanel();
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
@@ -1231,19 +1348,69 @@ public class Server : MonoBehaviour
         //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
     }
 
-    private void GetAllPlayerData(int conID, int chanID, int rHostID, AllPlayerData allPlayerData)
+    private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
     {
         ClientManager.instance.playerData = new List<PlayerData>();
+        Debug.Log("recieved player ids");
 
-        for (int playerIndex = 0; playerIndex < allPlayerData.numPlayers; playerIndex++)
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerIDS.Count; playerIndex++)
         {
-            int playerID = allPlayerData.PlayerIDs[playerIndex];
-            string playerName = allPlayerData.PlayerNames[playerIndex];
-            Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
-
-            ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
+            int playerID = allPlayerData.PlayerIDS[playerIndex];
+            ClientManager.instance.playerIDS.Add(playerID);
+           
         }
     }
+
+    private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)
+    {
+
+        Debug.Log("recieved player names");
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerNames.Count; playerIndex++)
+        {
+            string playername = allPlayerData.PlayerNames[playerIndex];
+            ClientManager.instance.PlayerNames.Add(playername);
+
+        }
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerNames.Count; playerIndex++)
+        {
+
+            Character.CharacterTypes character = (Character.CharacterTypes)ClientManager.instance.CharacterTypes[playerIndex];
+
+            Debug.Log("Creating playerData");
+            ClientManager.instance.playerData.Add(new PlayerData(ClientManager.instance.playerIDS[playerIndex], ClientManager.instance.PlayerNames[playerIndex], character));
+
+        }
+        //sets up target panels to include only players in game.
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().targetButtons);
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.abilityPanel.GetComponent<AbilityManager>().targetButtons);
+
+
+
+
+
+
+
+    }
+
+    private void GetAllPlayersCharacters(int conID, int chanID, int rHostID, SendAllPlayerCharacters allPlayerData)
+    {
+        
+        Debug.Log("recieved player characterIDS");
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.CharacterTypes.Count; playerIndex++)
+        {
+            int playercharacter = allPlayerData.CharacterTypes[playerIndex];
+            ClientManager.instance.CharacterTypes.Add(playercharacter);
+
+        }
+
+
+       
+
+    }
+
 
     private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
     {
@@ -1467,11 +1634,12 @@ public class Server : MonoBehaviour
         SendServer(inventory);
     }
 
-    public void SendSpecSelection(GameManager.SpecScores specScore)
+    public void SendSpecSelection(GameManager.SpecScores specScore, bool attacker)
     {
         //Used in regular combat
         SpecSelection specSelection = new SpecSelection();
         specSelection.SelectedSpec = (int)specScore;
+        specSelection.Attacker = attacker;
 
         SendServer(specSelection);
     }
@@ -1636,7 +1804,7 @@ public class Server : MonoBehaviour
     }
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
-
+        Debug.Log("recieved ability");
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
@@ -1991,6 +2159,7 @@ public class Server : MonoBehaviour
                         //Handled in player movement to send once they arrive at the room.
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
+                        GameManager.instance.IncrementTurn();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen

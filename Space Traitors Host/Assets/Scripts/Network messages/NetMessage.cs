@@ -31,7 +31,6 @@ public static class NetOP
     public const int NumComponentsInstalled = 34;
     public const int CanInstallComponent = 35;
     public const int CombatLoser = 36;
-    public const int AllPlayerData = 37;
     public const int UnequipSuccess = 42;
     public const int EquipState = 43;
     public const int DiscardSuccess = 44;
@@ -42,6 +41,9 @@ public static class NetOP
     public const int ComponentStealSuccess = 50;
     public const int SendRoomCost = 51;
     public const int ComponentStolen = 52;
+    public const int SendAllPlayerNames = 54;
+    public const int SendAllPlayerIDS = 55;
+    public const int SendAllPlayerCharacterTypes = 56;
 
 
     #endregion

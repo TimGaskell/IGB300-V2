@@ -37,7 +37,8 @@ public class PlayerMovement : Navigation
 
     void Update()
     {
-        Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+        //Change back when doesnt give 2 million errors
+        // Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
     }
 
     public void PlayerMoveViaNodes(int goalIndex) {
@@ -50,7 +51,7 @@ public class PlayerMovement : Navigation
         if (StartMoving == true) {
 
             //Set moving animation
-            Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+          //  Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
             //Move player
             if (currentPath.Count > 0) {
@@ -88,7 +89,7 @@ public class PlayerMovement : Navigation
                 }
 
                 //Return to idle animation
-                Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+               // Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
                 Debug.Log("finished Moving");
                
