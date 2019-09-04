@@ -42,7 +42,8 @@ public class CameraSystem : MonoBehaviour
 
     /////////////////////////Call these methods in other scripts to initiate zoom in/zoom out effect/////////////////////////
 
-    //Call ZoomIn from another script to have the camera zoom in on the specified player
+    //CALL THIS METHOD from another script to have the camera zoom in on the specified player
+    //Note: Depending on camera angle, the camera's view may not zoom in on the player properly. To fix this, tweak the ZoomInLevel_Y and ZoomInLevel_Z public variables
     public void ZoomIn(GameObject playerObject)
     { 
         zoomedIn = true;
@@ -51,7 +52,7 @@ public class CameraSystem : MonoBehaviour
         newPos_X = playerObject.transform.position.x;
     }
 
-    //Call ZoomOut from another script to have the camera zoom in on the specified player
+    //Call ZoomOut from another script to have the camera return to its original position
     public void ZoomOut()
     {
         zoomedIn = false;
@@ -125,14 +126,5 @@ public class CameraSystem : MonoBehaviour
         }
     }
 
-
-    //Use this for testing purposes only- GameObject rather than Player so can be called from button
-    public void ZoomIn2(GameObject currentPlayer)
-    {
-        zoomedIn = true;
-        newPos_Z = transform.position.z + currentPlayer.transform.position.z + ZoomInLevel_Z;
-        newPos_Y = transform.position.y - ZoomInLevel_Y;
-        newPos_X = currentPlayer.transform.position.x;
-    }
 }
 
