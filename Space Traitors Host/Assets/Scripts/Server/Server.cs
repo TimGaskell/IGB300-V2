@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 using System.Net;
 using System.Net.NetworkInformation;
@@ -1246,16 +1247,28 @@ public class Server : MonoBehaviour
 
     private void AbilityActivated(int conID, int chanID, int rHostID, AbilityActivated abilityActivated)
     {
+        Debug.Log("Recieved ability activated");
+
         Ability.AbilityTypes abilityType = (Ability.AbilityTypes)abilityActivated.AbilityType;
 
         if (abilityType == Ability.AbilityTypes.Code_Inspection)
         {
-            //Need to display that the ability is activated
-            //In the case of code inspection, also need to display if the player is a traitor or not
+            //Set up the modifier to the traitor string
+            string traitorString = "";
+            if (!abilityActivated.IsTraitor) {
+                traitorString = "not ";
+            }
+            AbilityManager.instance.abilityInfoText.SetActive(true);
+            AbilityManager.instance.abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} is {1}a traitor", ClientManager.instance.GetPlayerData(AbilityManager.instance.selectedPlayer).PlayerName, traitorString);
+
+            AbilityManager.instance.DisplayActiveAbility();
+
         }
         else
         {
-            //Need to display that the ability is activated
+
+           AbilityManager.instance.DisplayActiveAbility();
+
         }
     }
 
@@ -1791,7 +1804,7 @@ public class Server : MonoBehaviour
     }
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
-
+        Debug.Log("recieved ability");
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 

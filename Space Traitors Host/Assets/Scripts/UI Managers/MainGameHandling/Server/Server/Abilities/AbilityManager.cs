@@ -23,7 +23,7 @@ public class AbilityManager : MonoBehaviour
     public GameObject playerSelectedButton;
     public GameObject resourceSelectedButton;
 
-    private int selectedPlayer;
+    public int selectedPlayer;
     private Ability.ScanResources selectedResource;
 
     public GameObject abilityInfoText;
@@ -258,10 +258,10 @@ public class AbilityManager : MonoBehaviour
     /// Displays the activated ability to the player
     /// 
     /// </summary>
-    private void DisplayActiveAbility()
+    public void DisplayActiveAbility()
     {
         abilityActiveDisplay.SetActive(true);
         abilityActiveDisplay.GetComponent<ActiveAbilityDisplay>().UpdateActiveText(selectedAbility);
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+       
     }
 }

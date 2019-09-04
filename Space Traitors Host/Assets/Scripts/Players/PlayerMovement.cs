@@ -89,7 +89,7 @@ public class PlayerMovement : Navigation
                 }
 
                 //Return to idle animation
-                Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+               // Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
                 Debug.Log("finished Moving");
                
