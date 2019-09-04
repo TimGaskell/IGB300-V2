@@ -35,12 +35,23 @@ public class PlayerMovement : Navigation
 
     }
 
+    void Update()
+    {
+        Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+    }
+
     public void PlayerMoveViaNodes(int goalIndex) {
 
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
 
+
+
         if (StartMoving == true) {
+
+            //Set moving animation
+            Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+
             //Move player
             if (currentPath.Count > 0) {
 
@@ -75,6 +86,9 @@ public class PlayerMovement : Navigation
                 if (ServerVersion) {
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
                 }
+
+                //Return to idle animation
+                Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
                 Debug.Log("finished Moving");
                

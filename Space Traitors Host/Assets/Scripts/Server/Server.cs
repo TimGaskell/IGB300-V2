@@ -94,7 +94,6 @@ public class Server : MonoBehaviour
 
     //Other
     public AudioSource connectSound;
-    private GameObject charModel;
 
     private List<GameObject> ElminiatedPlayers = new List<GameObject>();
     private List<GameObject> playersRemoved = new List<GameObject>();

@@ -27,7 +27,6 @@ public class PlayerNavigation : Navigation
     public GameObject playerStorage;
     public GameObject[] inventory;
     private GameObject server;
-    private GameObject player;
 
      void Start() {
 
@@ -44,8 +43,6 @@ public class PlayerNavigation : Navigation
     // Update is called once per frame
     void Update()
     {
-        //Get the Player GameObject from the inherited script
-        player = gameObject.GetComponent<PlayerMovement>().Player;
 
         if (!spawned)
         {
@@ -63,7 +60,6 @@ public class PlayerNavigation : Navigation
 
     public void PlayerMove(int goalIndex) {
 
-    
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
 
@@ -73,9 +69,6 @@ public class PlayerNavigation : Navigation
             if (currentPath.Count > 0) {
 
                 isMoving = true;
-
-                //Set moving animation
-                player.GetComponent<AnimationSwitcher>().RunAnimation(characterName);
 
                 if (sent == false) {
                     //server.GetComponent<Server>().SendAllowMovement(playerID, false);
@@ -107,9 +100,6 @@ public class PlayerNavigation : Navigation
                 Vector3 lookBack = new Vector3(transform.position.x,transform.position.y,transform.position.z-1000);
                 transform.rotation = Quaternion.LookRotation(lookBack);
                 //server.GetComponent<Server>().SendAllowMovement(playerID, true);
-
-                //Return to idle animation
-                player.GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
             }
         }
     }
