@@ -1954,6 +1954,9 @@ public class Server : MonoBehaviour
         Player activePlayer= GameManager.instance.GetActivePlayer();
         Debug.Log("Current player " + activePlayer.playerID);
 
+        GameObject canvas = GameObject.Find("Canvas");
+        canvas.GetComponent<MainGameUIManager>().IncrementPhase();
+
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):

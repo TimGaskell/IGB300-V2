@@ -29,18 +29,14 @@ public class MainGameUIManager : MonoBehaviour
 
     public GameObject sabotagePanel;
 
-    public GameObject inventoryPanel;
-
     private void Start()
     {
-        serverActivePanel.SetActive(false);
-        noServerPanel.SetActive(true);
+        serverActivePanel.SetActive(true);
+        noServerPanel.SetActive(false);
 
         abilityPanel.SetActive(false);
         actionPointPanel.SetActive(false);
         movementPanel.SetActive(false);
-        interactionPanel.SetActive(true);
-        interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
         interactionPanel.SetActive(false);
         basicSurgePanel.SetActive(false);
         attackSurgePanel.SetActive(false);
@@ -49,8 +45,6 @@ public class MainGameUIManager : MonoBehaviour
         traitorVictoryPanel.SetActive(false);
 
         sabotagePanel.SetActive(false);
-
-        inventoryPanel.SetActive(false);
 
         playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
         DisplayCurrentPhase();
@@ -82,6 +76,8 @@ public class MainGameUIManager : MonoBehaviour
         {
             case (GameManager.TurnPhases.Abilities):
                 UpdateAIPower();
+                playerCards.SetActive(true);
+                aiPowerPanel.SetActive(true);
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
@@ -106,16 +102,16 @@ public class MainGameUIManager : MonoBehaviour
                 aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                playerCards.SetActive(false);
                 basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
                 break;
             case (GameManager.TurnPhases.AttackSurge):
                 aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                playerCards.SetActive(false);
                 attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
                 break;
             default:
@@ -130,7 +126,6 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void IncrementPhase()
     {
-        GameManager.instance.IncrementPhase();
         if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
         {
             nonTraitorVictoryPanel.SetActive(true);

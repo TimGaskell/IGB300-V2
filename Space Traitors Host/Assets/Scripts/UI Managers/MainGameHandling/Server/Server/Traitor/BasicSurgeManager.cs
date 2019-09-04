@@ -15,8 +15,7 @@ public class BasicSurgeManager : MonoBehaviour
 
     public void UpdateSurgeValues()
     {
-        powerBar.GetComponent<Slider>().value = GameManager.instance.AIPower;
-        powerCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.AIPower.ToString());
+        powerBar.GetComponent<AIPowerBar>().UpdateAIPower();
         baseIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.basePower.ToString());
         playerIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.playerPower.ToString());
         choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", GameManager.instance.aiPowerChange.ToString());
