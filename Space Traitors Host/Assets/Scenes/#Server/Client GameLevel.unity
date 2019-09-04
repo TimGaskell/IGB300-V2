@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11986,7 +11986,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 400}
+  m_SizeDelta: {x: 580.37, y: 400}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &375587033
 MonoBehaviour:
@@ -12038,9 +12038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activePlayerPanel: {fileID: 1840444519}
-  playerCardPrefab: {fileID: 441119540151847663, guid: 7dcbd42980811824ebef41c6fda6a5d6,
-    type: 3}
-  playerPortraits: []
+  initialPlayerCard: {fileID: 0}
 --- !u!1 &377234970
 GameObject:
   m_ObjectHideFlags: 0
@@ -18970,11 +18968,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerBar: {fileID: 1338181387}
-  powerCounter: {fileID: 1516360851}
   baseIncrease: {fileID: 1804048157}
   playerIncrease: {fileID: 300575669}
   choiceIncrease: {fileID: 1191878801}
   totalIncrease: {fileID: 500925311}
+  confirmButton: {fileID: 0}
 --- !u!1 &563482809
 GameObject:
   m_ObjectHideFlags: 0
@@ -28986,6 +28984,7 @@ MonoBehaviour:
   - {fileID: 1503672358}
   playerSelectedButton: {fileID: 1603009783}
   resourceSelectedButton: {fileID: 2128092645}
+  selectedPlayer: 0
   abilityInfoText: {fileID: 567982494}
   playerCards: {fileID: 0}
   CheckCorruption: 
@@ -62443,11 +62442,11 @@ RectTransform:
   m_Father: {fileID: 1672676817}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 378.52094, y: 472.8618}
-  m_SizeDelta: {x: 171.90002, y: -1006.1}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: -451.2, y: -18}
+  m_SizeDelta: {x: 171.90002, y: 73.900024}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1811109096
 MonoBehaviour:
   m_ObjectHideFlags: 0
