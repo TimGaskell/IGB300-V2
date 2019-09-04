@@ -109,7 +109,7 @@ public class PlayerNavigation : Navigation
                 //server.GetComponent<Server>().SendAllowMovement(playerID, true);
 
                 //Return to idle animation
-                player .GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
+                player.GetComponent<AnimationSwitcher>().IdleAnimation(characterName);
             }
         }
     }

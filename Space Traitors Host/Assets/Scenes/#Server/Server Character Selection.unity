@@ -432,7 +432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 176883889}
   m_Layer: 5
-  m_Name: Engineer
+  m_Name: EngineerGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4315,7 +4315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1058731959}
   m_Layer: 0
-  m_Name: Singer
+  m_Name: SingerGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4622,7 +4622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1225837476}
   m_Layer: 5
-  m_Name: Butler
+  m_Name: ButlerGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5435,7 +5435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1381030452}
   m_Layer: 0
-  m_Name: Techie
+  m_Name: TechieGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5471,42 +5471,42 @@ PrefabInstance:
     - target: {fileID: 466992447494929638, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_Name
-      value: EngineerSelect
+      value: Engineer
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2720
+      value: -2724.6802
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 45
+      value: 45.27112
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -364
+      value: -365.11792
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.104118496
+      value: -0.0020333035
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.07547623
+      value: -0.9944599
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0044405186
+      value: -0.10419335
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.991687
+      value: 0.0137516195
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
@@ -5516,17 +5516,17 @@ PrefabInstance:
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 11.878
+      value: -11.963
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 368.854
+      value: 541.577
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 1.4360001
+      value: 0.069000006
       objectReference: {fileID: 0}
     - target: {fileID: 466992447494929639, guid: 51a706ae1091dfb408088dce1da11b18,
         type: 3}
@@ -5905,7 +5905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 711.7, y: -40.755}
+  m_AnchoredPosition: {x: 711.7, y: -41.1}
   m_SizeDelta: {x: 220, y: 330}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1523801324
@@ -7661,7 +7661,7 @@ PrefabInstance:
     - target: {fileID: 5346825305467393570, guid: 1e65f4257de614a48a8eed2634dbb4e8,
         type: 3}
       propertyPath: m_Name
-      value: TechieSelect
+      value: Techie
       objectReference: {fileID: 0}
     - target: {fileID: 5346825305467393565, guid: 1e65f4257de614a48a8eed2634dbb4e8,
         type: 3}
