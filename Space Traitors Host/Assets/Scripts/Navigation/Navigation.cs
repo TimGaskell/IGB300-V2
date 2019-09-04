@@ -28,7 +28,6 @@ public class Navigation : MonoBehaviour
 
     }
 
-
     public float Heuristic(int a, int b) {
 
         return Vector3.Distance(graphNodes.graphNodes[a].transform.position, graphNodes.graphNodes[b].transform.position);

@@ -1741,10 +1741,10 @@ public class Server : MonoBehaviour
 
         GameManager.instance.GetPlayer(conID);
 
-
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
+            
 
             //Find the correct player
             if (player.playerID == conID)
@@ -1770,6 +1770,11 @@ public class Server : MonoBehaviour
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                     }
 
+                    string charName = character.ToString();
+
+                    GameObject charModel;
+                    charModel = GameObject.Find(charName);
+                    charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
                 }
 
             }
