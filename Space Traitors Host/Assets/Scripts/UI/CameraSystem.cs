@@ -5,12 +5,12 @@ using UnityEngine;
 public class CameraSystem : MonoBehaviour
 {
     private float defaultPos_X, defaultPos_Y, defaultPos_Z;
-    public float cameraSpeed;
+    public float cameraSpeed = 200;
     private float newPos_X, newPos_Y, newPos_Z;
     private bool zoomedIn = false;
     private bool positiveX = false;
-    public float ZoomInLevel_Y;
-    public float ZoomInLevel_Z;
+    public float ZoomInLevel_Y = 300;
+    public float ZoomInLevel_Z = 215;
 
     public GameObject testObject;
     // Start is called before the first frame update
@@ -43,9 +43,8 @@ public class CameraSystem : MonoBehaviour
     /////////////////////////Call these methods in other scripts to initiate zoom in/zoom out effect/////////////////////////
 
     //Call ZoomIn from another script to have the camera zoom in on the specified player
-    public void ZoomIn(Player currentPlayer)
-    {
-        GameObject playerObject = currentPlayer.playerObject;
+    public void ZoomIn(GameObject playerObject)
+    { 
         zoomedIn = true;
         newPos_Z = transform.position.z + playerObject.transform.position.z + ZoomInLevel_Z;
         newPos_Y = transform.position.y - ZoomInLevel_Y;
