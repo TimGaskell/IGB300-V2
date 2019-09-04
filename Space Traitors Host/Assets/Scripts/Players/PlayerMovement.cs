@@ -51,7 +51,7 @@ public class PlayerMovement : Navigation
         if (StartMoving == true) {
 
             //Set moving animation
-            Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+          //  Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
             //Move player
             if (currentPath.Count > 0) {
