@@ -318,7 +318,9 @@ public class GameManager : MonoBehaviour
             }
             else if (scene.name == MainGameScene)
             {
-                Server.Instance.SendAllPlayerData();
+                Server.Instance.sendplayerIDS();
+                Server.Instance.sendallCharacterTypes();
+                Server.Instance.sendAllPlayerNames();
                 StartGame();
 
             }
@@ -722,9 +724,6 @@ public class GameManager : MonoBehaviour
     {
         switch (currentPhase)
         {
-            case (TurnPhases.Default):
-                currentPhase += 1;
-                break;
             case (TurnPhases.Abilities):
                 currentPhase += 1;
                 break;               

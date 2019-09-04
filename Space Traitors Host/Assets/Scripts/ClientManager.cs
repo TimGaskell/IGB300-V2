@@ -54,6 +54,9 @@ public class ClientManager : MonoBehaviour
 
     //Object for storing regularly needed information about other players in the game
     public List<PlayerData> playerData;
+    public List<int> playerIDS;
+    public List<int> CharacterTypes;
+    public List<string> PlayerNames;
 
     #region Client Initialisation
     private void Awake()

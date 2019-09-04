@@ -374,9 +374,17 @@ public class Server : MonoBehaviour
             case NetOP.RoomChoices:
                 StoreRoomChoices(conID, chanID, rHostID, (RoomChoices)msg);
                 break;
-            case NetOP.AllPlayerData:
-                GetAllPlayerData(conID, chanID, rHostID,(AllPlayerData)msg);
+            case NetOP.SendAllPlayerIDS:
+                GetAllPlayerIDS(conID, chanID, rHostID, (SendAllPlayerIDS)msg);
                 break;
+            case NetOP.SendAllPlayerNames:
+                GetAllPlayersNames(conID, chanID, rHostID, (SendAllPlayerNames)msg);
+                break;
+            case NetOP.SendAllPlayerCharacterTypes:
+                GetAllPlayersCharacters(conID, chanID, rHostID, (SendAllPlayerCharacters)msg);
+                break;
+
+
 
 
 
@@ -866,25 +874,51 @@ public class Server : MonoBehaviour
     /// will not change from then
     /// 
     /// </summary>
-    public void SendAllPlayerData()
+    //public void SendAllPlayerData()
+    //{
+    //    AllPlayerData allPlayerData = new AllPlayerData();
+
+    //    allPlayerData.numPlayers = GameManager.instance.numPlayers;
+    //    allPlayerData.PlayerIDs = new List<int>();
+    //    allPlayerData.PlayerNames = new List<string>();
+    //    allPlayerData.CharacterTypes = new List<int>();
+
+    //    //Setup the player data (need to clarify this is working properly since it pulls from the
+    //    //players list in the server rather than the game manager)
+
+    //    for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+    //    {
+
+    //        Player player = GameManager.instance.GetPlayer(i);
+    //        allPlayerData.PlayerIDs.Add(player.playerID);
+    //        allPlayerData.PlayerNames.Add(player.playerName);
+    //        allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+
+
+    //    }
+
+    //    for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+    //    {
+    //        tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+    //        Debug.Log("Sent all player Data " + tempPlayerID);
+    //        SendClient(allPlayerData);
+
+    //    }
+
+    //}
+
+
+    public void sendplayerIDS()
     {
-        AllPlayerData allPlayerData = new AllPlayerData();
 
-        allPlayerData.numPlayers = GameManager.instance.numPlayers;
-        allPlayerData.PlayerIDs = new List<int>();
-        allPlayerData.PlayerNames = new List<string>();
-        allPlayerData.CharacterTypes = new List<int>();
-
-        //Setup the player data (need to clarify this is working properly since it pulls from the
-        //players list in the server rather than the game manager)
+        SendAllPlayerIDS ids = new SendAllPlayerIDS();
+        ids.PlayerIDS = new List<int>();
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
             Player player = GameManager.instance.GetPlayer(i);
-            allPlayerData.PlayerIDs.Add(player.playerID);
-            allPlayerData.PlayerNames.Add(player.playerName);
-            allPlayerData.CharacterTypes.Add((int)player.Character.CharacterType);
+            ids.PlayerIDS.Add(player.playerID);
 
 
         }
@@ -893,9 +927,61 @@ public class Server : MonoBehaviour
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             Debug.Log("Sent all player Data " + tempPlayerID);
-            SendClient(allPlayerData);
+            SendClient(ids);
 
         }
+
+
+
+    }
+
+    public void sendAllPlayerNames()
+    {
+        SendAllPlayerNames names = new SendAllPlayerNames();
+        names.PlayerNames = new List<string>();
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+
+            Player player = GameManager.instance.GetPlayer(i);
+            names.PlayerNames.Add(player.playerName);
+
+
+        }
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            Debug.Log("Sent all player Data " + tempPlayerID);
+            SendClient(names);
+
+        }
+
+    }
+
+
+    public void sendallCharacterTypes()
+    {
+        SendAllPlayerCharacters characters = new SendAllPlayerCharacters();
+         characters.CharacterTypes = new List<int>();
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+
+            Player player = GameManager.instance.GetPlayer(i);
+            characters.CharacterTypes.Add((int)player.Character.CharacterType);
+
+
+        }
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+        {
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            Debug.Log("Sent all player Data " + tempPlayerID);
+            SendClient(characters);
+
+        }
+
 
     }
 
@@ -1249,21 +1335,66 @@ public class Server : MonoBehaviour
         //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
     }
 
-    private void GetAllPlayerData(int conID, int chanID, int rHostID, AllPlayerData allPlayerData)
+    private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
     {
         ClientManager.instance.playerData = new List<PlayerData>();
-        Debug.Log("recieved player data");
+        Debug.Log("recieved player ids");
 
-        for (int playerIndex = 0; playerIndex < allPlayerData.numPlayers; playerIndex++)
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerIDS.Count; playerIndex++)
         {
-            int playerID = allPlayerData.PlayerIDs[playerIndex];
-            string playerName = allPlayerData.PlayerNames[playerIndex];
-            Character.CharacterTypes characterType = (Character.CharacterTypes)allPlayerData.CharacterTypes[playerIndex];
-            Debug.Log(playerID + " " + playerName + " " + characterType);
-
-            ClientManager.instance.playerData.Add(new PlayerData(playerID, playerName, characterType));
+            int playerID = allPlayerData.PlayerIDS[playerIndex];
+            ClientManager.instance.playerIDS.Add(playerID);
+           
         }
     }
+
+    private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)
+    {
+
+        Debug.Log("recieved player names");
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerNames.Count; playerIndex++)
+        {
+            string playername = allPlayerData.PlayerNames[playerIndex];
+            ClientManager.instance.PlayerNames.Add(playername);
+
+        }
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.PlayerNames.Count; playerIndex++)
+        {
+
+            Character.CharacterTypes character = (Character.CharacterTypes)ClientManager.instance.CharacterTypes[playerIndex];
+
+            Debug.Log("Creating playerData");
+            ClientManager.instance.playerData.Add(new PlayerData(ClientManager.instance.playerIDS[playerIndex], ClientManager.instance.PlayerNames[playerIndex], character));
+
+        }
+
+
+
+
+
+
+
+    }
+
+    private void GetAllPlayersCharacters(int conID, int chanID, int rHostID, SendAllPlayerCharacters allPlayerData)
+    {
+        
+        Debug.Log("recieved player characterIDS");
+
+        for (int playerIndex = 0; playerIndex < allPlayerData.CharacterTypes.Count; playerIndex++)
+        {
+            int playercharacter = allPlayerData.CharacterTypes[playerIndex];
+            ClientManager.instance.CharacterTypes.Add(playercharacter);
+
+        }
+
+
+       
+
+    }
+
 
     private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
     {
