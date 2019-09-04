@@ -10,10 +10,8 @@ public class AttackSurgeManager : MonoBehaviour
     public GameObject playerPortrait;
     public GameObject playerName;
 
-    public GameObject chanceText;
+    public GameObject winText;
     public GameObject confirmButton;
-
-    public GameManager.SpecScores selectedSpec;
 
     private Player targetPlayer;
 
@@ -29,25 +27,27 @@ public class AttackSurgeManager : MonoBehaviour
         playerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(targetPlayer.Character.CharacterType);
         playerName.GetComponent<TextMeshProUGUI>().text = targetPlayer.playerName;
 
-        chanceText.GetComponent<TextMeshProUGUI>().text = "";
-        confirmButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Confirm";
+        winText.GetComponent<TextMeshProUGUI>().text = "";
         confirmButton.GetComponent<Button>().interactable = false;
     }
 
-    /// <summary>
-    /// 
-    /// Select a relevant spec score for the player to use for an AI Attack and update the display to inform the player
-    /// 
-    /// </summary>
-    /// <param name="specScore"></param>
-    public void SelectSpec(string specScore)
+    public void SetWinText(bool hasWon)
     {
-        selectedSpec = (GameManager.SpecScores)Enum.Parse(typeof(GameManager.SpecScores), specScore);
+        if (hasWon)
+        {
+            winText.GetComponent<TextMeshProUGUI>().text = "You Won!";
+        }
+        else
+        {
+            winText.GetComponent<TextMeshProUGUI>().text = "You Lost";
+        }
+    }
 
-        confirmButton.GetComponent<Button>().interactable = true;
-        confirmButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("Confirm: {0}", specScore);
-        chanceText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%",
-            GameManager.SpecChallengeChance(targetPlayer.GetScaledSpecScore(selectedSpec), 
-            GameManager.instance.aiTargetScore).ToString());
+    public void EndAttackSurge()
+    {
+        //I believe this should work but might be a better way of doing it
+        //Would ideally be handled using the clients confirming they are all finished then
+        //having the server update from there.
+        Server.Instance.NewPhase(0, 0, 0, new NewPhase());
     }
 }
