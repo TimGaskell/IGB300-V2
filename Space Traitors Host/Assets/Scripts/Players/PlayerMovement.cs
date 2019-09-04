@@ -37,7 +37,8 @@ public class PlayerMovement : Navigation
 
     void Update()
     {
-        Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+        //Change back when doesnt give 2 million errors
+        // Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
     }
 
     public void PlayerMoveViaNodes(int goalIndex) {
