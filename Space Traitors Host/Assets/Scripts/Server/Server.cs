@@ -1369,6 +1369,9 @@ public class Server : MonoBehaviour
             ClientManager.instance.playerData.Add(new PlayerData(ClientManager.instance.playerIDS[playerIndex], ClientManager.instance.PlayerNames[playerIndex], character));
 
         }
+        //sets up target panels to include only players in game.
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().targetButtons);
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.abilityPanel.GetComponent<AbilityManager>().targetButtons);
 
 
 

@@ -50,10 +50,6 @@ public class ClientUIManager : MonoBehaviour
 
         if (GameManager.instance.serverActive)
         {
-            //Sets up targets for choosing other players on the combat and ability panels
-            SetupTargets(interactionPanel.GetComponent<InteractionManager>().targetButtons);
-            SetupTargets(abilityPanel.GetComponent<AbilityManager>().targetButtons);
-
             serverActivePanel.SetActive(true);
             noServerPanel.SetActive(false);
 
@@ -348,7 +344,7 @@ public class ClientUIManager : MonoBehaviour
     /// their portraits. Only needs to be called once when the game is started
     /// 
     /// </summary>
-    private void SetupTargets(List<GameObject> targetButtons)
+    public void SetupTargets(List<GameObject> targetButtons)
     {
         foreach (GameObject targetButton in targetButtons)
         {
