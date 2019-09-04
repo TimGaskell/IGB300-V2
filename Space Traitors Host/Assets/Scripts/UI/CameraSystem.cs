@@ -5,12 +5,12 @@ using UnityEngine;
 public class CameraSystem : MonoBehaviour
 {
     private float defaultPos_X, defaultPos_Y, defaultPos_Z;
-    public float cameraSpeed;
+    public float cameraSpeed = 200;
     private float newPos_X, newPos_Y, newPos_Z;
     private bool zoomedIn = false;
     private bool positiveX = false;
-    public float ZoomInLevel_Y;
-    public float ZoomInLevel_Z;
+    public float ZoomInLevel_Y = 300;
+    public float ZoomInLevel_Z = 215;
 
     public GameObject testObject;
     // Start is called before the first frame update
@@ -42,17 +42,17 @@ public class CameraSystem : MonoBehaviour
 
     /////////////////////////Call these methods in other scripts to initiate zoom in/zoom out effect/////////////////////////
 
-    //Call ZoomIn from another script to have the camera zoom in on the specified player
-    public void ZoomIn(Player currentPlayer)
-    {
-        GameObject playerObject = currentPlayer.playerObject;
+    //CALL THIS METHOD from another script to have the camera zoom in on the specified player
+    //Note: Depending on camera angle, the camera's view may not zoom in on the player properly. To fix this, tweak the ZoomInLevel_Y and ZoomInLevel_Z public variables
+    public void ZoomIn(GameObject playerObject)
+    { 
         zoomedIn = true;
         newPos_Z = transform.position.z + playerObject.transform.position.z + ZoomInLevel_Z;
         newPos_Y = transform.position.y - ZoomInLevel_Y;
         newPos_X = playerObject.transform.position.x;
     }
 
-    //Call ZoomOut from another script to have the camera zoom in on the specified player
+    //Call ZoomOut from another script to have the camera return to its original position
     public void ZoomOut()
     {
         zoomedIn = false;
@@ -126,14 +126,5 @@ public class CameraSystem : MonoBehaviour
         }
     }
 
-
-    //Use this for testing purposes only- GameObject rather than Player so can be called from button
-    public void ZoomIn2(GameObject currentPlayer)
-    {
-        zoomedIn = true;
-        newPos_Z = transform.position.z + currentPlayer.transform.position.z + ZoomInLevel_Z;
-        newPos_Y = transform.position.y - ZoomInLevel_Y;
-        newPos_X = currentPlayer.transform.position.x;
-    }
 }
 

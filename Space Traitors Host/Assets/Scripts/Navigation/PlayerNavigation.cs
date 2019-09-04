@@ -43,6 +43,7 @@ public class PlayerNavigation : Navigation
     // Update is called once per frame
     void Update()
     {
+
         if (!spawned)
         {
             playerStorage = GameObject.FindGameObjectWithTag("RoundManager");
@@ -59,7 +60,6 @@ public class PlayerNavigation : Navigation
 
     public void PlayerMove(int goalIndex) {
 
-    
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
 
@@ -100,12 +100,8 @@ public class PlayerNavigation : Navigation
                 Vector3 lookBack = new Vector3(transform.position.x,transform.position.y,transform.position.z-1000);
                 transform.rotation = Quaternion.LookRotation(lookBack);
                 //server.GetComponent<Server>().SendAllowMovement(playerID, true);
-
-
             }
         }
-
-        
     }
     
               
