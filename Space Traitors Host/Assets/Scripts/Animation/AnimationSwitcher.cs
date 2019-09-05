@@ -21,17 +21,17 @@ public class AnimationSwitcher : MonoBehaviour
         IdleAnims.Add("Techie-Run-End");
         IdleAnims.Add("Engineer-Idle");
         IdleAnims.Add("Butler-Idle");
-        IdleAnims.Add("Singer-Idle");
+        IdleAnims.Add("Punk-Idle");
 
         RunAnims.Add("Techie-Run-Start");
         RunAnims.Add("Engineer-Walk");
         IdleAnims.Add("Butler-Walk");
-        IdleAnims.Add("Singer-Walk");
+        IdleAnims.Add("Punk-Walk");
 
         IntroAnims.Add("Techie-Intro");
         IntroAnims.Add("Engineer-Intro");
         IdleAnims.Add("Butler-Intro");
-        IdleAnims.Add("Singer-Intro");
+        IdleAnims.Add("Punk-Intro");
     }
 
     //Note: Pass in name of the character from wherever these methods are called- 
@@ -52,7 +52,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case "Punk":
                 animationIndex = 3;
                 break;
         }
@@ -75,7 +75,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case "Punk":
                 animationIndex = 3;
                 break;
         }
@@ -98,7 +98,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case "Punk":
                 animationIndex = 3;
                 break;
         }
