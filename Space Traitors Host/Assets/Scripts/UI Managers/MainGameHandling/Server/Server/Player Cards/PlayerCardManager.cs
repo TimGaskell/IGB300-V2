@@ -10,11 +10,11 @@ public class PlayerCardManager : MonoBehaviour
     public GameObject activePlayerPanel;
 
     public GameObject initialPlayerCard;
-    private List<GameObject> playerCards;
+    public List<GameObject> playerCards;
 
     public void InitialisePlayerCards()
     {
-        for(int playerIndex = 0; playerIndex < GameManager.instance.numPlayers; playerIndex++)
+        for(int playerIndex = 1; playerIndex < GameManager.instance.numPlayers + 1; playerIndex++)
         {
             GameObject playercard = Instantiate(initialPlayerCard, initialPlayerCard.transform.parent);
             playerCards.Add(playercard);
@@ -44,18 +44,18 @@ public class PlayerCardManager : MonoBehaviour
     {
         Player player = GameManager.instance.GetOrderedPlayer(playerIndex);
 
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
+        playerCards[playerIndex-1].GetComponent<PlayerCardComponents>().nameText.GetComponent<TextMeshProUGUI>().text = player.playerName;
+        playerCards[playerIndex-1].GetComponent<PlayerCardComponents>().characterPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(player.Character.CharacterType);
+        playerCards[playerIndex-1].GetComponent<PlayerCardComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = player.scrap.ToString();
+        playerCards[playerIndex-1].GetComponent<PlayerCardComponents>().componentMarker.SetActive(player.hasComponent);
 
         string lifePointsString = string.Format("{0} / {1}", player.lifePoints, player.maxLifePoints);
-        playerCards[playerIndex].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
+        playerCards[playerIndex-1].GetComponent<PlayerCardComponents>().lifePointsText.GetComponent<TextMeshProUGUI>().text = lifePointsString;
     }
 
     public void UpdateAllCards()
     {
-        for (int playerIndex = 0; playerIndex < GameManager.instance.numPlayers; playerIndex++)
+        for (int playerIndex = 1; playerIndex < GameManager.instance.numPlayers + 1; playerIndex++)
         {
             UpdatePlayerCard(playerIndex);
         }

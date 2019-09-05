@@ -7,7 +7,7 @@ using TMPro;
 public class AIPowerBar : MonoBehaviour
 {
     public List<GameObject> barObjects;
-    private List<Image> barImages;
+    public List<Image> barImages;
 
     public GameObject powerText;
 

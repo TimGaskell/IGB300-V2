@@ -83,7 +83,7 @@ public class MainGameUIManager : MonoBehaviour
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
-                abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
+                //abilityPanel.GetComponent<AbilityManager>().SetupAbilities();
                 playerCards.GetComponent<PlayerCardManager>().UpdateActivePlayer();
                 break;
             case (GameManager.TurnPhases.ActionPoints):
@@ -97,15 +97,20 @@ public class MainGameUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Interaction):
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
-                interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
+                //interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
+                if(GameManager.instance.activePlayer == GameManager.instance.numPlayers + 1)
+                {
+                    basicSurgePanel.SetActive(true);
+                    playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                    playerCards.SetActive(false);
+                    basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
+
+                }
                 aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
-                basicSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
-                playerCards.SetActive(false);
-                basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
+    
                 break;
             case (GameManager.TurnPhases.AttackSurge):
                 aiPowerPanel.SetActive(false);

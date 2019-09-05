@@ -2174,6 +2174,8 @@ public class Server : MonoBehaviour
 
                 break;
         }
+       
+
     }
 
     private void GetEquipItem(int conID, int chanID, int rHostID, EquipItem equipItem)
