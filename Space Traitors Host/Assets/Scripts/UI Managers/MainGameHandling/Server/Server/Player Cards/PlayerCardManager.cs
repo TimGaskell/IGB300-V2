@@ -14,7 +14,10 @@ public class PlayerCardManager : MonoBehaviour
 
     public void InitialisePlayerCards()
     {
-        for(int playerIndex = 1; playerIndex < GameManager.instance.numPlayers + 1; playerIndex++)
+        playerCards.Add(initialPlayerCard);
+        UpdatePlayerCard(1);
+
+        for(int playerIndex = 2; playerIndex < GameManager.instance.numPlayers + 1; playerIndex++)
         {
             GameObject playercard = Instantiate(initialPlayerCard, initialPlayerCard.transform.parent);
             playerCards.Add(playercard);
