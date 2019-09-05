@@ -1309,6 +1309,7 @@ public class GameManager : MonoBehaviour
                 if (hit.transform.root.gameObject == roomList && hit.transform.tag != "Bridges" && hit.transform.tag != "Unavailable") {
 
                     playerGoalIndex = hit.transform.parent.gameObject.GetComponent<LinkedNodes>().index;
+                    roomSelection = false;
                     Server.Instance.SendRoomChoiceForCost(playerGoalIndex);
                 }
             }

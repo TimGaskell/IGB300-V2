@@ -58,6 +58,7 @@ public class MovementManager : MonoBehaviour
 
     public void Exit() {
 
+        GameManager.instance.roomSelection = true;
         MoveToRoomPanel.SetActive(false);
 
     }

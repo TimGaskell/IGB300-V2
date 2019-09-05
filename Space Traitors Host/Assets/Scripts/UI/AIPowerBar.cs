@@ -33,8 +33,8 @@ public class AIPowerBar : MonoBehaviour
 
     public void UpdateAIPower()
     {
-        float aiPower = 0.5f;
-        //float aiPower = GameManager.instance.AIPower / 100;
+       // float aiPower = 0.5f;
+        float aiPower = GameManager.instance.AIPower / 100;
 
         powerText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", (aiPower * 100).ToString());
 
