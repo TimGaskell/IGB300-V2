@@ -52,7 +52,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Punk":
+            case "Singer":
                 animationIndex = 3;
                 break;
         }
@@ -75,7 +75,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Punk":
+            case "Singer":
                 animationIndex = 3;
                 break;
         }
@@ -98,7 +98,7 @@ public class AnimationSwitcher : MonoBehaviour
             case "Butler":
                 animationIndex = 2;
                 break;
-            case "Punk":
+            case "Singer":
                 animationIndex = 3;
                 break;
         }
