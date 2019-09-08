@@ -7,7 +7,7 @@ using System.Linq;
 public class ClientManager : MonoBehaviour
 {
     public const string MAIN_MENU_SCENE = "Client MainMenu";
-    public const string LOBBY_SCENE = "Client Lobby";
+    public const string LOBBY_SCENE = "LobbyLan Client";
     public const string NAME_ENTRY_SCENE = "Client NameEntry";
     public const string CHARACTER_SELECTION_SCENE = "Client CharacterSelect";
     public const string MAIN_GAME_SCENE = "Client GameLevel";

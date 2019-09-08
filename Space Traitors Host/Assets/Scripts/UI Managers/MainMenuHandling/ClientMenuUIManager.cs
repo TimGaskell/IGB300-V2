@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuUIManager : MonoBehaviour
+public class ClientMenuUIManager : MonoBehaviour
 {
 
     public void GameStart()
     {
-        SceneManager.LoadScene(GameManager.LobbyScene);
+        SceneManager.LoadScene(ClientManager.LOBBY_SCENE);
     }
 
     public void ExitGame()

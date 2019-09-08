@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     //Names of scenes for scene management
-    public const string MainMenuScene = "Main Menu";
+    public const string MainMenuScene = "Server MainMenu";
 
-    public const string LobbyScene = "Lobby";
+    public const string LobbyScene = "LobbyLan Host";
     public const string CharacterScene = "Server Character Selection";
     public const string MainGameScene = "Server GameLevel";
 
