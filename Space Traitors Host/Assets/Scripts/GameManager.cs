@@ -382,11 +382,9 @@ public class GameManager : MonoBehaviour
     {
         if (serverActive)
         {
-            throw new NotImplementedException("Server Functionality not Implemented");
             if (scene.name == MainMenuScene)
             {
-                //Reset the game initialisation so if the main menu is returned to, redoes initialisation
-                gameInit = false;
+
             }
             else if (scene.name == LobbyScene)
             {
