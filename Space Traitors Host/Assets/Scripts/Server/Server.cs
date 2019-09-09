@@ -1793,9 +1793,9 @@ public class Server : MonoBehaviour
 
                     string charName = character.ToString();
 
-                    GameObject charModel;
-                    charModel = GameObject.Find(charName);
-                    charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
+                    //GameObject charModel;
+                    //charModel = GameObject.Find(charName);
+                    //charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
                 }
 
             }
