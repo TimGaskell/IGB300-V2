@@ -790,6 +790,9 @@ public class Server : MonoBehaviour
         playerData.ModTech = player.GetModdedSpecScore(GameManager.SpecScores.Tech);
         playerData.ModCharm = player.GetModdedSpecScore(GameManager.SpecScores.Charm);
 
+        playerData.Items = new List<int>();
+        playerData.ItemEquipped = new List<bool>();
+
         foreach (Item item in player.items)
         {
             playerData.Items.Add((int)item.ItemType);
