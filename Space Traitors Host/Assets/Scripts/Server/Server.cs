@@ -424,9 +424,9 @@ public class Server : MonoBehaviour
 
 
         //Send message to every player's client to move onto next scene
-        SendChangeScene("Client CharacterSelect");
+        SendChangeScene(ClientManager.CHARACTER_SELECTION_SCENE);
         //Change to the character select
-        SceneManager.LoadScene("Server Character Selection");
+        SceneManager.LoadScene(GameManager.CharacterScene);
     }
 
 
