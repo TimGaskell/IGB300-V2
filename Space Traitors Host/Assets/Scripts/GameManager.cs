@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public const string NoServerMainGameScene = "NOSERVER Game Level";
 
     //To use to establish if testing is to be offline or online. Should always be reverted to true before building to publish
-    public bool serverActive = true;
+    public bool serverActive => true;
 
     //Used to detect if the game has been initialised or not. This is to prevent InitialiseGame being called twice when the game begins
     //(i.e. in awake and loading into main menu). Should be set true after initialisation is complete and false after leaving the main menu
