@@ -66,6 +66,11 @@ public class CharacterSelectUIManager : MonoBehaviour
 
     }
 
+    public void ResetCharacterSelection()
+    {
+        SelectButton.GetComponent<Button>().interactable = true;
+    }
+
     public void EndSelection() {
         
         ClientManager.instance.PlayerCharacter = new Character(selectedCharacterType);

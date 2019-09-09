@@ -1115,7 +1115,9 @@ public class Server : MonoBehaviour
         }
         else
         {
-            Canvas.GetComponent<CharacterSelectUIManager>().SetErrorText("Please Select Another Character.");
+            CharacterSelectUIManager charSelect = Canvas.GetComponent<CharacterSelectUIManager>();
+            charSelect.SetErrorText("Please Select Another Character.");
+            charSelect.ResetCharacterSelection();
         }
 
 
