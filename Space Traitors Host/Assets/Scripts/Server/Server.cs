@@ -1222,14 +1222,6 @@ public class Server : MonoBehaviour
         Debug.Log("recieved ability information");
         ClientManager.instance.abilities = new List<Ability>();
 
-        switch (GameManager.instance.GetActivePlayer().activeAbility.abilityType) {
-            case (Ability.AbilityTypes.Secret_Paths):
-            case (Ability.AbilityTypes.Power_Boost):
-            case (Ability.AbilityTypes.Muddle_Sensors):
-                GameManager.instance.GetActivePlayer().activeAbility.Deactivate();
-                break;
-        }
-
         for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
         {
             Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);

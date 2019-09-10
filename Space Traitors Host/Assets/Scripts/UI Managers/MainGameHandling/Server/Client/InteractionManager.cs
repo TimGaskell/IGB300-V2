@@ -131,7 +131,6 @@ public class InteractionManager : MonoBehaviour
     {
         choiceInfoPanel.SetActive(true);
         selectedChoiceID = choiceID;
-        Choice selectedChoice = currentRoom.roomChoices[selectedChoiceID];
 
         choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceHeader.GetComponent<TextMeshProUGUI>().text = choiceNames[selectedChoiceID];
 
@@ -170,8 +169,32 @@ public class InteractionManager : MonoBehaviour
         else
         {
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.SetActive(true);
-            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = selectedChoice.ConvertErrorText(isAvailables[selectedChoiceID]);
+            choiceInfoPanel.GetComponent<ChoiceInfoComponents>().errorText.GetComponent<TextMeshProUGUI>().text = ConvertErrorText(isAvailables[selectedChoiceID]);
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().choiceSelectButton.GetComponent<Button>().interactable = false;
+        }
+    }
+
+
+
+
+    public string ConvertErrorText(Choice.IsAvailableTypes errorType) {
+        switch (errorType) {
+            case (Choice.IsAvailableTypes.disabled):
+                return "Item has already been taken";
+            case (Choice.IsAvailableTypes.hasScrap):
+                return "You do not have enough scrap";
+            case (Choice.IsAvailableTypes.hasComponent):
+                return "You already have a component";
+            case (Choice.IsAvailableTypes.hasNoDamage):
+                return "You already have max life points";
+            case (Choice.IsAvailableTypes.hasNoCorruption):
+                return "You have no corruption";
+            case (Choice.IsAvailableTypes.powerAtMax):
+                return "AI Power already at max";
+            case (Choice.IsAvailableTypes.maxItems):
+                return "You cannot carry any more items";
+            default:
+                return "Not a valid Error Text";
         }
     }
 
