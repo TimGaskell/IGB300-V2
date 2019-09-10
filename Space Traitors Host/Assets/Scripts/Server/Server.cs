@@ -773,8 +773,10 @@ public class Server : MonoBehaviour
 
         Player player = GameManager.instance.GetPlayer(playerID);
 
-        PlayerCardManager.instance.UpdatePlayerCard(playerID);
+        if(SceneManager.GetActiveScene().name == "Client GameLevel") {
+            PlayerCardManager.instance.UpdatePlayerCard(playerID);
 
+        }
         playerData.ID = playerID;
         playerData.Scrap = player.scrap;
         playerData.Corruption = player.Corruption;
