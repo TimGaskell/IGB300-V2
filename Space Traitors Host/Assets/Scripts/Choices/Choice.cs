@@ -270,6 +270,10 @@ public class Choice
     /// </summary>
     private void SuccessfulSelection()
     {
+        Debug.Log("scrap Change " + scrapChange);
+        Debug.Log("corruption Change " + corruptionChange);
+        Debug.Log("Power Change " + powerChange);
+
         GameManager.instance.GetActivePlayer().scrap += scrapChange;
         GameManager.instance.GetActivePlayer().Corruption += corruptionChange;
         GameManager.instance.aiPowerChange += powerChange;
