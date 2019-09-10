@@ -261,7 +261,7 @@ public class AbilityManager : MonoBehaviour
     public void DisplayActiveAbility()
     {
         abilityActiveDisplay.SetActive(true);
-        abilityActiveDisplay.GetComponent<ActiveAbilityDisplay>().UpdateActiveText(selectedAbility);
+        abilityActiveDisplay.GetComponent<ActiveAbilityDisplayClient>().UpdateActiveText(selectedAbility);
        
     }
 }

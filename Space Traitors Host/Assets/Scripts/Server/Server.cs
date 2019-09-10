@@ -1845,6 +1845,7 @@ public class Server : MonoBehaviour
                 }
 
                 SendAbilityActivated(conID, abilityType, isTraitor);
+                SyncPlayerData(conID);
             }
         }
 
@@ -1888,9 +1889,20 @@ public class Server : MonoBehaviour
                 for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
                 {
 
+                    int roomCost;
+
                     Playermovement.PlayerMoveViaNodes(j);
+
+                    if (PlayerMovement.instance.SecretPathActivated) {
+
+                       roomCost = Playermovement.currentPath.Count - 2;
+
+                    }
+                    else {
+
+                       roomCost = Playermovement.currentPath.Count - 1;
+                    }
                     
-                    int roomCost = Playermovement.currentPath.Count - 1;
                     Debug.Log("Cost to get to room " + j + " " + roomCost);
 
                     if (roomCost <= points.actionPoints)
@@ -1932,6 +1944,10 @@ public class Server : MonoBehaviour
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
                 int roomCost = Playermovement.currentPath.Count - 1;
+                if (PlayerMovement.instance.SecretPathActivated) {
+
+                    roomCost -= 1;
+                }
 
                 SendRoomCost(player.playerID, roomCost);
             }
@@ -1957,6 +1973,7 @@ public class Server : MonoBehaviour
                 GameManager.instance.playerMoving = true;
 
                 player.roomPosition = moveTo.SelectedRoom;
+                PlayerMovement.instance.SecretPathActivated = false;
 
             }
         }

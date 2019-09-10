@@ -145,7 +145,8 @@ public class SecretPaths : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        Debug.Log("Secret Paths Activate- Requires action point integration");
+
+        PlayerMovement.instance.SecretPathActivated = true;
 
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
     }
@@ -257,6 +258,11 @@ public class EncouragingSong : Ability
     {
         SpendScrap();
         GameManager.instance.GetPlayer(targetIndex).Corruption -= CORRUPTION_MOD;
+        if(GameManager.instance.GetPlayer(targetIndex).Corruption < 0) {
+
+            GameManager.instance.GetPlayer(targetIndex).Corruption = 0;
+        }
+        Debug.Log("Thats encouraging");
     }
 }
 #endregion
@@ -283,6 +289,7 @@ public class MuddleSensors : Ability
         SpendScrap();
         GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<MeshRenderer>().enabled = false;
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+        Debug.Log("Goin invisable");
     }
 
     public override void Deactivate()
@@ -374,6 +381,7 @@ public class CodeInspection : Ability
     {
         SpendScrap();
         isTraitor = GameManager.instance.GetPlayer(targetIndex).isTraitor;
+        Debug.Log("Is Traitor: " + isTraitor);
     }
 }
 #endregion
@@ -399,6 +407,7 @@ public class Sabotage : Ability
     {
         SpendScrap();
         GameManager.instance.sabotageCharges += 1;
+        Debug.Log("Sabotaged");
     }
 }
 #endregion
