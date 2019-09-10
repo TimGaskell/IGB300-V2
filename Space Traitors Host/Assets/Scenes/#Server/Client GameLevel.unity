@@ -13136,11 +13136,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -18879,6 +18879,7 @@ MonoBehaviour:
   goalIndex: 0
   StartMoving: 0
   Player: {fileID: 667874665}
+  SecretPathActivated: 0
 --- !u!1 &560285019
 GameObject:
   m_ObjectHideFlags: 0
@@ -27417,7 +27418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 820649030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d32135d11918de479b0bf9c276dc3b9, type: 3}
+  m_Script: {fileID: 11500000, guid: c84291a898504cc439fe6c1a511f344a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activeAbilityText: {fileID: 1443353808}
@@ -61706,11 +61707,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:

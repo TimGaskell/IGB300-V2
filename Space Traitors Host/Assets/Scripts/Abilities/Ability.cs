@@ -149,11 +149,16 @@ public class SecretPaths : Ability
         PlayerMovement.instance.SecretPathActivated = true;
 
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+        Debug.Log("shh its a secret");
     }
 
     public override void Deactivate()
     {
-        Debug.Log("Secret Paths Deactivated- Requires action point integration");
+
+        PlayerMovement.instance.SecretPathActivated = false;
+        GameManager.instance.GetActivePlayer().AssignActiveAbility(null);
+
+        Debug.Log("secret path is no longer on");
     }
 }
 #endregion
@@ -187,6 +192,7 @@ public class PowerBoost : Ability
         GameManager.instance.GetPlayer(targetIndex).charmModTemp += SPEC_MOD;
 
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+        Debug.Log("beefed up");
     }
 
     public override void Deactivate()
@@ -195,6 +201,7 @@ public class PowerBoost : Ability
         GameManager.instance.GetActivePlayer().skillModTemp -= SPEC_MOD;
         GameManager.instance.GetActivePlayer().techModTemp -= SPEC_MOD;
         GameManager.instance.GetActivePlayer().charmModTemp -= SPEC_MOD;
+        Debug.Log("beefed down");
     }
 }
 #endregion
@@ -295,6 +302,7 @@ public class MuddleSensors : Ability
     public override void Deactivate()
     {
         GameManager.instance.GetActivePlayer().playerObject.GetComponent<MeshRenderer>().enabled = true;
+        Debug.Log("wait can they see me now?");
     }
 }
 #endregion

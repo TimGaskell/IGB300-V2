@@ -726,6 +726,14 @@ public class GameManager : MonoBehaviour
                 currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
+                switch (GetActivePlayer().activeAbility.abilityType) {
+
+                    case (Ability.AbilityTypes.Secret_Paths):
+                    case (Ability.AbilityTypes.Power_Boost):
+                    case (Ability.AbilityTypes.Muddle_Sensors):
+                        GetActivePlayer().activeAbility.Deactivate();
+                        break;                   
+                }
                 currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):
