@@ -144,7 +144,7 @@ public class ClientUIManager : MonoBehaviour
 
     public void ActivateInventoryPanel()
     {
-        bool inventoryOpen = inventoryPanel.activeSelf;
+        bool inventoryOpen = !inventoryPanel.activeSelf;
 
         inventoryPanel.SetActive(inventoryOpen);
 
@@ -167,6 +167,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void DisplayCurrentPhase()
     {
+        UpdatePlayerStats();
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Default):

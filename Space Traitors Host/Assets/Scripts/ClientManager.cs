@@ -75,6 +75,8 @@ public class ClientManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         InitInfoLists();
+
+        inventory = new List<Item>();
     }
 
     /// <summary>
