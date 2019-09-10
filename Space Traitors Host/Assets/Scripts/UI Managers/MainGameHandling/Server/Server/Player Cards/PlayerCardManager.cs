@@ -9,8 +9,17 @@ public class PlayerCardManager : MonoBehaviour
 {
     public GameObject activePlayerPanel;
 
+    public static PlayerCardManager instance = null;
+
     public GameObject initialPlayerCard;
     public List<GameObject> playerCards;
+
+
+    private void Start() {
+
+
+        instance = this;
+    }
 
     public void InitialisePlayerCards()
     {
