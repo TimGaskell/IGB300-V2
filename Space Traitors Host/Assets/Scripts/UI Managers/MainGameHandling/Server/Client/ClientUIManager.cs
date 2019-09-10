@@ -381,6 +381,12 @@ public class ClientUIManager : MonoBehaviour
         inventoryPanel.SetActive(false);
     }
 
+    public void ClosePanel(GameObject panel) {
+
+        panel.SetActive(false);
+
+    }
+
     #endregion
 }
 
