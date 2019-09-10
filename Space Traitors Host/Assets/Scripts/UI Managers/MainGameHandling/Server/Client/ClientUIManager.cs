@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,9 +15,6 @@ public class ClientUIManager : MonoBehaviour
     public GameObject serverActivePanel;
     public GameObject noServerPanel;
 
-    public GameObject playerCards;
-
-    public GameObject aiPowerPanel;
     public GameObject componentTrackerPanel;
 
     public GameObject abilityPanel;
@@ -33,9 +30,12 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject sabotagePanel;
 
+    public GameObject corruptuptionBar;
+    public GameObject scrapTracker;
+    public GameObject characterPortrait;
+
     public GameObject inventoryPanel;
 
-   
 
     public static ClientUIManager instance = null;
 
@@ -48,62 +48,31 @@ public class ClientUIManager : MonoBehaviour
 
         player = GameObject.Find("ClientManager").GetComponent<ClientManager>();
 
-        if (GameManager.instance.serverActive)
-        {
-            serverActivePanel.SetActive(true);
-            noServerPanel.SetActive(false);
+        characterPortrait.GetComponent<Image>().sprite = ClientManager.instance.GetCharacterPortrait(ClientManager.instance.PlayerCharacter.CharacterType);
 
-            abilityPanel.SetActive(false);
-            actionPointPanel.SetActive(false);
-            movementPanel.SetActive(false);
-            interactionPanel.SetActive(true);
-            interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
-            interactionPanel.SetActive(false);
-            basicSurgePanel.SetActive(false);
-            attackSurgePanel.SetActive(false);
+        serverActivePanel.SetActive(true);
+        noServerPanel.SetActive(false);
 
-            nonTraitorVictoryPanel.SetActive(false);
-            traitorVictoryPanel.SetActive(false);
+        abilityPanel.SetActive(false);
+        actionPointPanel.SetActive(false);
+        movementPanel.SetActive(false);
+        interactionPanel.SetActive(true);
+        interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
+        interactionPanel.SetActive(false);
+        basicSurgePanel.SetActive(false);
+        attackSurgePanel.SetActive(false);
 
-            sabotagePanel.SetActive(false);
-            inventoryPanel.SetActive(false);
-            DisplayCurrentPhase();
-  
-        }
-        else
-        {
-           
+        nonTraitorVictoryPanel.SetActive(false);
+        traitorVictoryPanel.SetActive(false);
 
-            serverActivePanel.SetActive(false);
-            noServerPanel.SetActive(true);
-
-            abilityPanel.SetActive(false);
-            actionPointPanel.SetActive(false);
-            movementPanel.SetActive(false);
-            interactionPanel.SetActive(true);
-            interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
-            interactionPanel.SetActive(false);
-            basicSurgePanel.SetActive(false);
-            attackSurgePanel.SetActive(false);
-
-            nonTraitorVictoryPanel.SetActive(false);
-            traitorVictoryPanel.SetActive(false);
-
-            sabotagePanel.SetActive(false);
-
-            inventoryPanel.SetActive(false);
-
-            playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
-            DisplayCurrentPhase();
-        }
-
-
+        sabotagePanel.SetActive(false);
+        inventoryPanel.SetActive(false);
+        DisplayCurrentPhase();
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdatePlayerStats();
         if (GameManager.instance.serverActive)
         {
             
@@ -129,26 +98,8 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats() {
 
-        playerCards.transform.GetChild(2).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledBrawn.ToString();
-        playerCards.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledSkill.ToString();
-        playerCards.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledTech.ToString();
-        playerCards.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scaledCharm.ToString();
-
-        //Sets amount of scrap and lifepoints of player
-        playerCards.transform.GetChild(6).GetChild(0).GetComponent<Text>().text = ClientManager.instance.scrap.ToString();
-        playerCards.transform.GetChild(7).GetChild(0).GetComponent<Text>().text = ClientManager.instance.lifePoints.ToString();
-
-        //Sets component if the player currently has one
-        if (ClientManager.instance.hasComponent) {
-            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Have component";
-
-        }
-        else {
-            playerCards.transform.GetChild(8).GetChild(0).GetComponent<Text>().text = "Don't have component";
-        }
-
-        //Sets corruption of the player
-        playerCards.transform.GetChild(9).GetChild(0).GetComponent<Text>().text = ClientManager.instance.corruption.ToString();
+        corruptuptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
+        scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
 
     }
 
@@ -191,7 +142,21 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
+    public void ActivateInventoryPanel()
+    {
+        bool inventoryOpen = inventoryPanel.activeSelf;
 
+        inventoryPanel.SetActive(inventoryOpen);
+
+        if (inventoryOpen)
+        {
+            inventoryPanel.GetComponent<InventoryManager>().StartInventoryPanel();
+        }
+
+        //Disable corruption bar and scrap tracker when inventory is open
+        corruptuptionBar.SetActive(!inventoryOpen);
+        scrapTracker.SetActive(!inventoryOpen);
+    }
   
     #region Server Handling
 
@@ -230,19 +195,13 @@ public class ClientUIManager : MonoBehaviour
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
-                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 basicSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                 basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
                 break;
             case (GameManager.TurnPhases.AttackSurge):
-                aiPowerPanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 attackSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().activePlayerPanel.SetActive(false);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                 attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
                 break;
             default:
@@ -301,7 +260,7 @@ public class ClientUIManager : MonoBehaviour
             sabotagePanel.SetActive(true);
         }
  
-        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        //playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
         IncrementPhase();
     }
 
@@ -334,7 +293,7 @@ public class ClientUIManager : MonoBehaviour
     public void ConfirmSpecSelection()
     {
         //GameManager.instance.AIAttackPlayer(attackSurgePanel.GetComponent<AttackSurgeManager>().selectedSpec);
-        playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+        //playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
         IncrementPhase();
     }
 
@@ -366,19 +325,6 @@ public class ClientUIManager : MonoBehaviour
     public void CloseSabotagePanel()
     {
         sabotagePanel.SetActive(false);
-    }
-
-    public void OpenInventoryPanel(int buttonID)
-    {
-        inventoryPanel.SetActive(true);
-
-        inventoryPanel.GetComponent<InventoryManager>().selectedPlayer = GameManager.instance.GetOrderedPlayer(buttonID);
-        inventoryPanel.GetComponent<InventoryManager>().StartInventoryPanel();
-    }
-
-    public void CloseInventoryPanel()
-    {
-        inventoryPanel.SetActive(false);
     }
 
     public void ClosePanel(GameObject panel) {

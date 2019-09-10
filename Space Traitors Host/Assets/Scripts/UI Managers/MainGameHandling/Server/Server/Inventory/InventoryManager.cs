@@ -7,7 +7,7 @@ using System;
 
 public class InventoryManager : MonoBehaviour
 {
-    public GameObject playerCards;
+    public GameObject playerDetails;
 
     public GameObject playerText;
     public GameObject itemText;
@@ -20,7 +20,6 @@ public class InventoryManager : MonoBehaviour
 
     private Item selectedItem;
     private int selectedID;
-    public Player selectedPlayer;
 
     /// <summary>
     /// 
@@ -29,7 +28,9 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void StartInventoryPanel()
     {
-        playerText.GetComponent<TextMeshProUGUI>().text = selectedPlayer.playerName;
+        playerText.GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerName;
+
+        playerDetails.GetComponent<PlayerDetailsManager>().UpdatePlayerDetails();
 
         UpdateItemButtons();
     }
@@ -50,7 +51,7 @@ public class InventoryManager : MonoBehaviour
         {
             //Used to account for if there are less than the maximum number of items in a player's inventory
             //For those "empty" slots, sets up a blank button.
-            if(counter >= selectedPlayer.items.Count)
+            if(counter >= ClientManager.instance.inventory.Count)
             {
                 displayText = "";
                 itemButton.GetComponent<ItemButtonComponents>().item = new Item();
@@ -59,9 +60,9 @@ public class InventoryManager : MonoBehaviour
             else
             {
                 //Presents the information about the current item for the player
-                displayText = selectedPlayer.items[counter].ItemName;
-                itemButton.GetComponent<ItemButtonComponents>().item = selectedPlayer.items[counter];
-                if (selectedPlayer.items[counter].isEquipped)
+                displayText = ClientManager.instance.inventory[counter].ItemName;
+                itemButton.GetComponent<ItemButtonComponents>().item = ClientManager.instance.inventory[counter];
+                if (ClientManager.instance.inventory[counter].isEquipped)
                 {
                     itemButton.GetComponent<Image>().color = Color.green;
                 }
@@ -76,8 +77,7 @@ public class InventoryManager : MonoBehaviour
             counter++;
         }
 
-        //Update the current players card with the new spec scores
-        playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
+        playerDetails.GetComponent<PlayerDetailsManager>().UpdatePlayerDetails();        
     }
 
     /// <summary>
@@ -133,14 +133,15 @@ public class InventoryManager : MonoBehaviour
         //Unequips the item if it is already equipped
         if (selectedItem.isEquipped)
         {
-            selectedPlayer.UnequipItem(selectedID);
+            //selectedPlayer.UnequipItem(selectedID);
             UpdateItemButtons();
         }
         //Equips it otherwise
         else
         {
             //Attempts to equip the item for the player, returning the cause if it cannot
-            Player.EquipErrors equipStatus = selectedPlayer.EquipItem(selectedID);
+            Player.EquipErrors equipStatus = Player.EquipErrors.Default;
+                //selectedPlayer.EquipItem(selectedID);
 
             switch (equipStatus)
             {
@@ -166,7 +167,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void DiscardItem()
     {
-        selectedPlayer.DiscardItem(selectedID);
+        //selectedPlayer.DiscardItem(selectedID);
         UpdateItemButtons();
     }
 

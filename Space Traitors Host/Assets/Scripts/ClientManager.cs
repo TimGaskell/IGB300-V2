@@ -42,7 +42,7 @@ public class ClientManager : MonoBehaviour
     public List<Ability> abilities;
     public Character PlayerCharacter;
 
-    Character.CharacterTypes characterType;
+    //Character.CharacterTypes characterType;
 
     List<Character> allCharacters;
     List<Ability> allAbilities;
@@ -206,4 +206,51 @@ public class ClientManager : MonoBehaviour
        return playerData.Find(x => x.CharacterType == characterType);
     }
 
+    /// <summary>
+    /// 
+    /// Gets a particular scaled spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public float GetScaledSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return scaledBrawn;
+            case (GameManager.SpecScores.Skill):
+                return scaledSkill;
+            case (GameManager.SpecScores.Tech):
+                return scaledTech;
+            case (GameManager.SpecScores.Charm):
+                return scaledCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// Gets a particular modded spec score from the player
+    /// 
+    /// </summary>
+    /// <param name="specScore"></param>
+    /// <returns></returns>
+    public int GetModdedSpecScore(GameManager.SpecScores specScore)
+    {
+        switch (specScore)
+        {
+            case (GameManager.SpecScores.Brawn):
+                return modBrawn;
+            case (GameManager.SpecScores.Skill):
+                return modSkill;
+            case (GameManager.SpecScores.Tech):
+                return modTech;
+            case (GameManager.SpecScores.Charm):
+                return modCharm;
+            default:
+                throw new NotImplementedException("Not a valid spec score");
+        }
+    }
 }
