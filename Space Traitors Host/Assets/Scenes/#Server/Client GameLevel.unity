@@ -65721,13 +65721,14 @@ GameObject:
   - component: {fileID: 1889563636}
   - component: {fileID: 1889563635}
   - component: {fileID: 1889563634}
+  - component: {fileID: 1889563637}
   m_Layer: 5
   m_Name: ChoiceInformation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1889563633
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65810,6 +65811,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889563632}
   m_CullTransparentMesh: 0
+--- !u!114 &1889563637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889563632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934294137d484194584fd8b63b802fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  choiceHeader: {fileID: 1441250251}
+  nonSpecChoiceText: {fileID: 1594099019}
+  specChallengeGroup: {fileID: 2109248068}
+  specScoreText: {fileID: 1894598129}
+  specChanceText: {fileID: 1742191615}
+  specSuccessText: {fileID: 464164662}
+  specFailureText: {fileID: 1875674625}
+  errorText: {fileID: 1958862777}
+  choiceSelectButton: {fileID: 252803566}
 --- !u!1 &1894598129
 GameObject:
   m_ObjectHideFlags: 0
