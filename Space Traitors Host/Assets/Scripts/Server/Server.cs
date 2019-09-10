@@ -775,6 +775,7 @@ public class Server : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "Server GameLevel") {
             PlayerCardManager.instance.UpdatePlayerCard(playerID);
+            Debug.Log("Updated Card");
 
         }
         playerData.ID = playerID;
