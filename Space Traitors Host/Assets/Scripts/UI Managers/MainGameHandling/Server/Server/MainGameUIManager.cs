@@ -75,6 +75,9 @@ public class MainGameUIManager : MonoBehaviour
     {
         switch (GameManager.instance.currentPhase)
         {
+            case (GameManager.TurnPhases.Default):
+                
+                break;
             case (GameManager.TurnPhases.Abilities):
                 aiPowerPanel.SetActive(true);
                 UpdateAIPower();

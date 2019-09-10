@@ -1828,6 +1828,8 @@ public class Server : MonoBehaviour
                 //Unless the ability is code inspection, state of isTraitor is irrelevant, so sets to dummy case
                 bool isTraitor = false;
 
+                
+
                 switch (abilityType)
                 {
                     case (Ability.AbilityTypes.Sabotage):
@@ -1848,6 +1850,7 @@ public class Server : MonoBehaviour
                         break;
                 }
 
+                PlayerCardManager.instance.UpdateAllCards();
                 SendAbilityActivated(conID, abilityType, isTraitor);
                 SyncPlayerData(conID);
             }
@@ -2173,6 +2176,7 @@ public class Server : MonoBehaviour
                 switch (GameManager.instance.currentPhase)
                 {
                     case (GameManager.TurnPhases.Abilities):
+                        PlayerCardManager.instance.UpdateAllCards();
                         switch (GameManager.instance.GetActivePlayer().activeAbility.abilityType) {
                             case (Ability.AbilityTypes.Secret_Paths):
                             case (Ability.AbilityTypes.Power_Boost):
@@ -2194,10 +2198,12 @@ public class Server : MonoBehaviour
                         //Handled in player movement to send once they arrive at the room.
                         break;
                     case (GameManager.TurnPhases.BasicSurge):
+                        PlayerCardManager.instance.UpdateAllCards();
                         GameManager.instance.IncrementTurn();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen
+                        PlayerCardManager.instance.UpdateAllCards();
                         SendAIAttack(GameManager.instance.targetPlayer);
                         break;
                     default:
@@ -2229,12 +2235,16 @@ public class Server : MonoBehaviour
                 if (selectedItem.isEquipped)
                 {
                     player.UnequipItem(itemID);
+                    PlayerCardManager.instance.UpdateAllCards();
+
                     SyncPlayerData(conID);
                     SendUnequipSuccess(conID);
                 }
                 else
                 {
                     Player.EquipErrors equipStatus = player.EquipItem(itemID);
+                    PlayerCardManager.instance.UpdateAllCards();
+
                     SyncPlayerData(conID);
                     SendEquipState(conID, equipStatus);
                 }
@@ -2256,6 +2266,8 @@ public class Server : MonoBehaviour
             if (player.playerID == conID)
             {
                 player.DiscardItem(itemID);
+                PlayerCardManager.instance.UpdateAllCards();
+
                 SyncPlayerData(conID);
                 SendDiscardSuccess(conID);
             }
@@ -2292,6 +2304,8 @@ public class Server : MonoBehaviour
                         successfulSteal = true;
 
                         SyncPlayerData(conID);
+
+                        PlayerCardManager.instance.UpdateAllCards();
                     }
 
                     SendComponentStealSuccess(conID, successfulSteal);
@@ -2306,6 +2320,8 @@ public class Server : MonoBehaviour
                         successfulSteal = true;
                         SyncPlayerData(loserID);
                         SendItemStolen(loserID, selectedItem.ItemName);
+
+                        PlayerCardManager.instance.UpdateAllCards();
 
                         SyncPlayerData(conID);
                     }
@@ -2327,6 +2343,8 @@ public class Server : MonoBehaviour
         Player losingPlayer = GameManager.instance.GetPlayer(loserID);
 
         losingPlayer.DiscardItem(itemID);
+        PlayerCardManager.instance.UpdateAllCards();
+
         SyncPlayerData(loserID);
         SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
         SendStealDiscardSuccess(conID);
