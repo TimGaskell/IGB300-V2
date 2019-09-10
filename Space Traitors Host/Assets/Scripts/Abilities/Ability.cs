@@ -294,14 +294,14 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<MeshRenderer>().enabled = false;
+        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("Goin invisable");
     }
 
     public override void Deactivate()
     {
-        GameManager.instance.GetActivePlayer().playerObject.GetComponent<MeshRenderer>().enabled = true;
+        GameManager.instance.GetActivePlayer().playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
         Debug.Log("wait can they see me now?");
     }
 }
