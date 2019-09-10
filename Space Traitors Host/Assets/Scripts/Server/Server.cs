@@ -773,7 +773,7 @@ public class Server : MonoBehaviour
 
         Player player = GameManager.instance.GetPlayer(playerID);
 
-        if(SceneManager.GetActiveScene().name == "Client GameLevel") {
+        if(SceneManager.GetActiveScene().name == "Server GameLevel") {
             PlayerCardManager.instance.UpdatePlayerCard(playerID);
 
         }
