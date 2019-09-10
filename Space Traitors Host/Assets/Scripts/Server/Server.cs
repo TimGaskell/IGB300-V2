@@ -384,11 +384,9 @@ public class Server : MonoBehaviour
             case NetOP.SendAllPlayerCharacterTypes:
                 GetAllPlayersCharacters(conID, chanID, rHostID, (SendAllPlayerCharacters)msg);
                 break;
-
-
-
-
-
+            case NetOP.SpecChallenge:
+                SpecResult(conID, chanID, rHostID, (SpecChallenge)msg);
+                break;
 
         }
 
@@ -1989,6 +1987,8 @@ public class Server : MonoBehaviour
     /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
+        Debug.Log("Recieved choice");
+
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
