@@ -104,8 +104,9 @@ public class AbilityManager : MonoBehaviour
     /// <param name="buttonID">The ID of the button selected, which relates to the index of the ability in the players ability list</param>
     public void SelectAbility(int buttonID)
     {
-        selectedAbility = ClientManager.instance.abilities[buttonID];
 
+        selectedAbility = ClientManager.instance.abilities[buttonID];
+        Debug.Log(selectedAbility.AbilityName);
         selectedText.GetComponent<TextMeshProUGUI>().text = selectedAbility.AbilityName;
         selectButton.GetComponent<Button>().interactable = true;
     }
@@ -260,6 +261,8 @@ public class AbilityManager : MonoBehaviour
     /// </summary>
     public void DisplayActiveAbility()
     {
+
+        Debug.Log(selectedAbility.AbilityName);
         abilityActiveDisplay.SetActive(true);
         abilityActiveDisplay.GetComponent<ActiveAbilityDisplayClient>().UpdateActiveText(selectedAbility);
        

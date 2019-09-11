@@ -1491,14 +1491,18 @@ public class Server : MonoBehaviour
     private void GetSurgeInformation(int conID, int chanID, int rHostID, SurgeInformation information) {
 
         Debug.Log("updating surge");
-        ClientBasicSurgeManager.instance.power = information.NewAiPower;
-        ClientBasicSurgeManager.instance.basepower = information.baseIncrease;
-        ClientBasicSurgeManager.instance.choiceIncreaseUnit = information.ChoiceIncrease;
-        ClientBasicSurgeManager.instance.playerpower = information.PlayerIncrease;
-        ClientBasicSurgeManager.instance.powerchange = information.PowerIncrease;
+
+        ClientBasicSurgeManager manager = GameObject.Find("GamePanels").transform.Find("BasicSurgePanel").gameObject.GetComponent<ClientBasicSurgeManager>();
+
+        manager.power = information.NewAiPower;
+        manager.basepower = information.baseIncrease;
+        manager.choiceIncreaseUnit = information.ChoiceIncrease;
+        manager.playerpower = information.PlayerIncrease;
+        manager.powerchange = information.PowerIncrease;
 
         ClientUIManager.instance.DisplaySurge();
-        
+
+
     }
 
 
