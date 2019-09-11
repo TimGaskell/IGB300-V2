@@ -44,6 +44,7 @@ public class PlayerMovement : Navigation
 
     public void PlayerMoveViaNodes(int goalIndex) {
 
+        currentNodeIndex = Player.GetComponent<Player>().roomPosition;
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
 
