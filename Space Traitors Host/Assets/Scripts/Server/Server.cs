@@ -2237,7 +2237,6 @@ public class Server : MonoBehaviour
                     case (GameManager.TurnPhases.BasicSurge):
                         PlayerCardManager.instance.UpdateAllCards();
                         GameManager.instance.IncrementTurn();
-                        SendSurge();
                         break;
                     case (GameManager.TurnPhases.AttackSurge):
                         //Need to display surge information on main screen
