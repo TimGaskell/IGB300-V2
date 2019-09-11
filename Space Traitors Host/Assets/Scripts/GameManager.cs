@@ -761,7 +761,6 @@ public class GameManager : MonoBehaviour
                 currentPhase += 1;
                 break;
             case (TurnPhases.BasicSurge):
-                break;
             case (TurnPhases.AttackSurge):
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
