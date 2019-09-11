@@ -4,14 +4,20 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class BasicSurgeManager : MonoBehaviour
+public class ServerBasicSurgeManager : MonoBehaviour
 {
+
     public GameObject powerBar;
     public GameObject baseIncrease;
     public GameObject playerIncrease;
     public GameObject choiceIncrease;
     public GameObject totalIncrease;
     public GameObject confirmButton;
+
+
+    private void Start() {
+       
+    }
 
     public void UpdateSurgeValues()
     {

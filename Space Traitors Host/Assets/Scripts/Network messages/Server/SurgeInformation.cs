@@ -14,6 +14,9 @@ public class SurgeInformation : NetMessage
 
     public float NewAiPower{ get; set; }
     public float PowerIncrease { get; set; }
+    public float PlayerIncrease { get; set; }
+    public float ChoiceIncrease { get; set; }
+    public float baseIncrease { get; set; }
 
 }
 

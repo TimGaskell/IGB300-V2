@@ -126,6 +126,8 @@ public class GameManager : MonoBehaviour
     //The ID of the last player alive. If there is more than one player alive, then this should be the default case.
     public int traitorWinID;
 
+    public int ReadyPlayers = 0;
+
     private void Update()
     {
         //Only need to detect if the player is clicking on a room on the host system if the server is inactive
@@ -709,6 +711,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EndRound() {
+
+        ReadyPlayers++;
+
+        if(ReadyPlayers == numPlayers) {
+
+            Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
+
+        }
+
+    }
+
     /// <summary>
     /// 
     /// Shifts the players current phase of their turn from one to the next. Order should be:
@@ -772,6 +786,8 @@ public class GameManager : MonoBehaviour
             playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
 
             AIPower += AIPowerIncrease();
+
+            Server.Instance.SendSurge();
         }
         else
         {
@@ -779,6 +795,8 @@ public class GameManager : MonoBehaviour
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
+
+            Server.Instance.SendAIAttack(targetPlayer);
         }
 
         //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
@@ -789,7 +807,7 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
-        Server.Instance.SendActivePlayer(activePlayer);
+       
     }
 
     public float AIPowerIncrease()

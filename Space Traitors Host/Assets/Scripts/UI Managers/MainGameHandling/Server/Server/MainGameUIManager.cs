@@ -108,7 +108,7 @@ public class MainGameUIManager : MonoBehaviour
                     basicSurgePanel.SetActive(true);
                     playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                     playerCards.SetActive(false);
-                    basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
+                    basicSurgePanel.GetComponent<ServerBasicSurgeManager>().UpdateSurgeValues();
 
                 }
                 aiPowerPanel.SetActive(false);
@@ -192,7 +192,7 @@ public class MainGameUIManager : MonoBehaviour
 
     public void SetBasicSurgeButton(bool enabled)
     {
-        basicSurgePanel.GetComponent<BasicSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
+        basicSurgePanel.GetComponent<ServerBasicSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
     }
 
     public void SetAttackSurgeButton(bool enabled)

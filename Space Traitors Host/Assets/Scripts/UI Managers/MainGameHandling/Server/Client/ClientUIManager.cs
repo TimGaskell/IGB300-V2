@@ -174,6 +174,11 @@ public class ClientUIManager : MonoBehaviour
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
+                abilityPanel.SetActive(false);
+                actionPointPanel.SetActive(false);
+                movementPanel.SetActive(true);
+                attackSurgePanel.SetActive(false);
+                basicSurgePanel.SetActive(false);
                 break;
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
@@ -196,9 +201,14 @@ public class ClientUIManager : MonoBehaviour
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
+                basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
-                basicSurgePanel.SetActive(true);
-                basicSurgePanel.GetComponent<BasicSurgeManager>().UpdateSurgeValues();
+                abilityPanel.SetActive(false);
+                actionPointPanel.SetActive(false);
+                movementPanel.SetActive(true);
+                attackSurgePanel.SetActive(false);
+                basicSurgePanel.SetActive(false);
                 break;
             case (GameManager.TurnPhases.AttackSurge):
                 interactionPanel.SetActive(false);
@@ -333,6 +343,24 @@ public class ClientUIManager : MonoBehaviour
         panel.SetActive(false);
 
     }
+
+    public void DisplaySurge() {
+
+        interactionPanel.SetActive(false);
+        basicSurgePanel.SetActive(true);
+        basicSurgePanel.GetComponent<ClientBasicSurgeManager>().UpdateSurgeValues();
+
+    }
+
+    public void DisplayAttackSurge() {
+
+        interactionPanel.SetActive(false);
+        attackSurgePanel.SetActive(true);
+        attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
+
+    }
+
+    
 
     #endregion
 }

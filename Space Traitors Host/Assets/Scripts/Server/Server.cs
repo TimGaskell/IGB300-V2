@@ -387,6 +387,12 @@ public class Server : MonoBehaviour
             case NetOP.SpecChallenge:
                 SpecResult(conID, chanID, rHostID, (SpecChallenge)msg);
                 break;
+            case NetOP.SurgeInformation:
+                GetSurgeInformation(conID, chanID, rHostID, (SurgeInformation)msg);
+                break;
+            case NetOP.NextTurn:
+                EndSurge(conID, chanID, rHostID, (NextTurn)msg);
+                break;
 
         }
 
@@ -643,6 +649,10 @@ public class Server : MonoBehaviour
         SurgeInformation surge = new SurgeInformation();
         surge.NewAiPower = GameManager.instance.AIPower;
         surge.PowerIncrease = GameManager.instance.AIPowerIncrease();
+        surge.PlayerIncrease = GameManager.instance.playerPower;
+        surge.ChoiceIncrease = GameManager.instance.aiPowerChange;
+        surge.baseIncrease = GameManager.instance.basePower;
+
 
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
@@ -1478,6 +1488,20 @@ public class Server : MonoBehaviour
         ClientManager.instance.isTraitor = true;
     }
 
+    private void GetSurgeInformation(int conID, int chanID, int rHostID, SurgeInformation information) {
+
+        Debug.Log("updating surge");
+        ClientBasicSurgeManager.instance.power = information.NewAiPower;
+        ClientBasicSurgeManager.instance.basepower = information.baseIncrease;
+        ClientBasicSurgeManager.instance.choiceIncreaseUnit = information.ChoiceIncrease;
+        ClientBasicSurgeManager.instance.playerpower = information.PlayerIncrease;
+        ClientBasicSurgeManager.instance.powerchange = information.PowerIncrease;
+
+        ClientUIManager.instance.DisplaySurge();
+        
+    }
+
+
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
         if (aiAttacks.IsTarget)
@@ -1742,6 +1766,15 @@ public class Server : MonoBehaviour
         SendServer(select);
 
     }
+
+    public void SendEndRound() {
+
+        NextTurn turn = new NextTurn();
+
+        SendServer(turn);
+
+    }
+
     #endregion
 
     #region Server Received Messages
@@ -2363,5 +2396,13 @@ public class Server : MonoBehaviour
         SendAIAttackResult(conID, attackOutcome);
         SendIsTraitor();
     }
+
+
+    private void EndSurge(int conID, int chanID, int rHostID, NextTurn turn) {
+
+        GameManager.instance.EndRound();
+
+    }
+
     #endregion
 }
