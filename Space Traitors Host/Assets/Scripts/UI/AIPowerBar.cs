@@ -54,6 +54,8 @@ public class AIPowerBar : MonoBehaviour
     }
 
     public void UpdateAIPower(float power) {
+        Start();
+
         // float aiPower = 0.5f;
         float aiPower = power / 100;
 
