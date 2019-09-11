@@ -22,7 +22,7 @@ public class SpecGraphManager : MonoBehaviour
         specCounter.GetComponent<TextMeshProUGUI>().text = scaledSpec.ToString();
         //The max spec score will be when the image is at its fullest. Scale by maxSpecScore to get the spec scores scaling
         //relative to this maximum
-        scaledBar.GetComponent<Image>().fillAmount = scaledSpec / (maxSpecScore * 100);
-        moddedBar.GetComponent<Image>().fillAmount = moddedSpec / (maxSpecScore * 100);
+        scaledBar.GetComponent<Image>().fillAmount = scaledSpec / (maxSpecScore);
+        moddedBar.GetComponent<Image>().fillAmount = moddedSpec / (maxSpecScore);
     }
 }
