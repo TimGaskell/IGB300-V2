@@ -49,7 +49,7 @@ public class PlayerMovement : Navigation
             Debug.Log(currentPath[currentPathIndex]);
           
         }        
-        currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
+        currentPath = AStarSearch(currentNodeIndex, goalIndex);
         currentPathIndex = 0;
 
 
