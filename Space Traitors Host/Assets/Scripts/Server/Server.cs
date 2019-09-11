@@ -855,7 +855,7 @@ public class Server : MonoBehaviour
     public void SendComponentInstalled(int installerID, bool successfulInstall)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
