@@ -718,6 +718,7 @@ public class GameManager : MonoBehaviour
         if(ReadyPlayers == numPlayers) {
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
+            ReadyPlayers = 0;
 
         }
 
@@ -749,6 +750,7 @@ public class GameManager : MonoBehaviour
                 currentPhase += 1;
                 roomSelection = true;
                 //Apply the active player model to be moved
+                Debug.Log("This Happens");
                 playerList.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
                 break;
             case (TurnPhases.Interaction):
