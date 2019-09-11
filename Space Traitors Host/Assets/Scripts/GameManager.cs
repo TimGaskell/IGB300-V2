@@ -721,6 +721,8 @@ public class GameManager : MonoBehaviour
 
         if(ReadyPlayers == numPlayers) {
 
+
+
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
             ReadyPlayers = 0;
 
