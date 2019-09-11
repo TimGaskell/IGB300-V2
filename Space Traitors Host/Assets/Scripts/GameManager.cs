@@ -521,8 +521,12 @@ public class GameManager : MonoBehaviour
     public void InstantiatePlayers()
     {
         playerList = GameObject.FindWithTag("PlayerList");
-        Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position;
-        Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
+
+        Vector3 positionOffset = new Vector3(0.0f, 22.5f, 0.0f);
+
+        Vector3 playerStart = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.position + positionOffset;
+        //Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
+        Quaternion playerRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f); ;
         foreach (Player player in players)
         {
             GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
