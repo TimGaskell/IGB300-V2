@@ -149,7 +149,7 @@ public class InteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
             //Find the players relevant spec score need for the choice
-            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(specScores[selectedChoiceID]);
+            float playerScore = ClientManager.instance.GetScaledSpecScore(specScores[selectedChoiceID]);  //GameManager.instance.GetActivePlayer().GetScaledSpecScore(specScores[selectedChoiceID]);
 
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", specScores[selectedChoiceID].ToString());
