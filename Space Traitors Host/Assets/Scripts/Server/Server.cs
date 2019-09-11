@@ -604,13 +604,15 @@ public class Server : MonoBehaviour
 
         choices.AttackablePlayers = GameManager.instance.CheckCombat();
 
-        if(GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
+     
+
+        SendClient(choices);
+
+        if (GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
 
             CanInstallComponent(tempPlayerID);
 
         }
-
-        SendClient(choices);
     }
 
     public void SendSpecChallenge(int player, bool specChallengeResult)
