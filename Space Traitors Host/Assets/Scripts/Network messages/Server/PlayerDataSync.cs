@@ -26,7 +26,7 @@ public class PlayerDataSync : NetMessage
     public int ModSkill { get; set; }
     public int ModTech { get; set; }
     public int ModCharm { get; set; }
-    public List<int> Items { get; set; }
-    public List<bool> ItemEquipped { get; set; }
+    //public List<int> Items { get; set; }
+    //public List<bool> ItemEquipped { get; set; }
 }
 

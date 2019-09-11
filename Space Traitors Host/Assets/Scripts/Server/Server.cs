@@ -803,14 +803,14 @@ public class Server : MonoBehaviour
         playerData.ModTech = player.GetModdedSpecScore(GameManager.SpecScores.Tech);
         playerData.ModCharm = player.GetModdedSpecScore(GameManager.SpecScores.Charm);
 
-        playerData.Items = new List<int>();
-        playerData.ItemEquipped = new List<bool>();
+        //playerData.Items = new List<int>();
+        //playerData.ItemEquipped = new List<bool>();
 
-        foreach (Item item in player.items)
-        {
-            playerData.Items.Add((int)item.ItemType);
-            playerData.ItemEquipped.Add(item.isEquipped);
-        }
+        //foreach (Item item in player.items)
+        //{
+        //    playerData.Items.Add((int)item.ItemType);
+        //    playerData.ItemEquipped.Add(item.isEquipped);
+        //}
 
         SendClient(playerData);
         Debug.Log("send data to" + tempPlayerID);
@@ -1160,11 +1160,11 @@ public class Server : MonoBehaviour
         ClientManager.instance.modTech = playerData.ModTech;
         ClientManager.instance.modCharm = playerData.ModCharm;
 
-        for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
-        {
-            ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
-            ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
-        }
+        //for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
+        //{
+        //    ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
+        //    ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
+        //}
     }
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
