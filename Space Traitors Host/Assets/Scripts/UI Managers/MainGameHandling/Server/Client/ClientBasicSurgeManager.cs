@@ -32,7 +32,7 @@ public class ClientBasicSurgeManager : MonoBehaviour
         baseIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", basepower.ToString());
         playerIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", playerpower.ToString());
         choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", powerchange.ToString());
-        totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", totalIncrease.ToString());
+        totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", totalIncreaseUnit.ToString());
     }
 
     public void EndBasicSurge()

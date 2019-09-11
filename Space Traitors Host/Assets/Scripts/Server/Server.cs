@@ -393,7 +393,12 @@ public class Server : MonoBehaviour
             case NetOP.NextTurn:
                 EndSurge(conID, chanID, rHostID, (NextTurn)msg);
                 break;
-
+            case NetOP.ComponentInstalled:
+                GetComponentInstalled(conID, chanID, rHostID, (ComponentInstalled)msg);
+                break;
+            case NetOP.CanInstallComponent:
+                GetCanInstallComponent(conID, chanID, rHostID, (CanInstallComponent)msg);
+                break;
         }
 
 
@@ -598,6 +603,12 @@ public class Server : MonoBehaviour
         }
 
         choices.AttackablePlayers = GameManager.instance.CheckCombat();
+
+        if(GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
+
+            CanInstallComponent(tempPlayerID);
+
+        }
 
         SendClient(choices);
     }
@@ -1298,20 +1309,26 @@ public class Server : MonoBehaviour
     /// </summary>
     private void GetComponentInstalled(int conID, int chanID, int rHostID, ComponentInstalled componentInstalled)
     {
+        InteractionManager.instance.ResultPanel.SetActive(true);
+
         if (componentInstalled.SuccessfulInstall)
         {
             ClientManager.instance.componentsInstalled += 1;
             //Need to display to the player that a component has been installed
+            InteractionManager.instance.ResultText.GetComponent<Text>().text = "Installed Component";
 
             if (componentInstalled.AllComponentsInstalled)
             {
                 //Need to display to the player that all components have been installed and they can escape
+                InteractionManager.instance.ResultText.GetComponent<Text>().text = "All Components Installed";
             }
         }
         else
         {
             //Need to display to the player that they have been sabotaged and lost life points equal to
             //GameManager.COMBAT_DAMAGE.
+
+            InteractionManager.instance.ResultText.GetComponent<Text>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
         }
     }
 
@@ -1340,6 +1357,9 @@ public class Server : MonoBehaviour
     private void GetCanInstallComponent(int conID, int chanID, int rHostID, CanInstallComponent canInstallComponent)
     {
         //Activate whatever is neccessary for the player to install a component
+
+        InteractionManager.instance.installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
+
     }
 
     private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)

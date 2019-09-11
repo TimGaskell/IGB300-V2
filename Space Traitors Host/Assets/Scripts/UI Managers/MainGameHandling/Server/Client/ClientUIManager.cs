@@ -273,13 +273,10 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void InstallComponent()
     {
-        if (!GameManager.instance.InstallComponent())
-        {
-            sabotagePanel.SetActive(true);
-        }
+        Server.Instance.InstallComponent();
 
         //playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
-        IncrementPhase();
+        //IncrementPhase();
     }
 
     /// <summary>
