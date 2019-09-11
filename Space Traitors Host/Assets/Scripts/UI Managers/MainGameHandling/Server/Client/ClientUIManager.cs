@@ -27,6 +27,8 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
+    public GameObject nonTraitorLosePanel;
+    public GameObject TraitorsLosePanel;
 
     public GameObject sabotagePanel;
 

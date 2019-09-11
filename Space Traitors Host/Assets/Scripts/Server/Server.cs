@@ -399,6 +399,10 @@ public class Server : MonoBehaviour
             case NetOP.CanInstallComponent:
                 GetCanInstallComponent(conID, chanID, rHostID, (CanInstallComponent)msg);
                 break;
+            case NetOP.NonTraitorVictory:
+                GetNonTraitorVictory(conID, chanID, rHostID, (InnocentVictory)msg);
+                break;
+
         }
 
 
@@ -1557,10 +1561,12 @@ public class Server : MonoBehaviour
         if (ClientManager.instance.isTraitor)
         {
             //If the player is a traitor, display the loss screen
+            ClientUIManager.instance.TraitorsLosePanel.SetActive(true);
         }
         else
         {
             //If the player is not a traitor, display the victory screen
+            ClientUIManager.instance.nonTraitorVictoryPanel.SetActive(true);
         }
     }
 
@@ -1569,10 +1575,12 @@ public class Server : MonoBehaviour
         if (traitorVictory.WinnerID == ClientManager.instance.playerID)
         {
             //If this player is the winner, display the victory screen
+            ClientUIManager.instance.traitorVictoryPanel.SetActive(true);
         }
         else
         {
             //Otherwise, display the loss screen as well as w
+            ClientUIManager.instance.nonTraitorLosePanel.SetActive(true);
         }
     }
 

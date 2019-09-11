@@ -699,6 +699,7 @@ public class GameManager : MonoBehaviour
             if (CheckNonTraitorVictory())
             {
                 CurrentVictory = VictoryTypes.NonTraitor;
+                Server.Instance.SendNonTraitorVictory();
             }
             else
             {
