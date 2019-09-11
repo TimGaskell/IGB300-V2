@@ -30,7 +30,7 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject sabotagePanel;
 
-    public GameObject corruptuptionBar;
+    public GameObject corruptionBar;
     public GameObject scrapTracker;
     public GameObject characterPortrait;
 
@@ -98,7 +98,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats() {
 
-        corruptuptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
+        corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
 
     }
@@ -154,7 +154,7 @@ public class ClientUIManager : MonoBehaviour
         }
 
         //Disable corruption bar and scrap tracker when inventory is open
-        corruptuptionBar.SetActive(!inventoryOpen);
+        corruptionBar.SetActive(!inventoryOpen);
         scrapTracker.SetActive(!inventoryOpen);
     }
   
@@ -179,12 +179,14 @@ public class ClientUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 basicSurgePanel.SetActive(false);
+                corruptionBar.SetActive(true);
                 break;
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
+                corruptionBar.SetActive(false);
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -194,11 +196,13 @@ public class ClientUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);
                 movementPanel.SetActive(true);
+                corruptionBar.SetActive(true);
                 break;
             case (GameManager.TurnPhases.Interaction):
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
+                corruptionBar.SetActive(false);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 basicSurgePanel.SetActive(false);
