@@ -46,7 +46,7 @@ public class PlayerMovement : Navigation
 
         if (ServerVersion) {
             currentNodeIndex = GameManager.instance.GetActivePlayer().roomPosition;
-            currentPathIndex = GameManager.instance.GetActivePlayer().roomPosition;
+          
         }        
         currentPath = AStarSearch(currentPath[currentPathIndex], goalIndex);
         currentPathIndex = 0;
