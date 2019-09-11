@@ -185,14 +185,12 @@ public class ClientUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 basicSurgePanel.SetActive(false);
-                corruptionBar.SetActive(true);
                 break;
             case (GameManager.TurnPhases.Abilities):
                 basicSurgePanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(true);
-                corruptionBar.SetActive(false);
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
@@ -202,7 +200,6 @@ public class ClientUIManager : MonoBehaviour
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);
                 movementPanel.SetActive(true);
-                corruptionBar.SetActive(true);
                 break;
             case (GameManager.TurnPhases.Interaction):
                 movementPanel.SetActive(false);
