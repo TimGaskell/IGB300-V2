@@ -54,6 +54,14 @@ public class MovementManager : MonoBehaviour
         Server.Instance.SendNewPhase();
         MoveToRoomPanel.SetActive(false);
 
+        for (int i = 0; i < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; i++) {
+
+            GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[i];
+            Debug.Log(room.name);
+            room.transform.GetChild(1).gameObject.SetActive(true);
+
+        }
+
     }
 
     public void Exit() {
