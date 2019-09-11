@@ -176,7 +176,7 @@ public class ClientUIManager : MonoBehaviour
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(false);
-                movementPanel.SetActive(true);
+                movementPanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 basicSurgePanel.SetActive(false);
                 break;
@@ -206,7 +206,7 @@ public class ClientUIManager : MonoBehaviour
                 interactionPanel.SetActive(false);
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(false);
-                movementPanel.SetActive(true);
+                movementPanel.SetActive(false);
                 attackSurgePanel.SetActive(false);
                 basicSurgePanel.SetActive(false);
                 break;
