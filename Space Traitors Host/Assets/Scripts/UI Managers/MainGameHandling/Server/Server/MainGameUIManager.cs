@@ -103,12 +103,15 @@ public class MainGameUIManager : MonoBehaviour
                 //interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
-                basicSurgePanel.SetActive(true);
-                playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
-                playerCards.SetActive(false);
-                basicSurgePanel.GetComponent<ServerBasicSurgeManager>().UpdateSurgeValues();
-                aiPowerPanel.SetActive(false);
-                interactionPanel.SetActive(false);
+                if (GameManager.instance.GetActivePlayer().playerID == GameManager.instance.numPlayers) {
+
+                    basicSurgePanel.SetActive(true);
+                    playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
+                    playerCards.SetActive(false);
+                    basicSurgePanel.GetComponent<ServerBasicSurgeManager>().UpdateSurgeValues();
+                    aiPowerPanel.SetActive(false);
+                    interactionPanel.SetActive(false);
+                }
 
                 break;
             case (GameManager.TurnPhases.AttackSurge):
