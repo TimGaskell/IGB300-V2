@@ -103,7 +103,7 @@ public class MainGameUIManager : MonoBehaviour
                 //interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
-                if (GameManager.instance.GetActivePlayer().playerID == GameManager.instance.numPlayers) {
+                if (GameManager.instance.activePlayer == GameManager.instance.numPlayers) {
 
                     basicSurgePanel.SetActive(true);
                     playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
