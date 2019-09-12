@@ -1279,6 +1279,7 @@ public class Server : MonoBehaviour
         //Need to display attacked and defender info to players and allow them to select spec score for combat
 
         Debug.Log("Recieved being attacked");
+        Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
         InteractionManager.instance.attackingID = beingAttacked.AttackerID;
         InteractionManager.instance.SetupDefence();
