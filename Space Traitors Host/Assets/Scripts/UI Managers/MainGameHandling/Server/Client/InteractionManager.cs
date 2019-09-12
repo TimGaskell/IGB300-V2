@@ -262,7 +262,7 @@ public class InteractionManager : MonoBehaviour
         //Gets the relevant player information
         int targetPlayer = targetButtons[buttonID].GetComponent<TargetProperties>().playerID;
 
-
+        selectedTarget = targetPlayer;
         targetName.GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(targetPlayer).PlayerName;
 
         //Allow the player to confirm their target for the attack
