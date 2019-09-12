@@ -754,6 +754,7 @@ public class Server : MonoBehaviour
 
         CombatBeingAttacked attacked = new CombatBeingAttacked();
         tempPlayerID = player;
+        Debug.Log("attacking " + tempPlayerID);
 
         attacked.AttackerID = attackerID;
         attacked.DefenderID = defenderID;
@@ -1276,6 +1277,8 @@ public class Server : MonoBehaviour
     private void ReceiveCombat(int conID, int chanID, int rHostID, CombatBeingAttacked beingAttacked)
     {
         //Need to display attacked and defender info to players and allow them to select spec score for combat
+
+        Debug.Log("Recieved being attacked");
 
         InteractionManager.instance.attackingID = beingAttacked.AttackerID;
         InteractionManager.instance.SetupDefence();
