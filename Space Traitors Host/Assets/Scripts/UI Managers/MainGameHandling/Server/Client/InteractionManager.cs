@@ -260,10 +260,10 @@ public class InteractionManager : MonoBehaviour
     public void SelectTarget(int buttonID)
     {
         //Gets the relevant player information
-        Player targetPlayer = GameManager.instance.GetPlayer(targetButtons[buttonID].GetComponent<TargetProperties>().playerID);
+        int targetPlayer = targetButtons[buttonID].GetComponent<TargetProperties>().playerID;
 
-        selectedTarget = targetPlayer.playerID;
-        targetName.GetComponent<TextMeshProUGUI>().text = targetPlayer.playerName;
+
+        targetName.GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(targetPlayer).PlayerName;
 
         //Allow the player to confirm their target for the attack
         targetButton.GetComponent<Button>().interactable = true;
@@ -278,7 +278,7 @@ public class InteractionManager : MonoBehaviour
     {
         //Gets the relevant player information. The attacker will always be the active player and the defending will be the selected target
         //from the target panel.
-        Player attackingPlayer = GameManager.instance.GetActivePlayer();
+       
         PlayerData defendingPlayer = ClientManager.instance.GetPlayerData(selectedTarget);
         AreAttacker = true;
         combatPanel.SetActive(true);
