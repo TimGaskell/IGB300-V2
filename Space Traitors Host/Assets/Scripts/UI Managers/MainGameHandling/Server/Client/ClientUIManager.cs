@@ -289,7 +289,11 @@ public class ClientUIManager : MonoBehaviour
     public void EndCombat()
     {
         interactionPanel.GetComponent<InteractionManager>().CloseCombat();
-        IncrementPhase();
+
+        if(GameManager.instance.currentPhase == GameManager.TurnPhases.Interaction) {
+            IncrementPhase();
+        }
+       
     }
 
     /// <summary>

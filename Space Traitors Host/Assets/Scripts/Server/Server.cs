@@ -405,6 +405,12 @@ public class Server : MonoBehaviour
             case NetOP.CombatBeingAttacked:
                 ReceiveCombat(conID, chanID, rHostID, (CombatBeingAttacked)msg);
                 break;
+            case NetOP.CombatWinner:
+                GetCombatWinner(conID, chanID, rHostID, (CombatWinner)msg);
+                break;
+            case NetOP.CombatLoser:
+                GetCombatLoser(conID, chanID, rHostID, (CombatLoser)msg);
+                break;
 
         }
 
@@ -1379,7 +1385,9 @@ public class Server : MonoBehaviour
     {
         //Need to display that they won the combat and who they won it against using combatWinner.loserID
         //Also need to store the loser ID to send back to the server when stealing the items
-        
+
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<Text>().text = "You won against " + GameManager.instance.GetPlayer(combatWinner.LoserID).playerName;
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1398,6 +1406,11 @@ public class Server : MonoBehaviour
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
     {
         //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
+
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<Text>().text = "You lost to " + GameManager.instance.GetPlayer(combatLoser.WinnerID).playerName;
+
+
     }
 
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
