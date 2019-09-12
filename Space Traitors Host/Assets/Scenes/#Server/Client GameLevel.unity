@@ -31891,7 +31891,11 @@ MonoBehaviour:
   targetPanel: {fileID: 3569740}
   combatPanel: {fileID: 418979471}
   stealPanel: {fileID: 2113868755}
-  targetButtons: []
+  targetButtons:
+  - {fileID: 1606363320}
+  - {fileID: 252627977}
+  - {fileID: 2063945082}
+  - {fileID: 1840757380}
   targetName: {fileID: 587941484}
   targetButton: {fileID: 1701750633}
   ResultText: {fileID: 1230102326}
