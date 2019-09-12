@@ -2162,17 +2162,11 @@ public class Server : MonoBehaviour
         {
             Player player = GameManager.instance.GetPlayer(i);
 
-            //Find the correct player
-            if (player.playerID == conID)
+           
+            if (player.playerID == defenderID)
             {
-
-                SendBeingAttacked(conID, conID, attack.TargetPlayer);
-
-            }
-            else if (player.playerID == attack.TargetPlayer)
-            {
-
-                SendBeingAttacked(attack.TargetPlayer, conID, attack.TargetPlayer);
+                
+                SendBeingAttacked(defenderID, GameManager.instance.GetActivePlayer().playerID, defenderID);
 
             }
 
