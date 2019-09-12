@@ -402,6 +402,9 @@ public class Server : MonoBehaviour
             case NetOP.NonTraitorVictory:
                 GetNonTraitorVictory(conID, chanID, rHostID, (InnocentVictory)msg);
                 break;
+            case NetOP.CombatBeingAttacked:
+                ReceiveCombat(conID, chanID, rHostID, (CombatBeingAttacked)msg);
+                break;
 
         }
 
