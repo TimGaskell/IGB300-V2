@@ -38,6 +38,11 @@ public class InteractionManager : MonoBehaviour
 
     public GameObject targetButton;
 
+
+    //Results
+    public GameObject ResultText;
+    public GameObject ResultPanel;
+
     private int selectedTarget;
 
     public List<Sprite> characterPortraits;
@@ -93,7 +98,8 @@ public class InteractionManager : MonoBehaviour
                 counter++;
             }
 
-            installButton.GetComponent<Button>().interactable = GameManager.instance.CanInstallComponent();
+            
+
         }
         else
         {
@@ -149,12 +155,12 @@ public class InteractionManager : MonoBehaviour
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChallengeGroup.SetActive(true);
 
             //Find the players relevant spec score need for the choice
-            float playerScore = GameManager.instance.GetActivePlayer().GetScaledSpecScore(specScores[selectedChoiceID]);
+            float playerScore = ClientManager.instance.GetScaledSpecScore(specScores[selectedChoiceID]);  //GameManager.instance.GetActivePlayer().GetScaledSpecScore(specScores[selectedChoiceID]);
 
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specScoreText.GetComponent<TextMeshProUGUI>().text =
                 string.Format("Spec: {0}", specScores[selectedChoiceID].ToString());
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specChanceText.GetComponent<TextMeshProUGUI>().text =
-                string.Format("Chance: {0}%", Mathf.Round(GameManager.SpecChallengeChance(playerScore, successChances[selectedChoiceID])).ToString());
+                string.Format("Chance: {0}%", Mathf.Round(successChances[selectedChoiceID]).ToString());
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specSuccessText.GetComponent<TextMeshProUGUI>().text = successTexts[selectedChoiceID];
             choiceInfoPanel.GetComponent<ChoiceInfoComponents>().specFailureText.GetComponent<TextMeshProUGUI>().text = failTexts[selectedChoiceID];
         }

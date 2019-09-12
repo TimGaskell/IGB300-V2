@@ -29,10 +29,14 @@ public class AIPowerBar : MonoBehaviour
         {
             barImages.Add(barObject.GetComponent<Image>());
         }
+
     }
 
     public void UpdateAIPower()
     {
+
+        Start();
+
        // float aiPower = 0.5f;
         float aiPower = GameManager.instance.AIPower / 100;
 
@@ -42,12 +46,16 @@ public class AIPowerBar : MonoBehaviour
         //Maximum AI Power is 100, fill amount is between 0 and 1. 
         for (int i = 0; i < barObjects.Count; i++)
         {
+            Debug.Log("yes");
+
             barImages[i].fillAmount = aiPower;
             barObjects[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(multiplier[i] * baseX * (1 - aiPower), baseY);
         }
     }
 
     public void UpdateAIPower(float power) {
+        Start();
+
         // float aiPower = 0.5f;
         float aiPower = power / 100;
 

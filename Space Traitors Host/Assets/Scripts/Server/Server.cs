@@ -393,6 +393,15 @@ public class Server : MonoBehaviour
             case NetOP.NextTurn:
                 EndSurge(conID, chanID, rHostID, (NextTurn)msg);
                 break;
+            case NetOP.ComponentInstalled:
+                GetComponentInstalled(conID, chanID, rHostID, (ComponentInstalled)msg);
+                break;
+            case NetOP.CanInstallComponent:
+                GetCanInstallComponent(conID, chanID, rHostID, (CanInstallComponent)msg);
+                break;
+            case NetOP.NonTraitorVictory:
+                GetNonTraitorVictory(conID, chanID, rHostID, (InnocentVictory)msg);
+                break;
 
         }
 
@@ -599,7 +608,15 @@ public class Server : MonoBehaviour
 
         choices.AttackablePlayers = GameManager.instance.CheckCombat();
 
+     
+
         SendClient(choices);
+
+        if (GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
+
+            CanInstallComponent(tempPlayerID);
+
+        }
     }
 
     public void SendSpecChallenge(int player, bool specChallengeResult)
@@ -803,14 +820,14 @@ public class Server : MonoBehaviour
         playerData.ModTech = player.GetModdedSpecScore(GameManager.SpecScores.Tech);
         playerData.ModCharm = player.GetModdedSpecScore(GameManager.SpecScores.Charm);
 
-        playerData.Items = new List<int>();
-        playerData.ItemEquipped = new List<bool>();
+        //playerData.Items = new List<int>();
+        //playerData.ItemEquipped = new List<bool>();
 
-        foreach (Item item in player.items)
-        {
-            playerData.Items.Add((int)item.ItemType);
-            playerData.ItemEquipped.Add(item.isEquipped);
-        }
+        //foreach (Item item in player.items)
+        //{
+        //    playerData.Items.Add((int)item.ItemType);
+        //    playerData.ItemEquipped.Add(item.isEquipped);
+        //}
 
         SendClient(playerData);
         Debug.Log("send data to" + tempPlayerID);
@@ -842,7 +859,7 @@ public class Server : MonoBehaviour
     public void SendComponentInstalled(int installerID, bool successfulInstall)
     {
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers+1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
@@ -1160,11 +1177,11 @@ public class Server : MonoBehaviour
         ClientManager.instance.modTech = playerData.ModTech;
         ClientManager.instance.modCharm = playerData.ModCharm;
 
-        for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
-        {
-            ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
-            ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
-        }
+        //for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
+        //{
+        //    ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
+        //    ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
+        //}
     }
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
@@ -1298,20 +1315,26 @@ public class Server : MonoBehaviour
     /// </summary>
     private void GetComponentInstalled(int conID, int chanID, int rHostID, ComponentInstalled componentInstalled)
     {
+        InteractionManager.instance.ResultPanel.SetActive(true);
+
         if (componentInstalled.SuccessfulInstall)
         {
             ClientManager.instance.componentsInstalled += 1;
             //Need to display to the player that a component has been installed
+            InteractionManager.instance.ResultText.GetComponent<Text>().text = "Installed Component";
 
             if (componentInstalled.AllComponentsInstalled)
             {
                 //Need to display to the player that all components have been installed and they can escape
+                InteractionManager.instance.ResultText.GetComponent<Text>().text = "All Components Installed";
             }
         }
         else
         {
             //Need to display to the player that they have been sabotaged and lost life points equal to
             //GameManager.COMBAT_DAMAGE.
+
+            InteractionManager.instance.ResultText.GetComponent<Text>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
         }
     }
 
@@ -1340,6 +1363,9 @@ public class Server : MonoBehaviour
     private void GetCanInstallComponent(int conID, int chanID, int rHostID, CanInstallComponent canInstallComponent)
     {
         //Activate whatever is neccessary for the player to install a component
+
+        InteractionManager.instance.installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
+
     }
 
     private void GetCombatWinner(int conID, int chanID, int rHostID, CombatWinner combatWinner)
@@ -1535,10 +1561,12 @@ public class Server : MonoBehaviour
         if (ClientManager.instance.isTraitor)
         {
             //If the player is a traitor, display the loss screen
+            ClientUIManager.instance.TraitorsLosePanel.SetActive(true);
         }
         else
         {
             //If the player is not a traitor, display the victory screen
+            ClientUIManager.instance.nonTraitorVictoryPanel.SetActive(true);
         }
     }
 
@@ -1547,10 +1575,12 @@ public class Server : MonoBehaviour
         if (traitorVictory.WinnerID == ClientManager.instance.playerID)
         {
             //If this player is the winner, display the victory screen
+            ClientUIManager.instance.traitorVictoryPanel.SetActive(true);
         }
         else
         {
             //Otherwise, display the loss screen as well as w
+            ClientUIManager.instance.nonTraitorLosePanel.SetActive(true);
         }
     }
 

@@ -27,10 +27,12 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
+    public GameObject nonTraitorLosePanel;
+    public GameObject TraitorsLosePanel;
 
     public GameObject sabotagePanel;
 
-    public GameObject corruptuptionBar;
+    public GameObject corruptionBar;
     public GameObject scrapTracker;
     public GameObject characterPortrait;
 
@@ -75,7 +77,7 @@ public class ClientUIManager : MonoBehaviour
     {
         if (GameManager.instance.serverActive)
         {
-            
+
         }
         else
         {
@@ -88,7 +90,7 @@ public class ClientUIManager : MonoBehaviour
             }
         }
 
-      
+
 
     }
 
@@ -96,21 +98,23 @@ public class ClientUIManager : MonoBehaviour
     /// <summary>
     /// Updates all values on the player card based on what is in the client manager
     /// </summary>
-    public void UpdatePlayerStats() {
+    public void UpdatePlayerStats()
+    {
 
-        corruptuptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
+        corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
 
     }
 
-  
 
-    public void MoveToRoom() {
-        
+
+    public void MoveToRoom()
+    {
+
         PlayerMovement.instance.StartMoving = true;
         GameManager.instance.playerMoving = true;
         Server.Instance.SendRoomChoice(GameManager.instance.playerGoalIndex);
-        
+
 
     }
 
@@ -119,14 +123,17 @@ public class ClientUIManager : MonoBehaviour
     /// Shows the result of their selected choice on another panel
     /// </summary>
     /// <param name="result">True or false of whether they completed the action successfuly on the server </param>
-    public void ShowResult(bool result) {
+    public void ShowResult(bool result)
+    {
 
         ResultsPanel.SetActive(true);
-        if (result) {
+        if (result)
+        {
 
             ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Success";
         }
-        else {
+        else
+        {
             ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Failed";
         }
     }
@@ -134,7 +141,8 @@ public class ClientUIManager : MonoBehaviour
     /// <summary>
     /// Gets rid of the results panel and tells the server that they are moving onto the next phase
     /// </summary>
-    public void ResultsButton() {
+    public void ResultsButton()
+    {
 
         ResultsPanel.SetActive(false);
         IncrementPhase();
@@ -154,10 +162,10 @@ public class ClientUIManager : MonoBehaviour
         }
 
         //Disable corruption bar and scrap tracker when inventory is open
-        corruptuptionBar.SetActive(!inventoryOpen);
+        corruptionBar.SetActive(!inventoryOpen);
         scrapTracker.SetActive(!inventoryOpen);
     }
-  
+
     #region Server Handling
 
     /// <summary>
@@ -199,6 +207,7 @@ public class ClientUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
+                corruptionBar.SetActive(false);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 basicSurgePanel.SetActive(false);
@@ -253,11 +262,11 @@ public class ClientUIManager : MonoBehaviour
     {
 
         Server.Instance.SendSelectedChoice(interactionPanel.GetComponent<InteractionManager>().selectedChoiceID);
-       
+
     }
 
-  
-   
+
+
 
     /// <summary>
     /// 
@@ -266,13 +275,10 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void InstallComponent()
     {
-        if (!GameManager.instance.InstallComponent())
-        {
-            sabotagePanel.SetActive(true);
-        }
- 
+        Server.Instance.InstallComponent();
+
         //playerCards.GetComponent<PlayerCardManager>().UpdatePlayerCard(GameManager.instance.activePlayer);
-        IncrementPhase();
+        //IncrementPhase();
     }
 
     /// <summary>
@@ -338,13 +344,15 @@ public class ClientUIManager : MonoBehaviour
         sabotagePanel.SetActive(false);
     }
 
-    public void ClosePanel(GameObject panel) {
+    public void ClosePanel(GameObject panel)
+    {
 
         panel.SetActive(false);
 
     }
 
-    public void DisplaySurge() {
+    public void DisplaySurge()
+    {
 
         interactionPanel.SetActive(false);
         basicSurgePanel.SetActive(true);
@@ -352,7 +360,8 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
-    public void DisplayAttackSurge() {
+    public void DisplayAttackSurge()
+    {
 
         interactionPanel.SetActive(false);
         attackSurgePanel.SetActive(true);
@@ -360,7 +369,7 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
-    
+
 
     #endregion
 }
