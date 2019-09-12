@@ -1400,7 +1400,7 @@ public class Server : MonoBehaviour
             loserInventory.Add(item);
         }
         StealingManager.instance.losersItems = loserInventory;
-        StealingManager.instance.StartStealPanel();
+        
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
@@ -2059,6 +2059,8 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
+ 
+
 
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
@@ -2066,7 +2068,7 @@ public class Server : MonoBehaviour
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-                player.roomPosition = moveTo.SelectedRoom;
+                
                 PlayerMovement.instance.SecretPathActivated = false;
 
             }

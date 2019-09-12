@@ -44,11 +44,7 @@ public class PlayerMovement : Navigation
 
     public void PlayerMoveViaNodes(int goalIndex) {
 
-        if (ServerVersion) {
-            currentNodeIndex = GameManager.instance.GetActivePlayer().roomPosition;
-            Debug.Log(currentPath[currentPathIndex]);
-          
-        }        
+           
         currentPath = AStarSearch(currentNodeIndex, goalIndex);
         currentPathIndex = 0;
 
@@ -95,9 +91,12 @@ public class PlayerMovement : Navigation
                 }
 
                 //Return to idle animation
-               // Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+                // Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
+
+                GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
 
                 Debug.Log("finished Moving");
+
                
 
             }
