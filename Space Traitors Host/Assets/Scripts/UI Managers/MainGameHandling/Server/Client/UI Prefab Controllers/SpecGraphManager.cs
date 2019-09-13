@@ -19,7 +19,7 @@ public class SpecGraphManager : MonoBehaviour
         float scaledSpec = ClientManager.instance.GetScaledSpecScore(specScore);
         float moddedSpec = ClientManager.instance.GetModdedSpecScore(specScore);
 
-        specCounter.GetComponent<TextMeshProUGUI>().text = scaledSpec.ToString();
+        specCounter.GetComponent<TextMeshProUGUI>().text = Mathf.Round(scaledSpec).ToString();
         //The max spec score will be when the image is at its fullest. Scale by maxSpecScore to get the spec scores scaling
         //relative to this maximum
         scaledBar.GetComponent<Image>().fillAmount = scaledSpec / (maxSpecScore);

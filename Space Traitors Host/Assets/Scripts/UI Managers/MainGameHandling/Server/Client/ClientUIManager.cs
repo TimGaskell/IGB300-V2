@@ -100,7 +100,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats()
     {
-
+        UpdateComponentTracker();
         corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
 
@@ -207,7 +207,6 @@ public class ClientUIManager : MonoBehaviour
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
-                corruptionBar.SetActive(false);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
                 basicSurgePanel.SetActive(false);
