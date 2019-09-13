@@ -388,7 +388,7 @@ public class ClientUIManager : MonoBehaviour
             }
             else
             {
-                objectiveText = "Find the other robots and eliminate them.";
+                objectiveText = "Find the other robots and eliminate them! Don't let them repair the shuttle!";
             }
                 
         }
@@ -400,7 +400,7 @@ public class ClientUIManager : MonoBehaviour
             }
             else
             {
-                objectiveText = "Find the components";
+                objectiveText = "Find the components and return them to the escape shuttle.";
             }
         }
 
