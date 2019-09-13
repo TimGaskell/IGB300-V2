@@ -73,6 +73,8 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     private void DisplayCurrentPhase()
     {
+        UpdateComponentTracker();
+
         switch (GameManager.instance.currentPhase)
         {
             case (GameManager.TurnPhases.Default):
