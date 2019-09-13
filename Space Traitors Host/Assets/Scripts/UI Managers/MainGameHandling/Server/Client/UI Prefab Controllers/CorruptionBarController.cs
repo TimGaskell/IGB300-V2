@@ -9,6 +9,6 @@ public class CorruptionBarController : MonoBehaviour
 
     public void UpdateCorruptionBar()
     {
-        corruptionBar.GetComponent<Image>().fillAmount = ClientManager.instance.corruption / 100;
+        corruptionBar.GetComponent<Image>().fillAmount = ClientManager.instance.corruption / 100.0f;
     }
 }
