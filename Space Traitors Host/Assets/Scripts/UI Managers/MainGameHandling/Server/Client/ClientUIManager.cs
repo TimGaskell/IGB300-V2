@@ -373,6 +373,41 @@ public class ClientUIManager : MonoBehaviour
 
     }
 
+    public void UpdateComponentTracker()
+    {
+        ClientComponentTracker componentTracker = componentTrackerPanel.GetComponent<ClientComponentTracker>();
+
+        componentTracker.numberText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1}", ClientManager.instance.componentsInstalled, ClientManager.instance.numPlayers);
+
+        string objectiveText;
+
+        if (ClientManager.instance.isTraitor)
+        {
+            if (ClientManager.instance.CheckComponentInstalled())
+            {
+                objectiveText = "The others have repaired the escape shuttle. Stop them from escaping!";
+            }
+            else
+            {
+                objectiveText = "Find the other robots and eliminate them.";
+            }
+                
+        }
+        else
+        {
+            if (ClientManager.instance.CheckComponentInstalled())
+            {
+                objectiveText = "All components installed. Get to the Shuttle!";
+            }
+            else
+            {
+                objectiveText = "Find the components";
+            }
+        }
+
+        componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
+    }
+
 
 
     #endregion

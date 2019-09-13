@@ -1333,6 +1333,8 @@ public class Server : MonoBehaviour
         if (componentInstalled.SuccessfulInstall)
         {
             ClientManager.instance.componentsInstalled += 1;
+            GameObject canvas = GameObject.Find("Canvas");
+            canvas.GetComponent<ClientUIManager>().UpdateComponentTracker();
             //Need to display to the player that a component has been installed
             InteractionManager.instance.ResultText.GetComponent<Text>().text = "Installed Component";
 
@@ -1416,6 +1418,7 @@ public class Server : MonoBehaviour
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
     {
         ClientManager.instance.playerData = new List<PlayerData>();
+        
         Debug.Log("recieved player ids");
 
         for (int playerIndex = 0; playerIndex < allPlayerData.PlayerIDS.Count; playerIndex++)
@@ -1424,6 +1427,8 @@ public class Server : MonoBehaviour
             ClientManager.instance.playerIDS.Add(playerID);
            
         }
+
+        ClientManager.instance.numPlayers = ClientManager.instance.playerIDS.Count;
     }
 
     private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)

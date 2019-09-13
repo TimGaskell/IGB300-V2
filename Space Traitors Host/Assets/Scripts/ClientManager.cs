@@ -57,6 +57,7 @@ public class ClientManager : MonoBehaviour
     public List<int> playerIDS;
     public List<int> CharacterTypes;
     public List<string> PlayerNames;
+    public int numPlayers;
 
     #region Client Initialisation
     private void Awake()
@@ -254,5 +255,10 @@ public class ClientManager : MonoBehaviour
             default:
                 throw new NotImplementedException("Not a valid spec score");
         }
+    }
+
+    public bool CheckComponentInstalled()
+    {
+        return componentsInstalled == numPlayers;
     }
 }
