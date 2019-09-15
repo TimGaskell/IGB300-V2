@@ -303,8 +303,9 @@ public class InteractionManager : MonoBehaviour
 
     }
 
-    public void SetupDefence() {
+    public void SetupDefence(int Attacker) {
 
+        attackingID = Attacker;
         AreAttacker = false;
         PlayerData attackingPlayer = ClientManager.instance.GetPlayerData(attackingID);
 
