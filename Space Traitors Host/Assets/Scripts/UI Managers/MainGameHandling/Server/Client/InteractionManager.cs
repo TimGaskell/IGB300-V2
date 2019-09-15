@@ -400,6 +400,7 @@ public class InteractionManager : MonoBehaviour
         targetPanel.SetActive(false);
         combatPanel.SetActive(false);
         stealPanel.SetActive(false);
+        ClientUIManager.instance.interactionPanel.SetActive(false);
     }
 
     #endregion
