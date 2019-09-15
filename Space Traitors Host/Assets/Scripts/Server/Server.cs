@@ -1398,9 +1398,11 @@ public class Server : MonoBehaviour
         {
             Item item = ClientManager.instance.GetItemInfo(itemID);
             loserInventory.Add(item);
+            Debug.Log(item.ItemName);
         }
-        StealingManager.instance.losersItems = loserInventory;
-        
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().loserID = combatWinner.LoserID;
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().losersItems = loserInventory;
+      
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
