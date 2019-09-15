@@ -420,6 +420,9 @@ public class Server : MonoBehaviour
             case NetOP.EndAttack:
                 EndAttack(conID, chanID, rHostID, (EndAttack)msg);
                 break;
+            case NetOP.TraitorSelction:
+                GetIsTraitor(conID, chanID, rHostID, (TraitorSelection)msg);
+                break;
 
         }
 
