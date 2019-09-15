@@ -212,9 +212,11 @@ public class InteractionManager : MonoBehaviour
     {
         //Initialise the component panels on the interaction UI
         componentPanels = new List<GameObject>();
+        Debug.Log("ComponentPanelText");
 
         for (int componentIndex = 0; componentIndex < ClientManager.instance.numPlayers; componentIndex++)
         {
+            
             componentPanels.Add(Instantiate(componentPanelPrefab, componentPanelsParent.transform));
         }
     }
