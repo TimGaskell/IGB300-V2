@@ -81,10 +81,9 @@ public class PlayerMovement : Navigation
 
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
-                
+
                 //If its at the end of the path look off to the side
-                Vector3 lookBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1000);
-                Player.transform.rotation = Quaternion.LookRotation(lookBack);
+                Player.transform.Rotate(0, 145, 0, Space.Self);
 
                 if (ServerVersion) {
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
