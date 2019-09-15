@@ -1287,8 +1287,7 @@ public class Server : MonoBehaviour
         Debug.Log("Recieved being attacked");
         Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
-        InteractionManager.instance.SetupDefence(beingAttacked.AttackerID);
-
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
 
 
     }
