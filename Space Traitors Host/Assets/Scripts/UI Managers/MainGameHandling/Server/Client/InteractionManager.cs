@@ -326,6 +326,33 @@ public class InteractionManager : MonoBehaviour
 
     }
 
+    public void AIATTACK() {
+
+        combatPanel.SetActive(true);
+
+        //Sets the default screen status for the combats
+        combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "DEFENDING";
+        combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = "Rouge AI";
+       // combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.CharacterType);
+        combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
+        combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = false;
+
+        //Reenables the spec score buttons
+        for (int buttonID = 0; buttonID < 4; buttonID++) {
+            combatPanel.GetComponent<CombatComponentsClient>().attackerSpecButtons[buttonID].GetComponent<Button>().interactable = true;
+        }
+
+    }
+
+    public void EndAttack() {
+
+
+        Server.Instance.SendEndAttack();
+
+    }
+
+
     /// <summary>
     /// 
     /// If one of the attacker spec scores is selected updates the display and store the spec score to use in the combat
@@ -345,7 +372,14 @@ public class InteractionManager : MonoBehaviour
             specButton.GetComponent<Button>().interactable = false;
         }
 
-        Server.Instance.SendSpecSelection(chosenSpec,AreAttacker);
+
+        if (GameManager.instance.currentPhase == GameManager.TurnPhases.AttackSurge) {
+            Server.Instance.AISpecSelection(chosenSpec);
+        }
+        else {
+            Server.Instance.SendSpecSelection(chosenSpec, AreAttacker);
+        }
+           
 
     }
 
@@ -384,8 +418,13 @@ public class InteractionManager : MonoBehaviour
     /// Opens the steal panel for the winner
     /// 
     /// </summary>
-    public void OpenStealPanel()
+    public void OpenStealPanelOrEndPhase()
     {
+        if(GameManager.instance.currentPhase == GameManager.TurnPhases.AttackSurge) {
+
+            EndAttack();
+        }
+
         stealPanel.SetActive(true);
         stealPanel.GetComponent<StealingManager>().StartStealPanel();
     }

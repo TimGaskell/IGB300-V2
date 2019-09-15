@@ -411,6 +411,15 @@ public class Server : MonoBehaviour
             case NetOP.CombatLoser:
                 GetCombatLoser(conID, chanID, rHostID, (CombatLoser)msg);
                 break;
+            case NetOP.AISpecSelect:
+                GetAISpecSelection(conID, chanID, rHostID, (AISpecSelection)msg);
+                break;
+            case NetOP.AIAttackResult:
+                GetAIAttackResult(conID, chanID, rHostID, (AIAttackResult)msg);
+                break;
+            case NetOP.EndAttack:
+                EndAttack(conID, chanID, rHostID, (EndAttack)msg);
+                break;
 
         }
 
@@ -1387,7 +1396,7 @@ public class Server : MonoBehaviour
         //Also need to store the loser ID to send back to the server when stealing the items
 
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
-        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You won against " + ClientManager.instance.GetPlayerData(combatWinner.LoserID).PlayerName;
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerText.GetComponent<TextMeshProUGUI>().text = "You won against " + ClientManager.instance.GetPlayerData(combatWinner.LoserID).PlayerName;
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1567,10 +1576,16 @@ public class Server : MonoBehaviour
         if (aiAttacks.IsTarget)
         {
             //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
+            GameManager.instance.currentPhase = GameManager.TurnPhases.AttackSurge;
+
+            ClientUIManager.instance.interactionPanel.SetActive(true);
+            ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().AIATTACK();
         }
         else
         {
             //Need to display which player is under attack using aiAttacks.targetID
+            ClientUIManager.instance.attackSurgePanel.SetActive(true);
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerData[aiAttacks.TargetID].PlayerName + " is under attack from the AI!";
         }
     }
 
@@ -1579,10 +1594,16 @@ public class Server : MonoBehaviour
         if (aiAttackResult.WonAttack)
         {
             //Display that the player won the attack
+            InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
+            InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerText.GetComponent<TextMeshProUGUI>().text = "You Won Against the AI";
+
         }
         else
         {
             //Display that they lost the attack
+            InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
+            InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You Lost. -1 Health";
+            
         }
     }
 
@@ -1836,6 +1857,14 @@ public class Server : MonoBehaviour
         NextTurn turn = new NextTurn();
 
         SendServer(turn);
+
+    }
+
+    public void SendEndAttack() {
+
+        EndAttack end = new EndAttack();
+
+        SendServer(end);
 
     }
 
@@ -2455,6 +2484,7 @@ public class Server : MonoBehaviour
 
         SendAIAttackResult(conID, attackOutcome);
         SendIsTraitor();
+        
     }
 
 
@@ -2463,6 +2493,13 @@ public class Server : MonoBehaviour
         GameManager.instance.EndRound();
 
     }
+
+    private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
+
+        Server.Instance.SendSurge();
+
+    }
+
 
     #endregion
 }

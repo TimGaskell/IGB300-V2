@@ -68,6 +68,7 @@ public static class NetOP
     public const int AISpecSelect = 48;
     public const int SelectRoom = 53;
     public const int NextTurn = 57;
+    public const int EndAttack = 58;
     #endregion
 }
 
