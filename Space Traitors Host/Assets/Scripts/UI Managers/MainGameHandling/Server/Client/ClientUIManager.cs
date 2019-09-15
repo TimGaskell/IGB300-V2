@@ -130,11 +130,11 @@ public class ClientUIManager : MonoBehaviour
         if (result)
         {
 
-            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Success";
+            ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
         }
         else
         {
-            ResultsPanel.transform.GetChild(0).GetComponent<Text>().text = "Failed";
+            ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Failed";
         }
     }
 

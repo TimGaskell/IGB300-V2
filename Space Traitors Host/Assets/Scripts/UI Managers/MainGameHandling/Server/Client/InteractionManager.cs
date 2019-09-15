@@ -91,7 +91,7 @@ public class InteractionManager : MonoBehaviour
             int counter = 0;
             foreach (GameObject compPanel in componentPanels)
             {
-                if (counter < GameManager.instance.installedComponents)
+                if (counter < ClientManager.instance.componentsInstalled)
                 {
                     compPanel.transform.GetChild(0).gameObject.SetActive(true);
                 }
@@ -213,7 +213,7 @@ public class InteractionManager : MonoBehaviour
         //Initialise the component panels on the interaction UI
         componentPanels = new List<GameObject>();
 
-        for (int componentIndex = 0; componentIndex < GameManager.instance.NumComponents; componentIndex++)
+        for (int componentIndex = 0; componentIndex < ClientManager.instance.numPlayers; componentIndex++)
         {
             componentPanels.Add(Instantiate(componentPanelPrefab, componentPanelsParent.transform));
         }

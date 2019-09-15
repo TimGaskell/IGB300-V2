@@ -1336,12 +1336,12 @@ public class Server : MonoBehaviour
             GameObject canvas = GameObject.Find("Canvas");
             canvas.GetComponent<ClientUIManager>().UpdateComponentTracker();
             //Need to display to the player that a component has been installed
-            InteractionManager.instance.ResultText.GetComponent<Text>().text = "Installed Component";
+            InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "Installed Component";
 
             if (componentInstalled.AllComponentsInstalled)
             {
                 //Need to display to the player that all components have been installed and they can escape
-                InteractionManager.instance.ResultText.GetComponent<Text>().text = "All Components Installed";
+                InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "All Components Installed";
             }
         }
         else
@@ -1349,7 +1349,7 @@ public class Server : MonoBehaviour
             //Need to display to the player that they have been sabotaged and lost life points equal to
             //GameManager.COMBAT_DAMAGE.
 
-            InteractionManager.instance.ResultText.GetComponent<Text>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
+            InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
         }
     }
 
@@ -1389,7 +1389,7 @@ public class Server : MonoBehaviour
         //Also need to store the loser ID to send back to the server when stealing the items
 
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
-        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<Text>().text = "You won against " + GameManager.instance.GetPlayer(combatWinner.LoserID).playerName;
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You won against " + GameManager.instance.GetPlayer(combatWinner.LoserID).playerName;
 
         //Following converts the IDs for the losers inventory into Item objects, allowng the player to inspect the objects
         //Need to display the items on the stealing panel
@@ -1410,7 +1410,7 @@ public class Server : MonoBehaviour
         //Need to display that they lost the combat and who they lost it against using combatLoser.winnerID
 
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
-        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<Text>().text = "You lost to " + GameManager.instance.GetPlayer(combatLoser.WinnerID).playerName;
+        InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You lost to " + GameManager.instance.GetPlayer(combatLoser.WinnerID).playerName;
 
 
     }
