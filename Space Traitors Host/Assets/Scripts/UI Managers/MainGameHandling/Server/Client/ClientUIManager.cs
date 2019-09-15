@@ -58,8 +58,6 @@ public class ClientUIManager : MonoBehaviour
         abilityPanel.SetActive(false);
         actionPointPanel.SetActive(false);
         movementPanel.SetActive(false);
-        interactionPanel.SetActive(true);
-        interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
         interactionPanel.SetActive(false);
         basicSurgePanel.SetActive(false);
         attackSurgePanel.SetActive(false);

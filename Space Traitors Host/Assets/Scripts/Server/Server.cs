@@ -1429,6 +1429,11 @@ public class Server : MonoBehaviour
         }
 
         ClientManager.instance.numPlayers = ClientManager.instance.playerIDS.Count;
+
+        ClientUIManager clientUIManager = GameObject.Find("Canvas").GetComponent<ClientUIManager>();
+        clientUIManager.interactionPanel.SetActive(true);
+        clientUIManager.interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
+        clientUIManager.interactionPanel.SetActive(false);
     }
 
     private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)

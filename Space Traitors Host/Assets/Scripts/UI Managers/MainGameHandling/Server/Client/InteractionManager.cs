@@ -216,7 +216,7 @@ public class InteractionManager : MonoBehaviour
 
         for (int componentIndex = 0; componentIndex < ClientManager.instance.numPlayers; componentIndex++)
         {
-            
+            Debug.Log("created Panel");
             componentPanels.Add(Instantiate(componentPanelPrefab, componentPanelsParent.transform));
         }
     }
