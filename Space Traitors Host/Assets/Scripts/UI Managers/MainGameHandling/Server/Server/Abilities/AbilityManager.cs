@@ -33,6 +33,8 @@ public class AbilityManager : MonoBehaviour
     public bool[] CheckCorruption;
     public bool[] CheckScrap;
 
+    List<int> scannedRooms = new List<int>();
+
     private void Start() {
         instance = this;
     }
@@ -125,7 +127,7 @@ public class AbilityManager : MonoBehaviour
         {
             //Case for abilities which do not require a selection screen
             case (Ability.AbilityTypes.Sabotage):
-                selectedAbility.Activate();
+                //selectedAbility.Activate();
                 DisplayActiveAbility();
                 Server.Instance.SendAbilityUsed(selectedAbility.abilityType, GameManager.DEFAULT_PLAYER_ID, Ability.ScanResources.Default);
                 break;
@@ -231,7 +233,7 @@ public class AbilityManager : MonoBehaviour
     public void ConfirmResource()
     {
         //Find the rooms which contain the selected resource and display it to the player
-        List<int> scannedRooms = selectedAbility.Activate(selectedResource);
+        //List<int> scannedRooms = selectedAbility.Activate(selectedResource);
         Server.Instance.SendAbilityUsed(selectedAbility.abilityType, GameManager.DEFAULT_PLAYER_ID, selectedResource);
         List<string> scannedRoomsString = new List<string>();
         foreach (int roomID in scannedRooms)

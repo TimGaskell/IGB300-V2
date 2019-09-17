@@ -423,6 +423,10 @@ public class Server : MonoBehaviour
             case NetOP.TraitorSelction:
                 GetIsTraitor(conID, chanID, rHostID, (TraitorSelection)msg);
                 break;
+            case NetOP.AbilityActivated:
+                AbilityActivated(conID, chanID, rHostID, (AbilityActivated)msg);
+                break;
+                
 
         }
 
@@ -2502,6 +2506,7 @@ public class Server : MonoBehaviour
         Server.Instance.SendSurge();
 
     }
+
 
 
     #endregion
