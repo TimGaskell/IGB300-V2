@@ -926,6 +926,8 @@ public class Server : MonoBehaviour
 
         canInstallComponent.CanInstall = GameManager.instance.CanInstallComponent();
 
+        Debug.Log(canInstallComponent.CanInstall);
+
         SendClient(canInstallComponent);
     }
 
@@ -1395,6 +1397,8 @@ public class Server : MonoBehaviour
     private void GetCanInstallComponent(int conID, int chanID, int rHostID, CanInstallComponent canInstallComponent)
     {
         //Activate whatever is neccessary for the player to install a component
+
+        Debug.Log("Recieved component can be installed " + canInstallComponent.CanInstall);
 
         InteractionManager.instance.installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
 
