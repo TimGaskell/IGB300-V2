@@ -85,6 +85,8 @@ public class PlayerMovement : Navigation
                 //If its at the end of the path look off to the side
                 Player.transform.Rotate(0, 145, 0, Space.Self);
 
+                GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
+
                 if (ServerVersion) {
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
                 }
@@ -92,7 +94,7 @@ public class PlayerMovement : Navigation
                 //Return to idle animation
                 // Player.GetComponent<AnimationSwitcher>().IdleAnimation(Player.GetComponent<PlayerObject>().CharacterType.ToString());
 
-                GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
+                
 
                 Debug.Log("finished Moving");
 

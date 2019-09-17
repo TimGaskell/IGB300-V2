@@ -637,11 +637,7 @@ public class Server : MonoBehaviour
 
         SendClient(choices);
 
-        if (GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
-
-            CanInstallComponent(tempPlayerID);
-
-        }
+ 
     }
 
     public void SendSpecChallenge(int player, bool specChallengeResult)
@@ -2113,7 +2109,7 @@ public class Server : MonoBehaviour
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
-
+                
                 
                 PlayerMovement.instance.SecretPathActivated = false;
 
