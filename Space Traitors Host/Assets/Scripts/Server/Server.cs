@@ -1400,7 +1400,7 @@ public class Server : MonoBehaviour
 
         Debug.Log("Recieved component can be installed " + canInstallComponent.CanInstall);
 
-        InteractionManager.instance.installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
 
     }
 
