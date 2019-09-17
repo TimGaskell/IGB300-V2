@@ -633,7 +633,12 @@ public class Server : MonoBehaviour
 
         choices.AttackablePlayers = GameManager.instance.CheckCombat();
 
-     
+        
+        if(GameManager.instance.GetActivePlayer().roomPosition == Player.STARTING_ROOM_ID) {
+
+            CanInstallComponent(tempPlayerID);
+
+        }
 
         SendClient(choices);
 
@@ -914,6 +919,8 @@ public class Server : MonoBehaviour
 
     public void CanInstallComponent(int playerID)
     {
+
+        Debug.Log("Component can be installed");
         CanInstallComponent canInstallComponent = new CanInstallComponent();
         tempPlayerID = playerID;
 
