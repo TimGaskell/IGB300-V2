@@ -1001,7 +1001,7 @@ public class GameManager : MonoBehaviour
     /// <returns>The random target's player index</returns>
     private int AIChooseTarget()
     {
-        return UnityEngine.Random.Range(0, numPlayers);
+        return UnityEngine.Random.Range(1, numPlayers+1);
     }
 
     /// <summary>
