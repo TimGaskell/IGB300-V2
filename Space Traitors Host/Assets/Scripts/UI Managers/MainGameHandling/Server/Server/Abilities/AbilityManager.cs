@@ -10,6 +10,7 @@ public class AbilityManager : MonoBehaviour
 
     public static AbilityManager instance = null;
     public List<GameObject> abilityButtons;
+    public List<Sprite> abilityImages;
     public GameObject selectedText;
     public GameObject selectButton;
 
@@ -73,6 +74,9 @@ public class AbilityManager : MonoBehaviour
             abilityButton.GetComponent<AbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
             abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
             abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().text = currentAbility.scrapCost.ToString();
+            if (abilityImages != null)
+                abilityButton.GetComponent<AbilityButtonComponents>().abilityIcon.GetComponent<Image>().sprite =
+                    abilityImages[(int) currentAbility.abilityType];
 
             if (CheckScrap[counter])
             {

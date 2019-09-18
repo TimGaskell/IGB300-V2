@@ -7,4 +7,5 @@ public class AbilityButtonComponents : MonoBehaviour
     public GameObject abilityNameText;
     public GameObject corruptionText;
     public GameObject scrapText;
+    public GameObject abilityIcon;
 }

@@ -49,6 +49,7 @@ public class ClientManager : MonoBehaviour
     List<Item> allItems;
 
     public List<Sprite> characterPortraits;
+    public List<Sprite> abilityIcons;
 
     public int componentsInstalled;
 
@@ -176,6 +177,23 @@ public class ClientManager : MonoBehaviour
                 return characterPortraits[5];
             default:
                 throw new NotImplementedException("Not a valid character type.");
+        }
+    }
+    
+    public Sprite GetCharacterAbilityIcon(Character.CharacterTypes characterType)
+    {
+        switch (characterType)
+        {
+            case (Character.CharacterTypes.Butler):
+                return abilityIcons[0];
+            case (Character.CharacterTypes.Engineer):
+                return abilityIcons[1];
+            case (Character.CharacterTypes.Singer):
+                return abilityIcons[2];
+            case (Character.CharacterTypes.Techie):
+                return abilityIcons[3];
+            default:
+                throw new NotImplementedException("Not a valid ability icon.");
         }
     }
 
