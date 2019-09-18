@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 967474385476698631}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.411726, y: 4.6642017, z: 30.317081}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 2743920500273025160}
   - {fileID: 5732205300715093996}
@@ -463,6 +463,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653753849354239394}
     m_Modifications:
+    - target: {fileID: 100000, guid: 7ae38fbf1a0084aa3921a4c752215b19, type: 3}
+      propertyPath: m_Name
+      value: sleepPod_02
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7ae38fbf1a0084aa3921a4c752215b19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.368275
@@ -519,10 +523,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 7ae38fbf1a0084aa3921a4c752215b19, type: 3}
-      propertyPath: m_Name
-      value: sleepPod_02
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 7ae38fbf1a0084aa3921a4c752215b19, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -542,6 +542,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653753849354239394}
     m_Modifications:
+    - target: {fileID: 100000, guid: d7c7e067661cd482a858c5b1cacc3253, type: 3}
+      propertyPath: m_Name
+      value: sleepPod_01
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d7c7e067661cd482a858c5b1cacc3253, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.451726
@@ -598,10 +602,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: d7c7e067661cd482a858c5b1cacc3253, type: 3}
-      propertyPath: m_Name
-      value: sleepPod_01
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: d7c7e067661cd482a858c5b1cacc3253, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -621,6 +621,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653753849354239394}
     m_Modifications:
+    - target: {fileID: 100000, guid: 3af664fa7cd584e8abcfbd93a3415ca5, type: 3}
+      propertyPath: m_Name
+      value: sleepLounge
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 3af664fa7cd584e8abcfbd93a3415ca5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.278275
@@ -676,10 +680,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 3af664fa7cd584e8abcfbd93a3415ca5, type: 3}
       propertyPath: m_LocalScale.z
       value: 12.45228
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 3af664fa7cd584e8abcfbd93a3415ca5, type: 3}
-      propertyPath: m_Name
-      value: sleepLounge
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 3af664fa7cd584e8abcfbd93a3415ca5, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -765,11 +765,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -4.03
       objectReference: {fileID: 0}
-    - target: {fileID: 4099826639193020402, guid: c4e2434027bc64431949049cb50648d6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -11.538477
-      objectReference: {fileID: 0}
     - target: {fileID: 4735233463807015327, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -812,13 +807,13 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4fbb7f4bf40b64d3aae7f0e0bfdb42fe, type: 2}
     - target: {fileID: 5661891654687914701, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.311
+      propertyPath: m_LocalPosition.x
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5661891654687914701, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
+      propertyPath: m_LocalPosition.z
+      value: -0.311
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4e2434027bc64431949049cb50648d6, type: 3}
@@ -835,6 +830,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653753849354239394}
     m_Modifications:
+    - target: {fileID: 100000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
+      propertyPath: m_Name
+      value: sleepLocker (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.371726
@@ -891,10 +890,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 7.526814
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
-      propertyPath: m_Name
-      value: sleepLocker (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -914,6 +909,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5653753849354239394}
     m_Modifications:
+    - target: {fileID: 100000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
+      propertyPath: m_Name
+      value: sleepLocker
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.051726
@@ -969,10 +968,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
       propertyPath: m_LocalScale.z
       value: 7.526814
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
-      propertyPath: m_Name
-      value: sleepLocker
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: ca0cf8777c4b74cc49f8edc1a1e093a1, type: 3}
       propertyPath: m_Materials.Array.data[0]
