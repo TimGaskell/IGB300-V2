@@ -11,6 +11,13 @@ public class HealthBarManager : MonoBehaviour
 
     private const int backgroundIncrement = 60;
 
+    private void Start()
+    {
+        healthPoints = new List<GameObject>();
+
+        healthPoints.Add(initialPoint);
+    }
+
     public void UpdateHealthPoints()
     {
         //Add new health points if the UI has less than the max number of hit points represented
