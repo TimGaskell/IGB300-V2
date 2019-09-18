@@ -1152,6 +1152,12 @@ public class Server : MonoBehaviour
         {
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+#if UNITY_ANDROID
+             Handheld.Vibrate();
+#endif
+
+
+
         }
         else if (SceneManager.GetActiveScene().name == "Client GameLevel")
         {
@@ -1160,6 +1166,10 @@ public class Server : MonoBehaviour
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
+
 
         }
     }
@@ -1179,6 +1189,9 @@ public class Server : MonoBehaviour
             CharacterSelectUIManager charSelect = Canvas.GetComponent<CharacterSelectUIManager>();
             charSelect.SetErrorText("Please Select Another Character.");
             charSelect.ResetCharacterSelection();
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
         }
 
 
@@ -1309,6 +1322,9 @@ public class Server : MonoBehaviour
         Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
 
 
     }
@@ -1594,6 +1610,9 @@ public class Server : MonoBehaviour
 
             ClientUIManager.instance.interactionPanel.SetActive(true);
             ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().AIATTACK();
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
         }
         else
         {
@@ -1656,9 +1675,9 @@ public class Server : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
-    #region Client Sent Messages
+#region Client Sent Messages
 
     public void SendPlayerInformation(string playerName)
     {
@@ -1882,9 +1901,9 @@ public class Server : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
-    #region Server Received Messages
+#region Server Received Messages
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
     {
@@ -2516,5 +2535,5 @@ public class Server : MonoBehaviour
 
 
 
-    #endregion
+#endregion
 }
