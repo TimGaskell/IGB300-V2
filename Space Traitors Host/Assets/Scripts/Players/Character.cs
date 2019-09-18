@@ -15,6 +15,7 @@ public class Character
     public int baseSkill;
     public int baseTech;
     public int baseCharm;
+    public int abilityIcon; //used for icon retrieval
 
     public Ability characterAbility;
 
@@ -69,6 +70,7 @@ public class Character
                 baseSkill = 6;
                 baseTech = 2;
                 baseCharm = 3;
+                abilityIcon = 0;
                 characterAbility = new SecretPaths();
                 break;
             case CharacterTypes.Chef:
@@ -83,6 +85,7 @@ public class Character
                 baseSkill = 3;
                 baseTech = 4;
                 baseCharm = 2;
+                abilityIcon = 1;
                 characterAbility = new PowerBoost();
                 break;
             case CharacterTypes.Singer:
@@ -90,6 +93,7 @@ public class Character
                 baseSkill = 4;
                 baseTech = 3;
                 baseCharm = 6;
+                abilityIcon = 2;
                 characterAbility = new EncouragingSong();
                 break;
             case CharacterTypes.Techie:
@@ -97,6 +101,7 @@ public class Character
                 baseSkill = 2;
                 baseTech = 6;
                 baseCharm = 4;
+                abilityIcon = 3;
                 characterAbility = new MuddleSensors();
                 break;
             default:

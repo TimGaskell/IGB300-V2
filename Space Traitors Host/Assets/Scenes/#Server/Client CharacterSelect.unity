@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3438,6 +3438,11 @@ MonoBehaviour:
   - {fileID: 1039264427}
   - {fileID: 1608097296}
   - {fileID: 2099374588}
+  abilityIcons:
+  - {fileID: 21300000, guid: bb02d2fb33b194a4caa58bcf03d69df4, type: 3}
+  - {fileID: 21300000, guid: 49440b106beb2904d84e53bb742443a7, type: 3}
+  - {fileID: 21300000, guid: 2f74e47b1e4a96049a149f48320c137a, type: 3}
+  - {fileID: 21300000, guid: 53dd3e655382d5047b6fa294a2b9b143, type: 3}
 --- !u!1 &604527602
 GameObject:
   m_ObjectHideFlags: 0
@@ -11114,7 +11119,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 7d8f0ef65acdf514db1af974ab8c7dfc, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

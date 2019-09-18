@@ -19,6 +19,9 @@ public class CharacterSelectUIManager : MonoBehaviour
     public Character.CharacterTypes selectedCharacterType;
 
     public List<GameObject> characterButtons;
+    
+    [SerializeField]
+    private Sprite[] abilityIcons = new Sprite[4];
 
     private void Start()
     {
@@ -120,7 +123,7 @@ public class CharacterSelectUIManager : MonoBehaviour
         charInfoComponents.abilityName.GetComponent<TextMeshProUGUI>().text = selectedCharacter.characterAbility.AbilityName;
         charInfoComponents.abilityText.GetComponent<TextMeshProUGUI>().text = selectedCharacter.characterAbility.abilityDescription;
         //Need to add in retrieval for ability icons
-        //charInfoComponents.abilityIcon.GetComponent<Image>().sprite = 
+        charInfoComponents.abilityIcon.GetComponent<Image>().sprite = abilityIcons[selectedCharacter.abilityIcon];
     }
 
     public void CloseCharacterInfo()
