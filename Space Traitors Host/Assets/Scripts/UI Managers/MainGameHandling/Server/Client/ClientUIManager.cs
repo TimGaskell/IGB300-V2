@@ -34,6 +34,7 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject corruptionBar;
     public GameObject scrapTracker;
+    public GameObject healthTracker;
     public GameObject characterPortrait;
 
     public GameObject inventoryPanel;
@@ -101,7 +102,7 @@ public class ClientUIManager : MonoBehaviour
         UpdateComponentTracker();
         corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
-
+        healthTracker.GetComponent<HealthBarManager>().UpdateHealthPoints();
     }
 
 
