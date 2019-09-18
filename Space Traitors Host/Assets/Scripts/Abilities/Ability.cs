@@ -186,6 +186,7 @@ public class PowerBoost : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Brawn Before : " + GameManager.instance.GetPlayer(targetIndex).brawnModTemp);
         GameManager.instance.GetPlayer(targetIndex).brawnModTemp += SPEC_MOD;
         GameManager.instance.GetPlayer(targetIndex).skillModTemp += SPEC_MOD;
         GameManager.instance.GetPlayer(targetIndex).techModTemp += SPEC_MOD;
@@ -193,15 +194,18 @@ public class PowerBoost : Ability
 
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("beefed up");
+        Debug.Log("Brawn after : " + GameManager.instance.GetPlayer(targetIndex).brawnModTemp);
     }
 
     public override void Deactivate()
     {
+        Debug.Log("Brawn before : " + GameManager.instance.GetActivePlayer().brawnModTemp);
         GameManager.instance.GetActivePlayer().brawnModTemp -= SPEC_MOD;
         GameManager.instance.GetActivePlayer().skillModTemp -= SPEC_MOD;
         GameManager.instance.GetActivePlayer().techModTemp -= SPEC_MOD;
         GameManager.instance.GetActivePlayer().charmModTemp -= SPEC_MOD;
         Debug.Log("beefed down");
+        Debug.Log("Brawn after : " + GameManager.instance.GetActivePlayer().brawnModTemp);
     }
 }
 #endregion
@@ -264,8 +268,11 @@ public class EncouragingSong : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Corruption Before : " + GameManager.instance.GetPlayer(targetIndex).Corruption);
         GameManager.instance.GetPlayer(targetIndex).Corruption -= CORRUPTION_MOD;
-        if(GameManager.instance.GetPlayer(targetIndex).Corruption < 0) {
+        Debug.Log("Corruption Before : " + GameManager.instance.GetPlayer(targetIndex).Corruption);
+
+        if (GameManager.instance.GetPlayer(targetIndex).Corruption < 0) {
 
             GameManager.instance.GetPlayer(targetIndex).Corruption = 0;
         }
@@ -357,7 +364,9 @@ public class SensorScan : Ability
                     roomIDs.Add(room.roomIndex);
                     //Breaks from the choice loop since if one of the choices contains the resource, the room must contain that resource
                     //and don't need to check any other choices.
+                    Debug.Log("Room Id: " + room.roomIndex);
                     break;
+                    
                 }
             }
         }
@@ -442,8 +451,10 @@ public class SuperCharge : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Health Before : " + GameManager.instance.GetPlayer(targetIndex).maxLifePoints);
         GameManager.instance.GetPlayer(targetIndex).maxLifePoints += LIFE_MOD;
         GameManager.instance.GetPlayer(targetIndex).ChangeLifePoints(LIFE_MOD);
+        Debug.Log("Health After : " + GameManager.instance.GetPlayer(targetIndex).maxLifePoints);
     }
 }
 #endregion
