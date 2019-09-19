@@ -102,6 +102,7 @@ public class Player
     private List<Ability> abilities;
     //If an abilities effects persist beyond the turn they are used in, will store the ability hear to deactivate at the start of their next turn
     public Ability activeAbility;
+    public bool activeThisTurn;
 
     //Reference to the players model in the game world
     public GameObject playerObject;

@@ -688,7 +688,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-        
+        // checks ability if was activated this round. If so set it to turn off this round
+        if (!GetActivePlayer().activeThisTurn) {
+            GetActivePlayer().DisableActiveAbility();
+        }
+        else {
+            GetActivePlayer().activeThisTurn = false;
+        }
+       
         activePlayer++;
         Debug.Log("Incremenet turn, Active player " + activePlayer);
         
@@ -722,12 +729,7 @@ public class GameManager : MonoBehaviour
 
         if(ReadyPlayers == numPlayers) {
 
-            //when new round starts disable all active abilities
-            for(int i= 1; i< numPlayers + 1; i++) {
-
-                GetPlayer(i).DisableActiveAbility();
-
-            }
+         
            
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);

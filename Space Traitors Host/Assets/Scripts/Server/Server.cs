@@ -2009,6 +2009,13 @@ public class Server : MonoBehaviour
                         break;
                 }
 
+                if(ability.TargetID != conID) {
+                    GameManager.instance.GetPlayer(ability.TargetID).activeThisTurn = true;
+                }
+                else {
+                    player.activeThisTurn = true;
+                }
+                
                 PlayerCardManager.instance.UpdateAllCards();
                 SendAbilityActivated(conID, abilityType, isTraitor);
                 SyncPlayerData(conID);
