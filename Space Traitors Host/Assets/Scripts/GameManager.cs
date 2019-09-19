@@ -688,6 +688,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
+        //When the players turn starts, disables any active abilities they may have
+        GetActivePlayer().DisableActiveAbility();
+        
         activePlayer++;
         Debug.Log("Incremenet turn, Active player " + activePlayer);
         
@@ -708,8 +711,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //When the players turn starts, disables any active abilities they may have
-            GetActivePlayer().DisableActiveAbility();
+                  
             currentPhase = TurnPhases.Default;
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);

@@ -16,7 +16,6 @@ public class PlayerMovement : Navigation
 
     //Player Variables
     public GameObject Player;
-    public bool SecretPathActivated = false;
 
     //Button variables
     private GameObject SelectedRoom;

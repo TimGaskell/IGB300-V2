@@ -146,8 +146,7 @@ public class SecretPaths : Ability
     {
         SpendScrap();
 
-        PlayerMovement.instance.SecretPathActivated = true;
-
+       
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("shh its a secret");
     }
@@ -155,7 +154,7 @@ public class SecretPaths : Ability
     public override void Deactivate()
     {
 
-        PlayerMovement.instance.SecretPathActivated = false;
+    
         GameManager.instance.GetActivePlayer().AssignActiveAbility(null);
 
         Debug.Log("secret path is no longer on");

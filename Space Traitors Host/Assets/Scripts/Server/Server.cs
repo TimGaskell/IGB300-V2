@@ -2059,7 +2059,7 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    if (PlayerMovement.instance.SecretPathActivated) {
+                    if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
 
@@ -2110,7 +2110,7 @@ public class Server : MonoBehaviour
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
                 int roomCost = Playermovement.currentPath.Count - 1;
-                if (PlayerMovement.instance.SecretPathActivated) {
+                if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
 
                     roomCost -= 1;
                 }
@@ -2131,17 +2131,12 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
- 
-
-
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
-                
-                
-                PlayerMovement.instance.SecretPathActivated = false;
+
 
             }
         }
