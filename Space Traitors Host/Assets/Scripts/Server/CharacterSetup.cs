@@ -15,11 +15,11 @@ public class CharacterSetup : MonoBehaviour
 
     private void Start()
     {
-       for (int i = 0; i < GameManager.instance.numPlayers; i++)
+       for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             //Get the index of the reverse order of players, the assign the names of the players to each of them
             //E.G. the 4th slot is player 1 and has player 1's name, and so on
-            PlayerNames[(GameManager.instance.numPlayers) - (i + 1)].text = GameManager.instance.GetOrderedPlayer(i).playerName;
+            PlayerNames[(GameManager.instance.numPlayers) - (i)].text = GameManager.instance.GetOrderedPlayer(i).playerName;
         }
 
     }
