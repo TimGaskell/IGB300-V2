@@ -67,6 +67,7 @@ public class AnimationSwitcher : MonoBehaviour
         {
             case "Techie":
                 animationIndex = 0;
+                Debug.Log("hi");
                 break;
 
             case "Engineer":

@@ -1,4 +1,4 @@
-using System.Collections;
+  using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -1906,6 +1906,8 @@ public class Server : MonoBehaviour
 
         GameManager.instance.GetPlayer(conID);
 
+        GameObject charSetup = GameObject.FindGameObjectWithTag("Setup");
+
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
@@ -1937,9 +1939,14 @@ public class Server : MonoBehaviour
 
                     string charName = character.ToString();
 
-                    //GameObject charModel;
-                    //charModel = GameObject.Find(charName);
-                    //charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
+                    if (charSetup != null)
+                    {
+                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(i, charName);
+                    }
+                    else
+                    {
+                        Debug.LogError("Character setup object not found");
+                    }
                 }
 
             }
