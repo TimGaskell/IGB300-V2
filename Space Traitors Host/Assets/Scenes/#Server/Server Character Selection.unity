@@ -3515,7 +3515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.000122, y: -20.000061}
+  m_AnchoredPosition: {x: -15, y: -20}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &793461957
@@ -5164,6 +5164,11 @@ MonoBehaviour:
   - {fileID: 1837290716}
   - {fileID: 270784553}
   - {fileID: 746777633}
+  PlayerNames:
+  - {fileID: 1237841685}
+  - {fileID: 495272610}
+  - {fileID: 1031713471}
+  - {fileID: 1787784503}
   descriptionText:
   - {fileID: 124936944}
   - {fileID: 1191473438}

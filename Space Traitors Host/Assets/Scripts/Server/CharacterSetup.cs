@@ -24,17 +24,6 @@ public class CharacterSetup : MonoBehaviour
 
     }
 
-
-    private void Update()
-    {
-        //Test
-       // if (Input.GetKeyDown("space"))
-       // {
-        //    CharacterChosen(1, "Techie");
-       // }
-       
-    }
-
     public void CharacterChosen(int playerNo, string characterName)
     {
         int characterID = 0;
