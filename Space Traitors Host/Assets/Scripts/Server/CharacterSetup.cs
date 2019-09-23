@@ -14,8 +14,12 @@ public class CharacterSetup : MonoBehaviour
     public TextMeshProUGUI[] descriptionText = new TextMeshProUGUI[4];
     public GameObject[] portraitGroups;
 
+    private int playerPos;
+
     private void Start()
     {
+        playerPos = 0;
+
        for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
         {
             if(i <= GameManager.instance.numPlayers)
@@ -39,8 +43,6 @@ public class CharacterSetup : MonoBehaviour
 
         //Get the reverse player based on number of players- if player 1, they will go 4th in select, and vice versa
         //Result will be 1 less than intended player ID to work better for arrays 
-        int playerPos = GameManager.instance.numPlayers - GameManager.instance.GetPlayerOrder(playerNo);
-
         switch (characterType)
         {
             case Character.CharacterTypes.Butler:
@@ -66,7 +68,11 @@ public class CharacterSetup : MonoBehaviour
         //Update the character text to show the character's been selected
         descriptionText[playerPos].text = characterType.ToString().ToUpper();
 
+        playerPos++;
+
         //Play that character's intro animation
         characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterType);
+
+        
     }
 }

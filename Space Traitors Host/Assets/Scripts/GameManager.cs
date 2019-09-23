@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int GetPlayerOrder(int playerID)
     {
-        return playerOrder.Find(x => x == playerID);
+        return playerOrder.Find(x => x == playerID) - 1;
     }
 
     /// <summary>
