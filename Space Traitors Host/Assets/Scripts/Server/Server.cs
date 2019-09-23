@@ -1924,8 +1924,8 @@ public class Server : MonoBehaviour
                 else
                 {
                     GameObject canvas = GameObject.Find("Canvas");
-                    canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
-                    canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
+                    //canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
+                    //canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
                     player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);
                     //Assign Character Stats to player
                     SyncPlayerData(player.playerID);
@@ -1939,6 +1939,7 @@ public class Server : MonoBehaviour
 
                     if (charSetup != null)
                     {
+                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
                         charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
                     }
                     else
