@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4861,6 +4861,7 @@ MonoBehaviour:
   playerNumPanel: {fileID: 1555262137}
   playerNamePanel: {fileID: 1854956733}
   NetworkManagerObject: {fileID: 0}
+  confirmNamesButton: {fileID: 2075048928}
 --- !u!1 &781568692
 GameObject:
   m_ObjectHideFlags: 0
