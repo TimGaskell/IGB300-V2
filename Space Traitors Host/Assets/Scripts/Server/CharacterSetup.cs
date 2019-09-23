@@ -12,14 +12,23 @@ public class CharacterSetup : MonoBehaviour
     public GameObject[] characterModels = new GameObject[4];
     public TextMeshProUGUI[] PlayerNames = new TextMeshProUGUI[4];
     public TextMeshProUGUI[] descriptionText = new TextMeshProUGUI[4];
+    public GameObject[] portraitGroups;
 
     private void Start()
     {
-       for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
+       for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
         {
-            //Get the index of the reverse order of players, the assign the names of the players to each of them
-            //E.G. the 4th slot is player 1 and has player 1's name, and so on
-            PlayerNames[(GameManager.instance.numPlayers) - (i)].text = GameManager.instance.GetOrderedPlayer(i).playerName;
+            if(i <= GameManager.instance.numPlayers)
+            {
+                portraitGroups[i].SetActive(true);
+                //Get the index of the reverse order of players, the assign the names of the players to each of them
+                //E.G. the 4th slot is player 1 and has player 1's name, and so on
+                PlayerNames[(GameManager.instance.numPlayers) - (i)].text = GameManager.instance.GetOrderedPlayer(i).playerName;
+            }
+            else
+            {
+                portraitGroups[i].SetActive(false);
+            }
         }
 
     }

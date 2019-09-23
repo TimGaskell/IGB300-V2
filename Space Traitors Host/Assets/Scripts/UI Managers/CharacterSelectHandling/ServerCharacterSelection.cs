@@ -94,7 +94,7 @@ public class ServerCharacterSelection : MonoBehaviour {
         string playerID = activePlayer.playerID.ToString();
         string playerName = activePlayer.playerName;
 
-        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);
+        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("{1}", playerName);
     }
 
     /// <summary>
