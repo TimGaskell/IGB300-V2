@@ -20,14 +20,14 @@ public class CharacterSetup : MonoBehaviour
         {
             if(i <= GameManager.instance.numPlayers)
             {
-                portraitGroups[i].SetActive(true);
+                portraitGroups[i-1].SetActive(true);
                 //Get the index of the reverse order of players, the assign the names of the players to each of them
                 //E.G. the 4th slot is player 1 and has player 1's name, and so on
                 PlayerNames[(GameManager.instance.numPlayers) - (i)].text = GameManager.instance.GetOrderedPlayer(i).playerName;
             }
             else
             {
-                portraitGroups[i].SetActive(false);
+                portraitGroups[i-1].SetActive(false);
             }
         }
 
@@ -39,7 +39,7 @@ public class CharacterSetup : MonoBehaviour
 
         //Get the reverse player based on number of players- if player 1, they will go 4th in select, and vice versa
         //Result will be 1 less than intended player ID to work better for arrays 
-        playerNo = GameManager.instance.numPlayers - playerNo;
+        int playerPos = GameManager.instance.GetPlayerOrder(playerNo);
 
         switch (characterType)
         {
@@ -61,10 +61,10 @@ public class CharacterSetup : MonoBehaviour
         }
 
         //Set the view of player's character panel to the view of the chosen character
-        viewPanels[playerNo].GetComponent<RawImage>().texture = cameraTextures[characterID];
+        viewPanels[playerPos].GetComponent<RawImage>().texture = cameraTextures[characterID];
 
         //Update the character text to show the character's been selected
-        descriptionText[playerNo].text = characterType.ToString().ToUpper();
+        descriptionText[playerPos].text = characterType.ToString().ToUpper();
 
         //Play that character's intro animation
         characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterType);

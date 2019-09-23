@@ -186,6 +186,16 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// 
+    /// Get the turn position of a particular player ID
+    /// 
+    /// </summary>
+    public int GetPlayerOrder(int playerID)
+    {
+        return playerOrder.Find(x => x == playerID);
+    }
+
+    /// <summary>
+    /// 
     /// Returns the player of a particular character type
     /// 
     /// </summary>
