@@ -1939,7 +1939,7 @@ public class Server : MonoBehaviour
 
                     if (charSetup != null)
                     {
-                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(i, (Character.CharacterTypes)character.SelectedCharacter);
+                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
                     }
                     else
                     {

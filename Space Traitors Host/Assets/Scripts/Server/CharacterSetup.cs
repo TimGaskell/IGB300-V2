@@ -39,7 +39,7 @@ public class CharacterSetup : MonoBehaviour
 
         //Get the reverse player based on number of players- if player 1, they will go 4th in select, and vice versa
         //Result will be 1 less than intended player ID to work better for arrays 
-        int playerPos = GameManager.instance.GetPlayerOrder(playerNo);
+        int playerPos = GameManager.instance.numPlayers - GameManager.instance.GetPlayerOrder(playerNo);
 
         switch (characterType)
         {
