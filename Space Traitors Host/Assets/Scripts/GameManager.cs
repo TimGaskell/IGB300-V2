@@ -687,6 +687,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  
+    /// Checks if all players have input a name. If so, returns true. Otherwise false
+    /// 
+    /// </summary>
+    public bool CheckNameEntry()
+    {
+        bool allNames = true;
+
+        foreach (Player player in players)
+        {
+            if(player.playerName == "default")
+            {
+                allNames = false;
+                break;
+            }
+        }
+
+        return allNames;
+    }
+
     #endregion
 
     #region Round and Phase Management

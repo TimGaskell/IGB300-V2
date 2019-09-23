@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class LobbyUIManager : NetworkBehaviour
 {
@@ -17,26 +18,30 @@ public class LobbyUIManager : NetworkBehaviour
 
     private Transform nameEntryFields;
 
+    public GameObject confirmNamesButton;
+
     private void Start()
     {
 
-        if (GameManager.instance.serverActive) {
+        if (GameManager.instance.serverActive)
+        {
             ServerPanel.SetActive(true);
             ClientPanel.SetActive(false);
         }
-            NetworkManagerObject = GameObject.Find("NetworkManager");
-            playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
-            playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
+        NetworkManagerObject = GameObject.Find("NetworkManager");
+        playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
+        playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
-            nameEntryFields = playerNamePanel.transform.GetChild(1);
-            ChangeInputFields(0);
+        nameEntryFields = playerNamePanel.transform.GetChild(1);
+        ChangeInputFields(0);
 
-        
+
     }
 
-    void Update() {
+    void Update()
+    {
 
-        
+
 
     }
 
@@ -64,7 +69,7 @@ public class LobbyUIManager : NetworkBehaviour
             playerNumPanel.GetComponent<CanvasGroup>().interactable = false;
             playerNamePanel.GetComponent<CanvasGroup>().interactable = true;
             NetworkManagerObject.GetComponent<CustomNetworkDiscovery>().StartHost();
-            
+
         }
         else
         {
@@ -99,22 +104,23 @@ public class LobbyUIManager : NetworkBehaviour
     }
 
 
-    public void AddPlayerNames(int playerID ) {
+    public void AddPlayerNames(int playerID)
+    {
 
         string tempPlayername = GameManager.instance.GetPlayer(playerID).playerName;
 
-                  
-        foreach(Transform entryField in nameEntryFields.transform)
+        if (GameManager.instance.CheckNameEntry())
         {
-            
-            if (tempPlayername != "") {
-                if (entryField.GetComponent<TMP_InputField>().text == "") {
-                    entryField.GetComponent<TMP_InputField>().text = tempPlayername;
-                    break;
-                    
-                }
-            }
+            confirmNamesButton.GetComponent<Button>().interactable = true;
+        }
 
+        foreach (Transform entryField in nameEntryFields.transform)
+        {
+            if (entryField.GetComponent<TMP_InputField>().text == "")
+            {
+                entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                break;
+            }
         }
 
     }
@@ -128,33 +134,35 @@ public class LobbyUIManager : NetworkBehaviour
     /// <param name="textFields">The parent object of the input fields</param>
     public void ConfirmPlayerNames(GameObject textFields)
     {
-        //counter for keeping track of the playerIDs
-        int counter = 0;
-       
-        //Obtains each child object of the textFields object
-        foreach (Transform entryField in textFields.transform)
-        {
-            string tempPlayerName = entryField.GetComponent<TMP_InputField>().text;
-            //If any of the input fields are empty, stops the process and presents an error. Otherwise generates a new player in the game manager
-            if (tempPlayerName != "")
-            {
-                counter++;
-            }
-            else
-            {
-                Debug.Log(string.Format("Invalid Player Name for Player {0}", counter));
-                break;
-            }
-           
+        ////counter for keeping track of the playerIDs
+        //int counter = 0;
 
-            //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
-            if (counter == GameManager.instance.numPlayers)
-            {
-                Server.Instance.StartGame();
-                
-            }
+        ////Obtains each child object of the textFields object
+        //foreach (Transform entryField in textFields.transform)
+        //{
+        //    string tempPlayerName = entryField.GetComponent<TMP_InputField>().text;
+        //    //If any of the input fields are empty, stops the process and presents an error. Otherwise generates a new player in the game manager
+        //    if (tempPlayerName != "")
+        //    {
+        //        counter++;
+        //    }
+        //    else
+        //    {
+        //        Debug.Log(string.Format("Invalid Player Name for Player {0}", counter));
+        //        break;
+        //    }
 
-        }
+
+        //    //If all the needed players are accounted for, loads the next scene and breaks from the loop to prevent it running in the background
+        //    if (counter == GameManager.instance.numPlayers)
+        //    {
+        //        Server.Instance.StartGame();
+
+        //    }
+
+        //}
+
+        Server.Instance.StartGame();
     }
 
     #endregion
