@@ -24,7 +24,7 @@ public class CharacterSetup : MonoBehaviour
 
     }
 
-    public void CharacterChosen(int playerNo, string characterName)
+    public void CharacterChosen(int playerNo, Character.CharacterTypes characterType)
     {
         int characterID = 0;
 
@@ -32,21 +32,21 @@ public class CharacterSetup : MonoBehaviour
         //Result will be 1 less than intended player ID to work better for arrays 
         playerNo = GameManager.instance.numPlayers - playerNo;
 
-        switch (characterName)
+        switch (characterType)
         {
-            case ("Butler"):
+            case Character.CharacterTypes.Butler:
                 characterID = 0;
                 break;
 
-            case "Engineer":
+            case Character.CharacterTypes.Engineer:
                 characterID = 1;
                 break;
 
-            case "Techie":
+            case Character.CharacterTypes.Techie:
                 characterID = 2;
                 break;
 
-            case "Singer":
+            case Character.CharacterTypes.Singer:
                 characterID = 3;
                 break;
         }
@@ -54,10 +54,10 @@ public class CharacterSetup : MonoBehaviour
         //Set the view of player's character panel to the view of the chosen character
         viewPanels[playerNo].GetComponent<RawImage>().texture = cameraTextures[characterID];
 
-        //Play that character's intro animation
-        characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterName);
-
         //Update the character text to show the character's been selected
-        descriptionText[playerNo].text = characterName.ToUpper() + " SELECTED";
+        descriptionText[playerNo].text = characterType.ToString().ToUpper();
+
+        //Play that character's intro animation
+        characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterType);
     }
 }

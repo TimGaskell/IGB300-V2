@@ -1937,11 +1937,9 @@ public class Server : MonoBehaviour
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                     }
 
-                    string charName = character.ToString();
-
                     if (charSetup != null)
                     {
-                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(i, charName);
+                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(i, (Character.CharacterTypes)character.SelectedCharacter);
                     }
                     else
                     {
