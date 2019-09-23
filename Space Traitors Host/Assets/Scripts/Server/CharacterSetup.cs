@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CharacterSetup : MonoBehaviour
 {
+    private const string SELECTING_TEXT = "SELECTING";
+
     public RenderTexture[] cameraTextures = new RenderTexture[5];
     public GameObject[] viewPanels = new GameObject[4];
     public GameObject[] characterModels = new GameObject[4];
@@ -19,8 +21,9 @@ public class CharacterSetup : MonoBehaviour
     private void Start()
     {
         playerPos = 0;
+        descriptionText[playerPos].text = SELECTING_TEXT;
 
-       for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
+        for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
         {
             if(i <= GameManager.instance.numPlayers)
             {
@@ -69,6 +72,8 @@ public class CharacterSetup : MonoBehaviour
         descriptionText[playerPos].text = characterType.ToString().ToUpper();
 
         playerPos++;
+
+        descriptionText[playerPos].text = SELECTING_TEXT;
 
         //Play that character's intro animation
         characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterType);
