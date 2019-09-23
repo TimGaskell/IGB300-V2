@@ -109,18 +109,26 @@ public class LobbyUIManager : NetworkBehaviour
 
         string tempPlayername = GameManager.instance.GetPlayer(playerID).playerName;
 
-        if (GameManager.instance.CheckNameEntry())
-        {
-            confirmNamesButton.GetComponent<Button>().interactable = true;
-        }
+        //if (GameManager.instance.CheckNameEntry())
+        //{
+        //    confirmNamesButton.GetComponent<Button>().interactable = true;
+        //}
+
+        int counter = 0;
 
         foreach (Transform entryField in nameEntryFields.transform)
         {
             if (entryField.GetComponent<TMP_InputField>().text == "")
             {
                 entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                if(counter == GameManager.instance.numPlayers - 1)
+                {
+                    confirmNamesButton.GetComponent<Button>().interactable = true;
+                }
                 break;
             }
+
+            counter++;
         }
 
     }
