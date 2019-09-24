@@ -312,7 +312,7 @@ public class Choice
     /// <returns>The display text</returns>
     public string SuccessText()
     {
-        string scrapText = IntResourceChange(scrapChange, " Scrap");
+        string scrapText = IntResourceChange(scrapChange, " Scrap <sprite name = \"Scrap\">");
         string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
         string aiPowerText = IntResourceChange(powerChange, "% AI Power");
         string itemText = ItemString();
