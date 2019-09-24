@@ -144,4 +144,42 @@ public class Item
         //Reassigns the choice
         GameManager.instance.roomList.GetComponent<ChoiceRandomiser>().SetChoice(roomOrigin[0], roomOrigin[1], tempChoice);
     }
+
+    public static string itemSpriteString (ItemTypes itemType)
+    {
+        string itemString;
+
+        switch (itemType)
+        {
+            case ItemTypes.Boxing_Gloves:
+                itemString = "Gloves";
+                break;
+            case ItemTypes.Speed_Boots:
+                itemString = "Boots";
+                break;
+            case ItemTypes.Robo_Brain:
+                itemString = "Brain";
+                break;
+            case ItemTypes.Dazzling_Outfit:
+                itemString = "Outfit";
+                break;
+            case ItemTypes.Fancy_Glasses:
+                itemString = "Glasses";
+                break;
+            case ItemTypes.Extra_Arms:
+                itemString = "Arms";
+                break;
+            case ItemTypes.Hyper_Fuel:
+                itemString = "HyperFuel";
+                break;
+            case ItemTypes.Spy_Suit:
+                itemString = "Spy";
+                break;
+            default:
+                itemString = "Image";
+                break;
+        }
+
+        return string.Format("<sprite name=\"{0}\">", itemString);
+    }
 }
