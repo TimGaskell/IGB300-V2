@@ -319,6 +319,8 @@ public class Choice
         string lifeText = IntResourceChange(lifeChange, " <sprite name=\"Health\">");
         string componentText = component ? "+1 <sprite name=\"Component\">\n" : "";
 
+        Debug.Log(scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText);
+
         return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
     }
 
