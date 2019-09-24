@@ -154,8 +154,8 @@ public class SecretPaths : Ability
     public override void Deactivate()
     {
 
-    
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(null);
+
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
 
         Debug.Log("secret path is no longer on");
     }
@@ -199,10 +199,11 @@ public class PowerBoost : Ability
     public override void Deactivate()
     {
         Debug.Log("Brawn before : " + GameManager.instance.GetActivePlayer().brawnModTemp);
-        GameManager.instance.GetActivePlayer().brawnModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().skillModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().techModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().charmModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).brawnModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).skillModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).techModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).charmModTemp -= SPEC_MOD;
         Debug.Log("beefed down");
         Debug.Log("Brawn after : " + GameManager.instance.GetActivePlayer().brawnModTemp);
     }
@@ -307,7 +308,8 @@ public class MuddleSensors : Ability
 
     public override void Deactivate()
     {
-        GameManager.instance.GetActivePlayer().playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }
 }

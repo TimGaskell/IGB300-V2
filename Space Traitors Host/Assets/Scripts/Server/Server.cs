@@ -2002,8 +2002,12 @@ public class Server : MonoBehaviour
                         break;
                     case (Ability.AbilityTypes.Secret_Paths):
                     case (Ability.AbilityTypes.Power_Boost):
-                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Muddle_Sensors):
+                        selectedAbility.Activate(ability.TargetID);
+                        GameManager.instance.GetActivePlayer().PreviousTarget = ability.TargetID;
+                        GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
+                        break;
+                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):
                         selectedAbility.Activate(ability.TargetID);
                         break;
@@ -2072,7 +2076,7 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
+                    if (GameManager.instance.GetActivePlayer().activeAbilitys.Contains(GameManager.instance.GetActivePlayer().GetAbility(Ability.AbilityTypes.Secret_Paths))) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
 
@@ -2123,7 +2127,7 @@ public class Server : MonoBehaviour
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
                 int roomCost = Playermovement.currentPath.Count - 1;
-                if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
+                if (GameManager.instance.GetActivePlayer().activeAbilitys.Contains(GameManager.instance.GetActivePlayer().GetAbility(Ability.AbilityTypes.Secret_Paths))) {
 
                     roomCost -= 1;
                 }
@@ -2340,13 +2344,6 @@ public class Server : MonoBehaviour
                 {
                     case (GameManager.TurnPhases.Abilities):
                         PlayerCardManager.instance.UpdateAllCards();
-                        switch (GameManager.instance.GetActivePlayer().activeAbility.abilityType) {
-                            case (Ability.AbilityTypes.Secret_Paths):
-                            case (Ability.AbilityTypes.Power_Boost):
-                            case (Ability.AbilityTypes.Muddle_Sensors):
-                                GameManager.instance.GetActivePlayer().activeAbility.Deactivate();
-                                break;
-                        }
                         SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
                         break;

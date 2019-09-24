@@ -698,15 +698,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-        // checks ability if was activated this round. If so set it to turn off this round
-        if (!GetActivePlayer().activeThisTurn) {
-            GetActivePlayer().DisableActiveAbility();
+            
+        activePlayer++;
+
+        if (GetActivePlayer().PreviousTarget != 0) {
+            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
         }
         else {
-            GetActivePlayer().activeThisTurn = false;
+            GetActivePlayer().PreviousTarget = 0;
+            GetActivePlayer().PreviousAbility = null;
         }
-       
-        activePlayer++;
+      
         Debug.Log("Incremenet turn, Active player " + activePlayer);
         
 

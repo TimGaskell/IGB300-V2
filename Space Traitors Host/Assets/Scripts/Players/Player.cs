@@ -101,7 +101,9 @@ public class Player
 
     private List<Ability> abilities;
     //If an abilities effects persist beyond the turn they are used in, will store the ability hear to deactivate at the start of their next turn
-    public Ability activeAbility;
+    public List<Ability> activeAbilitys;
+    public int PreviousTarget = 0;
+    public Ability PreviousAbility;
     public bool activeThisTurn;
 
     //Reference to the players model in the game world
@@ -135,7 +137,7 @@ public class Player
         isRevealed = false;
 
         abilities = new List<Ability>();
-        activeAbility = new Ability();
+        activeAbilitys = new List<Ability>();
 
         playerObject = null;
     }
@@ -283,7 +285,8 @@ public class Player
     /// <param name="ability"></param>
     public void AssignActiveAbility(Ability ability)
     {
-        activeAbility = ability;
+
+        activeAbilitys.Add(ability);
     }
 
     /// <summary>
@@ -295,7 +298,10 @@ public class Player
     /// <returns>True if the active ability is of this type. False otherwise</returns>
     public bool CheckActiveAbility(Ability.AbilityTypes abilityType)
     {
-        return activeAbility.abilityType == abilityType;
+
+        return activeAbilitys.Contains(GetAbility(abilityType));
+
+       
     }
 
     /// <summary>
@@ -303,12 +309,14 @@ public class Player
     /// Deactivate any active abilities a player may have
     /// 
     /// </summary>
-    public void DisableActiveAbility()
+    public void DisableActiveAbility(Ability.AbilityTypes ability)
     {
         if(!CheckActiveAbility(Ability.AbilityTypes.Default))
         {
+
+            Ability activeAbility = GetAbility(ability);
             activeAbility.Deactivate();
-            AssignActiveAbility(new Ability());
+         
         }
     }
     #endregion
