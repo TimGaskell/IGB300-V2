@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -313,7 +313,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 186700531}
   m_TextViewport: {fileID: 277014972}
   m_TextComponent: {fileID: 307142921}
@@ -491,7 +491,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 234966223}
   m_TextViewport: {fileID: 1423266063}
   m_TextComponent: {fileID: 1650685132}
@@ -2845,7 +2845,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 469710160}
   m_TextViewport: {fileID: 87664030}
   m_TextComponent: {fileID: 268509801}
@@ -4109,7 +4109,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 647183579}
   m_TextViewport: {fileID: 381454272}
   m_TextComponent: {fileID: 1844496401}
@@ -4861,6 +4861,7 @@ MonoBehaviour:
   playerNumPanel: {fileID: 1555262137}
   playerNamePanel: {fileID: 1854956733}
   NetworkManagerObject: {fileID: 0}
+  confirmNamesButton: {fileID: 2075048928}
 --- !u!1 &781568692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4935,7 +4936,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 781568695}
   m_TextViewport: {fileID: 1173016762}
   m_TextComponent: {fileID: 360906866}
@@ -5342,7 +5343,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1068452485}
   m_TextViewport: {fileID: 1697100657}
   m_TextComponent: {fileID: 1516905294}
@@ -10352,7 +10353,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2075048931}
   m_OnClick:
     m_PersistentCalls:

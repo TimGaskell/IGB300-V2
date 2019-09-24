@@ -1,4 +1,4 @@
-using System.Collections;
+  using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -1925,6 +1925,8 @@ public class Server : MonoBehaviour
 
         GameManager.instance.GetPlayer(conID);
 
+        GameObject charSetup = GameObject.FindGameObjectWithTag("Setup");
+
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
@@ -1941,8 +1943,8 @@ public class Server : MonoBehaviour
                 else
                 {
                     GameObject canvas = GameObject.Find("Canvas");
-                    canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
-                    canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
+                    //canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
+                    //canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
                     player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);
                     //Assign Character Stats to player
                     SyncPlayerData(player.playerID);
@@ -1954,11 +1956,15 @@ public class Server : MonoBehaviour
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                     }
 
-                    string charName = character.ToString();
-
-                    //GameObject charModel;
-                    //charModel = GameObject.Find(charName);
-                    //charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
+                    if (charSetup != null)
+                    {
+                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
+                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
+                    }
+                    else
+                    {
+                        Debug.LogError("Character setup object not found");
+                    }
                 }
 
             }

@@ -37,22 +37,22 @@ public class AnimationSwitcher : MonoBehaviour
     //Note: Pass in name of the character from wherever these methods are called- 
     //locates the correct animation name within the attached Animator
 
-    public void IdleAnimation(string playerName)
+    public void IdleAnimation(Character.CharacterTypes playerType)
     {
         int animationIndex = 0;
-        switch (playerName)
+        switch (playerType)
         {
-            case "Techie":
+            case Character.CharacterTypes.Techie:
                 animationIndex = 0;
                 break;
 
-            case "Engineer":
+            case Character.CharacterTypes.Engineer:
                 animationIndex = 1;
                 break;
-            case "Butler":
+            case Character.CharacterTypes.Butler:
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case Character.CharacterTypes.Singer:
                 animationIndex = 3;
                 break;
         }
@@ -60,22 +60,23 @@ public class AnimationSwitcher : MonoBehaviour
         animations.Play(IdleAnims[animationIndex]);
     }
 
-    public void RunAnimation(string playerName)
+    public void RunAnimation(Character.CharacterTypes playerType)
     {
         int animationIndex = 0;
-        switch (playerName)
+        switch (playerType)
         {
-            case "Techie":
+            case Character.CharacterTypes.Techie:
                 animationIndex = 0;
+                Debug.Log("hi");
                 break;
 
-            case "Engineer":
+            case Character.CharacterTypes.Engineer:
                 animationIndex = 1;
                 break;
-            case "Butler":
+            case Character.CharacterTypes.Butler:
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case Character.CharacterTypes.Singer:
                 animationIndex = 3;
                 break;
         }
@@ -83,22 +84,22 @@ public class AnimationSwitcher : MonoBehaviour
         animations.Play(RunAnims[animationIndex]);
     }
 
-    public void IntroAnimation(string playerName)
+    public void IntroAnimation(Character.CharacterTypes playerType)
     {
         int animationIndex = 0;
-        switch (playerName)
+        switch (playerType)
         {
-            case "Techie":
+            case Character.CharacterTypes.Techie:
                 animationIndex = 0;
                 break;
 
-            case "Engineer":
+            case Character.CharacterTypes.Engineer:
                 animationIndex = 1;
                 break;
-            case "Butler":
+            case Character.CharacterTypes.Butler:
                 animationIndex = 2;
                 break;
-            case "Singer":
+            case Character.CharacterTypes.Singer:
                 animationIndex = 3;
                 break;
         }
