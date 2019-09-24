@@ -86,7 +86,7 @@ public class Server : MonoBehaviour
     private const int maxUser = 100;
     private const int port = 26000;
     private const int webPort = 26001;
-    private const int byteSize = 2048;
+    private const int byteSize = 1024;
 
     private bool isStarted = false;
     private byte error;
