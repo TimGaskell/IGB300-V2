@@ -1,0 +1,292 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
+  m_Name: Icons
+  m_EditorClassIdentifier: 
+  hashCode: -1752164722
+  material: {fileID: 21142781736939828}
+  materialHashCode: 0
+  spriteSheet: {fileID: 2800000, guid: d0f851451e9e9e04797f16fc9b6d6620, type: 3}
+  spriteInfoList:
+  - id: 0
+    x: 443.352
+    y: 1726.998
+    width: 330.33002
+    height: 287.196
+    xOffset: -165.16501
+    yOffset: 143.598
+    xAdvance: 330.33002
+    scale: 1
+    name: Health
+    hashCode: -1510403364
+    unicode: 0
+    pivot: {x: -165.16501, y: 143.598}
+    sprite: {fileID: 21300002, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 1
+    x: 862.68
+    y: 1726.998
+    width: 329.784
+    height: 286.104
+    xOffset: -164.892
+    yOffset: 143.052
+    xAdvance: 329.784
+    scale: 1
+    name: Scrap
+    hashCode: 99420307
+    unicode: 0
+    pivot: {x: -164.892, y: 143.052}
+    sprite: {fileID: 21300004, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 2
+    x: 25.662
+    y: 1719.9
+    width: 329.784
+    height: 300.3
+    xOffset: -164.892
+    yOffset: 150.15
+    xAdvance: 329.784
+    scale: 1
+    name: Corruption
+    hashCode: -2016126571
+    unicode: 0
+    pivot: {x: -164.892, y: 150.15}
+    sprite: {fileID: 21300000, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 3
+    x: 1262.898
+    y: 1701.336
+    width: 347.802
+    height: 332.514
+    xOffset: -173.901
+    yOffset: 166.257
+    xAdvance: 347.802
+    scale: 1
+    name: Escape
+    hashCode: -1689534303
+    unicode: 0
+    pivot: {x: -173.901, y: 166.257}
+    sprite: {fileID: 21300006, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 4
+    x: 443.898
+    y: 1340.43
+    width: 329.784
+    height: 266.994
+    xOffset: -164.892
+    yOffset: 133.497
+    xAdvance: 329.784
+    scale: 1
+    name: Glasses
+    hashCode: -1345338532
+    unicode: 0
+    pivot: {x: -164.892, y: 133.497}
+    sprite: {fileID: 21300012, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 5
+    x: 1267.266
+    y: 1299.48
+    width: 364.728
+    height: 345.618
+    xOffset: -182.364
+    yOffset: 172.809
+    xAdvance: 364.728
+    scale: 1
+    name: Boots
+    hashCode: 82210405
+    unicode: 0
+    pivot: {x: -182.364, y: 172.809}
+    sprite: {fileID: 21300010, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 6
+    x: 20.202
+    y: 1266.72
+    width: 335.244
+    height: 412.23
+    xOffset: -167.622
+    yOffset: 206.115
+    xAdvance: 335.244
+    scale: 1
+    name: Brain
+    hashCode: 82121654
+    unicode: 0
+    pivot: {x: -167.622, y: 206.115}
+    sprite: {fileID: 21300008, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 7
+    x: 861.042
+    y: 1248.156
+    width: 330.33002
+    height: 457.548
+    xOffset: -165.16501
+    yOffset: 228.774
+    xAdvance: 330.33002
+    scale: 1
+    name: HyperFuel
+    hashCode: -634616500
+    unicode: 0
+    pivot: {x: -165.16501, y: 228.774}
+    sprite: {fileID: 21300014, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 8
+    x: 496.86002
+    y: 860.49603
+    width: 168.168
+    height: 326.508
+    xOffset: -84.084
+    yOffset: 163.254
+    xAdvance: 168.168
+    scale: 1
+    name: Outfit
+    hashCode: -1149230923
+    unicode: 0
+    pivot: {x: -84.084, y: 163.254}
+    sprite: {fileID: 21300018, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 9
+    x: 25.116001
+    y: 856.128
+    width: 330.33002
+    height: 359.268
+    xOffset: -165.16501
+    yOffset: 179.634
+    xAdvance: 330.33002
+    scale: 1
+    name: Gloves
+    hashCode: -1472785532
+    unicode: 0
+    pivot: {x: -165.16501, y: 179.634}
+    sprite: {fileID: 21300016, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 10
+    x: 804.258
+    y: 848.484
+    width: 330.33002
+    height: 352.716
+    xOffset: -165.16501
+    yOffset: 176.358
+    xAdvance: 330.33002
+    scale: 1
+    name: Arms
+    hashCode: 2248109
+    unicode: 0
+    pivot: {x: -165.16501, y: 176.358}
+    sprite: {fileID: 21300020, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 11
+    x: 1276.548
+    y: 843.024
+    width: 334.152
+    height: 367.458
+    xOffset: -167.076
+    yOffset: 183.729
+    xAdvance: 334.152
+    scale: 1
+    name: Spy
+    hashCode: 90970
+    unicode: 0
+    pivot: {x: -167.076, y: 183.729}
+    sprite: {fileID: 21300022, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 12
+    x: 15.288
+    y: 430.24802
+    width: 341.25
+    height: 341.25
+    xOffset: -170.625
+    yOffset: 170.625
+    xAdvance: 341.25
+    scale: 1
+    name: Brawn
+    hashCode: 82121192
+    unicode: 0
+    pivot: {x: -170.625, y: 170.625}
+    sprite: {fileID: 21300024, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 13
+    x: 445.536
+    y: 420.966
+    width: 336.336
+    height: 355.446
+    xOffset: -168.168
+    yOffset: 177.723
+    xAdvance: 336.336
+    scale: 1
+    name: Tech
+    hashCode: 2979482
+    unicode: 0
+    pivot: {x: -168.168, y: 177.723}
+    sprite: {fileID: 21300028, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 14
+    x: 856.128
+    y: 416.598
+    width: 341.25
+    height: 369.096
+    xOffset: -170.625
+    yOffset: 184.548
+    xAdvance: 341.25
+    scale: 1
+    name: Charm
+    hashCode: 80931477
+    unicode: 0
+    pivot: {x: -170.625, y: 184.548}
+    sprite: {fileID: 21300030, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 15
+    x: 1276.548
+    y: 415.506
+    width: 334.152
+    height: 374.556
+    xOffset: -167.076
+    yOffset: 187.278
+    xAdvance: 334.152
+    scale: 1
+    name: Skill
+    hashCode: 99717937
+    unicode: 0
+    pivot: {x: -167.076, y: 187.278}
+    sprite: {fileID: 21300026, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  - id: 16
+    x: 24.57
+    y: 58.422
+    width: 330.876
+    height: 305.76
+    xOffset: -165.438
+    yOffset: 152.88
+    xAdvance: 330.876
+    scale: 1
+    name: Component
+    hashCode: 1043301423
+    unicode: 0
+    pivot: {x: -165.438, y: 152.88}
+    sprite: {fileID: 21300032, guid: f0575ee3709ca4941a4af5d8e3aaa3dc, type: 3}
+  fallbackSpriteAssets: []
+--- !u!21 &21142781736939828
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TextMeshPro/Sprite
+  m_Shader: {fileID: 4800000, guid: cf81c85f95fe47e1a27f6ae460cf182c, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: d0f851451e9e9e04797f16fc9b6d6620, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
