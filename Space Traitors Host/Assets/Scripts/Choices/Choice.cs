@@ -379,12 +379,17 @@ public class Choice
         else
         {
             // If there is no modifier for a particular spec score, does not include it in the string
-            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} <sprite name=\"Brawn\">", specItem.BrawnChange) : "";
-            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} <sprite name=\"Skill\">", specItem.SkillChange) : "";
-            string techMod = specItem.TechChange != 0 ? string.Format("+{0} <sprite name=\"Tech\">", specItem.TechChange) : "";
-            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} <sprite name=\"Charm\">", specItem.CharmChange) : "";
+            //<sprite name =\"Brawn\">
+            //<sprite name =\"Skill\">
+            //<sprite name =\"Tech\">
+            //<sprite name =\"Charm\">
+            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn", specItem.BrawnChange) : "";
+            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill", specItem.SkillChange) : "";
+            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech", specItem.TechChange) : "";
+            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm", specItem.CharmChange) : "";
 
-            return string.Format("+1 {0} {1}\n( {2}{3}{4}{5})", specItem.ItemName, Item.itemSpriteString(specItem.ItemType), brawnMod, skillMod, techMod, charmMod);
+            //Item.itemSpriteString(specItem.ItemType)
+            return string.Format("+1 {0}\n( {1}{2}{3}{4})", specItem.ItemName, brawnMod, skillMod, techMod, charmMod);
         }
     }
 
