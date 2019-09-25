@@ -128,6 +128,8 @@ public class GameManager : MonoBehaviour
 
     public int ReadyPlayers = 0;
 
+    public GameObject gameCamera;
+
     private void Update()
     {
         //Only need to detect if the player is clicking on a room on the host system if the server is inactive
@@ -688,9 +690,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
+       //gameCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
         activePlayer++;
         Debug.Log("Incremenet turn, Active player " + activePlayer);
-        
+
+        Player player = GetActivePlayer();
+
+        //gameCamera.GetComponent<CameraSystem>().ZoomIn();
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers+ 1)

@@ -17,22 +17,27 @@ public class RollActionPoints : MonoBehaviour
     public float randomTime;
     //Also acts as the speed of the bar
     public float MaxTime = 0.5f;
-    //How slow the bar speed will become
-    public float decelerationRate = 1.7f;
 
     private float timeInterval = 0;
+
+    //How slow the bar speed will become
+    public float decelerationRate = 1.7f;
     public float acceleration = 1;
     public float minAcceleration = 0.3f;
+    public float MaxEndTime = 2.0f;
 
     private int actionPoints = 0, currentActionPoints = 0;
     private int rollValue = 0, rollAdd = 0;
-    private int MaxBars = 8;
+    private int MaxBars = 4;
     private int MinRandom = 2;
 
-    private bool sent = false;
+    private float endTime;
 
+    private bool sent = false;
     private bool increasing = true;
     private bool rollStop = false,  timerStop = false;
+    private bool endTimer = false;
+    private bool endTimerFinished = false;
 
 
     // Start is called before the first frame update
@@ -47,6 +52,8 @@ public class RollActionPoints : MonoBehaviour
             barImages[i].SetActive(false);
            
         }
+
+        endTime = MaxEndTime;
     }
 
     // Update is called once per frame
@@ -73,8 +80,17 @@ public class RollActionPoints : MonoBehaviour
             acceleration = minAcceleration;
         }
 
-
+        //Method for displaying bars
         TimeCheck();
+
+        if (endTimer)
+        {
+            endTime -= Time.time;
+            if (endTime <= 0)
+            {
+                endTimerFinished = true;
+            }
+        }
 
         //Stops the bars from moving as soon as the value the player rolled has been found
         if (rollStop)
@@ -82,10 +98,22 @@ public class RollActionPoints : MonoBehaviour
             if (actionPoints == rollValue) {
                 timerStop = true;
 
-                if (!sent) { 
-                Server.Instance.SendActionPoints(actionPoints);
-                Server.Instance.SendNewPhase();
-                    sent = true;
+                if (endTimerFinished)
+                {
+                    if (!sent)
+                    {
+                        Debug.Log("Sent");
+                        Server.Instance.SendActionPoints(actionPoints);
+                        Server.Instance.SendNewPhase(); 
+                        sent = true;
+                    }
+                    endTimerFinished = false;
+                    endTimer = false;
+                }
+                else
+                {
+                    endTimer = true;
+                    endTime = MaxEndTime;
                 }
 
             }
@@ -171,13 +199,7 @@ public class RollActionPoints : MonoBehaviour
 
     private void TimeCheck()
     {
-        //Ranges: Check what point timer is and show appropriate amount of bars
-        if (timeInterval <= MaxTime / 8)
-        {
-            actionPoints = 0;
-           
-        }
-        if ((timeInterval >= MaxTime / 8) && (timeInterval <= MaxTime / 4))
+        if (timeInterval <= MaxTime / 4)
         {
             actionPoints = 1;
         }
@@ -193,22 +215,7 @@ public class RollActionPoints : MonoBehaviour
         {
             actionPoints = 4;
         }
-        else if ((timeInterval >= MaxTime / 1.6) && (timeInterval <= MaxTime / 1.3))
-        {
-            actionPoints = 5;
-        }
-        else if ((timeInterval >= MaxTime / 1.3) && (timeInterval <= MaxTime / 1.14))
-        {
-            actionPoints = 6;
-        }
-        else if ((timeInterval >= MaxTime / 1.14) && (timeInterval <= MaxTime / 1))
-        {
-            actionPoints = 7;
-        }
-        else if (timeInterval >= MaxTime)
-        {
-            actionPoints = 8;
-        }
+       
 
         //Bars only change when an alteration in the current number of Action Points is detected
         if (actionPoints != currentActionPoints)
