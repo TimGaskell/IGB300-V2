@@ -404,7 +404,7 @@ public class ClientUIManager : MonoBehaviour
             }
             else
             {
-                objectiveText = "Find the components and return them to the escape shuttle.";
+                objectiveText = "Find the components and install them on the escape shuttle.";
             }
         }
 

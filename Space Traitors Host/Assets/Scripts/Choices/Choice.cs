@@ -312,12 +312,14 @@ public class Choice
     /// <returns>The display text</returns>
     public string SuccessText()
     {
-        string scrapText = IntResourceChange(scrapChange, " Scrap");
-        string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
+        string scrapText = IntResourceChange(scrapChange, " <sprite name=\"Scrap\">");
+        string corruptionText = IntResourceChange(corruptionChange, "% <sprite name=\"Corruption\">");
         string aiPowerText = IntResourceChange(powerChange, "% AI Power");
         string itemText = ItemString();
-        string lifeText = IntResourceChange(lifeChange, " Life Points");
-        string componentText = component ? "+1 Component\n" : "";
+        string lifeText = IntResourceChange(lifeChange, " <sprite name=\"Health\">");
+        string componentText = component ? "+1 <sprite name=\"Component\">\n" : "";
+
+        Debug.Log(scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText);
 
         return scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText;
     }
@@ -330,8 +332,8 @@ public class Choice
     /// <returns>The display text</returns>
     public string FailText()
     {
-        string corruptionText = IntResourceChange(corruptionFail, "% Corruption");
-        string lifeText = IntResourceChange(lifeFail, " Life Points");
+        string corruptionText = IntResourceChange(corruptionFail, "% <sprite name=\"Corruption\">");
+        string lifeText = IntResourceChange(lifeFail, " <sprite name=\"Health\">");
 
         return corruptionText + lifeText;
     }
@@ -377,11 +379,16 @@ public class Choice
         else
         {
             // If there is no modifier for a particular spec score, does not include it in the string
-            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn ", specItem.BrawnChange) : "";
-            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill ", specItem.SkillChange) : "";
-            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech ", specItem.TechChange) : "";
-            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm ", specItem.CharmChange) : "";
+            //<sprite name =\"Brawn\">
+            //<sprite name =\"Skill\">
+            //<sprite name =\"Tech\">
+            //<sprite name =\"Charm\">
+            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn", specItem.BrawnChange) : "";
+            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill", specItem.SkillChange) : "";
+            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech", specItem.TechChange) : "";
+            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm", specItem.CharmChange) : "";
 
+            //Item.itemSpriteString(specItem.ItemType)
             return string.Format("+1 {0}\n( {1}{2}{3}{4})", specItem.ItemName, brawnMod, skillMod, techMod, charmMod);
         }
     }
