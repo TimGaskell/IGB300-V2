@@ -711,7 +711,7 @@ public class Server : MonoBehaviour
         //IsTarget specifies which player actually is the target
 
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             AiAttacks ai = new AiAttacks();
 
@@ -1604,8 +1604,12 @@ public class Server : MonoBehaviour
 
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
+        Debug.Log("Recieved Attack");
+
         if (aiAttacks.IsTarget)
         {
+
+            Debug.Log("You are under  Attack");
             //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
             GameManager.instance.currentPhase = GameManager.TurnPhases.AttackSurge;
 
