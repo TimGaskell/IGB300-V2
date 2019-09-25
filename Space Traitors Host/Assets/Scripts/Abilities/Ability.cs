@@ -343,7 +343,7 @@ public class MuddleSensors : Ability
 
             foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
 
-                meshRenderer.enabled = false;
+                meshRenderer.enabled = true;
             }
 
         }
@@ -353,7 +353,7 @@ public class MuddleSensors : Ability
 
             foreach (MeshRenderer meshRenderer in Mesh) {
 
-                meshRenderer.enabled = false;
+                meshRenderer.enabled = true;
             }
         }
 
