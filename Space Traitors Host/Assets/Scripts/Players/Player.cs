@@ -309,15 +309,15 @@ public class Player
     /// Deactivate any active abilities a player may have
     /// 
     /// </summary>
-    public void DisableActiveAbility(Ability.AbilityTypes ability)
+    public void DisableActiveAbility(Ability ability)
     {
-        if(!CheckActiveAbility(Ability.AbilityTypes.Default))
-        {
 
-            Ability activeAbility = GetAbility(ability);
-            activeAbility.Deactivate();
-         
-        }
+        Debug.Log("THIS ABILITY IS " + ability.ToString());     
+        ability.Deactivate();
+
+          
+
+        
     }
     #endregion
 

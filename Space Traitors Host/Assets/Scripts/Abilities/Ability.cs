@@ -148,6 +148,9 @@ public class SecretPaths : Ability
 
        
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+
+        Debug.Log("Activated On " + GameManager.instance.GetPlayer(targetIndex).playerName);
+
         Debug.Log("shh its a secret");
     }
 
@@ -301,14 +304,59 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>() != null) {
+
+            Debug.Log("This happens");
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+           
+        }
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            Debug.Log(Mesh.Length);
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+        }
+
+       
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("Goin invisable");
     }
 
     public override void Deactivate()
     {
-        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentInChildren<SkinnedMeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+        }
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+        }
+
         GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }

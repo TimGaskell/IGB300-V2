@@ -860,13 +860,14 @@ public class Server : MonoBehaviour
         Debug.Log("send data to" + tempPlayerID);
     }
 
-    public void SendRoomCost(int playerID, int RoomCost)
+    public void SendRoomCost(int playerID, int RoomCost , int scrapReturn)
     {
 
         SendRoomCost roomCost = new SendRoomCost();
         tempPlayerID = playerID;
 
         roomCost.RoomCost = RoomCost;
+        roomCost.ScrapReturn = scrapReturn;
 
         SendClient(roomCost);
 
@@ -2021,12 +2022,6 @@ public class Server : MonoBehaviour
                         break;
                 }
 
-                if(ability.TargetID != conID) {
-                    GameManager.instance.GetPlayer(ability.TargetID).activeThisTurn = true;
-                }
-                else {
-                    player.activeThisTurn = true;
-                }
                 
                 PlayerCardManager.instance.UpdateAllCards();
                 SendAbilityActivated(conID, abilityType, isTraitor);
@@ -2078,7 +2073,11 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    if (GameManager.instance.GetActivePlayer().activeAbilitys.Contains(GameManager.instance.GetActivePlayer().GetAbility(Ability.AbilityTypes.Secret_Paths))) {
+                    Debug.Log(GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths) + "------------");
+
+                  
+
+                    if (GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths)) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
 
@@ -2134,7 +2133,9 @@ public class Server : MonoBehaviour
                     roomCost -= 1;
                 }
 
-                SendRoomCost(player.playerID, roomCost);
+                int ScrapReturn = player.ActionPoints - roomCost;
+
+                SendRoomCost(player.playerID, roomCost, ScrapReturn);
             }
         }
 
@@ -2150,13 +2151,26 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
+
+
+
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
+
+                if (GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths)) {
+
+                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 2;
+
+                }
+                else {
+                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 1;
+                }
+               
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-
+               
             }
         }
     }

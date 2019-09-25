@@ -698,13 +698,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-        if (GetActivePlayer().PreviousTarget != 0) {
-            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
-            GetActivePlayer().PreviousTarget = 0;
-            GetActivePlayer().PreviousAbility = null;
-        }
-
         activePlayer++;
+
+    
+ 
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers + 1) {
@@ -719,7 +716,18 @@ public class GameManager : MonoBehaviour
         }
         else {
 
-           
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility);
+
+            if (GetActivePlayer().PreviousTarget != 0) {
+                GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+
+                GetActivePlayer().PreviousTarget = 0;
+                GetActivePlayer().PreviousAbility = null;
+
+            }
+
+
+
             Debug.Log("Incremenet turn, Active player " + activePlayer);
 
             currentPhase = TurnPhases.Default;
@@ -834,7 +842,16 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
-       
+
+        if (GetActivePlayer().PreviousTarget != 0) {
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility.abilityType);
+
+            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+            GetActivePlayer().PreviousTarget = 0;
+            GetActivePlayer().PreviousAbility = null;
+
+        }
+
     }
 
     public float AIPowerIncrease()
