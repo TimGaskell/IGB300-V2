@@ -148,14 +148,19 @@ public class SecretPaths : Ability
 
        
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+
+        Debug.Log("Activated On " + GameManager.instance.GetPlayer(targetIndex).playerName);
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).CheckActiveAbility(Ability.AbilityTypes.Secret_Paths));
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).activeAbilitys[0]);
+
         Debug.Log("shh its a secret");
     }
 
     public override void Deactivate()
     {
 
-    
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(null);
+
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
 
         Debug.Log("secret path is no longer on");
     }
@@ -199,10 +204,11 @@ public class PowerBoost : Ability
     public override void Deactivate()
     {
         Debug.Log("Brawn before : " + GameManager.instance.GetActivePlayer().brawnModTemp);
-        GameManager.instance.GetActivePlayer().brawnModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().skillModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().techModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().charmModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).brawnModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).skillModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).techModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).charmModTemp -= SPEC_MOD;
         Debug.Log("beefed down");
         Debug.Log("Brawn after : " + GameManager.instance.GetActivePlayer().brawnModTemp);
     }
@@ -300,14 +306,75 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>() != null) {
+
+            Debug.Log("This happens");
+            
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            Debug.Log(Mesh.Length);
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+
+           
+        }
+
+        if(GameManager.instance.GetPlayer(targetIndex).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(targetIndex).playerObject.SetActive(false);
+
+        }
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            Debug.Log(Mesh.Length);
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+        }
+
+       
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("Goin invisable");
     }
 
     public override void Deactivate()
     {
-        GameManager.instance.GetActivePlayer().playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentInChildren<SkinnedMeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = true;
+            }
+
+        }
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = true;
+            }
+
+        }
+
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.SetActive(true);
+
+        }
+
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }
 }

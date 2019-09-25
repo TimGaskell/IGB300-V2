@@ -698,39 +698,48 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-        // checks ability if was activated this round. If so set it to turn off this round
-        if (!GetActivePlayer().activeThisTurn) {
-            GetActivePlayer().DisableActiveAbility();
-        }
-        else {
-            GetActivePlayer().activeThisTurn = false;
-        }
-       
         activePlayer++;
-        Debug.Log("Incremenet turn, Active player " + activePlayer);
-        
+
+    
+ 
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers+ 1)
-        {
+        if (activePlayer == numPlayers + 1) {
             activePlayer = 1;
-            if (CheckNonTraitorVictory())
-            {
+            if (CheckNonTraitorVictory()) {
                 CurrentVictory = VictoryTypes.NonTraitor;
                 Server.Instance.SendNonTraitorVictory();
             }
-            else
-            {
+            else {
                 ActivateSurge();
             }
         }
-        else
-        {
-                  
+        else {
+
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility);
+
+            if (GetActivePlayer().PreviousTarget != 0) {
+                GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+
+                GetActivePlayer().PreviousTarget = 0;
+                GetActivePlayer().PreviousAbility = null;
+
+            }
+
+
+
+            Debug.Log("Incremenet turn, Active player " + activePlayer);
+
             currentPhase = TurnPhases.Default;
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
         }
+       
+
+  
+        
+
+       
     }
 
     public void EndRound() {
@@ -833,7 +842,16 @@ public class GameManager : MonoBehaviour
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
-       
+
+        if (GetActivePlayer().PreviousTarget != 0) {
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility.abilityType);
+
+            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+            GetActivePlayer().PreviousTarget = 0;
+            GetActivePlayer().PreviousAbility = null;
+
+        }
+
     }
 
     public float AIPowerIncrease()

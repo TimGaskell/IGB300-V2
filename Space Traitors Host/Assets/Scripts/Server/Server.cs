@@ -860,13 +860,14 @@ public class Server : MonoBehaviour
         Debug.Log("send data to" + tempPlayerID);
     }
 
-    public void SendRoomCost(int playerID, int RoomCost)
+    public void SendRoomCost(int playerID, int RoomCost , int scrapReturn)
     {
 
         SendRoomCost roomCost = new SendRoomCost();
         tempPlayerID = playerID;
 
         roomCost.RoomCost = RoomCost;
+        roomCost.ScrapReturn = scrapReturn;
 
         SendClient(roomCost);
 
@@ -2002,8 +2003,14 @@ public class Server : MonoBehaviour
                         break;
                     case (Ability.AbilityTypes.Secret_Paths):
                     case (Ability.AbilityTypes.Power_Boost):
-                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Muddle_Sensors):
+                        selectedAbility.Activate(ability.TargetID);
+                        GameManager.instance.GetActivePlayer().PreviousTarget = ability.TargetID;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousTarget);
+                        GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousAbility);
+                        break;
+                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):
                         selectedAbility.Activate(ability.TargetID);
                         break;
@@ -2015,12 +2022,6 @@ public class Server : MonoBehaviour
                         break;
                 }
 
-                if(ability.TargetID != conID) {
-                    GameManager.instance.GetPlayer(ability.TargetID).activeThisTurn = true;
-                }
-                else {
-                    player.activeThisTurn = true;
-                }
                 
                 PlayerCardManager.instance.UpdateAllCards();
                 SendAbilityActivated(conID, abilityType, isTraitor);
@@ -2064,6 +2065,29 @@ public class Server : MonoBehaviour
                 Playermovement.Player = player.playerObject;
 
                 List<int> roomIds = new List<int>();
+                bool SecretPathActive = false;
+
+                Debug.Log("BEFORE ____________________________--------------------------------------------------------------");
+
+                foreach (Ability ability in player.activeAbilitys) {
+
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        
+                        SecretPathActive = true;
+                        Debug.Log("IT FREAKING WORKS!!!");
+                        break;
+
+
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
 
                 for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
                 {
@@ -2072,9 +2096,14 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
+                   
+
+                    if (SecretPathActive) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
+                        if (roomCost < 0) {
+                            roomCost = 0;
+                        }
 
                     }
                     else {
@@ -2122,13 +2151,34 @@ public class Server : MonoBehaviour
 
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
+                bool SecretPathActive = false;
+
                 int roomCost = Playermovement.currentPath.Count - 1;
-                if (GameManager.instance.GetActivePlayer().activeAbility.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                foreach (Ability ability in player.activeAbilitys) {
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        SecretPathActive = true;
+                        Debug.Log("IT FREAKING WORKS!!!");
+                        break;
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
+
+                if (SecretPathActive) {
 
                     roomCost -= 1;
                 }
 
-                SendRoomCost(player.playerID, roomCost);
+                int ScrapReturn = player.ActionPoints - roomCost;
+
+                SendRoomCost(player.playerID, roomCost, ScrapReturn);
             }
         }
 
@@ -2144,13 +2194,26 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
+
+
+
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
+
+                if (GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths)) {
+
+                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 2;
+
+                }
+                else {
+                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 1;
+                }
+               
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-
+               
             }
         }
     }
@@ -2340,13 +2403,6 @@ public class Server : MonoBehaviour
                 {
                     case (GameManager.TurnPhases.Abilities):
                         PlayerCardManager.instance.UpdateAllCards();
-                        switch (GameManager.instance.GetActivePlayer().activeAbility.abilityType) {
-                            case (Ability.AbilityTypes.Secret_Paths):
-                            case (Ability.AbilityTypes.Power_Boost):
-                            case (Ability.AbilityTypes.Muddle_Sensors):
-                                GameManager.instance.GetActivePlayer().activeAbility.Deactivate();
-                                break;
-                        }
                         SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
                         break;
