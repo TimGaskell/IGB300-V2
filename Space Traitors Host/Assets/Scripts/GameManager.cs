@@ -698,41 +698,39 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-            
         activePlayer++;
 
-        if (GetActivePlayer().PreviousTarget != 0) {
-            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
-        }
-        else {
-            GetActivePlayer().PreviousTarget = 0;
-            GetActivePlayer().PreviousAbility = null;
-        }
-      
-        Debug.Log("Incremenet turn, Active player " + activePlayer);
-        
-
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers+ 1)
-        {
+        if (activePlayer == numPlayers + 1) {
             activePlayer = 1;
-            if (CheckNonTraitorVictory())
-            {
+            if (CheckNonTraitorVictory()) {
                 CurrentVictory = VictoryTypes.NonTraitor;
                 Server.Instance.SendNonTraitorVictory();
             }
-            else
-            {
+            else {
                 ActivateSurge();
             }
         }
-        else
-        {
-                  
+        else {
+
+            if (GetActivePlayer().PreviousTarget != 0) {
+                GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
+                GetActivePlayer().PreviousTarget = 0;
+                GetActivePlayer().PreviousAbility = null;
+            }
+           
+            Debug.Log("Incremenet turn, Active player " + activePlayer);
+
             currentPhase = TurnPhases.Default;
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
         }
+       
+
+  
+        
+
+       
     }
 
     public void EndRound() {
