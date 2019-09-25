@@ -2065,6 +2065,29 @@ public class Server : MonoBehaviour
                 Playermovement.Player = player.playerObject;
 
                 List<int> roomIds = new List<int>();
+                bool SecretPathActive = false;
+
+                Debug.Log("BEFORE ____________________________--------------------------------------------------------------");
+
+                foreach (Ability ability in player.activeAbilitys) {
+
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        
+                        SecretPathActive = true;
+                        Debug.Log("IT FREAKING WORKS!!!");
+                        break;
+
+
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
 
                 for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
                 {
@@ -2073,13 +2096,14 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    Debug.Log(GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths) + "------------");
+                   
 
-                  
-
-                    if (GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths)) {
+                    if (SecretPathActive) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
+                        if (roomCost < 0) {
+                            roomCost = 0;
+                        }
 
                     }
                     else {
@@ -2127,8 +2151,27 @@ public class Server : MonoBehaviour
 
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
+                bool SecretPathActive = false;
+
                 int roomCost = Playermovement.currentPath.Count - 1;
-                if (GameManager.instance.GetActivePlayer().activeAbilitys.Contains(GameManager.instance.GetActivePlayer().GetAbility(Ability.AbilityTypes.Secret_Paths))) {
+
+                foreach (Ability ability in player.activeAbilitys) {
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        SecretPathActive = true;
+                        Debug.Log("IT FREAKING WORKS!!!");
+                        break;
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
+
+                if (SecretPathActive) {
 
                     roomCost -= 1;
                 }

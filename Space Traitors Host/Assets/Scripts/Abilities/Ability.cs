@@ -150,6 +150,8 @@ public class SecretPaths : Ability
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
 
         Debug.Log("Activated On " + GameManager.instance.GetPlayer(targetIndex).playerName);
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).CheckActiveAbility(Ability.AbilityTypes.Secret_Paths));
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).activeAbilitys[0]);
 
         Debug.Log("shh its a secret");
     }
@@ -308,14 +310,22 @@ public class MuddleSensors : Ability
         if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>() != null) {
 
             Debug.Log("This happens");
+            
             Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
-
+            Debug.Log(Mesh.Length);
             foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
 
                 meshRenderer.enabled = false;
             }
 
+
            
+        }
+
+        if(GameManager.instance.GetPlayer(targetIndex).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(targetIndex).playerObject.SetActive(false);
+
         }
 
         if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
@@ -355,6 +365,13 @@ public class MuddleSensors : Ability
 
                 meshRenderer.enabled = true;
             }
+
+        }
+
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.SetActive(true);
+
         }
 
         GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
