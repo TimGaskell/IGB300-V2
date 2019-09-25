@@ -2005,7 +2005,9 @@ public class Server : MonoBehaviour
                     case (Ability.AbilityTypes.Muddle_Sensors):
                         selectedAbility.Activate(ability.TargetID);
                         GameManager.instance.GetActivePlayer().PreviousTarget = ability.TargetID;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousTarget);
                         GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousAbility);
                         break;
                     case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):

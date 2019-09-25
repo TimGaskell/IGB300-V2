@@ -698,6 +698,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
+        if (GetActivePlayer().PreviousTarget != 0) {
+            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
+            GetActivePlayer().PreviousTarget = 0;
+            GetActivePlayer().PreviousAbility = null;
+        }
+
         activePlayer++;
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
@@ -713,11 +719,6 @@ public class GameManager : MonoBehaviour
         }
         else {
 
-            if (GetActivePlayer().PreviousTarget != 0) {
-                GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility.abilityType);
-                GetActivePlayer().PreviousTarget = 0;
-                GetActivePlayer().PreviousAbility = null;
-            }
            
             Debug.Log("Incremenet turn, Active player " + activePlayer);
 
