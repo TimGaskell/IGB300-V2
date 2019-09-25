@@ -690,14 +690,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
-       //gameCamera = GameObject.FindGameObjectWithTag("MainCamera");
-
         activePlayer++;
         Debug.Log("Incremenet turn, Active player " + activePlayer);
 
         Player player = GetActivePlayer();
-
-        //gameCamera.GetComponent<CameraSystem>().ZoomIn();
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers+ 1)
