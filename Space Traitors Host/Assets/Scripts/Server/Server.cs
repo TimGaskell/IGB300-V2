@@ -426,7 +426,9 @@ public class Server : MonoBehaviour
             case NetOP.AbilityActivated:
                 AbilityActivated(conID, chanID, rHostID, (AbilityActivated)msg);
                 break;
-                
+            case NetOP.AiAttacks:
+                GetAIAttack(conID, chanID, rHostID, (AiAttacks)msg);
+                break;
 
         }
 
