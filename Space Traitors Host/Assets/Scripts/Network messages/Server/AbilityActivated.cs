@@ -14,4 +14,6 @@ public class AbilityActivated : NetMessage
 
     public int AbilityType { get; set; }
     public bool IsTraitor { get; set; }
+    public List<int> RoomResourcesIDs { get; set; }
+    public int resourceType { get; set; }
 }

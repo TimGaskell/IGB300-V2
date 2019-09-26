@@ -46,6 +46,7 @@ public class ClientUIManager : MonoBehaviour
     void Start()
     {
 
+
         GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
@@ -69,6 +70,17 @@ public class ClientUIManager : MonoBehaviour
         sabotagePanel.SetActive(false);
         inventoryPanel.SetActive(false);
         DisplayCurrentPhase();
+
+
+        GameObject[] UIItems = GameObject.FindGameObjectsWithTag("MapItemIcons");
+
+        foreach (GameObject UIItem in UIItems) {
+
+
+            UIItem.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+
     }
 
     // Update is called once per frame

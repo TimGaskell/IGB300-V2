@@ -273,4 +273,35 @@ public class AbilityManager : MonoBehaviour
         abilityActiveDisplay.GetComponent<ActiveAbilityDisplayClient>().UpdateActiveText(selectedAbility);
        
     }
+
+    public void DisplayMapIcons(List<int> Ids, int resourceType) {
+
+
+        foreach(int id in Ids) {
+
+
+            GameObject RoomManager = GameObject.FindGameObjectWithTag("RoomList");
+            GameObject Room = RoomManager.GetComponent<WayPointGraph>().graphNodes[id];
+
+            if(resourceType == (int)Ability.ScanResources.Items) {
+
+                Room.transform.GetChild(2).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            else if (resourceType == (int)Ability.ScanResources.Scrap) {
+
+                Room.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            else if (resourceType == (int)Ability.ScanResources.Components) {
+
+                Room.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+
+
+        }
+
+
+    }
 }

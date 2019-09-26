@@ -875,13 +875,15 @@ public class Server : MonoBehaviour
 
     }
 
-    public void SendAbilityActivated(int playerID, Ability.AbilityTypes abilityType, bool isTraitor)
+    public void SendAbilityActivated(int playerID, Ability.AbilityTypes abilityType, bool isTraitor, List<int>RoomIds, int resourceType)
     {
         AbilityActivated abilityActivated = new AbilityActivated();
         tempPlayerID = playerID;
 
         abilityActivated.AbilityType = (int)abilityType;
         abilityActivated.IsTraitor = isTraitor;
+        abilityActivated.RoomResourcesIDs = RoomIds;
+        abilityActivated.resourceType = resourceType;
 
         SendClient(abilityActivated);
     }
@@ -1351,9 +1353,17 @@ public class Server : MonoBehaviour
             AbilityManager.instance.DisplayActiveAbility();
 
         }
+        else if(abilityType == Ability.AbilityTypes.Sensor_Scan) {
+
+
+            AbilityManager.instance.DisplayMapIcons(abilityActivated.RoomResourcesIDs, abilityActivated.resourceType);
+
+            AbilityManager.instance.DisplayActiveAbility();
+        }
+
         else
         {
-
+            
            AbilityManager.instance.DisplayActiveAbility();
 
         }
@@ -1986,6 +1996,7 @@ public class Server : MonoBehaviour
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
         Debug.Log("recieved ability");
+        List<int> rooms;
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
@@ -2000,7 +2011,8 @@ public class Server : MonoBehaviour
                 //Unless the ability is code inspection, state of isTraitor is irrelevant, so sets to dummy case
                 bool isTraitor = false;
 
-                
+                rooms = new List<int>();
+
 
                 switch (abilityType)
                 {
@@ -2024,13 +2036,13 @@ public class Server : MonoBehaviour
                         selectedAbility.Activate(ability.TargetID, out isTraitor);
                         break;
                     case (Ability.AbilityTypes.Sensor_Scan):
-                        selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
+                        rooms = selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
                         break;
                 }
 
                 
                 PlayerCardManager.instance.UpdateAllCards();
-                SendAbilityActivated(conID, abilityType, isTraitor);
+                SendAbilityActivated(conID, abilityType, isTraitor, rooms,ability.ScanResource);
                 SyncPlayerData(conID);
             }
         }
