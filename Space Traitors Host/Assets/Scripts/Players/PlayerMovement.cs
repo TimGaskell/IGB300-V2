@@ -81,9 +81,9 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-              
+                Player.transform.Rotate(0, 0, 0, Space.World);
 
-               
+
 
                 if (ServerVersion) {
                     GameManager.instance.GetActivePlayer().roomPosition = goalIndex;

@@ -1594,8 +1594,9 @@ public class Server : MonoBehaviour
     {
         //Update the UI to display to the player that they have been selected as traitor
         ClientManager.instance.isTraitor = true;
-        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().TraitorTitle.SetActive(true);
         ClientUIManager.instance.TraitorSelection.SetActive(true);
+        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().TraitorTitle.SetActive(true);
+       
     }
 
     private void GetSurgeInformation(int conID, int chanID, int rHostID, SurgeInformation information) {
