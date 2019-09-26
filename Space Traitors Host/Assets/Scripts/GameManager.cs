@@ -837,7 +837,9 @@ public class GameManager : MonoBehaviour
         //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
         if (IsTraitorSelected())
         {
+            Debug.Log("This is activated and a traitor has been selected ------------------------------------");
             newTraitor = ChooseTraitor();
+            Server.Instance.SendIsTraitor();
         }
 
         //Increase corruption for all traitors
@@ -1007,6 +1009,7 @@ public class GameManager : MonoBehaviour
                     {
                         //Increase the traitor corruption and sets them as a traitor
                         AssignTraitor(player.playerID);
+                        Debug.Log("IsTraitorSelected");
                         return player.playerID;
                     }
                 }
