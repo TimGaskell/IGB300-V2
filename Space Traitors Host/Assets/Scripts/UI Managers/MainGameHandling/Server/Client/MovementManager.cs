@@ -58,7 +58,7 @@ public class MovementManager : MonoBehaviour
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[i];
             Debug.Log(room.name);
-            room.transform.GetChild(1).gameObject.SetActive(true);
+            room.transform.GetChild(4).gameObject.SetActive(true);
 
         }
 

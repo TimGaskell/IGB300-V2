@@ -416,6 +416,8 @@ public class SensorScan : Ability
         //Gets the rooms which are adjacent to the active player
         List<Room> adjacentRooms = GameManager.instance.GetAdjacentRooms(GameManager.instance.GetActivePlayer().roomPosition);
 
+        Debug.Log(GameManager.instance.GetActivePlayer().roomPosition);
+
         //Checks each room
         foreach (Room room in adjacentRooms)
         {
