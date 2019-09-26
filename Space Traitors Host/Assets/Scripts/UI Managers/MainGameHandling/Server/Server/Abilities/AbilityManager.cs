@@ -279,6 +279,7 @@ public class AbilityManager : MonoBehaviour
 
         foreach(int id in Ids) {
 
+            Debug.Log(id);
 
             GameObject RoomManager = GameObject.FindGameObjectWithTag("RoomList");
             GameObject Room = RoomManager.GetComponent<WayPointGraph>().graphNodes[id];
