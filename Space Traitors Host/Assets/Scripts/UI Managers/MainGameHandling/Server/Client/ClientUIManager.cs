@@ -38,6 +38,7 @@ public class ClientUIManager : MonoBehaviour
     public GameObject characterPortrait;
 
     public GameObject inventoryPanel;
+    public GameObject TraitorSelection;
 
 
     public static ClientUIManager instance = null;

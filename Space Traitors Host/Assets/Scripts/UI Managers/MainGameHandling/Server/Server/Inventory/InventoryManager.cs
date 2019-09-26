@@ -18,6 +18,8 @@ public class InventoryManager : MonoBehaviour
     public GameObject discardButton;
     public GameObject equipButton;
 
+    public GameObject TraitorTitle;
+
     private Item selectedItem;
     private int selectedID;
 
