@@ -1274,7 +1274,7 @@ public class Server : MonoBehaviour
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
             Debug.Log(room.name);
-            room.transform.GetChild(5).gameObject.SetActive(false);
+            room.transform.GetChild(4).gameObject.SetActive(false);
 
         }
         GameManager.instance.currentPhase = GameManager.TurnPhases.Movement;
