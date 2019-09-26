@@ -81,14 +81,15 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-                //If its at the end of the path look off to the side
-                Player.transform.Rotate(0, 145, 0, Space.Self);
+              
 
                
 
                 if (ServerVersion) {
                     GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
+                    //If its at the end of the path look off to the side
+                    Player.transform.Rotate(0, 145, 0, Space.Self);
                 }
 
                 //Return to idle animation

@@ -421,6 +421,7 @@ public class SensorScan : Ability
         //Checks each room
         foreach (Room room in adjacentRooms)
         {
+
             //Checks each choice
             foreach (Choice choice in room.roomChoices)
             {

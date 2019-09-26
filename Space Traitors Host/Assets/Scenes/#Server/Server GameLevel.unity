@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2356,7 +2356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 10
   roomType: 3
 --- !u!114 &101958800
 MonoBehaviour:
@@ -8978,7 +8978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 6
   roomType: 4
 --- !u!114 &479685211
 MonoBehaviour:
@@ -10201,7 +10201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 7
   roomType: 2
 --- !u!114 &506071042
 MonoBehaviour:
@@ -11431,7 +11431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 3
   roomType: 6
 --- !u!114 &556819794
 MonoBehaviour:
@@ -11504,7 +11504,6 @@ MonoBehaviour:
   goalIndex: 0
   StartMoving: 0
   Player: {fileID: 0}
-  SecretPathActivated: 0
 --- !u!1 &560285019
 GameObject:
   m_ObjectHideFlags: 0
@@ -17959,7 +17958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 11
   roomType: 6
 --- !u!114 &894687515
 MonoBehaviour:
@@ -19315,7 +19314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 12
   roomType: 5
 --- !u!114 &938201215
 MonoBehaviour:
@@ -20953,7 +20952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 1
   roomType: 5
 --- !u!114 &1037434065
 MonoBehaviour:
@@ -24867,7 +24866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 4
   roomType: 1
 --- !u!114 &1242384743
 MonoBehaviour:
@@ -35791,7 +35790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 5
   roomType: 2
 --- !u!114 &1775959504
 MonoBehaviour:
@@ -37963,7 +37962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 9
   roomType: 7
 --- !u!114 &1897344791
 MonoBehaviour:
@@ -41877,7 +41876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 8
   roomType: 4
 --- !u!114 &2068220858
 MonoBehaviour:
@@ -42291,7 +42290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c34ab071c9fb24fa264ee46020619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomIndex: 0
+  roomIndex: 2
   roomType: 1
 --- !u!114 &2094281633
 MonoBehaviour:
