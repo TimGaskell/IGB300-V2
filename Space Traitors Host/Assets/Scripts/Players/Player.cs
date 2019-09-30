@@ -105,6 +105,7 @@ public class Player
     public int PreviousTarget = 0;
     public Ability PreviousAbility;
     public bool activeThisTurn;
+    public int ScrapReturn;
 
     //Reference to the players model in the game world
     public GameObject playerObject;

@@ -2182,7 +2182,6 @@ public class Server : MonoBehaviour
                     if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
 
                         SecretPathActive = true;
-                        Debug.Log("IT FREAKING WORKS!!!");
                         break;
                     }
                     else {
@@ -2198,6 +2197,8 @@ public class Server : MonoBehaviour
                 }
 
                 int ScrapReturn = player.ActionPoints - roomCost;
+
+                player.ScrapReturn = ScrapReturn;
 
                 SendRoomCost(player.playerID, roomCost, ScrapReturn);
             }
@@ -2216,20 +2217,11 @@ public class Server : MonoBehaviour
             if (player.playerID == conID)
             {
 
-
+                player.scrap += player.ScrapReturn;
 
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
-
-                if (GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Secret_Paths)) {
-
-                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 2;
-
-                }
-                else {
-                    player.scrap += player.ActionPoints - PlayerMovement.instance.currentPath.Count - 1;
-                }
-               
+              
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
