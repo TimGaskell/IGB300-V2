@@ -40,14 +40,16 @@ public class ClientUIManager : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject TraitorSelection;
 
+    public GameObject openingInstructions;
+    public GameObject instructionPanels;
+
+    public GameObject pauseMenu;
 
     public static ClientUIManager instance = null;
 
     // Start is called before the first frame update
     void Start()
     {
-
-
         GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
@@ -72,6 +74,10 @@ public class ClientUIManager : MonoBehaviour
         inventoryPanel.SetActive(false);
         DisplayCurrentPhase();
 
+        openingInstructions.SetActive(true);
+        instructionPanels.SetActive(false);
+
+        pauseMenu.SetActive(false);
 
         GameObject[] UIItems = GameObject.FindGameObjectsWithTag("MapItemIcons");
 
@@ -176,6 +182,17 @@ public class ClientUIManager : MonoBehaviour
         //Disable corruption bar and scrap tracker when inventory is open
         corruptionBar.SetActive(!inventoryOpen);
         scrapTracker.SetActive(!inventoryOpen);
+    }
+
+    public void OpenInstructionPanel()
+    {
+        instructionPanels.SetActive(true);
+        instructionPanels.GetComponent<InstructionPanelHandler>().OpenNextInstructionPanel();
+    }
+
+    public void SetPauseMenu()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
     }
 
     #region Server Handling
@@ -319,7 +336,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        SceneManager.LoadScene(GameManager.MainMenuScene);
+        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
     }
 
     /// <summary>

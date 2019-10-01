@@ -7,22 +7,12 @@ using TMPro;
 
 public class ClientMenuUIManager : MonoBehaviour
 {
-    private const int PANELS_CLOSED = -1;
-
-    public List<GameObject> instructionPanels;
-    public GameObject parentInstructionPanel;
-    public GameObject instructionCounter;
-    public int currentPanel;
+    public GameObject instructionPanels;
+    
 
     private void Start()
     {
-        currentPanel = PANELS_CLOSED;
-        parentInstructionPanel.SetActive(false);
-
-        foreach (GameObject instructionPanel in instructionPanels)
-        {
-            instructionPanel.SetActive(false);
-        }
+        instructionPanels.SetActive(false);
     }
 
     public void GameStart()
@@ -35,34 +25,9 @@ public class ClientMenuUIManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void OpenNextInstructionPanel()
+    public void OpenInstructionPanel()
     {
-        if (currentPanel == instructionPanels.Count - 1)
-        {
-            CloseInstructionPanels();
-        }
-        else
-        {
-            if (currentPanel == PANELS_CLOSED)
-            {
-                parentInstructionPanel.SetActive(true);
-            }
-
-            else
-            {
-                instructionPanels[currentPanel].SetActive(false);
-            }
-
-            currentPanel++;
-            instructionCounter.GetComponent<TextMeshProUGUI>().text = string.Format("{0} / {1}", currentPanel + 1, instructionPanels.Count);
-            instructionPanels[currentPanel].SetActive(true);
-        }
-    }
-
-    public void CloseInstructionPanels()
-    {
-        instructionPanels[currentPanel].SetActive(false);
-        parentInstructionPanel.SetActive(false);
-        currentPanel = PANELS_CLOSED;
+        instructionPanels.SetActive(true);
+        instructionPanels.GetComponent<InstructionPanelHandler>().OpenNextInstructionPanel();
     }
 }
