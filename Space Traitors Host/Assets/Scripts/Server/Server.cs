@@ -2398,8 +2398,7 @@ public class Server : MonoBehaviour
         Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
-        //Below function will handle displaying the new panels for the phase as well as victory condition screens
-        canvas.GetComponent<MainGameUIManager>().IncrementPhase();
+        
 
         switch (GameManager.instance.CurrentVictory)
         {
@@ -2447,7 +2446,9 @@ public class Server : MonoBehaviour
 
                 break;
         }
-       
+
+        //Below function will handle displaying the new panels for the phase as well as victory condition screens
+        canvas.GetComponent<MainGameUIManager>().IncrementPhase();
 
     }
 
