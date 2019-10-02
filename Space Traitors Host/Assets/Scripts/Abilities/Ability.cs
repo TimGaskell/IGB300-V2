@@ -136,7 +136,7 @@ public class SecretPaths : Ability
     public SecretPaths()
     {
         abilityType = AbilityTypes.Secret_Paths;
-        abilityDescription = "Reduce action point cost of all paths by 1 for a player on their next turn.";
+        abilityDescription = "On this turn move to any room in the map without spending action points.";
 
         scrapCost = 6;
         corruptionRequirement = 0;
