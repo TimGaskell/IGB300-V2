@@ -414,31 +414,31 @@ public class ClientUIManager : MonoBehaviour
 
         string objectiveText;
 
-        if (ClientManager.instance.isTraitor)
-        {
-            if (ClientManager.instance.CheckComponentInstalled())
-            {
-                objectiveText = "The others have repaired the escape shuttle. Stop them from escaping!";
-            }
-            else
-            {
-                objectiveText = "Find the other robots and eliminate them! Don't let them repair the shuttle!";
-            }
+        //if (ClientManager.instance.isTraitor)
+        //{
+        //    if (ClientManager.instance.CheckComponentInstalled())
+        //    {
+        //        objectiveText = "The others have repaired the escape shuttle. Stop them from escaping!";
+        //    }
+        //    else
+        //    {
+        //        objectiveText = "Find the other robots and eliminate them! Don't let them repair the shuttle!";
+        //    }
                 
-        }
-        else
-        {
-            if (ClientManager.instance.CheckComponentInstalled())
-            {
-                objectiveText = "All components installed. Get to the Shuttle!";
-            }
-            else
-            {
-                objectiveText = "Find the components and install them on the escape shuttle.";
-            }
-        }
+        //}
+        //else
+        //{
+        //    if (ClientManager.instance.CheckComponentInstalled())
+        //    {
+        //        objectiveText = "All components installed. Get to the Shuttle!";
+        //    }
+        //    else
+        //    {
+        //        objectiveText = "Find the components and install them on the escape shuttle.";
+        //    }
+        //}
 
-        componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
+        //componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
     }
 
 
