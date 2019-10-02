@@ -119,7 +119,7 @@ public class Player
         roomPosition = STARTING_ROOM_ID;
 
         scrap = 0;
-        corruption = 100;
+        corruption = 0;
 
         items = new List<Item>();
 

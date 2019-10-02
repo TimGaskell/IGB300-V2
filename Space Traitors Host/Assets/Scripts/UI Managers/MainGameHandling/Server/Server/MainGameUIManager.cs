@@ -105,7 +105,8 @@ public class MainGameUIManager : MonoBehaviour
                 //interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
                 break;
             case (GameManager.TurnPhases.BasicSurge):
-                if (GameManager.instance.activePlayer == GameManager.instance.numPlayers) {
+                //GameManager.instance.numPlayers
+                if (GameManager.instance.activePlayer == 1) {
 
                     basicSurgePanel.SetActive(true);
                     playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
