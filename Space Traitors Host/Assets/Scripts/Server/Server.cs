@@ -2224,6 +2224,7 @@ public class Server : MonoBehaviour
             {
 
                 player.scrap += player.ScrapReturn;
+                SyncPlayerData(conID);
 
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
