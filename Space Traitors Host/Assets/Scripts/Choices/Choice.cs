@@ -312,12 +312,12 @@ public class Choice
     /// <returns>The display text</returns>
     public string SuccessText()
     {
-        string scrapText = IntResourceChange(scrapChange, " <sprite name=\"Scrap\">");
-        string corruptionText = IntResourceChange(corruptionChange, "% <sprite name=\"Corruption\">");
+        string scrapText = IntResourceChange(scrapChange, " Scrap");
+        string corruptionText = IntResourceChange(corruptionChange, "% Corruption");
         string aiPowerText = IntResourceChange(powerChange, "% AI Power");
         string itemText = ItemString();
-        string lifeText = IntResourceChange(lifeChange, " <sprite name=\"Health\">");
-        string componentText = component ? "+1 <sprite name=\"Component\">\n" : "";
+        string lifeText = IntResourceChange(lifeChange, " Health");
+        string componentText = component ? "+1 Component\n" : "";
 
         Debug.Log(scrapText + corruptionText + aiPowerText + itemText + lifeText + componentText);
 
@@ -332,8 +332,8 @@ public class Choice
     /// <returns>The display text</returns>
     public string FailText()
     {
-        string corruptionText = IntResourceChange(corruptionFail, "% <sprite name=\"Corruption\">");
-        string lifeText = IntResourceChange(lifeFail, " <sprite name=\"Health\">");
+        string corruptionText = IntResourceChange(corruptionFail, "% Corruption");
+        string lifeText = IntResourceChange(lifeFail, " Health");
 
         return corruptionText + lifeText;
     }
