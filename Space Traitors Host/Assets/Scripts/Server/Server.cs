@@ -1491,6 +1491,7 @@ public class Server : MonoBehaviour
         clientUIManager.interactionPanel.SetActive(true);
         clientUIManager.interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
         clientUIManager.interactionPanel.SetActive(false);
+        clientUIManager.UpdateComponentTracker();
     }
 
     private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)
