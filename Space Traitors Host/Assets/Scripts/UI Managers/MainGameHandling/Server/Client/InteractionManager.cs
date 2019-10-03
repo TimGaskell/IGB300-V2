@@ -190,7 +190,7 @@ public class InteractionManager : MonoBehaviour
     {
         string newString = oldString;
 
-        newString = newString.Replace("Scrap", "<sprite name =\"Scrap\">");
+        newString = newString.Replace("Scrap", "<sprite name=\"Scrap\">");
         newString = newString.Replace("Corruption", "<sprite name=\"Corruption\">");
         //newString = newString.Replace("AI Power", "<sprite name=\"Power\">"); No Icon for AI Power yet
         newString = newString.Replace("Health", "<sprite name=\"Health\">");

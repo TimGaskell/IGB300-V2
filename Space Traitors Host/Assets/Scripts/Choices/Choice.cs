@@ -383,10 +383,10 @@ public class Choice
             //<sprite name =\"Skill\">
             //<sprite name =\"Tech\">
             //<sprite name =\"Charm\">
-            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn", specItem.BrawnChange) : "";
-            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill", specItem.SkillChange) : "";
-            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech", specItem.TechChange) : "";
-            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm", specItem.CharmChange) : "";
+            string brawnMod = specItem.BrawnChange != 0 ? string.Format("+{0} Brawn ", specItem.BrawnChange) : "";
+            string skillMod = specItem.SkillChange != 0 ? string.Format("+{0} Skill ", specItem.SkillChange) : "";
+            string techMod = specItem.TechChange != 0 ? string.Format("+{0} Tech ", specItem.TechChange) : "";
+            string charmMod = specItem.CharmChange != 0 ? string.Format("+{0} Charm ", specItem.CharmChange) : "";
 
             //Item.itemSpriteString(specItem.ItemType)
             return string.Format("+1 {0}\n( {1}{2}{3}{4})", specItem.ItemName, brawnMod, skillMod, techMod, charmMod);
