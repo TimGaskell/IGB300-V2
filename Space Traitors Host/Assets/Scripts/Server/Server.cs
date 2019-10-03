@@ -429,7 +429,9 @@ public class Server : MonoBehaviour
             case NetOP.AiAttacks:
                 GetAIAttack(conID, chanID, rHostID, (AiAttacks)msg);
                 break;
-
+            case NetOP.NumComponentsInstalled:
+                GetNumComponentsInstalled(conID, chanID, rHostID, (NumComponentsInstalled)msg);
+                break;
         }
 
 
@@ -1409,6 +1411,9 @@ public class Server : MonoBehaviour
     private void GetNumComponentsInstalled(int conID, int chanID, int rHostID, NumComponentsInstalled numComponentsInstalled)
     {
         ClientManager.instance.componentsInstalled = numComponentsInstalled.InstalledComponents;
+
+        GameObject canvas = GameObject.Find("canvas");
+        canvas.GetComponent<ClientUIManager>().UpdateComponentTracker();
 
         if (numComponentsInstalled.AllComponentsInstalled)
         {
