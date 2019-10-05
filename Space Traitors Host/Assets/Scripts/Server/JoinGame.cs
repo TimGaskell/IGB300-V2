@@ -25,21 +25,19 @@ public class JoinGame : MonoBehaviour {
     void Start() {
 
         networkManager = NetworkManager.singleton;
-        if (SceneManager.GetActiveScene().name == "LobbyLan Client")
-        {
+        if (SceneManager.GetActiveScene().name == "LobbyLan Client"){
             cnd = GameObject.Find("NetworkManager").GetComponent<CustomNetworkDiscovery>();
             cnd.Initialize();
             cnd.StartAsClient();
         }
-        else
-        {
+        else{
 
-        if (networkManager.matchMaker == null) {
-            networkManager.StartMatchMaker();
-        }
+            if (networkManager.matchMaker == null) {
+                networkManager.StartMatchMaker();
+             }
         }
 
-        RefreshRoomList();
+        RefreshRoomList();     
     }
 
     public void RefreshRoomList() {
@@ -60,9 +58,7 @@ public class JoinGame : MonoBehaviour {
 
                     RoomListItemGO.GetComponent<GameButton>().Setup(ip, name);
 
-
                     RoomList.Add(RoomListItemGO);
-
 
                 }
             }
@@ -73,7 +69,7 @@ public class JoinGame : MonoBehaviour {
         networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
 
         }
-        status.text = "Loading...";
+        status.text = "No rooms at the moment";
 
     }
 
