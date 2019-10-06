@@ -105,8 +105,8 @@ public class GameManager : MonoBehaviour
 
     //Constants used to determine how many "dice" to roll when calculating action points and how many
     //"sides" the dice are to have
-    private const int AP_NUM_DICE = 2;
-    private const int AP_DICE_SIDES = 4;
+    public const int AP_NUM_DICE = 1;
+    public const int AP_DICE_SIDES = 4;
 
     //The conversion factor for a player when they have leftover action points
     private const float AP_CONVERSION = 0.5f;
@@ -1308,7 +1308,7 @@ public class GameManager : MonoBehaviour
     /// 
     /// </summary>
     /// <returns>The rolled number of action points</returns>
-    public int RollActionPoints()
+    public static int RollActionPoints()
     {
         int actionPointRoll = 0;
 
