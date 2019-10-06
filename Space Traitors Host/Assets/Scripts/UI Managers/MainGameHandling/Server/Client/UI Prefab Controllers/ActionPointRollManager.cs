@@ -25,9 +25,10 @@ public class ActionPointRollManager : MonoBehaviour
 
     //Speeds are the amount of time the game waits before adding or removing a new
     //cell image. Accelerations are changes in those speeds every frame
-    public float currentSpeed = 0.1f;
-    public float minSpeed = 0.01f;
-    public float decelFactor = 0.01f;
+    public float initialSpeed;
+    private float currentSpeed;
+    public float minSpeed;
+    public float decelFactor;
 
     public float waitTime = 3.0f;
 
@@ -63,10 +64,12 @@ public class ActionPointRollManager : MonoBehaviour
 
     private void Awake()
     {
-        rolledPoints = -1;
+        rolledPoints = 1;
+        SetActiveCells();
         startRolling = false;
         addCell = true;
         currentCells = 1;
+        currentSpeed = initialSpeed;
     }
 
     private void Update()
@@ -74,9 +77,12 @@ public class ActionPointRollManager : MonoBehaviour
         if (startRolling)
         {
             timer += Time.deltaTime;
+            currentSpeed = Mathf.Min(currentSpeed + decelFactor, minSpeed);
 
             if (timer > currentSpeed)
             {
+                timer = 0;
+
                 if (addCell)
                 {
                     currentCells += 1;
@@ -88,7 +94,6 @@ public class ActionPointRollManager : MonoBehaviour
 
                 SetActiveCells();
                 TestAddCell();
-                currentSpeed = Mathf.Max(currentSpeed - decelFactor, minSpeed);
 
                 if (currentSpeed == minSpeed && currentCells == rolledPoints)
                 {
@@ -102,9 +107,9 @@ public class ActionPointRollManager : MonoBehaviour
 
     public void RollActionPoints()
     {
+        Awake();
         rolledPoints = GameManager.RollActionPoints();
         startRolling = true;
-        Debug.Log(rolledPoints);
     }
 
     private void TestAddCell()

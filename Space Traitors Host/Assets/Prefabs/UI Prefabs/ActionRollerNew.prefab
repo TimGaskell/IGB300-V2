@@ -724,9 +724,9 @@ MonoBehaviour:
   initialCell: {fileID: 2132673634129144273}
   rollButton: {fileID: 2132673633657709935}
   rolledText: {fileID: 2132673632262255113}
-  currentSpeed: 1
+  initialSpeed: 0.04
   minSpeed: 0.2
-  decelFactor: 0.1
+  decelFactor: 0.001
   waitTime: 3
 --- !u!1 &3676804642639272868
 GameObject:
