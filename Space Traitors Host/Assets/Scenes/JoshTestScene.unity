@@ -1052,21 +1052,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2132673634155963782, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: initialSpeed
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 2132673634155963782, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: minSpeed
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2132673634155963782, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: decelFactor
-      value: 0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 2132673634129144274, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
         type: 3}
       propertyPath: m_AnchorMin.y
