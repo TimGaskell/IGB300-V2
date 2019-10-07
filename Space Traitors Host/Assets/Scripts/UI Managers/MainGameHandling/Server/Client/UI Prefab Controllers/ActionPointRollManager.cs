@@ -36,6 +36,8 @@ public class ActionPointRollManager : MonoBehaviour
 
     private float timer = 0.0f;
 
+    public GameObject movementDisplayText;
+
     private void Start()
     {
         cellList = new List<GameObject>();
@@ -119,6 +121,7 @@ public class ActionPointRollManager : MonoBehaviour
             {
                 Server.Instance.SendActionPoints(rolledPoints);
                 Server.Instance.SendNewPhase();
+                movementDisplayText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} AP", rolledPoints);
                 phaseWait = false;
             }
         }
