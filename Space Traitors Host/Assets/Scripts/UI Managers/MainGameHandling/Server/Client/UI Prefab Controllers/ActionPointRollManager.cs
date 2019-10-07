@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ActionPointRollManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class ActionPointRollManager : MonoBehaviour
 
     private int rolledPoints;
     private bool startRolling;
+    private bool phaseWait;
     //If addCell is true, roller is adding new cells in the animation. If false is removing.
     //This should flip when the number of cells active reaches the extremes of the action point roller,
     //either 1 or maxRoll.
@@ -33,6 +35,8 @@ public class ActionPointRollManager : MonoBehaviour
     public float waitTime = 3.0f;
 
     private float timer = 0.0f;
+
+    public GameObject movementDisplayText;
 
     private void Start()
     {
@@ -60,16 +64,19 @@ public class ActionPointRollManager : MonoBehaviour
 
             cellList.Add(newCell);
         }
+
+        ResetRoller();
     }
 
-    private void Awake()
+    public void ResetRoller()
     {
+        rollButton.GetComponent<Button>().interactable = true;
         rolledPoints = 1;
-        SetActiveCells();
         startRolling = false;
         addCell = true;
         currentCells = 1;
         currentSpeed = initialSpeed;
+        SetActiveCells();
     }
 
     private void Update()
@@ -98,16 +105,32 @@ public class ActionPointRollManager : MonoBehaviour
                 if (currentSpeed == minSpeed && currentCells == rolledPoints)
                 {
                     startRolling = false;
+                    phaseWait = true;
+                    timer = 0;
                 }
             }
         }
 
         rolledText.GetComponent<TextMeshProUGUI>().text = currentCells.ToString();
+
+        if (phaseWait)
+        {
+            timer += Time.deltaTime;
+
+            if(timer > waitTime)
+            {
+                Server.Instance.SendActionPoints(rolledPoints);
+                Server.Instance.SendNewPhase();
+                movementDisplayText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} AP", rolledPoints);
+                phaseWait = false;
+            }
+        }
     }
 
     public void RollActionPoints()
     {
-        Awake();
+        ResetRoller();
+        rollButton.GetComponent<Button>().interactable = false;
         rolledPoints = GameManager.RollActionPoints();
         startRolling = true;
     }
