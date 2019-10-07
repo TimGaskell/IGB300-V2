@@ -90686,11 +90686,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActionRollerNew
       objectReference: {fileID: 0}
-    - target: {fileID: 2132673634155963783, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2132673634155963784, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -90806,11 +90801,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 2.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2132673634155963784, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 2132673634129144274, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -90855,21 +90845,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2132673633339825215, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2132673633657709937, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3676804643671980871, guid: 2aee1c3aa5ec64c43aeb210670c0d897,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aee1c3aa5ec64c43aeb210670c0d897, type: 3}
