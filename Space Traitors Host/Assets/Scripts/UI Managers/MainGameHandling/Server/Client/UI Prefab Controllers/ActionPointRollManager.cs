@@ -32,7 +32,7 @@ public class ActionPointRollManager : MonoBehaviour
     public float minSpeed;
     public float decelFactor;
 
-    public float waitTime = 2.0f;
+    public float waitTime = 3.0f;
 
     private float timer = 0.0f;
 
@@ -62,17 +62,19 @@ public class ActionPointRollManager : MonoBehaviour
 
             cellList.Add(newCell);
         }
+
+        ResetRoller();
     }
 
-    private void Awake()
+    public void ResetRoller()
     {
         rollButton.GetComponent<Button>().interactable = true;
         rolledPoints = 1;
-        SetActiveCells();
         startRolling = false;
         addCell = true;
         currentCells = 1;
         currentSpeed = initialSpeed;
+        SetActiveCells();
     }
 
     private void Update()
@@ -102,6 +104,7 @@ public class ActionPointRollManager : MonoBehaviour
                 {
                     startRolling = false;
                     phaseWait = true;
+                    timer = 0;
                 }
             }
         }
@@ -116,13 +119,14 @@ public class ActionPointRollManager : MonoBehaviour
             {
                 Server.Instance.SendActionPoints(rolledPoints);
                 Server.Instance.SendNewPhase();
+                phaseWait = false;
             }
         }
     }
 
     public void RollActionPoints()
     {
-        Awake();
+        ResetRoller();
         rollButton.GetComponent<Button>().interactable = false;
         rolledPoints = GameManager.RollActionPoints();
         startRolling = true;

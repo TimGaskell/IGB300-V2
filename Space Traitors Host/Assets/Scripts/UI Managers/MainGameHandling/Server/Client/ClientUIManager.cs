@@ -227,6 +227,7 @@ public class ClientUIManager : MonoBehaviour
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
                 //RollActionPoints.instance.ResetRoll();
+                actionPointPanel.transform.Find("ActionRollerNew").GetComponent<ActionPointRollManager>().ResetRoller();
                 break;
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);
