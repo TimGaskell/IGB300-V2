@@ -102,7 +102,6 @@ public class ActionPointRollManager : MonoBehaviour
                 {
                     startRolling = false;
                     phaseWait = true;
-                    rollButton.GetComponent<Button>().interactable = false;
                 }
             }
         }
@@ -124,6 +123,7 @@ public class ActionPointRollManager : MonoBehaviour
     public void RollActionPoints()
     {
         Awake();
+        rollButton.GetComponent<Button>().interactable = false;
         rolledPoints = GameManager.RollActionPoints();
         startRolling = true;
     }
