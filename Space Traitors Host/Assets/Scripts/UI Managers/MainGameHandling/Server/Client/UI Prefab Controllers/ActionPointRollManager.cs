@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ActionPointRollManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class ActionPointRollManager : MonoBehaviour
 
     private int rolledPoints;
     private bool startRolling;
+    private bool phaseWait;
     //If addCell is true, roller is adding new cells in the animation. If false is removing.
     //This should flip when the number of cells active reaches the extremes of the action point roller,
     //either 1 or maxRoll.
@@ -30,7 +32,7 @@ public class ActionPointRollManager : MonoBehaviour
     public float minSpeed;
     public float decelFactor;
 
-    public float waitTime = 3.0f;
+    public float waitTime = 2.0f;
 
     private float timer = 0.0f;
 
@@ -64,6 +66,7 @@ public class ActionPointRollManager : MonoBehaviour
 
     private void Awake()
     {
+        rollButton.GetComponent<Button>().interactable = true;
         rolledPoints = 1;
         SetActiveCells();
         startRolling = false;
@@ -98,11 +101,24 @@ public class ActionPointRollManager : MonoBehaviour
                 if (currentSpeed == minSpeed && currentCells == rolledPoints)
                 {
                     startRolling = false;
+                    phaseWait = true;
+                    rollButton.GetComponent<Button>().interactable = false;
                 }
             }
         }
 
         rolledText.GetComponent<TextMeshProUGUI>().text = currentCells.ToString();
+
+        if (phaseWait)
+        {
+            timer += Time.deltaTime;
+
+            if(timer > waitTime)
+            {
+                Server.Instance.SendActionPoints(rolledPoints);
+                Server.Instance.SendNewPhase();
+            }
+        }
     }
 
     public void RollActionPoints()
