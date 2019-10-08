@@ -830,6 +830,7 @@ public class GameManager : MonoBehaviour
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
+            Debug.Log(targetPlayer);
 
             Server.Instance.SendAIAttack(targetPlayer);
         }

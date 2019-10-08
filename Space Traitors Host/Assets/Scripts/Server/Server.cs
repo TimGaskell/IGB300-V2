@@ -1626,6 +1626,7 @@ public class Server : MonoBehaviour
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
         Debug.Log("Recieved Attack");
+        Debug.Log(aiAttacks.IsTarget);
 
         if (aiAttacks.IsTarget)
         {
