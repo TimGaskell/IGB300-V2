@@ -2407,7 +2407,7 @@ public class Server : MonoBehaviour
 
         GameObject canvas = GameObject.Find("Canvas");
 
-        MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
+        //MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
         switch (GameManager.instance.CurrentVictory)
         {
