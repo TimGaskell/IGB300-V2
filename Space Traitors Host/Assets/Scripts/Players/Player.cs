@@ -110,6 +110,8 @@ public class Player
     //Reference to the players model in the game world
     public GameObject playerObject;
 
+    public List<Tuple<string,int,int>> itemLocations;
+
 
     public Player(int PlayerID, string PlayerName)
     {
@@ -188,6 +190,8 @@ public class Player
 
             Server.Instance.SendPlayerDeath(playerID);
             GameManager.instance.numPlayers -= 1;
+
+            ReturnItems();
 
             GameManager.instance.playerOrder.Remove(playerID);
             GameManager.instance.players.Remove(this);
@@ -433,6 +437,26 @@ public class Player
     {
         items[itemIndex].ReturnItem();
         RemoveItem(itemIndex);
+    }
+
+    public void ReturnItems() {
+
+        foreach (Tuple<string,int,int> item in itemLocations) {
+
+            Room ItemsRoom = GameManager.instance.GetRoom(item.Item2);
+
+            if (item.Item1 == "Component") {
+
+                hasComponent = false;
+                ItemsRoom.roomChoices[item.Item3].disabled = false;
+
+            }
+            else {
+
+                ItemsRoom.roomChoices[item.Item3].disabled = false;
+
+            }
+        }
     }
 
     #endregion
