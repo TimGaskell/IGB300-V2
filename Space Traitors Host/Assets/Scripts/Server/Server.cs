@@ -2335,6 +2335,7 @@ public class Server : MonoBehaviour
         defenderSpec = GameManager.SpecScores.Default;
 
         //Need to display the state of the combat on the main screen
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
 
         //Stores the target player ID to attack later
         defenderID = attack.TargetPlayer;
@@ -2405,7 +2406,8 @@ public class Server : MonoBehaviour
         Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
-        
+
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
         switch (GameManager.instance.CurrentVictory)
         {
