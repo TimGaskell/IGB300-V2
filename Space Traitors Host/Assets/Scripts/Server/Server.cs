@@ -2233,7 +2233,7 @@ public class Server : MonoBehaviour
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-               
+                ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
             }
         }
     }

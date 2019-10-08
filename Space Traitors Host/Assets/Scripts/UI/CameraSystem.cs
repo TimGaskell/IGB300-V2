@@ -49,10 +49,10 @@ public class CameraSystem : MonoBehaviour
 
         //When character starts actually moving during movement phase, zoom in again
         //if (GameManager.instance.GetActivePlayer().playerObject.GetComponent<PlayerNavigation>().isMoving)
-        if(GameManager.instance.playerMoving && !zoomedIn)
-        {
-            ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
-        }
+        //if(GameManager.instance.playerMoving && !zoomedIn)
+        //{
+        //    ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+        //}
 
         if (zoomedIn)
         {
