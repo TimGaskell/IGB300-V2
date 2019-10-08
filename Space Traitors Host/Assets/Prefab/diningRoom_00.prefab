@@ -558,6 +558,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7847381731497995786, guid: c4e2434027bc64431949049cb50648d6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099826639195444498, guid: c4e2434027bc64431949049cb50648d6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661891654686013485, guid: c4e2434027bc64431949049cb50648d6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f37902c1a4a064142b796091c144e797, type: 2}
+    - target: {fileID: 6739916554828406352, guid: c4e2434027bc64431949049cb50648d6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6739916554828406352, guid: c4e2434027bc64431949049cb50648d6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f37902c1a4a064142b796091c144e797, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4e2434027bc64431949049cb50648d6, type: 3}
 --- !u!4 &5564746141523897356 stripped
@@ -1600,6 +1625,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5208074644704039726}
     m_Modifications:
+    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
+      propertyPath: m_Name
+      value: diningTable
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44299316
@@ -1655,10 +1684,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalScale.z
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
-      propertyPath: m_Name
-      value: diningTable
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1758,6 +1783,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5208074644051183261}
     m_Modifications:
+    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
+      propertyPath: m_Name
+      value: diningTable
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44299316
@@ -1813,10 +1842,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalScale.z
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
-      propertyPath: m_Name
-      value: diningTable
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1837,6 +1862,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5208074645480504874}
     m_Modifications:
+    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
+      propertyPath: m_Name
+      value: diningTable
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.44299316
@@ -1892,10 +1921,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_LocalScale.z
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
-      propertyPath: m_Name
-      value: diningTable
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 06a8e462433864cac812506de1d42ac8, type: 3}
       propertyPath: m_Materials.Array.data[0]
