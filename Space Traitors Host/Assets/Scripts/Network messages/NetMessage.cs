@@ -44,6 +44,7 @@ public static class NetOP
     public const int SendAllPlayerNames = 54;
     public const int SendAllPlayerIDS = 55;
     public const int SendAllPlayerCharacterTypes = 56;
+    public const int PlayerDeath = 59;
 
 
     #endregion

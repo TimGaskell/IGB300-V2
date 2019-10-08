@@ -118,13 +118,13 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 0;
-        corruption = 0;
+        scrap = 100;
+        corruption = 100;
 
         items = new List<Item>();
 
         hasComponent = false;
-        lifePoints = BASE_LIFE_POINTS;
+        lifePoints = 1;//BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
         Character = new Character();
@@ -184,7 +184,21 @@ public class Player
         //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
         if (IsDead)
         {
+            Debug.Log("Dead");
+
+            Server.Instance.SendPlayerDeath(playerID);
+
             GameManager.instance.CheckTraitorVictory();
+
+            GameManager.instance.numPlayers -= 1;
+
+            GameManager.instance.Deadplayers.Add(this);
+
+            GameManager.instance.playerOrder.Remove(playerID);
+            GameManager.instance.players.Remove(this);
+
+
+
         }
     }
 

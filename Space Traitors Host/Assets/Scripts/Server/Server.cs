@@ -307,8 +307,7 @@ public class Server : MonoBehaviour
 
     private void OnData(int conID, int chanID, int rHostID, NetMessage msg)
     {
-        switch (msg.OperationCode)
-        {
+        switch (msg.OperationCode) {
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
@@ -432,11 +431,13 @@ public class Server : MonoBehaviour
             case NetOP.NumComponentsInstalled:
                 GetNumComponentsInstalled(conID, chanID, rHostID, (NumComponentsInstalled)msg);
                 break;
+            case NetOP.PlayerDeath:
+                RecievedPlayerDeath(conID, chanID, rHostID, (PlayerDeath)msg);
+                break;
+
         }
-
-
-
     }
+
     //Not sure which sendClient to use
     public void SendClient(int recHost, int conID, NetMessage msg)
     {
@@ -505,6 +506,20 @@ public class Server : MonoBehaviour
     }
 
     #region Server Sent Messages
+
+    public void SendPlayerDeath(int playerDeathID) {
+
+        PlayerDeath death = new PlayerDeath();
+        death.PlayerDeathId = playerDeathID;
+
+        for(int i = 1; i < GameManager.instance.numPlayers + 1; i++) {
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            SendClient(death);
+
+        }
+    }
+
 
     public void SendChangeScene(string SceneName)
     {
@@ -714,10 +729,11 @@ public class Server : MonoBehaviour
         //Need to inform all players that someone is under attack by the AI
         //IsTarget specifies which player actually is the target
 
-
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             AiAttacks ai = new AiAttacks();
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
             ai.TargetID = targetPlayer;
             ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
@@ -1142,6 +1158,25 @@ public class Server : MonoBehaviour
     #endregion
 
     #region Client Received Messages
+
+    private void RecievedPlayerDeath(int conID, int chanID, int rHostID, PlayerDeath death) {
+
+        if(death.PlayerDeathId == ClientManager.instance.playerID) {
+
+            ClientUIManager.instance.DeathPanel.SetActive(true);
+
+        }
+        else {
+
+            ClientUIManager.instance.DeathNotificationPanel.SetActive(true);
+            ClientUIManager.instance.DeathNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(death.PlayerDeathId).PlayerName + " has been eliminated from the game.";
+
+
+        }
+
+
+    }
+
 
     private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene)
     {
@@ -1625,7 +1660,6 @@ public class Server : MonoBehaviour
 
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
-        Debug.Log("Recieved Attack");
 
         if (aiAttacks.IsTarget)
         {
@@ -1644,7 +1678,7 @@ public class Server : MonoBehaviour
         {
             //Need to display which player is under attack using aiAttacks.targetID
             ClientUIManager.instance.attackSurgePanel.SetActive(true);
-            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerData[aiAttacks.TargetID].PlayerName + " is under attack from the AI!";
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(aiAttacks.TargetID).PlayerName + " is under attack from the AI!";
         }
     }
 
