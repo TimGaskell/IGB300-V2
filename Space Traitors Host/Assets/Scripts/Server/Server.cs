@@ -714,7 +714,6 @@ public class Server : MonoBehaviour
         //Need to inform all players that someone is under attack by the AI
         //IsTarget specifies which player actually is the target
 
-        Debug.Log(targetPlayer);
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             AiAttacks ai = new AiAttacks();
