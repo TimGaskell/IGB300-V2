@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -35,8 +36,8 @@ public class GameButton: MonoBehaviour
         nm = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         gameIP = IP;
         gameInfo = info;
-        textInfo.GetComponent<Text>().text = gameInfo;
-        textIP.GetComponent<Text>().text = gameIP;
+        textInfo.GetComponent<TextMeshProUGUI>().text = gameInfo;
+        textIP.GetComponent<TextMeshProUGUI>().text = gameIP;
     }
 
     public void ConnectToGame()

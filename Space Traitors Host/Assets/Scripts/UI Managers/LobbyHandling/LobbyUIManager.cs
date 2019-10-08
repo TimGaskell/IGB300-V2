@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 
 public class LobbyUIManager : NetworkBehaviour
 {
+    private bool prerequisitesNotLoaded;
     public GameObject ClientPanel;
     public GameObject ServerPanel;
 
@@ -22,18 +24,21 @@ public class LobbyUIManager : NetworkBehaviour
 
     private void Start()
     {
-
         if (GameManager.instance.serverActive)
         {
             ServerPanel.SetActive(true);
             ClientPanel.SetActive(false);
         }
+
         NetworkManagerObject = GameObject.Find("NetworkManager");
         playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
         playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
 
         nameEntryFields = playerNamePanel.transform.GetChild(1);
         ChangeInputFields(0);
+        
+
+        
 
 
     }
@@ -59,7 +64,7 @@ public class LobbyUIManager : NetworkBehaviour
     public void ConfirmPlayerNumbers(GameObject textField)
     {
         string playerNum = textField.GetComponent<TMP_InputField>().text;
-
+        
         //Tests if the given number is not valid, either because it is not a number or because it lies outside the valid range
         if (int.TryParse(playerNum, out int convertedNum) && convertedNum <= GameManager.instance.MAX_PLAYERS && convertedNum >= GameManager.instance.MIN_PLAYERS)
         {
@@ -67,6 +72,7 @@ public class LobbyUIManager : NetworkBehaviour
             GameManager.instance.numPlayers = convertedNum;
             ChangeInputFields(convertedNum);
             playerNumPanel.GetComponent<CanvasGroup>().interactable = false;
+            playerNumPanel.SetActive(false);
             playerNamePanel.GetComponent<CanvasGroup>().interactable = true;
             NetworkManagerObject.GetComponent<CustomNetworkDiscovery>().StartHost();
 
@@ -76,6 +82,8 @@ public class LobbyUIManager : NetworkBehaviour
             Debug.Log("Not a valid player number");
         }
     }
+    
+   
 
 
 
