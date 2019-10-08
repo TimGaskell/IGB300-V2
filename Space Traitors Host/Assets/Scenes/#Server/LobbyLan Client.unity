@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -190,8 +190,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2134034032}
   m_HandleRect: {fileID: 2134034031}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -658,6 +658,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LanGameButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7624923350139372312, guid: df97b3c30acbebf499fd344e46c8ac26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -716,12 +721,12 @@ PrefabInstance:
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
@@ -741,7 +746,7 @@ PrefabInstance:
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
@@ -751,7 +756,7 @@ PrefabInstance:
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7624923350139372315, guid: df97b3c30acbebf499fd344e46c8ac26,
         type: 3}
@@ -1670,7 +1675,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00002142929, y: -0.0000056909607}
+  m_AnchoredPosition: {x: 0.00002142929, y: -0.00001946102}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1728198663
