@@ -120,13 +120,13 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 100;
-        corruption = 100;
+        scrap = 0;
+        corruption = 0;
 
         items = new List<Item>();
 
         hasComponent = false;
-        lifePoints = 1;//BASE_LIFE_POINTS;
+        lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
         Character = new Character();
