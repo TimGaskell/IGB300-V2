@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MovementManager : MonoBehaviour
 {
@@ -73,18 +74,18 @@ public class MovementManager : MonoBehaviour
 
     public void SetCost() {
 
-        CostText.GetComponent<Text>().text = "Cost: " + roomCost;
+        CostText.GetComponent<TextMeshProUGUI>().text = "AP Cost: " + roomCost;
             
 
     }
     public void SetRoom() {
 
-        MoveToText.GetComponent<Text>().text = "Move to " + GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[roomID];
+        MoveToText.GetComponent<TextMeshProUGUI>().text = "Move to " + GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[roomID];
 
     }
     public void SetScrap() {
 
-        ScrapReturnText.GetComponent<Text>().text = "Scrap return: " + scrapReturn;
+        ScrapReturnText.GetComponent<TextMeshProUGUI>().text = "Scrap return: " + scrapReturn;
 
     }
 
