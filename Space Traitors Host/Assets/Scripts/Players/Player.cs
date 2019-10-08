@@ -192,8 +192,12 @@ public class Player
 
             GameManager.instance.numPlayers -= 1;
 
+            GameManager.instance.Deadplayers.Add(this);
+
             GameManager.instance.playerOrder.Remove(playerID);
             GameManager.instance.players.Remove(this);
+
+
 
         }
     }

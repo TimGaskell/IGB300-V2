@@ -45,10 +45,13 @@ public class GameManager : MonoBehaviour
     public readonly int MAX_PLAYERS = 4;
 
     public static GameManager instance = null;
+    public int ServerSize = 0;
 
     public int numPlayers;
     public List<Player> players;
     public List<int> playerOrder;
+
+    public List<Player> Deadplayers;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
     public int activePlayer = 0;
@@ -491,6 +494,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartGame()
     {
+        ServerSize = numPlayers;
+
         //Reset variables to their default state
         activePlayer = 1;
         installedComponents = 0;
@@ -1189,32 +1194,20 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckTraitorVictory()
     {
-        foreach (Player player in players)
-        {
-            //Checks if the player is alive, skipping players which are dead
-            if (!player.IsDead)
-            {
-                //If the winner ID is the default (which is the case when the loop first begins), then sets the winner
-                //as the current alive player. If the current winner ID is not the default, this means another player has
-                //been set as the winner previously, as such, meaning there is more than one player alive and sets as the
-                //default ID then breaks from the loop (since the condition has already been fulfilled).
-                if (traitorWinID == DEFAULT_PLAYER_ID)
-                {
-                    traitorWinID = player.playerID;
-                }
-                else
-                {
-                    traitorWinID = DEFAULT_PLAYER_ID;
-                    break;
-                }
+
+        int innocentCount = 0;
+
+        foreach(Player player in players) {
+
+            if (!player.isTraitor) {
+
+                innocentCount++;
             }
         }
+        if (innocentCount <= 0) {
 
-        //If the script exits the above loop with the winner ID not being the default ID, this means there is only one player
-        //is alive, as such making them the victor
-        if (traitorWinID != DEFAULT_PLAYER_ID)
-        {
             CurrentVictory = VictoryTypes.Traitor;
+
         }
     }
 

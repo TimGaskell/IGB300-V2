@@ -333,6 +333,12 @@ public class ClientUIManager : MonoBehaviour
        
     }
 
+    public void SendSurge() {
+
+        InteractionManager.instance.EndAttack();
+
+    }
+
     /// <summary>
     /// 
     /// Return to the main menu
