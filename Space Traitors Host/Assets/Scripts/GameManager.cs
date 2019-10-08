@@ -1241,6 +1241,7 @@ public class GameManager : MonoBehaviour
         {
             GetActivePlayer().hasComponent = false;
             installedComponents += 1;
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
             return true;
         }
         else

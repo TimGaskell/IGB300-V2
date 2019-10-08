@@ -1164,7 +1164,7 @@ public class Server : MonoBehaviour
         if(death.PlayerDeathId == ClientManager.instance.playerID) {
 
             ClientUIManager.instance.DeathPanel.SetActive(true);
-
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
         else {
 
@@ -1194,6 +1194,7 @@ public class Server : MonoBehaviour
         {
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
              Handheld.Vibrate();
 #endif
@@ -1208,6 +1209,7 @@ public class Server : MonoBehaviour
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1231,6 +1233,7 @@ public class Server : MonoBehaviour
             CharacterSelectUIManager charSelect = Canvas.GetComponent<CharacterSelectUIManager>();
             charSelect.SetErrorText("Please Select Another Character.");
             charSelect.ResetCharacterSelection();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1364,6 +1367,8 @@ public class Server : MonoBehaviour
         Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
         Handheld.Vibrate();
 #endif
@@ -1404,6 +1409,8 @@ public class Server : MonoBehaviour
            AbilityManager.instance.DisplayActiveAbility();
 
         }
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
     }
 
     /// <summary>
@@ -1435,6 +1442,7 @@ public class Server : MonoBehaviour
             //GameManager.COMBAT_DAMAGE.
 
             InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1494,7 +1502,8 @@ public class Server : MonoBehaviour
         }
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().loserID = combatWinner.LoserID;
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().losersItems = loserInventory;
-      
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
@@ -1504,7 +1513,7 @@ public class Server : MonoBehaviour
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You lost to " + ClientManager.instance.GetPlayerData(combatLoser.WinnerID).PlayerName;
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
     }
 
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
@@ -1670,6 +1679,8 @@ public class Server : MonoBehaviour
 
             ClientUIManager.instance.interactionPanel.SetActive(true);
             ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().AIATTACK();
+
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1689,6 +1700,7 @@ public class Server : MonoBehaviour
             //Display that the player won the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerText.GetComponent<TextMeshProUGUI>().text = "You Won Against the AI";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
 
         }
         else
@@ -1696,7 +1708,7 @@ public class Server : MonoBehaviour
             //Display that they lost the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You Lost. -1 Health";
-            
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1976,7 +1988,7 @@ public class Server : MonoBehaviour
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.connectSound);
 
 
     }
@@ -2011,6 +2023,7 @@ public class Server : MonoBehaviour
 
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.playerID, false);
+                    SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
                     if (GameManager.instance.activePlayer > 0)
                     {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);

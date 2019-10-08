@@ -43,4 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2260ee8b1543246b1825f4a4841581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundEnd: {fileID: 0}
+  connectSound: {fileID: 8300000, guid: ae68d52618cde8242952bc96d91e7aed, type: 3}
+  failureSound: {fileID: 8300000, guid: df428eaefdca2a74ca78fe1e8c2c5bb9, type: 3}
+  successSound: {fileID: 8300000, guid: f5ff3d87e81719a4b8d9de1ba9832322, type: 3}
+  notificationSound: {fileID: 8300000, guid: fb8fe1ff578ceaf46847525d1b845a32, type: 3}
