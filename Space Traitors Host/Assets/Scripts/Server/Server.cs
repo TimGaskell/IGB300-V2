@@ -2410,9 +2410,11 @@ public class Server : MonoBehaviour
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.victoryMusic);
                 SendNonTraitorVictory();
                 break;
             case (GameManager.VictoryTypes.Traitor):
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
                 SendTraitorVictory(GameManager.instance.traitorWinID);
                 break;
             case (GameManager.VictoryTypes.None):

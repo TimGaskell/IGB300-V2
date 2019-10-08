@@ -315,6 +315,7 @@ public class GameManager : MonoBehaviour
             if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.menuMusic);
             }
             else if (scene.name == LobbyScene)
             {
@@ -334,6 +335,7 @@ public class GameManager : MonoBehaviour
                 Server.Instance.sendallCharacterTypes();
                 Server.Instance.sendAllPlayerNames();
                 StartGame();
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
             }
         }
