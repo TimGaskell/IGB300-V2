@@ -43,6 +43,9 @@ public class ClientUIManager : MonoBehaviour
     public GameObject openingInstructions;
     public GameObject instructionPanels;
 
+    public GameObject DeathPanel;
+    public GameObject DeathNotificationPanel;
+
     public GameObject pauseMenu;
 
     public static ClientUIManager instance = null;

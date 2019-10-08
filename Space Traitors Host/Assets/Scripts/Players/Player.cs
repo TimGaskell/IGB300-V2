@@ -185,7 +185,16 @@ public class Player
         if (IsDead)
         {
             Debug.Log("Dead");
+
+            Server.Instance.SendPlayerDeath(playerID);
+
             GameManager.instance.CheckTraitorVictory();
+
+            GameManager.instance.numPlayers -= 1;
+
+            GameManager.instance.playerOrder.Remove(playerID);
+            GameManager.instance.players.Remove(this);
+
         }
     }
 

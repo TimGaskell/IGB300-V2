@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public int numPlayers;
-    private List<Player> players;
+    public List<Player> players;
     public List<int> playerOrder;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
@@ -495,7 +495,7 @@ public class GameManager : MonoBehaviour
         activePlayer = 1;
         installedComponents = 0;
 
-        aiPower = 90;
+        aiPower = 100;
         aiTargetScore = BASE_TARGET_SCORE;
         traitorDelay = false;
 
@@ -700,9 +700,6 @@ public class GameManager : MonoBehaviour
     {
         activePlayer++;
 
-    
- 
-
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers + 1) {
             activePlayer = 1;
@@ -747,9 +744,6 @@ public class GameManager : MonoBehaviour
         ReadyPlayers++;
 
         if(ReadyPlayers == numPlayers) {
-
-         
-           
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
             ReadyPlayers = 0;
@@ -1066,7 +1060,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerWin = false;
-            players[targetPlayer].ChangeLifePoints(COMBAT_DAMAGE);
+            GetPlayer(targetPlayer).ChangeLifePoints(COMBAT_DAMAGE);
         }
 
         //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
