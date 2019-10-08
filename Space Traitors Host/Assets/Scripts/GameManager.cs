@@ -774,15 +774,13 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case (TurnPhases.Default):
-                
+                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
-                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):
-                CameraSystem.instance.ZoomOut();
                 currentPhase += 1;
                 break;
             case (TurnPhases.ActionPoints):
@@ -791,6 +789,7 @@ public class GameManager : MonoBehaviour
                 //Apply the active player model to be moved
                 Debug.Log("This Happens");
                 playerList.GetComponent<PlayerMovement>().Player = GetActivePlayer().playerObject;
+                CameraSystem.instance.ZoomOut();
                 break;
             case (TurnPhases.Interaction):
                 currentPhase += 1;
