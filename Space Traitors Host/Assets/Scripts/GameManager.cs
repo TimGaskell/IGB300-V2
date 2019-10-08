@@ -1196,21 +1196,24 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckTraitorVictory()
     {
+        foreach (Player player in players) {
 
-        int innocentCount = 0;
+            if(traitorWinID == DEFAULT_PLAYER_ID) {
 
-        foreach(Player player in players) {
+                traitorWinID = player.playerID;
 
-            if (!player.isTraitor) {
-
-                innocentCount++;
             }
+            else {
+                traitorWinID = DEFAULT_PLAYER_ID;
+
+            }
+
         }
-        if (innocentCount <= 0) {
+        if(traitorWinID != DEFAULT_PLAYER_ID) {
 
             CurrentVictory = VictoryTypes.Traitor;
-
         }
+       
     }
 
     #endregion
