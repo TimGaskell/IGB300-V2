@@ -1980,11 +1980,11 @@ public class Server : MonoBehaviour
                     if (GameManager.instance.activePlayer > 0)
                     {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
                     }
 
                     if (charSetup != null)
                     {
-                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
                         charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
                     }
                     else
