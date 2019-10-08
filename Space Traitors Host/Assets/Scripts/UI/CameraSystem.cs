@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraSystem : MonoBehaviour
 {
     private float defaultPos_X, defaultPos_Y, defaultPos_Z;
-    public float cameraSpeed = 200;
+    public float cameraSpeed = 350;
     private float newPos_X, newPos_Y, newPos_Z;
     private bool zoomedIn = false;
     private bool positiveX = false;
-    public float ZoomInLevel_Y = 300;
-    public float ZoomInLevel_Z = 215;
+    public float ZoomInLevel_Y = 460;
+    public float ZoomInLevel_Z = 250;
 
     public GameObject testObject;
     // Start is called before the first frame update
@@ -23,11 +24,34 @@ public class CameraSystem : MonoBehaviour
 
         //newPos_Y takes the default y axis of the camera into consideration
         newPos_Y = transform.position.y;
+
+        //Used for testing the zoom
+        if (testObject != null)
+        {
+            ZoomIn(testObject);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        switch (GameManager.instance.currentPhase)
+        {
+            //When player's turn starts, zoom to that player
+            case (GameManager.TurnPhases.Default):
+                ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+                break;
+            //When the 'Movement phase' begins, zoom out again
+            case (GameManager.TurnPhases.Movement):
+                ZoomOut();
+                break;
+        }
+
+        //When character starts actually moving during movement phase, zoom in again
+        if (GameManager.instance.GetActivePlayer().playerObject.GetComponent<PlayerNavigation>().isMoving)
+        {
+            ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+        }
 
         if (zoomedIn)
         {
