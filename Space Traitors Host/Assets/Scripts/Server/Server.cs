@@ -434,6 +434,9 @@ public class Server : MonoBehaviour
             case NetOP.PlayerDeath:
                 RecievedPlayerDeath(conID, chanID, rHostID, (PlayerDeath)msg);
                 break;
+            case NetOP.TraitorVictory:
+                GetTraitorVictory(conID, chanID, rHostID, (TraitorVictory)msg);
+                break;
 
         }
     }
@@ -833,7 +836,7 @@ public class Server : MonoBehaviour
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(traitor);
@@ -2665,7 +2668,7 @@ public class Server : MonoBehaviour
 
     private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
 
-        Server.Instance.SendSurge();
+       SendSurge();
 
     }
 

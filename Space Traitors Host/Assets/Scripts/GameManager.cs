@@ -1208,6 +1208,7 @@ public class GameManager : MonoBehaviour
 
             }
 
+            Debug.Log(traitorWinID);
         }
         if(traitorWinID != DEFAULT_PLAYER_ID) {
 
