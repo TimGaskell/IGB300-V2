@@ -80,7 +80,7 @@ public class MovementManager : MonoBehaviour
     }
     public void SetRoom() {
 
-        MoveToText.GetComponent<TextMeshProUGUI>().text = "Move to " + GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[roomID];
+        MoveToText.GetComponent<TextMeshProUGUI>().text = "Move to " + GameManager.instance.roomList.GetComponent<Room>().roomType.ToString();
 
     }
     public void SetScrap() {
