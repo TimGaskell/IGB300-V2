@@ -53,6 +53,10 @@ public class CameraSystem : MonoBehaviour
         {
             ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
         }
+        else
+        {
+            ZoomOut();
+        }
 
         if (zoomedIn)
         {
