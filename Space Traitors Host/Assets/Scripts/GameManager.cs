@@ -774,12 +774,15 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case (TurnPhases.Default):
+                
                 currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
+                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):
+                CameraSystem.instance.ZoomOut();
                 currentPhase += 1;
                 break;
             case (TurnPhases.ActionPoints):
@@ -794,6 +797,7 @@ public class GameManager : MonoBehaviour
                 break;
             case (TurnPhases.BasicSurge):
             case (TurnPhases.AttackSurge):
+                CameraSystem.instance.ZoomOut();
                 currentPhase = TurnPhases.Abilities;
                 aiPowerChange = 0;
                 newTraitor = DEFAULT_PLAYER_ID;

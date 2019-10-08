@@ -14,6 +14,23 @@ public class CameraSystem : MonoBehaviour
     public float ZoomInLevel_Z = 250;
 
     public GameObject testObject;
+
+    public static CameraSystem instance;
+
+    private void Awake()
+    {
+        //Singleton Setup
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,17 +52,17 @@ public class CameraSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (GameManager.instance.currentPhase)
-        {
-            //When player's turn starts, zoom to that player
-            case (GameManager.TurnPhases.Default):
-                ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
-                break;
-            //When the 'Movement phase' begins, zoom out again
-            case (GameManager.TurnPhases.Movement):
-                ZoomOut();
-                break;
-        }
+        //switch (GameManager.instance.currentPhase)
+        //{
+        //    //When player's turn starts, zoom to that player
+        //    case (GameManager.TurnPhases.Default):
+        //        ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+        //        break;
+        //    //When the 'Movement phase' begins, zoom out again
+        //    case (GameManager.TurnPhases.Movement):
+        //        ZoomOut();
+        //        break;
+        //}
 
         //When character starts actually moving during movement phase, zoom in again
         //if (GameManager.instance.GetActivePlayer().playerObject.GetComponent<PlayerNavigation>().isMoving)
