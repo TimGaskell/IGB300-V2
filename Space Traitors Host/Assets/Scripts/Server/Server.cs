@@ -719,6 +719,8 @@ public class Server : MonoBehaviour
         {
             AiAttacks ai = new AiAttacks();
 
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+
             ai.TargetID = targetPlayer;
             ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
             SendClient(ai);
