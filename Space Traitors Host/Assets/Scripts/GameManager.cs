@@ -495,7 +495,7 @@ public class GameManager : MonoBehaviour
         activePlayer = 1;
         installedComponents = 0;
 
-        aiPower = 0;
+        aiPower = 90;
         aiTargetScore = BASE_TARGET_SCORE;
         traitorDelay = false;
 
