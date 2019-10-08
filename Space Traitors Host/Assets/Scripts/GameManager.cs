@@ -1276,7 +1276,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (Player player in players)
             {
-                if (!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+                if (!player.IsDead && !player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
                 {
                     return false;
                 }
