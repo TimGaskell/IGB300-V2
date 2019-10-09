@@ -307,8 +307,7 @@ public class Server : MonoBehaviour
 
     private void OnData(int conID, int chanID, int rHostID, NetMessage msg)
     {
-        switch (msg.OperationCode)
-        {
+        switch (msg.OperationCode) {
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
@@ -432,11 +431,16 @@ public class Server : MonoBehaviour
             case NetOP.NumComponentsInstalled:
                 GetNumComponentsInstalled(conID, chanID, rHostID, (NumComponentsInstalled)msg);
                 break;
+            case NetOP.PlayerDeath:
+                RecievedPlayerDeath(conID, chanID, rHostID, (PlayerDeath)msg);
+                break;
+            case NetOP.TraitorVictory:
+                GetTraitorVictory(conID, chanID, rHostID, (TraitorVictory)msg);
+                break;
+
         }
-
-
-
     }
+
     //Not sure which sendClient to use
     public void SendClient(int recHost, int conID, NetMessage msg)
     {
@@ -505,6 +509,20 @@ public class Server : MonoBehaviour
     }
 
     #region Server Sent Messages
+
+    public void SendPlayerDeath(int playerDeathID) {
+
+        PlayerDeath death = new PlayerDeath();
+        death.PlayerDeathId = playerDeathID;
+
+        for(int i = 1; i < GameManager.instance.numPlayers + 1; i++) {
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            SendClient(death);
+
+        }
+    }
+
 
     public void SendChangeScene(string SceneName)
     {
@@ -714,10 +732,11 @@ public class Server : MonoBehaviour
         //Need to inform all players that someone is under attack by the AI
         //IsTarget specifies which player actually is the target
 
-
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             AiAttacks ai = new AiAttacks();
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
             ai.TargetID = targetPlayer;
             ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
@@ -817,7 +836,7 @@ public class Server : MonoBehaviour
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(traitor);
@@ -1143,6 +1162,25 @@ public class Server : MonoBehaviour
 
     #region Client Received Messages
 
+    private void RecievedPlayerDeath(int conID, int chanID, int rHostID, PlayerDeath death) {
+
+        if(death.PlayerDeathId == ClientManager.instance.playerID) {
+
+            ClientUIManager.instance.DeathPanel.SetActive(true);
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
+        }
+        else {
+
+            ClientUIManager.instance.DeathNotificationPanel.SetActive(true);
+            ClientUIManager.instance.DeathNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(death.PlayerDeathId).PlayerName + " has been eliminated from the game.";
+
+
+        }
+
+
+    }
+
+
     private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene)
     {
 
@@ -1159,6 +1197,7 @@ public class Server : MonoBehaviour
         {
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
              Handheld.Vibrate();
 #endif
@@ -1173,6 +1212,7 @@ public class Server : MonoBehaviour
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1196,6 +1236,7 @@ public class Server : MonoBehaviour
             CharacterSelectUIManager charSelect = Canvas.GetComponent<CharacterSelectUIManager>();
             charSelect.SetErrorText("Please Select Another Character.");
             charSelect.ResetCharacterSelection();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1329,6 +1370,8 @@ public class Server : MonoBehaviour
         Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
         Handheld.Vibrate();
 #endif
@@ -1369,6 +1412,8 @@ public class Server : MonoBehaviour
            AbilityManager.instance.DisplayActiveAbility();
 
         }
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
     }
 
     /// <summary>
@@ -1400,6 +1445,7 @@ public class Server : MonoBehaviour
             //GameManager.COMBAT_DAMAGE.
 
             InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1459,7 +1505,8 @@ public class Server : MonoBehaviour
         }
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().loserID = combatWinner.LoserID;
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().losersItems = loserInventory;
-      
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
@@ -1469,7 +1516,7 @@ public class Server : MonoBehaviour
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You lost to " + ClientManager.instance.GetPlayerData(combatLoser.WinnerID).PlayerName;
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
     }
 
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
@@ -1625,7 +1672,6 @@ public class Server : MonoBehaviour
 
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
-        Debug.Log("Recieved Attack");
 
         if (aiAttacks.IsTarget)
         {
@@ -1636,6 +1682,8 @@ public class Server : MonoBehaviour
 
             ClientUIManager.instance.interactionPanel.SetActive(true);
             ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().AIATTACK();
+
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
 #if UNITY_ANDROID
             Handheld.Vibrate();
 #endif
@@ -1644,7 +1692,7 @@ public class Server : MonoBehaviour
         {
             //Need to display which player is under attack using aiAttacks.targetID
             ClientUIManager.instance.attackSurgePanel.SetActive(true);
-            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerData[aiAttacks.TargetID].PlayerName + " is under attack from the AI!";
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(aiAttacks.TargetID).PlayerName + " is under attack from the AI!";
         }
     }
 
@@ -1655,6 +1703,7 @@ public class Server : MonoBehaviour
             //Display that the player won the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerText.GetComponent<TextMeshProUGUI>().text = "You Won Against the AI";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
 
         }
         else
@@ -1662,7 +1711,7 @@ public class Server : MonoBehaviour
             //Display that they lost the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You Lost. -1 Health";
-            
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1942,7 +1991,7 @@ public class Server : MonoBehaviour
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.connectSound);
 
 
     }
@@ -1977,6 +2026,7 @@ public class Server : MonoBehaviour
 
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.playerID, false);
+                    SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
                     if (GameManager.instance.activePlayer > 0)
                     {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
@@ -2335,6 +2385,7 @@ public class Server : MonoBehaviour
         defenderSpec = GameManager.SpecScores.Default;
 
         //Need to display the state of the combat on the main screen
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
 
         //Stores the target player ID to attack later
         defenderID = attack.TargetPlayer;
@@ -2405,7 +2456,8 @@ public class Server : MonoBehaviour
         Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
-        
+
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
         switch (GameManager.instance.CurrentVictory)
         {
@@ -2616,7 +2668,7 @@ public class Server : MonoBehaviour
 
     private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
 
-        Server.Instance.SendSurge();
+       SendSurge();
 
     }
 

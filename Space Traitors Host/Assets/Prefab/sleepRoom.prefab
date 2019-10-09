@@ -23,9 +23,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967474385476698631}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.411726, y: 4.6642017, z: 30.317081}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalRotation: {x: -0.0028217288, y: 0.0077630663, z: -0.002818985, w: 0.9999619}
+  m_LocalPosition: {x: 15.445019, y: 4.693568, z: 30.364626}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2743920500273025160}
   - {fileID: 5732205300715093996}
@@ -41,7 +41,7 @@ Transform:
   - {fileID: 5732205300199650400}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.321, y: 0.89100003, z: -0.326}
 --- !u!1 &5732205299836994879
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5732205299836994879}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.94172573, y: 11.075798, z: -6.137081}
+  m_LocalPosition: {x: -0.94, y: 4.32, z: -6.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5653753849354239394}
@@ -343,7 +343,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5732205301688224406}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.1, y: 11.555798, z: 3.6729202}
+  m_LocalPosition: {x: -11.221725, y: 11.555798, z: 3.6729202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5653753849354239394}
@@ -760,16 +760,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4099826639193020402, guid: c4e2434027bc64431949049cb50648d6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 4735233463807015327, guid: c4e2434027bc64431949049cb50648d6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.327
-      objectReference: {fileID: 0}
     - target: {fileID: 7847381732951663290, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -777,20 +767,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7b58ccf6ed3274526bbd62f19e0826ec, type: 2}
     - target: {fileID: 7847381731497995786, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4fbb7f4bf40b64d3aae7f0e0bfdb42fe, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4099826639195444498, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4fbb7f4bf40b64d3aae7f0e0bfdb42fe, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4735233463809440639, guid: c4e2434027bc64431949049cb50648d6,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3f926e29d8bb34248836af943de49ed5, type: 2}
-    - target: {fileID: 8997932987103469433, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -805,16 +790,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4fbb7f4bf40b64d3aae7f0e0bfdb42fe, type: 2}
-    - target: {fileID: 5661891654687914701, guid: c4e2434027bc64431949049cb50648d6,
+    - target: {fileID: 8997932987103469433, guid: c4e2434027bc64431949049cb50648d6,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5661891654687914701, guid: c4e2434027bc64431949049cb50648d6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.311
-      objectReference: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f926e29d8bb34248836af943de49ed5, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4e2434027bc64431949049cb50648d6, type: 3}
 --- !u!4 &2743920500273025160 stripped

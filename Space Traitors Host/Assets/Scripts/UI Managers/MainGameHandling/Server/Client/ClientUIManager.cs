@@ -43,6 +43,9 @@ public class ClientUIManager : MonoBehaviour
     public GameObject openingInstructions;
     public GameObject instructionPanels;
 
+    public GameObject DeathPanel;
+    public GameObject DeathNotificationPanel;
+
     public GameObject pauseMenu;
 
     public static ClientUIManager instance = null;
@@ -147,11 +150,12 @@ public class ClientUIManager : MonoBehaviour
         ResultsPanel.SetActive(true);
         if (result)
         {
-
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
             ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
         }
         else
         {
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
             ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Failed";
         }
     }
@@ -328,6 +332,12 @@ public class ClientUIManager : MonoBehaviour
 
         }
        
+    }
+
+    public void SendSurge() {
+
+        InteractionManager.instance.EndAttack();
+
     }
 
     /// <summary>
