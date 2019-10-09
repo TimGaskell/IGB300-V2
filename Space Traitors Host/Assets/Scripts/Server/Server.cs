@@ -2052,11 +2052,11 @@ public class Server : MonoBehaviour
                     if (GameManager.instance.activePlayer > 0)
                     {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
+                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
                     }
 
                     if (charSetup != null)
                     {
-                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
                         charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
                     }
                     else
@@ -2305,7 +2305,7 @@ public class Server : MonoBehaviour
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-               
+                CameraSystem.instance.ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
             }
         }
     }

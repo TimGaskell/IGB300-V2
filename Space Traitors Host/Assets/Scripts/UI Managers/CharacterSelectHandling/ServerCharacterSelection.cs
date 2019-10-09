@@ -16,6 +16,10 @@ public class ServerCharacterSelection : MonoBehaviour {
 
     public Character.CharacterTypes tempCharacterType;
 
+    //Timer Variables
+    private float time = 5;
+    private bool timer = false;
+
     private void Start() {
         if (GameManager.instance.serverActive) {
             serverActivePanel.SetActive(true);
@@ -38,12 +42,22 @@ public class ServerCharacterSelection : MonoBehaviour {
     private void Update() {
         
         if(GameManager.instance.activePlayer == 0) {
+            //Start countdown timer when all characters are chosen, allowing final animation to play out
+            timer = true;
+        }
 
+        if (timer)
+        {
+            time -= Time.deltaTime;
+        }
+
+        //Timer countdown finished- change scene
+        if (time <= 0)
+        {
             //Send message to every player's client to move onto next scene
             Server.Instance.SendChangeScene("Client GameLevel");
             //Change to the character select
             SceneManager.LoadScene("Server GameLevel");
-
         }
     }
 
