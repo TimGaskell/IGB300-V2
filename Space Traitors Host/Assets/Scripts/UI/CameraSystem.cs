@@ -2,10 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraSystem : MonoBehaviour
 {
+    public Vector3 defaultOffset;
+    public Vector3 zoomOffset;
+    public float smoothSpeed = 0.125f;
     private float defaultPos_X, defaultPos_Y, defaultPos_Z;
+    
     public float cameraSpeed = 350;
     private float newPos_X, newPos_Y, newPos_Z;
     private bool zoomedIn = false;
@@ -13,7 +18,8 @@ public class CameraSystem : MonoBehaviour
     public float ZoomInLevel_Y = 460;
     public float ZoomInLevel_Z = 250;
 
-    public GameObject testObject;
+    [FormerlySerializedAs("testObject")] public GameObject target;
+    public GameObject DefaultTarget;
 
     public static CameraSystem instance;
 
@@ -34,23 +40,17 @@ public class CameraSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Get default positions of camera to zoom out to later
-        defaultPos_X = transform.position.x;
-        defaultPos_Y = transform.position.y;
-        defaultPos_Z = transform.position.z;
-
-        //newPos_Y takes the default y axis of the camera into consideration
-        newPos_Y = transform.position.y;
+        
 
         //Used for testing the zoom
-        if (testObject != null)
+        if (target != null)
         {
-            ZoomIn(testObject);
+            ZoomIn(target);
         }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //switch (GameManager.instance.currentPhase)
         //{
@@ -89,14 +89,13 @@ public class CameraSystem : MonoBehaviour
     public void ZoomIn(GameObject playerObject)
     { 
         zoomedIn = true;
-        newPos_Z = transform.position.z + playerObject.transform.position.z + ZoomInLevel_Z;
-        newPos_Y = transform.position.y - ZoomInLevel_Y;
-        newPos_X = playerObject.transform.position.x;
+        target = playerObject;
     }
 
     //Call ZoomOut from another script to have the camera return to its original position
     public void ZoomOut()
     {
+        target = DefaultTarget;
         zoomedIn = false;
     }
 
@@ -105,67 +104,20 @@ public class CameraSystem : MonoBehaviour
     private void CameraZoomIn()
     {
         //Y Axis
-        if ((transform.position.y > newPos_Y))
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y - cameraSpeed * Time.deltaTime, transform.position.z);
-        }
+        Vector3 desiredPosition = target.transform.position + zoomOffset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
 
-        //Z Axis
-        if ((transform.position.z < newPos_Z))
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + cameraSpeed * Time.deltaTime);
-        }
-
-        //Determine if camera is left or right to player
-        if (newPos_X > defaultPos_X)
-        {
-            //X Axis
-            if (transform.position.x < newPos_X)
-            {
-                transform.position = new Vector3(transform.position.x + cameraSpeed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
-        }
-        else
-        {
-            //X Axis
-            if (transform.position.x > newPos_X)
-            {
-                transform.position = new Vector3(transform.position.x - cameraSpeed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
-        }
+        transform.LookAt(target.transform);
     }
 
     private void CameraZoomOut()
     {
-        //Y Axis
-        if ((transform.position.y < defaultPos_Y))
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y + cameraSpeed * Time.deltaTime, transform.position.z);
-        }
+        Vector3 desiredPosition = target.transform.position + defaultOffset;
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
 
-        //Z Axis
-        if ((transform.position.z > defaultPos_Z))
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - cameraSpeed * Time.deltaTime);
-        }
-
-        //Determine if camera is left or right to player
-        if (newPos_X < defaultPos_X)
-        {
-            //X Axis
-            if (transform.position.x < defaultPos_X)
-            {
-                transform.position = new Vector3(transform.position.x + cameraSpeed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
-        }
-        else
-        {
-            //X Axis
-            if (transform.position.x > defaultPos_X)
-            {
-                transform.position = new Vector3(transform.position.x - cameraSpeed * Time.deltaTime, transform.position.y, transform.position.z);
-            }
-        }
+        transform.LookAt(target.transform);
     }
 
 }
