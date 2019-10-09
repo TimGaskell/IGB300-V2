@@ -437,6 +437,9 @@ public class Server : MonoBehaviour
             case NetOP.TraitorVictory:
                 GetTraitorVictory(conID, chanID, rHostID, (TraitorVictory)msg);
                 break;
+            case NetOP.SendPlayerItems:
+                SyncClientItems(conID, chanID, rHostID, (SendPlayerItems)msg);
+                break;
 
         }
     }
@@ -870,17 +873,31 @@ public class Server : MonoBehaviour
         playerData.ModTech = player.GetModdedSpecScore(GameManager.SpecScores.Tech);
         playerData.ModCharm = player.GetModdedSpecScore(GameManager.SpecScores.Charm);
 
-        //playerData.Items = new List<int>();
-        //playerData.ItemEquipped = new List<bool>();
-
-        //foreach (Item item in player.items)
-        //{
-        //    playerData.Items.Add((int)item.ItemType);
-        //    playerData.ItemEquipped.Add(item.isEquipped);
-        //}
+        
 
         SendClient(playerData);
         Debug.Log("send data to" + tempPlayerID);
+
+        SendItems(playerID, player);
+    }
+
+
+    public void SendItems(int PlayerID, Player player) {
+
+        SendPlayerItems playerItems = new SendPlayerItems();
+        tempPlayerID = PlayerID;
+
+        playerItems.Items = new List<int>();
+        playerItems.ItemEquipped = new List<bool>();
+
+        foreach (Item item in player.items) {
+            playerItems.Items.Add((int)item.ItemType);
+            playerItems.ItemEquipped.Add(item.isEquipped);
+        }
+
+        SendClient(playerItems);
+        Debug.Log("Sent Player items to " + tempPlayerID);
+
     }
 
     public void SendRoomCost(int playerID, int RoomCost , int scrapReturn)
@@ -1269,11 +1286,16 @@ public class Server : MonoBehaviour
         ClientManager.instance.modTech = playerData.ModTech;
         ClientManager.instance.modCharm = playerData.ModCharm;
 
-        //for (int itemIndex = 0; itemIndex < playerData.Items.Count; itemIndex++)
-        //{
-        //    ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerData.Items[itemIndex]));
-        //    ClientManager.instance.inventory[itemIndex].isEquipped = playerData.ItemEquipped[itemIndex];
-        //}
+      
+    }
+
+    private void SyncClientItems(int conID, int chanID, int rHostID, SendPlayerItems playerItems) {
+
+        for (int itemIndex = 0; itemIndex < playerItems.Items.Count; itemIndex++) {
+            ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerItems.Items[itemIndex]));
+            ClientManager.instance.inventory[itemIndex].isEquipped = playerItems.ItemEquipped[itemIndex];
+        }
+
     }
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
