@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MovementManager : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class MovementManager : MonoBehaviour
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[i];
             Debug.Log(room.name);
-            room.transform.GetChild(1).gameObject.SetActive(true);
+            room.transform.GetChild(4).gameObject.SetActive(true);
 
         }
 
@@ -73,18 +74,21 @@ public class MovementManager : MonoBehaviour
 
     public void SetCost() {
 
-        CostText.GetComponent<Text>().text = "Cost: " + roomCost;
+        CostText.GetComponent<TextMeshProUGUI>().text = "AP Cost: " + roomCost;
             
 
     }
     public void SetRoom() {
 
-        MoveToText.GetComponent<Text>().text = "Move to " + GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[roomID];
+        string roomName = GameManager.instance.roomList.transform.GetChild(roomID).GetComponent<Room>().roomType.ToString();
+        roomName.Replace("_", " ");
+
+        MoveToText.GetComponent<TextMeshProUGUI>().text = "Move to " + roomName;
 
     }
     public void SetScrap() {
 
-        ScrapReturnText.GetComponent<Text>().text = "Scrap return: " + scrapReturn;
+        ScrapReturnText.GetComponent<TextMeshProUGUI>().text = "Scrap return: " + scrapReturn;
 
     }
 

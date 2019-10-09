@@ -34,17 +34,25 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject corruptionBar;
     public GameObject scrapTracker;
+    public GameObject healthTracker;
     public GameObject characterPortrait;
 
     public GameObject inventoryPanel;
+    public GameObject TraitorSelection;
 
+    public GameObject openingInstructions;
+    public GameObject instructionPanels;
+
+    public GameObject DeathPanel;
+    public GameObject DeathNotificationPanel;
+
+    public GameObject pauseMenu;
 
     public static ClientUIManager instance = null;
 
     // Start is called before the first frame update
     void Start()
     {
-
         GameManager.instance.roomList = GameObject.Find("Rooms");
         instance = this;
 
@@ -68,6 +76,21 @@ public class ClientUIManager : MonoBehaviour
         sabotagePanel.SetActive(false);
         inventoryPanel.SetActive(false);
         DisplayCurrentPhase();
+
+        openingInstructions.SetActive(true);
+        instructionPanels.SetActive(false);
+
+        pauseMenu.SetActive(false);
+
+        GameObject[] UIItems = GameObject.FindGameObjectsWithTag("MapItemIcons");
+
+        foreach (GameObject UIItem in UIItems) {
+
+
+            UIItem.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+
     }
 
     // Update is called once per frame
@@ -101,7 +124,7 @@ public class ClientUIManager : MonoBehaviour
         UpdateComponentTracker();
         corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
-
+        healthTracker.GetComponent<HealthBarManager>().UpdateHealthPoints();
     }
 
 
@@ -127,11 +150,12 @@ public class ClientUIManager : MonoBehaviour
         ResultsPanel.SetActive(true);
         if (result)
         {
-
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
             ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
         }
         else
         {
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
             ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Failed";
         }
     }
@@ -162,6 +186,17 @@ public class ClientUIManager : MonoBehaviour
         //Disable corruption bar and scrap tracker when inventory is open
         corruptionBar.SetActive(!inventoryOpen);
         scrapTracker.SetActive(!inventoryOpen);
+    }
+
+    public void OpenInstructionPanel()
+    {
+        instructionPanels.SetActive(true);
+        instructionPanels.GetComponent<InstructionPanelHandler>().OpenNextInstructionPanel();
+    }
+
+    public void SetPauseMenu()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
     }
 
     #region Server Handling
@@ -195,7 +230,8 @@ public class ClientUIManager : MonoBehaviour
             case (GameManager.TurnPhases.ActionPoints):
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
-                RollActionPoints.instance.ResetRoll();
+                //RollActionPoints.instance.ResetRoll();
+                actionPointPanel.transform.Find("ActionRollerNew").GetComponent<ActionPointRollManager>().ResetRoller();
                 break;
             case (GameManager.TurnPhases.Movement):
                 actionPointPanel.SetActive(false);
@@ -298,6 +334,12 @@ public class ClientUIManager : MonoBehaviour
        
     }
 
+    public void SendSurge() {
+
+        InteractionManager.instance.EndAttack();
+
+    }
+
     /// <summary>
     /// 
     /// Return to the main menu
@@ -305,7 +347,7 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        SceneManager.LoadScene(GameManager.MainMenuScene);
+        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
     }
 
     /// <summary>
@@ -383,31 +425,31 @@ public class ClientUIManager : MonoBehaviour
 
         string objectiveText;
 
-        if (ClientManager.instance.isTraitor)
-        {
-            if (ClientManager.instance.CheckComponentInstalled())
-            {
-                objectiveText = "The others have repaired the escape shuttle. Stop them from escaping!";
-            }
-            else
-            {
-                objectiveText = "Find the other robots and eliminate them! Don't let them repair the shuttle!";
-            }
+        //if (ClientManager.instance.isTraitor)
+        //{
+        //    if (ClientManager.instance.CheckComponentInstalled())
+        //    {
+        //        objectiveText = "The others have repaired the escape shuttle. Stop them from escaping!";
+        //    }
+        //    else
+        //    {
+        //        objectiveText = "Find the other robots and eliminate them! Don't let them repair the shuttle!";
+        //    }
                 
-        }
-        else
-        {
-            if (ClientManager.instance.CheckComponentInstalled())
-            {
-                objectiveText = "All components installed. Get to the Shuttle!";
-            }
-            else
-            {
-                objectiveText = "Find the components and return them to the escape shuttle.";
-            }
-        }
+        //}
+        //else
+        //{
+        //    if (ClientManager.instance.CheckComponentInstalled())
+        //    {
+        //        objectiveText = "All components installed. Get to the Shuttle!";
+        //    }
+        //    else
+        //    {
+        //        objectiveText = "Find the components and install them on the escape shuttle.";
+        //    }
+        //}
 
-        componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
+        //componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
     }
 
 

@@ -136,7 +136,7 @@ public class SecretPaths : Ability
     public SecretPaths()
     {
         abilityType = AbilityTypes.Secret_Paths;
-        abilityDescription = "Reduce action point cost of all paths by 1 for a player on their next turn.";
+        abilityDescription = "On this turn move to any room in the map without spending action points.";
 
         scrapCost = 6;
         corruptionRequirement = 0;
@@ -146,17 +146,21 @@ public class SecretPaths : Ability
     {
         SpendScrap();
 
-        PlayerMovement.instance.SecretPathActivated = true;
-
+       
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
+
+        Debug.Log("Activated On " + GameManager.instance.GetPlayer(targetIndex).playerName);
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).CheckActiveAbility(Ability.AbilityTypes.Secret_Paths));
+        Debug.Log(GameManager.instance.GetPlayer(targetIndex).activeAbilitys[0]);
+
         Debug.Log("shh its a secret");
     }
 
     public override void Deactivate()
     {
 
-        PlayerMovement.instance.SecretPathActivated = false;
-        GameManager.instance.GetActivePlayer().AssignActiveAbility(null);
+
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
 
         Debug.Log("secret path is no longer on");
     }
@@ -186,6 +190,7 @@ public class PowerBoost : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Brawn Before : " + GameManager.instance.GetPlayer(targetIndex).brawnModTemp);
         GameManager.instance.GetPlayer(targetIndex).brawnModTemp += SPEC_MOD;
         GameManager.instance.GetPlayer(targetIndex).skillModTemp += SPEC_MOD;
         GameManager.instance.GetPlayer(targetIndex).techModTemp += SPEC_MOD;
@@ -193,15 +198,19 @@ public class PowerBoost : Ability
 
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("beefed up");
+        Debug.Log("Brawn after : " + GameManager.instance.GetPlayer(targetIndex).brawnModTemp);
     }
 
     public override void Deactivate()
     {
-        GameManager.instance.GetActivePlayer().brawnModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().skillModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().techModTemp -= SPEC_MOD;
-        GameManager.instance.GetActivePlayer().charmModTemp -= SPEC_MOD;
+        Debug.Log("Brawn before : " + GameManager.instance.GetActivePlayer().brawnModTemp);
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).brawnModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).skillModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).techModTemp -= SPEC_MOD;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).charmModTemp -= SPEC_MOD;
         Debug.Log("beefed down");
+        Debug.Log("Brawn after : " + GameManager.instance.GetActivePlayer().brawnModTemp);
     }
 }
 #endregion
@@ -264,8 +273,11 @@ public class EncouragingSong : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Corruption Before : " + GameManager.instance.GetPlayer(targetIndex).Corruption);
         GameManager.instance.GetPlayer(targetIndex).Corruption -= CORRUPTION_MOD;
-        if(GameManager.instance.GetPlayer(targetIndex).Corruption < 0) {
+        Debug.Log("Corruption Before : " + GameManager.instance.GetPlayer(targetIndex).Corruption);
+
+        if (GameManager.instance.GetPlayer(targetIndex).Corruption < 0) {
 
             GameManager.instance.GetPlayer(targetIndex).Corruption = 0;
         }
@@ -294,14 +306,75 @@ public class MuddleSensors : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
-        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>() != null) {
+
+            Debug.Log("This happens");
+            
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+            Debug.Log(Mesh.Length);
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+
+           
+        }
+
+        if(GameManager.instance.GetPlayer(targetIndex).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(targetIndex).playerObject.SetActive(false);
+
+        }
+
+        if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            Debug.Log(Mesh.Length);
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = false;
+            }
+
+        }
+
+       
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("Goin invisable");
     }
 
     public override void Deactivate()
     {
-        GameManager.instance.GetActivePlayer().playerObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentInChildren<SkinnedMeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (SkinnedMeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = true;
+            }
+
+        }
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
+
+            Component[] Mesh = GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponentsInChildren<MeshRenderer>();
+
+            foreach (MeshRenderer meshRenderer in Mesh) {
+
+                meshRenderer.enabled = true;
+            }
+
+        }
+
+        if (GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).Character.CharacterType == Character.CharacterTypes.Engineer) {
+
+            GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.SetActive(true);
+
+        }
+
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }
 }
@@ -343,9 +416,12 @@ public class SensorScan : Ability
         //Gets the rooms which are adjacent to the active player
         List<Room> adjacentRooms = GameManager.instance.GetAdjacentRooms(GameManager.instance.GetActivePlayer().roomPosition);
 
+        Debug.Log(GameManager.instance.GetActivePlayer().roomPosition);
+
         //Checks each room
         foreach (Room room in adjacentRooms)
         {
+
             //Checks each choice
             foreach (Choice choice in room.roomChoices)
             {
@@ -357,7 +433,9 @@ public class SensorScan : Ability
                     roomIDs.Add(room.roomIndex);
                     //Breaks from the choice loop since if one of the choices contains the resource, the room must contain that resource
                     //and don't need to check any other choices.
+                    Debug.Log("Room Id: " + room.roomIndex);
                     break;
+                    
                 }
             }
         }
@@ -442,8 +520,10 @@ public class SuperCharge : Ability
     public override void Activate(int targetIndex)
     {
         SpendScrap();
+        Debug.Log("Health Before : " + GameManager.instance.GetPlayer(targetIndex).maxLifePoints);
         GameManager.instance.GetPlayer(targetIndex).maxLifePoints += LIFE_MOD;
         GameManager.instance.GetPlayer(targetIndex).ChangeLifePoints(LIFE_MOD);
+        Debug.Log("Health After : " + GameManager.instance.GetPlayer(targetIndex).maxLifePoints);
     }
 }
 #endregion

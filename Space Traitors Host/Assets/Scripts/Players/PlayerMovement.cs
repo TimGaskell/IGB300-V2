@@ -16,7 +16,6 @@ public class PlayerMovement : Navigation
 
     //Player Variables
     public GameObject Player;
-    public bool SecretPathActivated = false;
 
     //Button variables
     private GameObject SelectedRoom;
@@ -82,14 +81,15 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-                //If its at the end of the path look off to the side
-                Player.transform.Rotate(0, 145, 0, Space.Self);
+                Player.transform.Rotate(0, 0, 0, Space.World);
 
-               
+
 
                 if (ServerVersion) {
                     GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
+                    //If its at the end of the path look off to the side
+                    Player.transform.Rotate(0, 145, 0, Space.Self);
                 }
 
                 //Return to idle animation

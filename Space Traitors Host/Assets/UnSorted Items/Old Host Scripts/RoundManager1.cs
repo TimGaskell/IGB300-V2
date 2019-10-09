@@ -89,7 +89,7 @@ public class RoundManager : MonoBehaviour
             Round++;
             AI.GetComponent<AiPower>().incrementAIPower();
 
-            sfxManager.PlayRoundEnd();
+            //sfxManager.PlayRoundEnd();
         }
     }
 

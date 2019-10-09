@@ -101,10 +101,16 @@ public class Player
 
     private List<Ability> abilities;
     //If an abilities effects persist beyond the turn they are used in, will store the ability hear to deactivate at the start of their next turn
-    public Ability activeAbility;
+    public List<Ability> activeAbilitys;
+    public int PreviousTarget = 0;
+    public Ability PreviousAbility;
+    public bool activeThisTurn;
+    public int ScrapReturn;
 
     //Reference to the players model in the game world
     public GameObject playerObject;
+
+    public List<Tuple<string,int,int>> itemLocations;
 
 
     public Player(int PlayerID, string PlayerName)
@@ -114,8 +120,8 @@ public class Player
 
         roomPosition = STARTING_ROOM_ID;
 
-        scrap = 100;
-        corruption = 100;
+        scrap = 0;
+        corruption = 0;
 
         items = new List<Item>();
 
@@ -134,7 +140,7 @@ public class Player
         isRevealed = false;
 
         abilities = new List<Ability>();
-        activeAbility = new Ability();
+        activeAbilitys = new List<Ability>();
 
         playerObject = null;
     }
@@ -180,7 +186,20 @@ public class Player
         //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
         if (IsDead)
         {
+            Debug.Log("Dead");
+
+            Server.Instance.SendPlayerDeath(playerID);
+            GameManager.instance.numPlayers -= 1;
+
+            ReturnItems();
+
+            GameManager.instance.playerOrder.Remove(playerID);
+            GameManager.instance.players.Remove(this);
+
             GameManager.instance.CheckTraitorVictory();
+
+
+
         }
     }
 
@@ -282,7 +301,8 @@ public class Player
     /// <param name="ability"></param>
     public void AssignActiveAbility(Ability ability)
     {
-        activeAbility = ability;
+
+        activeAbilitys.Add(ability);
     }
 
     /// <summary>
@@ -294,7 +314,10 @@ public class Player
     /// <returns>True if the active ability is of this type. False otherwise</returns>
     public bool CheckActiveAbility(Ability.AbilityTypes abilityType)
     {
-        return activeAbility.abilityType == abilityType;
+
+        return activeAbilitys.Contains(GetAbility(abilityType));
+
+       
     }
 
     /// <summary>
@@ -302,13 +325,15 @@ public class Player
     /// Deactivate any active abilities a player may have
     /// 
     /// </summary>
-    public void DisableActiveAbility()
+    public void DisableActiveAbility(Ability ability)
     {
-        if(!CheckActiveAbility(Ability.AbilityTypes.Default))
-        {
-            activeAbility.Deactivate();
-            AssignActiveAbility(new Ability());
-        }
+
+        Debug.Log("THIS ABILITY IS " + ability.ToString());     
+        ability.Deactivate();
+
+          
+
+        
     }
     #endregion
 
@@ -412,6 +437,26 @@ public class Player
     {
         items[itemIndex].ReturnItem();
         RemoveItem(itemIndex);
+    }
+
+    public void ReturnItems() {
+
+        foreach (Tuple<string,int,int> item in itemLocations) {
+
+            Room ItemsRoom = GameManager.instance.GetRoom(item.Item2);
+
+            if (item.Item1 == "Component") {
+
+                hasComponent = false;
+                ItemsRoom.roomChoices[item.Item3].disabled = false;
+
+            }
+            else {
+
+                ItemsRoom.roomChoices[item.Item3].disabled = false;
+
+            }
+        }
     }
 
     #endregion

@@ -12,6 +12,7 @@ public class AbilityManager : MonoBehaviour
     public List<GameObject> abilityButtons;
     public List<Sprite> abilityImages;
     public GameObject selectedText;
+    public GameObject descriptionText;
     public GameObject selectButton;
 
     private Ability selectedAbility;
@@ -54,6 +55,7 @@ public class AbilityManager : MonoBehaviour
         abilityInfoText.SetActive(false);
 
         selectedText.GetComponent<TextMeshProUGUI>().text = "";
+        descriptionText.GetComponent<TextMeshProUGUI>().text = "";
         selectButton.GetComponent<Button>().interactable = false;
 
         abilityActiveDisplay.SetActive(false);
@@ -69,7 +71,7 @@ public class AbilityManager : MonoBehaviour
             Ability currentAbility = ClientManager.instance.abilities[counter];
 
             Debug.Log("Ability " + ClientManager.instance.abilities[counter]);
-            abilityButton.GetComponent<Button>().interactable = true;
+            //abilityButton.GetComponent<Button>().interactable = true;
             
             abilityButton.GetComponent<AbilityButtonComponents>().abilityNameText.GetComponent<TextMeshProUGUI>().text = currentAbility.AbilityName;
             abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().text = string.Format("{0}%", currentAbility.corruptionRequirement.ToString());
@@ -84,7 +86,7 @@ public class AbilityManager : MonoBehaviour
             }
             else
             {
-                abilityButton.GetComponent<Button>().interactable = false;
+                //abilityButton.GetComponent<Button>().interactable = false;
                 abilityButton.GetComponent<AbilityButtonComponents>().scrapText.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
 
@@ -94,7 +96,7 @@ public class AbilityManager : MonoBehaviour
             }
             else
             {
-                abilityButton.GetComponent<Button>().interactable = false;
+                //abilityButton.GetComponent<Button>().interactable = false;
                 abilityButton.GetComponent<AbilityButtonComponents>().corruptionText.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
 
@@ -114,7 +116,10 @@ public class AbilityManager : MonoBehaviour
         selectedAbility = ClientManager.instance.abilities[buttonID];
         Debug.Log(selectedAbility.AbilityName);
         selectedText.GetComponent<TextMeshProUGUI>().text = selectedAbility.AbilityName;
-        selectButton.GetComponent<Button>().interactable = true;
+        descriptionText.GetComponent<TextMeshProUGUI>().text = selectedAbility.abilityDescription;
+
+        //Disables the selection of the ability if the player does not have enough scrap or enough corruption
+        selectButton.GetComponent<Button>().interactable = CheckScrap[buttonID] && CheckCorruption[buttonID];
     }
 
     /// <summary>
@@ -272,5 +277,37 @@ public class AbilityManager : MonoBehaviour
         abilityActiveDisplay.SetActive(true);
         abilityActiveDisplay.GetComponent<ActiveAbilityDisplayClient>().UpdateActiveText(selectedAbility);
        
+    }
+
+    public void DisplayMapIcons(List<int> Ids, int resourceType) {
+
+
+        foreach(int id in Ids) {
+
+            Debug.Log(id);
+
+            GameObject RoomManager = GameObject.FindGameObjectWithTag("RoomList");
+            GameObject Room = RoomManager.GetComponent<WayPointGraph>().graphNodes[id];
+
+            if(resourceType == (int)Ability.ScanResources.Items) {
+
+                Room.transform.GetChild(2).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            else if (resourceType == (int)Ability.ScanResources.Scrap) {
+
+                Room.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            else if (resourceType == (int)Ability.ScanResources.Components) {
+
+                Room.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+
+
+        }
+
+
     }
 }

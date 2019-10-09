@@ -9,7 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: barWall
   m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _USECOLORMAP_ON _USEMETALLICMAP_ON _USENORMALMAP_ON _USEROUGHNESSMAP_ON
+  m_ShaderKeywords: _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP _SPECGLOSSMAP _USECOLORMAP_ON
+    _USEMETALLICMAP_ON _USENORMALMAP_ON _USEROUGHNESSMAP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 7ea614420c97446da92cd4edab607ffc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1514c74f46bdd4276b9888658e0cb061, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -40,11 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b4edf5f2033fc4a769022cd699dccb27, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2e81fbecbcd6844dc8c8d82961a62bab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 4c4ee0b4303524f7fb4ac88865eb0dea, type: 3}
+        m_Texture: {fileID: 2800000, guid: cef2e4ed2c03a4b4bbd4b8fb32b218df, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -52,11 +53,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2d7abd83d54c1447a9b324f41c21118f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 2800000, guid: 5d84069e8cf69404aaefc24c1f6c39f3, type: 3}
+        m_Texture: {fileID: 2800000, guid: beb0a74cb05314351be979c2a2a35a6f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:

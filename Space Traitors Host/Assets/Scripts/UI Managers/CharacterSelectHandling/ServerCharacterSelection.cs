@@ -88,13 +88,14 @@ public class ServerCharacterSelection : MonoBehaviour {
     /// Displays the ID and name of the player currently selecting their character on the Active Player Panel
     /// 
     /// </summary>
-    private void DisplayActivePlayer() {
+    public void DisplayActivePlayer() {
         //Find the active player in the game manager and displays its information
         Player activePlayer = GameManager.instance.GetActivePlayer();
         string playerID = activePlayer.playerID.ToString();
         string playerName = activePlayer.playerName;
+        Debug.Log(playerName);
 
-        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("{0}, {1}", playerID, playerName);
+        activePlayerPanel.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("{0}", playerName);
     }
 
     /// <summary>

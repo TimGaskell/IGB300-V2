@@ -45,10 +45,13 @@ public class GameManager : MonoBehaviour
     public readonly int MAX_PLAYERS = 4;
 
     public static GameManager instance = null;
+    public int ServerSize = 0;
 
     public int numPlayers;
-    private List<Player> players;
+    public List<Player> players;
     public List<int> playerOrder;
+
+    public List<Player> Deadplayers;
     //The active player is to identify which player is currently meant to be doing something. This is not related to the player ID and is
     //instead the index in the player order list
     public int activePlayer = 0;
@@ -105,8 +108,8 @@ public class GameManager : MonoBehaviour
 
     //Constants used to determine how many "dice" to roll when calculating action points and how many
     //"sides" the dice are to have
-    private const int AP_NUM_DICE = 2;
-    private const int AP_DICE_SIDES = 4;
+    public const int AP_NUM_DICE = 1;
+    public const int AP_DICE_SIDES = 4;
 
     //The conversion factor for a player when they have leftover action points
     private const float AP_CONVERSION = 0.5f;
@@ -184,6 +187,16 @@ public class GameManager : MonoBehaviour
     public Player GetActivePlayer()
     {
         return GetOrderedPlayer(activePlayer);
+    }
+
+    /// <summary>
+    /// 
+    /// Get the turn position of a particular player ID
+    /// 
+    /// </summary>
+    public int GetPlayerOrder(int playerID)
+    {
+        return playerOrder.Find(x => x == playerID) - 1;
     }
 
     /// <summary>
@@ -307,6 +320,7 @@ public class GameManager : MonoBehaviour
             if (scene.name == MainMenuScene)
             {
                 InitialiseGame();
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.menuMusic);
             }
             else if (scene.name == LobbyScene)
             {
@@ -326,6 +340,7 @@ public class GameManager : MonoBehaviour
                 Server.Instance.sendallCharacterTypes();
                 Server.Instance.sendAllPlayerNames();
                 StartGame();
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
             }
         }
@@ -483,6 +498,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void StartGame()
     {
+        ServerSize = numPlayers;
+
         //Reset variables to their default state
         activePlayer = 1;
         installedComponents = 0;
@@ -691,32 +708,50 @@ public class GameManager : MonoBehaviour
     public void IncrementTurn()
     {
         activePlayer++;
+<<<<<<< HEAD
         Debug.Log("Incremenet turn, Active player " + activePlayer);
 
         Player player = GetActivePlayer();
+=======
+>>>>>>> Reintergration
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers+ 1)
-        {
+        if (activePlayer == numPlayers + 1) {
             activePlayer = 1;
-            if (CheckNonTraitorVictory())
-            {
+            if (CheckNonTraitorVictory()) {
                 CurrentVictory = VictoryTypes.NonTraitor;
                 Server.Instance.SendNonTraitorVictory();
             }
-            else
-            {
+            else {
                 ActivateSurge();
             }
         }
-        else
-        {
-            //When the players turn starts, disables any active abilities they may have
-            GetActivePlayer().DisableActiveAbility();
+        else {
+
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility);
+
+            if (GetActivePlayer().PreviousTarget != 0) {
+                GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+
+                GetActivePlayer().PreviousTarget = 0;
+                GetActivePlayer().PreviousAbility = null;
+
+            }
+
+
+
+            Debug.Log("Incremenet turn, Active player " + activePlayer);
+
             currentPhase = TurnPhases.Default;
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
         }
+       
+
+  
+        
+
+       
     }
 
     public void EndRound() {
@@ -724,8 +759,6 @@ public class GameManager : MonoBehaviour
         ReadyPlayers++;
 
         if(ReadyPlayers == numPlayers) {
-
-
 
             Server.Instance.SendActivePlayer(GetActivePlayer().playerID);
             ReadyPlayers = 0;
@@ -806,6 +839,7 @@ public class GameManager : MonoBehaviour
             //Chooses a random target if the AI Power is at 100%. To update the UI will need to do a check in the UI Manager
             //to see if the target is not the default case
             targetPlayer = AIChooseTarget();
+            Debug.Log(targetPlayer);
 
             Server.Instance.SendAIAttack(targetPlayer);
         }
@@ -813,12 +847,23 @@ public class GameManager : MonoBehaviour
         //Test if a traitor needs to be selected, then picks a traitor if so, returning the new traitors ID
         if (IsTraitorSelected())
         {
+            Debug.Log("This is activated and a traitor has been selected ------------------------------------");
             newTraitor = ChooseTraitor();
+            Server.Instance.SendIsTraitor();
         }
 
         //Increase corruption for all traitors
         RoundCorruptionIncrease();
-       
+
+        if (GetActivePlayer().PreviousTarget != 0) {
+            Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility.abilityType);
+
+            GetPlayer(GetActivePlayer().PreviousTarget).DisableActiveAbility(GetActivePlayer().PreviousAbility);
+            GetActivePlayer().PreviousTarget = 0;
+            GetActivePlayer().PreviousAbility = null;
+
+        }
+
     }
 
     public float AIPowerIncrease()
@@ -974,6 +1019,7 @@ public class GameManager : MonoBehaviour
                     {
                         //Increase the traitor corruption and sets them as a traitor
                         AssignTraitor(player.playerID);
+                        Debug.Log("IsTraitorSelected");
                         return player.playerID;
                     }
                 }
@@ -1029,7 +1075,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerWin = false;
-            players[targetPlayer].ChangeLifePoints(COMBAT_DAMAGE);
+            GetPlayer(targetPlayer).ChangeLifePoints(COMBAT_DAMAGE);
         }
 
         //The AI attacks should get harder to beat every round, so this will increment after an attack (regardless of the player winning or losing the combat)
@@ -1158,33 +1204,25 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckTraitorVictory()
     {
-        foreach (Player player in players)
-        {
-            //Checks if the player is alive, skipping players which are dead
-            if (!player.IsDead)
-            {
-                //If the winner ID is the default (which is the case when the loop first begins), then sets the winner
-                //as the current alive player. If the current winner ID is not the default, this means another player has
-                //been set as the winner previously, as such, meaning there is more than one player alive and sets as the
-                //default ID then breaks from the loop (since the condition has already been fulfilled).
-                if (traitorWinID == DEFAULT_PLAYER_ID)
-                {
-                    traitorWinID = player.playerID;
-                }
-                else
-                {
-                    traitorWinID = DEFAULT_PLAYER_ID;
-                    break;
-                }
-            }
-        }
+        foreach (Player player in players) {
 
-        //If the script exits the above loop with the winner ID not being the default ID, this means there is only one player
-        //is alive, as such making them the victor
-        if (traitorWinID != DEFAULT_PLAYER_ID)
-        {
+            if(traitorWinID == DEFAULT_PLAYER_ID) {
+
+                traitorWinID = player.playerID;
+
+            }
+            else {
+                traitorWinID = DEFAULT_PLAYER_ID;
+
+            }
+
+            Debug.Log(traitorWinID);
+        }
+        if(traitorWinID != DEFAULT_PLAYER_ID) {
+
             CurrentVictory = VictoryTypes.Traitor;
         }
+       
     }
 
     #endregion
@@ -1215,6 +1253,7 @@ public class GameManager : MonoBehaviour
         {
             GetActivePlayer().hasComponent = false;
             installedComponents += 1;
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
             return true;
         }
         else
@@ -1250,7 +1289,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (Player player in players)
             {
-                if (!player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
+                if (!player.IsDead && !player.isTraitor && player.roomPosition != Player.STARTING_ROOM_ID)
                 {
                     return false;
                 }
@@ -1272,7 +1311,7 @@ public class GameManager : MonoBehaviour
     /// 
     /// </summary>
     /// <returns>The rolled number of action points</returns>
-    public int RollActionPoints()
+    public static int RollActionPoints()
     {
         int actionPointRoll = 0;
 

@@ -1,4 +1,4 @@
-using System.Collections;
+  using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -307,8 +307,7 @@ public class Server : MonoBehaviour
 
     private void OnData(int conID, int chanID, int rHostID, NetMessage msg)
     {
-        switch (msg.OperationCode)
-        {
+        switch (msg.OperationCode) {
             case NetOP.None:
                 Debug.Log("Unexpected NETOP");
                 break;
@@ -426,13 +425,22 @@ public class Server : MonoBehaviour
             case NetOP.AbilityActivated:
                 AbilityActivated(conID, chanID, rHostID, (AbilityActivated)msg);
                 break;
-                
+            case NetOP.AiAttacks:
+                GetAIAttack(conID, chanID, rHostID, (AiAttacks)msg);
+                break;
+            case NetOP.NumComponentsInstalled:
+                GetNumComponentsInstalled(conID, chanID, rHostID, (NumComponentsInstalled)msg);
+                break;
+            case NetOP.PlayerDeath:
+                RecievedPlayerDeath(conID, chanID, rHostID, (PlayerDeath)msg);
+                break;
+            case NetOP.TraitorVictory:
+                GetTraitorVictory(conID, chanID, rHostID, (TraitorVictory)msg);
+                break;
 
         }
-
-
-
     }
+
     //Not sure which sendClient to use
     public void SendClient(int recHost, int conID, NetMessage msg)
     {
@@ -501,6 +509,20 @@ public class Server : MonoBehaviour
     }
 
     #region Server Sent Messages
+
+    public void SendPlayerDeath(int playerDeathID) {
+
+        PlayerDeath death = new PlayerDeath();
+        death.PlayerDeathId = playerDeathID;
+
+        for(int i = 1; i < GameManager.instance.numPlayers + 1; i++) {
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            SendClient(death);
+
+        }
+    }
+
 
     public void SendChangeScene(string SceneName)
     {
@@ -710,10 +732,11 @@ public class Server : MonoBehaviour
         //Need to inform all players that someone is under attack by the AI
         //IsTarget specifies which player actually is the target
 
-
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             AiAttacks ai = new AiAttacks();
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
 
             ai.TargetID = targetPlayer;
             ai.IsTarget = (GameManager.instance.GetPlayer(i).playerID == targetPlayer);
@@ -813,7 +836,7 @@ public class Server : MonoBehaviour
         TraitorVictory traitor = new TraitorVictory();
         traitor.WinnerID = winnerID;
 
-        for (int i = 0; i < GameManager.instance.numPlayers; i++)
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(traitor);
@@ -860,25 +883,28 @@ public class Server : MonoBehaviour
         Debug.Log("send data to" + tempPlayerID);
     }
 
-    public void SendRoomCost(int playerID, int RoomCost)
+    public void SendRoomCost(int playerID, int RoomCost , int scrapReturn)
     {
 
         SendRoomCost roomCost = new SendRoomCost();
         tempPlayerID = playerID;
 
         roomCost.RoomCost = RoomCost;
+        roomCost.ScrapReturn = scrapReturn;
 
         SendClient(roomCost);
 
     }
 
-    public void SendAbilityActivated(int playerID, Ability.AbilityTypes abilityType, bool isTraitor)
+    public void SendAbilityActivated(int playerID, Ability.AbilityTypes abilityType, bool isTraitor, List<int>RoomIds, int resourceType)
     {
         AbilityActivated abilityActivated = new AbilityActivated();
         tempPlayerID = playerID;
 
         abilityActivated.AbilityType = (int)abilityType;
         abilityActivated.IsTraitor = isTraitor;
+        abilityActivated.RoomResourcesIDs = RoomIds;
+        abilityActivated.resourceType = resourceType;
 
         SendClient(abilityActivated);
     }
@@ -1136,6 +1162,25 @@ public class Server : MonoBehaviour
 
     #region Client Received Messages
 
+    private void RecievedPlayerDeath(int conID, int chanID, int rHostID, PlayerDeath death) {
+
+        if(death.PlayerDeathId == ClientManager.instance.playerID) {
+
+            ClientUIManager.instance.DeathPanel.SetActive(true);
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
+        }
+        else {
+
+            ClientUIManager.instance.DeathNotificationPanel.SetActive(true);
+            ClientUIManager.instance.DeathNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(death.PlayerDeathId).PlayerName + " has been eliminated from the game.";
+
+
+        }
+
+
+    }
+
+
     private void GetSceneChange(int conID, int chanID, int rHostID, SceneChange scene)
     {
 
@@ -1152,6 +1197,13 @@ public class Server : MonoBehaviour
         {
             GameObject Canvas = GameObject.Find("Canvas");
             Canvas.GetComponent<CharacterSelectUIManager>().DisplayActivePlayer();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
+#if UNITY_ANDROID
+             Handheld.Vibrate();
+#endif
+
+
+
         }
         else if (SceneManager.GetActiveScene().name == "Client GameLevel")
         {
@@ -1160,6 +1212,11 @@ public class Server : MonoBehaviour
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
+
 
         }
     }
@@ -1179,6 +1236,10 @@ public class Server : MonoBehaviour
             CharacterSelectUIManager charSelect = Canvas.GetComponent<CharacterSelectUIManager>();
             charSelect.SetErrorText("Please Select Another Character.");
             charSelect.ResetCharacterSelection();
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
         }
 
 
@@ -1256,7 +1317,7 @@ public class Server : MonoBehaviour
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
             Debug.Log(room.name);
-            room.transform.GetChild(1).gameObject.SetActive(false);
+            room.transform.GetChild(4).gameObject.SetActive(false);
 
         }
         GameManager.instance.currentPhase = GameManager.TurnPhases.Movement;
@@ -1310,6 +1371,11 @@ public class Server : MonoBehaviour
         ClientUIManager.instance.interactionPanel.SetActive(true);
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
 
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
+
 
     }
 
@@ -1332,12 +1398,22 @@ public class Server : MonoBehaviour
             AbilityManager.instance.DisplayActiveAbility();
 
         }
+        else if(abilityType == Ability.AbilityTypes.Sensor_Scan) {
+
+
+            AbilityManager.instance.DisplayMapIcons(abilityActivated.RoomResourcesIDs, abilityActivated.resourceType);
+
+            AbilityManager.instance.DisplayActiveAbility();
+        }
+
         else
         {
-
+            
            AbilityManager.instance.DisplayActiveAbility();
 
         }
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
     }
 
     /// <summary>
@@ -1369,6 +1445,7 @@ public class Server : MonoBehaviour
             //GameManager.COMBAT_DAMAGE.
 
             InteractionManager.instance.ResultText.GetComponent<TextMeshProUGUI>().text = "You have been sabotaged. " + GameManager.COMBAT_DAMAGE + " point of damage taken";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1380,6 +1457,9 @@ public class Server : MonoBehaviour
     private void GetNumComponentsInstalled(int conID, int chanID, int rHostID, NumComponentsInstalled numComponentsInstalled)
     {
         ClientManager.instance.componentsInstalled = numComponentsInstalled.InstalledComponents;
+
+        GameObject canvas = GameObject.Find("canvas");
+        canvas.GetComponent<ClientUIManager>().UpdateComponentTracker();
 
         if (numComponentsInstalled.AllComponentsInstalled)
         {
@@ -1425,7 +1505,8 @@ public class Server : MonoBehaviour
         }
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().loserID = combatWinner.LoserID;
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().losersItems = loserInventory;
-      
+
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
     }
 
     private void GetCombatLoser(int conID, int chanID, int rHostID, CombatLoser combatLoser)
@@ -1435,7 +1516,7 @@ public class Server : MonoBehaviour
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
         InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You lost to " + ClientManager.instance.GetPlayerData(combatLoser.WinnerID).PlayerName;
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
     }
 
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
@@ -1457,6 +1538,7 @@ public class Server : MonoBehaviour
         clientUIManager.interactionPanel.SetActive(true);
         clientUIManager.interactionPanel.GetComponent<InteractionManager>().InitComponentPanel();
         clientUIManager.interactionPanel.SetActive(false);
+        clientUIManager.UpdateComponentTracker();
     }
 
     private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)
@@ -1565,6 +1647,9 @@ public class Server : MonoBehaviour
     {
         //Update the UI to display to the player that they have been selected as traitor
         ClientManager.instance.isTraitor = true;
+        ClientUIManager.instance.TraitorSelection.SetActive(true);
+        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().TraitorTitle.SetActive(true);
+       
     }
 
     private void GetSurgeInformation(int conID, int chanID, int rHostID, SurgeInformation information) {
@@ -1587,19 +1672,27 @@ public class Server : MonoBehaviour
 
     private void GetAIAttack(int conID, int chanID, int rHostID, AiAttacks aiAttacks)
     {
+
         if (aiAttacks.IsTarget)
         {
+
+            Debug.Log("You are under  Attack");
             //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
             GameManager.instance.currentPhase = GameManager.TurnPhases.AttackSurge;
 
             ClientUIManager.instance.interactionPanel.SetActive(true);
             ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().AIATTACK();
+
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
         }
         else
         {
             //Need to display which player is under attack using aiAttacks.targetID
             ClientUIManager.instance.attackSurgePanel.SetActive(true);
-            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.playerData[aiAttacks.TargetID].PlayerName + " is under attack from the AI!";
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(aiAttacks.TargetID).PlayerName + " is under attack from the AI!";
         }
     }
 
@@ -1610,6 +1703,7 @@ public class Server : MonoBehaviour
             //Display that the player won the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().WinnerText.GetComponent<TextMeshProUGUI>().text = "You Won Against the AI";
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
 
         }
         else
@@ -1617,7 +1711,7 @@ public class Server : MonoBehaviour
             //Display that they lost the attack
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserPanel.SetActive(true);
             InteractionManager.instance.combatPanel.GetComponent<CombatComponentsClient>().LoserText.GetComponent<TextMeshProUGUI>().text = "You Lost. -1 Health";
-            
+            SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
         }
     }
 
@@ -1656,9 +1750,9 @@ public class Server : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
-    #region Client Sent Messages
+#region Client Sent Messages
 
     public void SendPlayerInformation(string playerName)
     {
@@ -1882,9 +1976,9 @@ public class Server : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
-    #region Server Received Messages
+#region Server Received Messages
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
     {
@@ -1897,7 +1991,7 @@ public class Server : MonoBehaviour
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
-
+        SFXManager.instance.PlaySoundEffect(SFXManager.instance.connectSound);
 
 
     }
@@ -1905,6 +1999,8 @@ public class Server : MonoBehaviour
     {
 
         GameManager.instance.GetPlayer(conID);
+
+        GameObject charSetup = GameObject.FindGameObjectWithTag("Setup");
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
@@ -1922,24 +2018,29 @@ public class Server : MonoBehaviour
                 else
                 {
                     GameObject canvas = GameObject.Find("Canvas");
-                    canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
-                    canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
+                    //canvas.GetComponent<ServerCharacterSelection>().tempCharacterType = (Character.CharacterTypes)character.SelectedCharacter;
+                    //canvas.GetComponent<ServerCharacterSelection>().UpdatePlayerCharacter();
                     player.Character = new Character((Character.CharacterTypes)character.SelectedCharacter);
                     //Assign Character Stats to player
                     SyncPlayerData(player.playerID);
 
                     GameManager.instance.SelectCharacter((Character.CharacterTypes)character.SelectedCharacter);
                     SendChangeCharacter(player.playerID, false);
+                    SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
                     if (GameManager.instance.activePlayer > 0)
                     {
                         SendActivePlayer(GameManager.instance.GetActivePlayer().playerID);
                     }
 
-                    string charName = character.ToString();
-
-                    //GameObject charModel;
-                    //charModel = GameObject.Find(charName);
-                    //charModel.GetComponent<AnimationSwitcher>().IntroAnimation(charName);
+                    if (charSetup != null)
+                    {
+                        canvas.GetComponent<ServerCharacterSelection>().DisplayActivePlayer();
+                        charSetup.GetComponent<CharacterSetup>().CharacterChosen(player.playerID, (Character.CharacterTypes)character.SelectedCharacter);
+                    }
+                    else
+                    {
+                        Debug.LogError("Character setup object not found");
+                    }
                 }
 
             }
@@ -1954,6 +2055,7 @@ public class Server : MonoBehaviour
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
         Debug.Log("recieved ability");
+        List<int> rooms;
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
@@ -1968,7 +2070,8 @@ public class Server : MonoBehaviour
                 //Unless the ability is code inspection, state of isTraitor is irrelevant, so sets to dummy case
                 bool isTraitor = false;
 
-                
+                rooms = new List<int>();
+
 
                 switch (abilityType)
                 {
@@ -1977,8 +2080,14 @@ public class Server : MonoBehaviour
                         break;
                     case (Ability.AbilityTypes.Secret_Paths):
                     case (Ability.AbilityTypes.Power_Boost):
-                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Muddle_Sensors):
+                        selectedAbility.Activate(ability.TargetID);
+                        GameManager.instance.GetActivePlayer().PreviousTarget = ability.TargetID;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousTarget);
+                        GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
+                        Debug.Log(GameManager.instance.GetActivePlayer().PreviousAbility);
+                        break;
+                    case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):
                         selectedAbility.Activate(ability.TargetID);
                         break;
@@ -1986,12 +2095,13 @@ public class Server : MonoBehaviour
                         selectedAbility.Activate(ability.TargetID, out isTraitor);
                         break;
                     case (Ability.AbilityTypes.Sensor_Scan):
-                        selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
+                        rooms = selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
                         break;
                 }
 
+                
                 PlayerCardManager.instance.UpdateAllCards();
-                SendAbilityActivated(conID, abilityType, isTraitor);
+                SendAbilityActivated(conID, abilityType, isTraitor, rooms,ability.ScanResource);
                 SyncPlayerData(conID);
             }
         }
@@ -2032,6 +2142,29 @@ public class Server : MonoBehaviour
                 Playermovement.Player = player.playerObject;
 
                 List<int> roomIds = new List<int>();
+                bool SecretPathActive = false;
+
+                Debug.Log("BEFORE ____________________________--------------------------------------------------------------");
+
+                foreach (Ability ability in player.activeAbilitys) {
+
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        
+                        SecretPathActive = true;
+                        Debug.Log("IT FREAKING WORKS!!!");
+                        break;
+
+
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
 
                 for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
                 {
@@ -2040,9 +2173,14 @@ public class Server : MonoBehaviour
 
                     Playermovement.PlayerMoveViaNodes(j);
 
-                    if (PlayerMovement.instance.SecretPathActivated) {
+                   
+
+                    if (SecretPathActive) {
 
                        roomCost = Playermovement.currentPath.Count - 2;
+                        if (roomCost < 0) {
+                            roomCost = 0;
+                        }
 
                     }
                     else {
@@ -2090,13 +2228,35 @@ public class Server : MonoBehaviour
 
                 Playermovement.PlayerMoveViaNodes(room.roomID);
 
+                bool SecretPathActive = false;
+
                 int roomCost = Playermovement.currentPath.Count - 1;
-                if (PlayerMovement.instance.SecretPathActivated) {
+
+                foreach (Ability ability in player.activeAbilitys) {
+                    Debug.Log(ability.abilityType);
+
+                    if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
+
+                        SecretPathActive = true;
+                        break;
+                    }
+                    else {
+                        SecretPathActive = false;
+
+                    }
+                }
+                Debug.Log(SecretPathActive);
+
+                if (SecretPathActive) {
 
                     roomCost -= 1;
                 }
 
-                SendRoomCost(player.playerID, roomCost);
+                int ScrapReturn = player.ActionPoints - roomCost;
+
+                player.ScrapReturn = ScrapReturn;
+
+                SendRoomCost(player.playerID, roomCost, ScrapReturn);
             }
         }
 
@@ -2112,18 +2272,18 @@ public class Server : MonoBehaviour
             //Find the correct player
             if (player.playerID == conID)
             {
- 
 
+                player.scrap += player.ScrapReturn;
+                SyncPlayerData(conID);
 
                 PlayerMovement.instance.Player = player.playerObject;
                 PlayerMovement.instance.currentNodeIndex = player.roomPosition;
+              
                 PlayerMovement.instance.StartMoving = true;
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
-                
-                
-                PlayerMovement.instance.SecretPathActivated = false;
 
+               
             }
         }
     }
@@ -2225,6 +2385,7 @@ public class Server : MonoBehaviour
         defenderSpec = GameManager.SpecScores.Default;
 
         //Need to display the state of the combat on the main screen
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
 
         //Stores the target player ID to attack later
         defenderID = attack.TargetPlayer;
@@ -2295,15 +2456,17 @@ public class Server : MonoBehaviour
         Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
-        //Below function will handle displaying the new panels for the phase as well as victory condition screens
-        canvas.GetComponent<MainGameUIManager>().IncrementPhase();
+
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.gameMusic);
 
         switch (GameManager.instance.CurrentVictory)
         {
             case (GameManager.VictoryTypes.NonTraitor):
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.victoryMusic);
                 SendNonTraitorVictory();
                 break;
             case (GameManager.VictoryTypes.Traitor):
+                MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
                 SendTraitorVictory(GameManager.instance.traitorWinID);
                 break;
             case (GameManager.VictoryTypes.None):
@@ -2313,13 +2476,6 @@ public class Server : MonoBehaviour
                 {
                     case (GameManager.TurnPhases.Abilities):
                         PlayerCardManager.instance.UpdateAllCards();
-                        switch (GameManager.instance.GetActivePlayer().activeAbility.abilityType) {
-                            case (Ability.AbilityTypes.Secret_Paths):
-                            case (Ability.AbilityTypes.Power_Boost):
-                            case (Ability.AbilityTypes.Muddle_Sensors):
-                                GameManager.instance.GetActivePlayer().activeAbility.Deactivate();
-                                break;
-                        }
                         SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
                         break;
@@ -2351,7 +2507,9 @@ public class Server : MonoBehaviour
 
                 break;
         }
-       
+
+        //Below function will handle displaying the new panels for the phase as well as victory condition screens
+        canvas.GetComponent<MainGameUIManager>().IncrementPhase();
 
     }
 
@@ -2510,11 +2668,11 @@ public class Server : MonoBehaviour
 
     private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
 
-        Server.Instance.SendSurge();
+       SendSurge();
 
     }
 
 
 
-    #endregion
+#endregion
 }

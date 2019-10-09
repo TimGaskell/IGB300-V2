@@ -110,6 +110,12 @@ public class InteractionManager : MonoBehaviour
 
             currentRoom = GameManager.instance.GetRoom(roomIndex);
 
+            for (int i = 0; i < successTexts.Length; i++)
+            {
+                successTexts[i] = AddInLineImages(successTexts[i]);
+                failTexts[i] = AddInLineImages(failTexts[i]);
+            }
+
             //Update button text
             choice0ButtonText.GetComponent<TextMeshProUGUI>().text = choiceNames[0];
             choice1ButtonText.GetComponent<TextMeshProUGUI>().text = choiceNames[1];
@@ -180,7 +186,30 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    private string AddInLineImages(string oldString)
+    {
+        string newString = oldString;
 
+        newString = newString.Replace("Scrap", "<sprite name=\"Scrap\">");
+        newString = newString.Replace("Corruption", "<sprite name=\"Corruption\">");
+        //newString = newString.Replace("AI Power", "<sprite name=\"Power\">"); No Icon for AI Power yet
+        newString = newString.Replace("Health", "<sprite name=\"Health\">");
+        newString = newString.Replace("Brawn", "<sprite name=\"Brawn\">");
+        newString = newString.Replace("Skill", "<sprite name=\"Skill\">");
+        newString = newString.Replace("Tech", "<sprite name=\"Tech\">");
+        newString = newString.Replace("Charm", "<sprite name=\"Charm\">");
+
+        newString = newString.Replace("Boxing Gloves", "<sprite name=\"Gloves\">");
+        newString = newString.Replace("Speed Boots", "<sprite name=\"Boots\">");
+        newString = newString.Replace("Robo Brain", "<sprite name=\"Brain\">");
+        newString = newString.Replace("Dazzling Outfit", "<sprite name=\"Outfit\">");
+        newString = newString.Replace("Fancy Glasses", "<sprite name=\"Glasses\">");
+        newString = newString.Replace("Extra Arms", "<sprite name=\"Arms\">");
+        newString = newString.Replace("Hyper Fuel", "<sprite name=\"HyperFuel\">");
+        newString = newString.Replace("Spy Suit", "<sprite name=\"Spy\">");
+
+        return newString;
+    }
 
 
     public string ConvertErrorText(Choice.IsAvailableTypes errorType) {
