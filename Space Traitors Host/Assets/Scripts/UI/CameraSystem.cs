@@ -9,10 +9,10 @@ public class CameraSystem : MonoBehaviour
     public Vector3 defaultOffset;
     public Vector3 zoomOffset;
     public float smoothSpeed = 0.125f;
-    private float defaultPos_X, defaultPos_Y, defaultPos_Z;
     
-    public float cameraSpeed = 350;
-    private float newPos_X, newPos_Y, newPos_Z;
+    
+    
+    
     private bool zoomedIn = false;
     private bool positiveX = false;
     public float ZoomInLevel_Y = 460;
