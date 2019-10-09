@@ -102,7 +102,7 @@ public class Server : MonoBehaviour
     public GameObject[] Components;
     private GameObject setter;
     private Scene currentScene;
-    public Text connectText;
+    public TextMeshProUGUI connectText;
     public Sprite[] portraits;
 
     public int[] playerIDs = new int[6];
