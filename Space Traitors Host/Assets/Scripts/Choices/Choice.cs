@@ -282,13 +282,11 @@ public class Choice
         if (specItem.ItemType != Item.ItemTypes.Default)
         {
             GameManager.instance.GetActivePlayer().GiveItem(specItem);
-
-            GameManager.instance.GetActivePlayer().itemLocations.Add(new Tuple<string,int, int>(specItem.ItemName,GameManager.instance.GetActivePlayer().roomPosition, choiceID));
+         
         }
         if (!GameManager.instance.GetActivePlayer().hasComponent)
         {
-            GameManager.instance.GetActivePlayer().hasComponent = component;
-            GameManager.instance.GetActivePlayer().itemLocations.Add(new Tuple<string, int, int>("Component", GameManager.instance.GetActivePlayer().roomPosition, choiceID));
+            GameManager.instance.GetActivePlayer().hasComponent = component;        
         }
         GameManager.instance.GetActivePlayer().ChangeLifePoints(lifeChange);
     }
