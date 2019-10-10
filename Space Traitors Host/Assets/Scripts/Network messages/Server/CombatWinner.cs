@@ -14,6 +14,7 @@ public class CombatWinner : NetMessage
 
     public int LoserID { get; set; }
     public List<int>LoserInventory { get; set; } 
+    public bool HasComponent { get; set; }
 
 }
 

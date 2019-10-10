@@ -440,6 +440,19 @@ public class Server : MonoBehaviour
             case NetOP.SendPlayerItems:
                 SyncClientItems(conID, chanID, rHostID, (SendPlayerItems)msg);
                 break;
+            case NetOP.StealSuccess:
+                GetStealSuccess(conID, chanID, rHostID, (StealSuccess)msg);
+                break;
+            case NetOP.DiscardSuccess:
+                GetDiscardSuccess(conID, chanID, rHostID, (DiscardSuccess)msg);
+                break;
+            case NetOP.StealDiscardSuccess:
+                GetStealDiscardSuccess(conID, chanID, rHostID, (StealDiscardSuccess)msg);
+                break;
+            case NetOP.ItemStolen:
+                GetItemStolen(conID,  chanID,  rHostID, (ItemStolen)msg);
+                break;
+
 
         }
     }
@@ -765,6 +778,16 @@ public class Server : MonoBehaviour
             int itemID = (int)item.ItemType;
 
             combatWinner.LoserInventory.Add(itemID);
+        }
+
+        if (GameManager.instance.GetPlayer(loserID).hasComponent) {
+
+            combatWinner.HasComponent = true;
+
+        }
+        else {
+            combatWinner.HasComponent = false;
+
         }
 
         SendClient(combatWinner);
@@ -1645,7 +1668,8 @@ public class Server : MonoBehaviour
         if (stealSuccess.IsSuccessful)
         {
             //Update the UI for the inventory and spec scores (could be done using SyncClientData however)
-            //Prevent them from stealing any more items
+            //Prevent them from stealing any more items 
+    
         }
         else
         {
@@ -1663,6 +1687,9 @@ public class Server : MonoBehaviour
     {
         //Tell the player that one of their items was stolen (the name is stored in itemStolen)
         //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
+
+        ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Your " + itemStolen.ItemName + " has been stolen";
     }
 
     private void GetIsTraitor(int conID, int chanID, int rHostID, TraitorSelection traitorSelection)

@@ -12,6 +12,7 @@ public class StealingManager : MonoBehaviour
 
     public Player winner;
     public List<Item> losersItems;
+    public bool hasComponent = false;
     public int loserID;
 
     public GameObject winnerText;
@@ -63,6 +64,14 @@ public class StealingManager : MonoBehaviour
 
         SetErrorText("");
         ResetSelectedItem();
+
+        if(hasComponent && !ClientManager.instance.hasComponent) {
+
+            stealComponentButton.SetActive(false);
+        }
+        else {
+            stealComponentButton.SetActive(true);
+        }
 
         //Loops through all the relevant items
         for (int itemIndex = 0; itemIndex < Player.MAX_ITEMS; itemIndex++)
