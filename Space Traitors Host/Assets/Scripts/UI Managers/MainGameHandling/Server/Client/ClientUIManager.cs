@@ -48,6 +48,8 @@ public class ClientUIManager : MonoBehaviour
 
     public GameObject pauseMenu;
 
+    public GameObject ItemNotificationPanel;
+
     public static ClientUIManager instance = null;
 
     // Start is called before the first frame update
