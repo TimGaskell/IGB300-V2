@@ -67,6 +67,9 @@ public class StealingManager : MonoBehaviour
         //Loops through all the relevant items
         for (int itemIndex = 0; itemIndex < Player.MAX_ITEMS; itemIndex++)
         {
+
+            Debug.Log(itemIndex);
+            Debug.Log(ClientManager.instance.inventory.Count);
             //If the current button is one of the empty "slots" in the player's inventory, leaves it blank
             if(itemIndex >= ClientManager.instance.inventory.Count)
             {
