@@ -25,12 +25,12 @@ public class AnimationSwitcher : MonoBehaviour
 
         RunAnims.Add("Techie-Run-Start");
         RunAnims.Add("Engineer-Walk");
-        IdleAnims.Add("Butler-Walk");
+        RunAnims.Add("Butler-Walk");
         IdleAnims.Add("Punk-Walk");
 
         IntroAnims.Add("Techie-Intro");
         IntroAnims.Add("Engineer-Intro");
-        IdleAnims.Add("Butler-Intro");
+        IntroAnims.Add("Butler-Intro");
         IdleAnims.Add("Punk-Intro");
     }
 
