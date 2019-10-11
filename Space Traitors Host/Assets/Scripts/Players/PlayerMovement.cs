@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class PlayerMovement : Navigation
 {
@@ -18,7 +21,7 @@ public class PlayerMovement : Navigation
 
     //Player Variables
     public GameObject Player;
-
+    
     //Button variables
     private GameObject SelectedRoom;
     private int RoomNumber;
@@ -34,6 +37,7 @@ public class PlayerMovement : Navigation
 
         //Initial node currentNode to move to
         currentPath.Add(currentNodeIndex);
+        
 
     }
 
@@ -83,7 +87,7 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-                Player.transform.Rotate(0, 0, 0, Space.World);
+                Player.transform.eulerAngles = new Vector3(0,180,0);
                 
                 
                 MoveToFinalPosition(graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>());
@@ -97,7 +101,7 @@ public class PlayerMovement : Navigation
                     GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
                     //If its at the end of the path look off to the side
-                    Player.transform.Rotate(0, 180, 0, Space.World);
+                    Player.transform.eulerAngles = new Vector3(0,180,0);
                 }
 
                 //Return to idle animation
