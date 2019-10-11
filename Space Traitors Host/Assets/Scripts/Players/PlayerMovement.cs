@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
 public class PlayerMovement : Navigation
@@ -30,7 +32,7 @@ public class PlayerMovement : Navigation
         //graphNodes = GameObject.FindGameObjectWithTag("Map").GetComponent<WayPointGraph>();
         graphNodes = GameManager.instance.roomList.GetComponent<WayPointGraph>();
 
-        //Initial node index to move to
+        //Initial node currentNode to move to
         currentPath.Add(currentNodeIndex);
 
     }
@@ -65,7 +67,7 @@ public class PlayerMovement : Navigation
                 //Start Moving towards that Graph Node
                 Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position, moveSpeed * Time.deltaTime);
 
-                //Increase path index
+                //Increase path currentNode
                 if (Vector3.Distance(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) <= minDistance) {
 
                     if (currentPathIndex < currentPath.Count - 1)
@@ -73,7 +75,7 @@ public class PlayerMovement : Navigation
                         currentPathIndex++;
                 }
 
-                currentNodeIndex = graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>().index;   //Store current node index
+                currentNodeIndex = graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>().index;   //Store current node currentNode
             }
             //Check if reached end of path
             if (Player.transform.position == graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) {
@@ -82,6 +84,12 @@ public class PlayerMovement : Navigation
                 GameManager.instance.playerMoving = false;
 
                 Player.transform.Rotate(0, 0, 0, Space.World);
+                
+                
+                MoveToFinalPosition(graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>());
+                
+                
+                
 
 
 
@@ -89,7 +97,7 @@ public class PlayerMovement : Navigation
                     GameManager.instance.GetActivePlayer().roomPosition = goalIndex;
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
                     //If its at the end of the path look off to the side
-                    Player.transform.Rotate(0, 145, 0, Space.Self);
+                    Player.transform.Rotate(0, 180, 0, Space.World);
                 }
 
                 //Return to idle animation
@@ -103,5 +111,26 @@ public class PlayerMovement : Navigation
 
             }
         }
+    }
+
+    public void MoveToFinalPosition(LinkedNodes currentNode)
+    {
+        int finalPosition = 0;
+        
+        foreach (var player in GameManager.instance.players)
+        {
+            if (GameManager.instance.GetActivePlayer().roomPosition == player.roomPosition)
+            {
+                finalPosition++;
+            }
+
+        }
+
+        Vector3 PlayerPos = Player.transform.position;
+        Vector3 targetPos = currentNode.finalPositions[finalPosition - 1].transform.position;
+
+        Player.transform.position = new Vector3(targetPos.x,PlayerPos.y, targetPos.z);
+        
+         
     }
 }

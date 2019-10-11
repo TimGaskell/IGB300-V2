@@ -99,7 +99,7 @@ public class CameraSystem : MonoBehaviour
     {
         //Y Axis
         Vector3 desiredPosition = target.transform.position + zoomOffset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        Vector3 smoothedPosition = Vector3.Slerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
         transform.LookAt(target.transform);
@@ -108,7 +108,7 @@ public class CameraSystem : MonoBehaviour
     private void CameraZoomOut()
     {
         Vector3 desiredPosition = target.transform.position + defaultOffset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        Vector3 smoothedPosition = Vector3.Slerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
         transform.LookAt(target.transform);
