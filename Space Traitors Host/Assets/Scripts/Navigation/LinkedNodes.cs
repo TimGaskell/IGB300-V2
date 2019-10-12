@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ProBuilder2.Common;
 using UnityEngine;
 
 public class LinkedNodes : MonoBehaviour {
     public int index;
 
     public GameObject[] linkedNodeObjects;
+    public List<GameObject> finalPositions;
 
     public int[] linkedNodesIndex;
 
@@ -18,6 +20,16 @@ public class LinkedNodes : MonoBehaviour {
 
             linkedNodesIndex[i] = linkedNodeObjects[i].GetComponent<LinkedNodes>().index;
         }
+
+        Transform finalPosition = gameObject.transform.GetChild(0);
+        if (finalPosition.CompareTag("FinalPosition"))
+        {
+            foreach (Transform child in finalPosition)
+            {
+                finalPositions.Add(child.gameObject);
+            }
+        }
+        
     }
 
     // Update is called once per frame

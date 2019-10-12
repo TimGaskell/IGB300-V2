@@ -9,14 +9,8 @@ public class CameraSystem : MonoBehaviour
     public Vector3 defaultOffset;
     public Vector3 zoomOffset;
     public float smoothSpeed = 0.125f;
-    
-    
-    
-    
     private bool zoomedIn = false;
-    private bool positiveX = false;
-    public float ZoomInLevel_Y = 460;
-    public float ZoomInLevel_Z = 250;
+
 
     [FormerlySerializedAs("testObject")] public GameObject target;
     public GameObject DefaultTarget;
@@ -105,7 +99,7 @@ public class CameraSystem : MonoBehaviour
     {
         //Y Axis
         Vector3 desiredPosition = target.transform.position + zoomOffset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        Vector3 smoothedPosition = Vector3.Slerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
         transform.LookAt(target.transform);
@@ -114,7 +108,7 @@ public class CameraSystem : MonoBehaviour
     private void CameraZoomOut()
     {
         Vector3 desiredPosition = target.transform.position + defaultOffset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        Vector3 smoothedPosition = Vector3.Slerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
         transform.LookAt(target.transform);

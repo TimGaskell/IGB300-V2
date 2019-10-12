@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1746,6 +1746,7 @@ MonoBehaviour:
   DeathPanel: {fileID: 670228516}
   DeathNotificationPanel: {fileID: 108929318}
   pauseMenu: {fileID: 544551320}
+  ItemNotificationPanel: {fileID: 0}
 --- !u!1 &36143031
 GameObject:
   m_ObjectHideFlags: 0
@@ -23463,7 +23464,7 @@ MonoBehaviour:
   closedList: 
   currentPath: 
   ServerVersion: 0
-  moveSpeed: 200
+  moveSpeed: 100
   minDistance: 0.1
   goalIndex: 0
   StartMoving: 0
@@ -26000,6 +26001,7 @@ MonoBehaviour:
   - {fileID: 1596413410}
   - {fileID: 1248247836}
   - {fileID: 1594835801}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &613270767
 MonoBehaviour:
@@ -29054,6 +29056,31 @@ PrefabInstance:
     - target: {fileID: 1862823256566978464, guid: 35d9668fa898e5946a69b7366cb06a0a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010265086897305344, guid: 35d9668fa898e5946a69b7366cb06a0a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010265086897305344, guid: 35d9668fa898e5946a69b7366cb06a0a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010265086897305344, guid: 35d9668fa898e5946a69b7366cb06a0a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010265086897305344, guid: 35d9668fa898e5946a69b7366cb06a0a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010265086897305344, guid: 35d9668fa898e5946a69b7366cb06a0a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -34274,6 +34301,7 @@ MonoBehaviour:
   linkedNodeObjects:
   - {fileID: 1259587873}
   - {fileID: 1032246988}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &816372338
 MonoBehaviour:
@@ -42632,6 +42660,7 @@ MonoBehaviour:
   - {fileID: 1032246988}
   - {fileID: 1353834445}
   - {fileID: 1340053250}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1027140823
 MonoBehaviour:
@@ -42818,6 +42847,7 @@ MonoBehaviour:
   index: 3
   linkedNodeObjects:
   - {fileID: 1248247836}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1029707468
 MonoBehaviour:
@@ -42963,6 +42993,7 @@ MonoBehaviour:
   linkedNodeObjects:
   - {fileID: 816372336}
   - {fileID: 1027140821}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1032246990
 MonoBehaviour:
@@ -52530,6 +52561,7 @@ MonoBehaviour:
   - {fileID: 613270764}
   - {fileID: 1029707466}
   - {fileID: 1259587873}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1248247838
 MonoBehaviour:
@@ -53051,6 +53083,7 @@ MonoBehaviour:
   - {fileID: 1248247836}
   - {fileID: 1594835801}
   - {fileID: 816372336}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1259587875
 MonoBehaviour:
@@ -54226,6 +54259,7 @@ MonoBehaviour:
   index: 12
   linkedNodeObjects:
   - {fileID: 1768214555}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1290411334
 MonoBehaviour:
@@ -56187,6 +56221,7 @@ MonoBehaviour:
   linkedNodeObjects:
   - {fileID: 1027140821}
   - {fileID: 1768214555}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1340053252
 MonoBehaviour:
@@ -56815,6 +56850,7 @@ MonoBehaviour:
   - {fileID: 1594835801}
   - {fileID: 1027140821}
   - {fileID: 1768214555}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1353834447
 MonoBehaviour:
@@ -65754,6 +65790,7 @@ MonoBehaviour:
   - {fileID: 613270764}
   - {fileID: 1259587873}
   - {fileID: 1353834445}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1594835803
 MonoBehaviour:
@@ -65914,6 +65951,7 @@ MonoBehaviour:
   index: 0
   linkedNodeObjects:
   - {fileID: 613270764}
+  finalPositions: []
   linkedNodesIndex: 00000000
 --- !u!114 &1596413414
 MonoBehaviour:
@@ -74638,6 +74676,7 @@ MonoBehaviour:
   - {fileID: 1353834445}
   - {fileID: 1340053250}
   - {fileID: 1290411332}
+  finalPositions: []
   linkedNodesIndex: 
 --- !u!114 &1768214557
 MonoBehaviour:
@@ -90382,6 +90421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCards: {fileID: 0}
   stealComponentButton: {fileID: 618289297}
+  hasComponent: 0
   loserID: 0
   winnerText: {fileID: 1157261597}
   loserText: {fileID: 1197218124}
