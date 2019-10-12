@@ -1664,12 +1664,12 @@ public class Server : MonoBehaviour
                 break;
             case (Player.EquipErrors.AlreadyEquipped):
                 //Display to the player that the item is already equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshPro>().text = "Item already Equipped";
+                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
                 break;
             case (Player.EquipErrors.TooManyEquipped):
                 //Display to the player that they have too many items equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshPro>().text = "Too many items Equipped";
+                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
                 break;
         }
     }
@@ -1678,7 +1678,7 @@ public class Server : MonoBehaviour
     {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Successfully discarded item";
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Successfully discarded item";
         StealingManager.instance.UpdateItemButtons();
     }
 
@@ -1690,15 +1690,15 @@ public class Server : MonoBehaviour
             //Prevent them from stealing any more items 
 
             ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-            ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You successfully stole the item";
-
+            ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the item";
+          
 
         }
         else
         {
             //Display to player that they cannot hold any more items
             ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-            ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You can't hold anymore items";
+            ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You can't hold anymore items";
 
         }
     }
@@ -1709,7 +1709,7 @@ public class Server : MonoBehaviour
         //Prevent them from stealing any more items
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You successfully discarded their item." ;
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item." ;
 
     }
 
@@ -1719,7 +1719,7 @@ public class Server : MonoBehaviour
         //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
 
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Your " + itemStolen.ItemName + " has been stolen";
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your " + itemStolen.ItemName + " has been stolen";
     }
 
     private void GetIsTraitor(int conID, int chanID, int rHostID, TraitorSelection traitorSelection)
