@@ -452,6 +452,13 @@ public class Server : MonoBehaviour
             case NetOP.ItemStolen:
                 GetItemStolen(conID,  chanID,  rHostID, (ItemStolen)msg);
                 break;
+            case NetOP.UnequipSuccess:
+                GetUnequipSuccess(conID, chanID, rHostID, (UnequipSuccess)msg);
+                break;
+            case NetOP.EquipState:
+                GetEquipState(conID, chanID, rHostID, (EquipState)msg);
+                break;
+
 
 
         }
@@ -1640,6 +1647,7 @@ public class Server : MonoBehaviour
     private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
     {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+       
     }
 
     private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
@@ -1651,9 +1659,12 @@ public class Server : MonoBehaviour
                 break;
             case (Player.EquipErrors.AlreadyEquipped):
                 //Display to the player that the item is already equipped
+                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshPro>().text = "Item already Equipped";
+
                 break;
             case (Player.EquipErrors.TooManyEquipped):
                 //Display to the player that they have too many items equipped
+                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshPro>().text = "Too many items Equipped";
                 break;
         }
     }
@@ -1661,6 +1672,9 @@ public class Server : MonoBehaviour
     private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
     {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
+        ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "Successfully discarded item";
+        StealingManager.instance.UpdateItemButtons();
     }
 
     private void GetStealSuccess(int conID, int chanID, int rHostID, StealSuccess stealSuccess)
@@ -1669,11 +1683,18 @@ public class Server : MonoBehaviour
         {
             //Update the UI for the inventory and spec scores (could be done using SyncClientData however)
             //Prevent them from stealing any more items 
-    
+
+            ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
+            ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You successfully stole the item";
+
+
         }
         else
         {
             //Display to player that they cannot hold any more items
+            ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
+            ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You can't hold anymore items";
+
         }
     }
 
@@ -1681,6 +1702,10 @@ public class Server : MonoBehaviour
     {
         //Display that they successfully discarded the item
         //Prevent them from stealing any more items
+
+        ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshPro>().text = "You successfully discarded their item." ;
+
     }
 
     private void GetItemStolen(int conID, int chanID, int rHostID, ItemStolen itemStolen)

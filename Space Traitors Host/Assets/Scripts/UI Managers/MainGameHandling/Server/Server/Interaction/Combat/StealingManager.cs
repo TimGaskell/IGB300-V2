@@ -57,7 +57,7 @@ public class StealingManager : MonoBehaviour
     /// Updates the item buttons to display each player's inventory
     /// 
     /// </summary>
-    private void UpdateItemButtons()
+    public void UpdateItemButtons()
     {
         string winnerDisplayText;
         string loserDisplayText;
@@ -300,7 +300,7 @@ public class StealingManager : MonoBehaviour
     /// </summary>
     public void DiscardItem()
     {
-        winner.DiscardItem(selectedID);
+        Server.Instance.DiscardItem(selectedID);
         UpdateItemButtons();
     }
 
@@ -324,4 +324,6 @@ public class StealingManager : MonoBehaviour
             UpdateItemButtons();
         }
     }
+
+
 }

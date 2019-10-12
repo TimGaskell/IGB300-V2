@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     private Item selectedItem;
     private int selectedID;
 
+    
+
     /// <summary>
     /// 
     /// Sets up the inventory panel to display the relevant information

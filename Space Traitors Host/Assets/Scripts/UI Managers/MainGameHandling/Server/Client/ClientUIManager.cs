@@ -49,6 +49,7 @@ public class ClientUIManager : MonoBehaviour
     public GameObject pauseMenu;
 
     public GameObject ItemNotificationPanel;
+    public GameObject ItemCompletionPanel;
 
     public static ClientUIManager instance = null;
 
