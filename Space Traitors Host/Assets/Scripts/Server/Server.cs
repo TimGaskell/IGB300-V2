@@ -458,7 +458,12 @@ public class Server : MonoBehaviour
             case NetOP.EquipState:
                 GetEquipState(conID, chanID, rHostID, (EquipState)msg);
                 break;
-
+            case NetOP.StealDiscardItem:
+                GetStealDiscardItem(conID, chanID, rHostID, (StealDiscardItem)msg);
+                break;
+            case NetOP.StealItem:
+                GetStealItem(conID, chanID, rHostID, (StealItem)msg);
+                break;
 
 
         }
@@ -1158,7 +1163,7 @@ public class Server : MonoBehaviour
 
         SendClient(stealSuccess);
     }
-
+    
     public void SendStealDiscardSuccess(int playerID)
     {
         StealDiscardSuccess stealDiscardSuccess = new StealDiscardSuccess();
