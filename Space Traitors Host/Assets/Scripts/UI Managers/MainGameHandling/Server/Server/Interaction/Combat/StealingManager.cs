@@ -230,19 +230,9 @@ public class StealingManager : MonoBehaviour
     /// 
     /// </summary>
     public void StealItem()
-    {
-        //Attempts to give the item to the winner, the only reason for failure being they already have too many items
-        if (winner.GiveItem(selectedItem))
-        {
-            //Removes the item from the losers inventory. Also sets the loser's inventory from being interactable so only one item can be stolen
-            Server.Instance.StealItem(selectedID, loserID, false);
-            loserItemParent.GetComponent<CanvasGroup>().interactable = false;
-            UpdateItemButtons();
-        }
-        else
-        {
-            SetErrorText("Too many items");
-        }
+    {   
+       Server.Instance.StealItem(selectedID, loserID, false);
+
     }
 
     /// <summary>
@@ -253,8 +243,7 @@ public class StealingManager : MonoBehaviour
     public void StealDiscardItem()
     {
         Server.Instance.StealDiscardItem(selectedID, loserID);
-        loserItemParent.GetComponent<CanvasGroup>().interactable = false;
-        UpdateItemButtons();
+       
     }
 
     /// <summary>
@@ -301,7 +290,6 @@ public class StealingManager : MonoBehaviour
     public void DiscardItem()
     {
         Server.Instance.DiscardItem(selectedID);
-        UpdateItemButtons();
     }
 
     /// <summary>
