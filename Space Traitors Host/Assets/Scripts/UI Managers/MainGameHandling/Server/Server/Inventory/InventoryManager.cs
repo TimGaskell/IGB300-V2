@@ -23,7 +23,6 @@ public class InventoryManager : MonoBehaviour
     private Item selectedItem;
     private int selectedID;
 
-    
 
     /// <summary>
     /// 
@@ -134,34 +133,11 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void EquipItem()
     {
-        //Unequips the item if it is already equipped
-        if (selectedItem.isEquipped)
-        {
-            //selectedPlayer.UnequipItem(selectedID);
-            UpdateItemButtons();
-        }
-        //Equips it otherwise
-        else
-        {
-            //Attempts to equip the item for the player, returning the cause if it cannot
-            Player.EquipErrors equipStatus = Player.EquipErrors.Default;
-                //selectedPlayer.EquipItem(selectedID);
-
-            switch (equipStatus)
-            {
-                case (Player.EquipErrors.Default):
-                    UpdateItemButtons();
-                    break;
-                case (Player.EquipErrors.AlreadyEquipped):
-                    SetErrorText("Item is already Equipped");
-                    ResetSelectedItem();
-                    break;
-                case (Player.EquipErrors.TooManyEquipped):
-                    SetErrorText("Too Many Items Equipped");
-                    ResetSelectedItem();
-                    break;
-            }
-        }
+      
+        Server.Instance.EquipItem(selectedID);
+        UpdateItemButtons();
+     
+       
     }
 
     /// <summary>
@@ -172,6 +148,7 @@ public class InventoryManager : MonoBehaviour
     public void DiscardItem()
     {
         //selectedPlayer.DiscardItem(selectedID);
+        Server.Instance.DiscardItem(selectedID);
         UpdateItemButtons();
     }
 

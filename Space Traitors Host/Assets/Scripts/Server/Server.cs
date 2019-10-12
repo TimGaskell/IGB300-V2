@@ -2567,6 +2567,12 @@ public class Server : MonoBehaviour
                 else
                 {
                     Player.EquipErrors equipStatus = player.EquipItem(itemID);
+
+                    if(equipStatus == Player.EquipErrors.Default) {
+
+                        player.EquipItem(itemID);
+
+                    }
                     PlayerCardManager.instance.UpdateAllCards();
 
                     SyncPlayerData(conID);
