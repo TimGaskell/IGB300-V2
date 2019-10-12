@@ -560,7 +560,7 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
 
-            Debug.Log("Send Change Scene to " + i);
+       
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
             SendClient(scene);
         }
@@ -838,7 +838,6 @@ public class Server : MonoBehaviour
 
         CombatBeingAttacked attacked = new CombatBeingAttacked();
         tempPlayerID = player;
-        Debug.Log("attacking " + tempPlayerID);
 
         attacked.AttackerID = attackerID;
         attacked.DefenderID = defenderID;
@@ -890,7 +889,6 @@ public class Server : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "Server GameLevel") {
             PlayerCardManager.instance.UpdatePlayerCard(playerID);
-            Debug.Log("Updated Card");
 
         }
         playerData.ID = playerID;
@@ -911,7 +909,6 @@ public class Server : MonoBehaviour
         
 
         SendClient(playerData);
-        Debug.Log("send data to" + tempPlayerID);
 
         SendItems(playerID, player);
     }
@@ -928,10 +925,11 @@ public class Server : MonoBehaviour
         foreach (Item item in player.items) {
             playerItems.Items.Add((int)item.ItemType);
             playerItems.ItemEquipped.Add(item.isEquipped);
-        }
 
+            Debug.Log(item.ItemName);
+        }
+        
         SendClient(playerItems);
-        Debug.Log("Sent Player items to " + tempPlayerID);
 
     }
 
@@ -998,13 +996,10 @@ public class Server : MonoBehaviour
     public void CanInstallComponent(int playerID)
     {
 
-        Debug.Log("Component can be installed");
         CanInstallComponent canInstallComponent = new CanInstallComponent();
         tempPlayerID = playerID;
 
         canInstallComponent.CanInstall = GameManager.instance.CanInstallComponent();
-
-        Debug.Log(canInstallComponent.CanInstall);
 
         SendClient(canInstallComponent);
     }
@@ -1069,7 +1064,6 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
-            Debug.Log("Sent all player Data " + tempPlayerID);
             SendClient(ids);
 
         }
@@ -1095,7 +1089,6 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
-            Debug.Log("Sent all player Data " + tempPlayerID);
             SendClient(names);
 
         }
@@ -1120,7 +1113,6 @@ public class Server : MonoBehaviour
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
-            Debug.Log("Sent all player Data " + tempPlayerID);
             SendClient(characters);
 
         }
@@ -1259,8 +1251,6 @@ public class Server : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Client GameLevel")
         {
-
-            Debug.Log("is your turn");
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
@@ -1335,7 +1325,6 @@ public class Server : MonoBehaviour
 
     private void StoreRoomChoices(int conID, int chanID, int rHostID, RoomChoices roomChoices)
     {
-        Debug.Log("recieved choices");
         GameManager.instance.currentPhase = GameManager.TurnPhases.Interaction;
 
         ClientUIManager.instance.interactionPanel.SetActive(true);
@@ -1367,13 +1356,10 @@ public class Server : MonoBehaviour
 
     private void AvailableRooms(int conID, int chanID, int rHostID, AvailableRooms rooms)
     {
-
-        Debug.Log("recieved available rooms");
         for (int i = 0; i < rooms.AvailableRoomsIDs.Count; i++)
         {
 
             GameObject room = GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes[rooms.AvailableRoomsIDs[i]];
-            Debug.Log(room.name);
             room.transform.GetChild(4).gameObject.SetActive(false);
 
         }
@@ -1398,13 +1384,11 @@ public class Server : MonoBehaviour
 
     private void GetAbilityInfo(int conID, int chanID, int rHostID, AbilityInformation abilityInformation)
     {
-        Debug.Log("recieved ability information");
         ClientManager.instance.abilities = new List<Ability>();
 
         for (int abilityID = 0; abilityID < Player.NUM_ABILITIES; abilityID++)
         {
             Ability ability = ClientManager.instance.GetAbilityInfo(abilityInformation.AbilityTypes[abilityID]);
-            Debug.Log(ability.abilityDescription);
             ClientManager.instance.abilities.Add(ability);
 
             //Need to send this information to the UI Manager to display to the player
@@ -1423,8 +1407,6 @@ public class Server : MonoBehaviour
     {
         //Need to display attacked and defender info to players and allow them to select spec score for combat
 
-        Debug.Log("Recieved being attacked");
-        Debug.Log(beingAttacked.AttackerID);
         ClientUIManager.instance.interactionPanel.SetActive(true);
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().SetupDefence(beingAttacked.AttackerID);
 
@@ -1438,8 +1420,6 @@ public class Server : MonoBehaviour
 
     private void AbilityActivated(int conID, int chanID, int rHostID, AbilityActivated abilityActivated)
     {
-        Debug.Log("Recieved ability activated");
-
         Ability.AbilityTypes abilityType = (Ability.AbilityTypes)abilityActivated.AbilityType;
 
         if (abilityType == Ability.AbilityTypes.Code_Inspection)
@@ -1535,8 +1515,6 @@ public class Server : MonoBehaviour
     {
         //Activate whatever is neccessary for the player to install a component
 
-        Debug.Log("Recieved component can be installed " + canInstallComponent.CanInstall);
-
         ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().installButton.GetComponent<Button>().interactable = canInstallComponent.CanInstall;
 
     }
@@ -1579,8 +1557,6 @@ public class Server : MonoBehaviour
     private void GetAllPlayerIDS(int conID, int chanID, int rHostID, SendAllPlayerIDS allPlayerData)
     {
         ClientManager.instance.playerData = new List<PlayerData>();
-        
-        Debug.Log("recieved player ids");
 
         for (int playerIndex = 0; playerIndex < allPlayerData.PlayerIDS.Count; playerIndex++)
         {
@@ -1601,8 +1577,6 @@ public class Server : MonoBehaviour
     private void GetAllPlayersNames(int conID, int chanID, int rHostID, SendAllPlayerNames allPlayerData)
     {
 
-        Debug.Log("recieved player names");
-
         for (int playerIndex = 0; playerIndex < allPlayerData.PlayerNames.Count; playerIndex++)
         {
             string playername = allPlayerData.PlayerNames[playerIndex];
@@ -1615,7 +1589,6 @@ public class Server : MonoBehaviour
 
             Character.CharacterTypes character = (Character.CharacterTypes)ClientManager.instance.CharacterTypes[playerIndex];
 
-            Debug.Log("Creating playerData");
             ClientManager.instance.playerData.Add(new PlayerData(ClientManager.instance.playerIDS[playerIndex], ClientManager.instance.PlayerNames[playerIndex], character));
 
         }
@@ -1633,8 +1606,6 @@ public class Server : MonoBehaviour
 
     private void GetAllPlayersCharacters(int conID, int chanID, int rHostID, SendAllPlayerCharacters allPlayerData)
     {
-        
-        Debug.Log("recieved player characterIDS");
 
         for (int playerIndex = 0; playerIndex < allPlayerData.CharacterTypes.Count; playerIndex++)
         {
@@ -1733,8 +1704,6 @@ public class Server : MonoBehaviour
 
     private void GetSurgeInformation(int conID, int chanID, int rHostID, SurgeInformation information) {
 
-        Debug.Log("updating surge");
-
         ClientBasicSurgeManager manager = GameObject.Find("GamePanels").transform.Find("BasicSurgePanel").gameObject.GetComponent<ClientBasicSurgeManager>();
 
         manager.power = information.NewAiPower;
@@ -1754,8 +1723,6 @@ public class Server : MonoBehaviour
 
         if (aiAttacks.IsTarget)
         {
-
-            Debug.Log("You are under  Attack");
             //Display to the player the AI Attack UI so they can choose a spec score to defend themselves
             GameManager.instance.currentPhase = GameManager.TurnPhases.AttackSurge;
 
@@ -1979,7 +1946,6 @@ public class Server : MonoBehaviour
     public void SendNewPhase()
     {
         NewPhase newPhase = new NewPhase();
-        Debug.Log("sent newphase");
         SendServer(newPhase);
     }
 
@@ -2064,9 +2030,6 @@ public class Server : MonoBehaviour
 
         GameManager.instance.GetPlayer(conID).playerName = details.PlayerName;
 
-        Debug.Log("Recieved Player Name");
-        Debug.Log("Set name to " + GameManager.instance.GetPlayer(conID).playerName);
-
         GameObject LobbyUiHandler = GameObject.Find("Canvas");
         LobbyUiHandler.GetComponent<LobbyUIManager>().AddPlayerNames(conID);
 
@@ -2133,7 +2096,6 @@ public class Server : MonoBehaviour
     }
     private void AbilityUsed(int conID, int chanID, int rHostID, AbilityUsage ability)
     {
-        Debug.Log("recieved ability");
         List<int> rooms;
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
@@ -2202,9 +2164,6 @@ public class Server : MonoBehaviour
     /// <param name="points">message sent over from client, holds the amount of points the player rolled</param>
     private void ActionPoints(int conID, int chanID, int rHostID, ActionPoints points)
     {
-
-        Debug.Log("recieved actionpoints");
-
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
@@ -2223,17 +2182,12 @@ public class Server : MonoBehaviour
                 List<int> roomIds = new List<int>();
                 bool SecretPathActive = false;
 
-                Debug.Log("BEFORE ____________________________--------------------------------------------------------------");
-
                 foreach (Ability ability in player.activeAbilitys) {
 
-                    Debug.Log(ability.abilityType);
-
                     if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
-
-                        
+                  
                         SecretPathActive = true;
-                        Debug.Log("IT FREAKING WORKS!!!");
+
                         break;
 
 
@@ -2243,7 +2197,6 @@ public class Server : MonoBehaviour
 
                     }
                 }
-                Debug.Log(SecretPathActive);
 
                 for (int j = 0; j < GameManager.instance.roomList.GetComponent<WayPointGraph>().graphNodes.Length; j++)
                 {
@@ -2266,8 +2219,6 @@ public class Server : MonoBehaviour
 
                        roomCost = Playermovement.currentPath.Count - 1;
                     }
-                    
-                    Debug.Log("Cost to get to room " + j + " " + roomCost);
 
                     if (roomCost <= points.actionPoints)
                     {
@@ -2291,7 +2242,7 @@ public class Server : MonoBehaviour
     /// <param name="room">int id of the room the player wants to move to.
     private void RoomCost(int conID, int chanID, int rHostID, SelectRoom room)
     {
-        Debug.Log("recieved room " + room.roomID);
+
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
             Player player = GameManager.instance.GetPlayer(i);
@@ -2312,7 +2263,6 @@ public class Server : MonoBehaviour
                 int roomCost = Playermovement.currentPath.Count - 1;
 
                 foreach (Ability ability in player.activeAbilitys) {
-                    Debug.Log(ability.abilityType);
 
                     if (ability.abilityType == Ability.AbilityTypes.Secret_Paths) {
 
@@ -2324,7 +2274,6 @@ public class Server : MonoBehaviour
 
                     }
                 }
-                Debug.Log(SecretPathActive);
 
                 if (SecretPathActive) {
 
@@ -2376,7 +2325,6 @@ public class Server : MonoBehaviour
     /// <param name="choice"></param>
     private void ChoiceSelection(int conID, int chanID, int rHostID, SelectedChoice choice)
     {
-        Debug.Log("Recieved choice");
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
@@ -2530,9 +2478,7 @@ public class Server : MonoBehaviour
     public void NewPhase(int conID, int chanID, int rHostID, NewPhase phase)
     {
         GameManager.instance.IncrementPhase();
-        Debug.Log("current Phase " + GameManager.instance.currentPhase);
         Player activePlayer= GameManager.instance.GetActivePlayer();
-        Debug.Log("Current player " + activePlayer.playerID);
 
         GameObject canvas = GameObject.Find("Canvas");
 
