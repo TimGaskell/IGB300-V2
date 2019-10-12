@@ -87,10 +87,10 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-                Player.transform.eulerAngles = new Vector3(0,180,0);
+                Player.transform.eulerAngles = new Vector3(0,0,0);
                 
                 
-                MoveToFinalPosition(graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>());
+                
                 
                 
                 
@@ -102,6 +102,7 @@ public class PlayerMovement : Navigation
                     Server.Instance.SendRoomChoices(GameManager.instance.GetActivePlayer().playerID, goalIndex);
                     //If its at the end of the path look off to the side
                     Player.transform.eulerAngles = new Vector3(0,180,0);
+                    MoveToFinalPosition(graphNodes.graphNodes[currentPath[currentPathIndex]].GetComponent<LinkedNodes>());
                 }
 
                 //Return to idle animation
@@ -119,19 +120,8 @@ public class PlayerMovement : Navigation
 
     public void MoveToFinalPosition(LinkedNodes currentNode)
     {
-        int finalPosition = 0;
-        
-        foreach (var player in GameManager.instance.players)
-        {
-            if (GameManager.instance.GetActivePlayer().roomPosition == player.roomPosition)
-            {
-                finalPosition++;
-            }
-
-        }
-
         Vector3 PlayerPos = Player.transform.position;
-        Vector3 targetPos = currentNode.finalPositions[finalPosition - 1].transform.position;
+        Vector3 targetPos = currentNode.finalPositions[GameManager.instance.GetActivePlayer().playerID].transform.position;
 
         Player.transform.position = new Vector3(targetPos.x,PlayerPos.y, targetPos.z);
         

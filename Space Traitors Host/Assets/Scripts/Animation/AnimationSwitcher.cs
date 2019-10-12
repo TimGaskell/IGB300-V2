@@ -31,7 +31,7 @@ public class AnimationSwitcher : MonoBehaviour
         IntroAnims.Add("Techie-Intro");
         IntroAnims.Add("Engineer-Intro");
         IntroAnims.Add("Butler-Intro");
-        IdleAnims.Add("Punk-Intro");
+        IntroAnims.Add("Punk-Intro");
     }
 
     //Note: Pass in name of the character from wherever these methods are called- 
@@ -67,7 +67,6 @@ public class AnimationSwitcher : MonoBehaviour
         {
             case Character.CharacterTypes.Techie:
                 animationIndex = 0;
-                Debug.Log("hi");
                 break;
 
             case Character.CharacterTypes.Engineer:
