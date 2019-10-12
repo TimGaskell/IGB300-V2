@@ -928,7 +928,8 @@ public class Server : MonoBehaviour
 
             Debug.Log(item.ItemName);
         }
-        
+
+        Debug.Log(playerItems.Items.Count);
         SendClient(playerItems);
 
     }
@@ -1315,6 +1316,10 @@ public class Server : MonoBehaviour
     }
 
     private void SyncClientItems(int conID, int chanID, int rHostID, SendPlayerItems playerItems) {
+
+        Debug.Log(playerItems.Items.Count);
+
+        ClientManager.instance.inventory = new List<Item>();
 
         for (int itemIndex = 0; itemIndex < playerItems.Items.Count; itemIndex++) {
             ClientManager.instance.inventory.Add(new Item((Item.ItemTypes)playerItems.Items[itemIndex]));
