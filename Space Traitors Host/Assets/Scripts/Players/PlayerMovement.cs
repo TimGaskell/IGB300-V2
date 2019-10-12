@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -121,7 +121,7 @@ public class PlayerMovement : Navigation
     public void MoveToFinalPosition(LinkedNodes currentNode)
     {
         Vector3 PlayerPos = Player.transform.position;
-        Vector3 targetPos = currentNode.finalPositions[GameManager.instance.GetActivePlayer().playerID].transform.position;
+        Vector3 targetPos = currentNode.finalPositions[GameManager.instance.GetActivePlayer().playerID - 1].transform.position;
 
         Player.transform.position = new Vector3(targetPos.x,PlayerPos.y, targetPos.z);
         

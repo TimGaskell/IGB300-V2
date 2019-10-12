@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -549,7 +549,7 @@ public class GameManager : MonoBehaviour
         foreach (Player player in players)
         {
             GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
-            Vector3 playerStart = playerStartingPostition.transform.GetChild(player.playerID).transform.position + positionOffset;
+            Vector3 playerStart = playerStartingPostition.transform.GetChild(player.playerID - 1).transform.position + positionOffset;
             player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerList.transform);
         }
     }
