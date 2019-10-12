@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7729062153880957020}
   - component: {fileID: 8074842782796779407}
   m_Layer: 0
-  m_Name: SingerModel
+  m_Name: PunkModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,7 +144,7 @@ Animator:
   m_GameObject: {fileID: 466992447494929638}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f4feb3eba71afc04599714eef31d5938, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
