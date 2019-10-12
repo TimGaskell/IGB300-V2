@@ -464,6 +464,13 @@ public class Server : MonoBehaviour
             case NetOP.StealItem:
                 GetStealItem(conID, chanID, rHostID, (StealItem)msg);
                 break;
+            case NetOP.EquipItem:
+                GetEquipItem(conID, chanID, rHostID, (EquipItem)msg);
+                break;
+            case NetOP.DiscardItem:
+                GetDiscardItem(conID, chanID, rHostID, (DiscardItem)msg);
+                break;
+
 
 
         }
