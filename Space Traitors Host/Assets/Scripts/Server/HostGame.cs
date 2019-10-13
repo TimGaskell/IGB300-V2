@@ -18,9 +18,11 @@ public class HostGame : MonoBehaviour
     public Scene NextScene;
 
     public GameObject roomNameInput;
+    public GameObject errorText;
 
     void Start() {
         networkManager = NetworkManager.singleton;
+        errorText.SetActive(false);
         if (SceneManager.GetActiveScene().name == "LobbyLan")
         {
             return;
@@ -65,6 +67,10 @@ public class HostGame : MonoBehaviour
             networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "","",0,0,networkManager.OnMatchCreate);
 
             }
+        }
+        else
+        {
+            errorText.SetActive(true);
         }
 
     }
