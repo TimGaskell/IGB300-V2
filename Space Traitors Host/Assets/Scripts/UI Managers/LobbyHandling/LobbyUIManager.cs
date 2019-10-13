@@ -22,6 +22,8 @@ public class LobbyUIManager : NetworkBehaviour
 
     public GameObject confirmNamesButton;
 
+    public int currentNamePos;
+
     private void Start()
     {
         if (GameManager.instance.serverActive)
@@ -36,7 +38,8 @@ public class LobbyUIManager : NetworkBehaviour
 
         nameEntryFields = playerNamePanel.transform.GetChild(1);
         ChangeInputFields(0);
-        
+
+        currentNamePos = 0;
 
         
 
@@ -126,19 +129,27 @@ public class LobbyUIManager : NetworkBehaviour
 
         foreach (Transform entryField in nameEntryFields.transform)
         {
-            if (entryField.GetComponent<TMP_InputField>().text == "")
+            if (currentNamePos == counter)
             {
-                entryField.GetComponent<TMP_InputField>().text = tempPlayername;
+                entryField.GetChild(0).GetComponent<TextMeshProUGUI>().text = tempPlayername;
                 if(counter == GameManager.instance.numPlayers - 1)
                 {
-                    confirmNamesButton.GetComponent<Button>().interactable = true;
+                    //confirmNamesButton.GetComponent<Button>().interactable = true;
+                    StartCoroutine("WaitStartGame");
                 }
+                currentNamePos++;
                 break;
             }
 
             counter++;
         }
 
+    }
+
+    IEnumerator WaitStartGame()
+    {
+        yield return new WaitForSeconds(3.0f);
+        Server.Instance.StartGame();
     }
 
 
