@@ -951,7 +951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &799887300
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2323,7 +2323,7 @@ GameObject:
   - component: {fileID: 1589962364}
   - component: {fileID: 1589962363}
   m_Layer: 5
-  m_Name: TextMeshPro Text
+  m_Name: Instructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2368,8 +2368,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Host a game using your PC and connect to it here! If the game isn't showing
-    up make sure you're on the same network!
+  m_text: Host a game using your PC and connect to it here! Make sure you're on the
+    same network!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d7bda1b2ca0456a4f8c159d9c9100deb, type: 2}
   m_sharedMaterial: {fileID: 21258719011384946, guid: d7bda1b2ca0456a4f8c159d9c9100deb,
@@ -2439,12 +2439,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1589962363}
-    characterCount: 116
+    characterCount: 87
     spriteCount: 0
-    spaceCount: 23
-    wordCount: 24
+    spaceCount: 17
+    wordCount: 18
     linkCount: 0
-    lineCount: 7
+    lineCount: 5
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -2669,7 +2669,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00002142929, y: -0.000014203097}
+  m_AnchoredPosition: {x: 0.00002142929, y: -0.000004589673}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1728198663
