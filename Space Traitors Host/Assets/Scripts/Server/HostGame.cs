@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class HostGame : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class HostGame : MonoBehaviour
 
     public Scene NextScene;
 
+    public GameObject roomNameInput;
 
     void Start() {
         networkManager = NetworkManager.singleton;
@@ -42,6 +44,8 @@ public class HostGame : MonoBehaviour
     }
 
     public void CreateRoom() {
+
+        roomName = roomNameInput.GetComponent<TMP_InputField>().text;
 
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
