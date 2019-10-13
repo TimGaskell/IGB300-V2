@@ -10,8 +10,6 @@ using UnityEngine.UI;
 public class LobbyUIManager : NetworkBehaviour
 {
     private bool prerequisitesNotLoaded;
-    public GameObject ClientPanel;
-    public GameObject ServerPanel;
 
     public GameObject playerNumPanel;
     public GameObject playerNamePanel;
@@ -26,15 +24,9 @@ public class LobbyUIManager : NetworkBehaviour
 
     private void Start()
     {
-        if (GameManager.instance.serverActive)
-        {
-            ServerPanel.SetActive(true);
-            ClientPanel.SetActive(false);
-        }
-
         NetworkManagerObject = GameObject.Find("NetworkManager");
-        playerNumPanel.GetComponent<CanvasGroup>().interactable = true;
-        playerNamePanel.GetComponent<CanvasGroup>().interactable = false;
+        playerNumPanel.SetActive(true);
+        playerNamePanel.SetActive(false);
 
         nameEntryFields = playerNamePanel.transform.GetChild(1);
         ChangeInputFields(0);
@@ -74,9 +66,8 @@ public class LobbyUIManager : NetworkBehaviour
             //If the number is valid, assigns the value in the game manager and sets up interface for player name input
             GameManager.instance.numPlayers = convertedNum;
             ChangeInputFields(convertedNum);
-            playerNumPanel.GetComponent<CanvasGroup>().interactable = false;
             playerNumPanel.SetActive(false);
-            playerNamePanel.GetComponent<CanvasGroup>().interactable = true;
+            playerNamePanel.SetActive(true);
             NetworkManagerObject.GetComponent<CustomNetworkDiscovery>().StartHost();
 
         }
@@ -99,6 +90,8 @@ public class LobbyUIManager : NetworkBehaviour
     private void ChangeInputFields(int playerNum)
     {
         int counter = 0;
+
+        Debug.Log(playerNum);
 
         foreach (Transform entryField in nameEntryFields)
         {
