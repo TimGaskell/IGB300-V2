@@ -30,7 +30,7 @@ public class JoinGame : MonoBehaviour {
             cnd = GameObject.Find("NetworkManager").GetComponent<CustomNetworkDiscovery>();
             cnd.Initialize();
             cnd.StartAsClient();
-            status.text = "Click Refresh to Search for a Game";
+            status.text = "No rooms at the moment. Click refresh to search for one";
         }
         else{
 
@@ -114,6 +114,7 @@ public class JoinGame : MonoBehaviour {
     void ClearRoomList() {
 
         for (int i = 0; i < RoomList.Count; i++) {
+            Debug.Log(RoomList[i].transform.name);
             Destroy(RoomList[i]);
         }
         RoomList.Clear();

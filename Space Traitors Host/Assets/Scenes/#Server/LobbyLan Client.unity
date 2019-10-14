@@ -1719,7 +1719,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Click Refresh to Search for a Game
+  m_text: Status Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d7bda1b2ca0456a4f8c159d9c9100deb, type: 2}
   m_sharedMaterial: {fileID: 21258719011384946, guid: d7bda1b2ca0456a4f8c159d9c9100deb,
@@ -1766,7 +1766,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 30
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1789,12 +1789,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 248.20224, w: 29.517588}
   m_textInfo:
     textComponent: {fileID: 1108491432}
-    characterCount: 34
+    characterCount: 11
     spriteCount: 0
-    spaceCount: 6
-    wordCount: 7
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -2831,7 +2831,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00002142929, y: -0.000004000131}
+  m_AnchoredPosition: {x: 0.00002142929, y: 0.000031000192}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1728198663
