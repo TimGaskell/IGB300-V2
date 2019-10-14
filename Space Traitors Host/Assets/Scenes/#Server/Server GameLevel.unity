@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.031739537, g: 0.08566745, b: 0.11818289, a: 1}
+  m_IndirectSpecularColor: {r: 0.020237563, g: 0.06595439, b: 0.09442427, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1615,22 +1615,22 @@ PrefabInstance:
     - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
@@ -14064,6 +14064,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: diningRoom_01
       objectReference: {fileID: 0}
+    - target: {fileID: 8452819229839789455, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 2289187920840683056, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14184,30 +14189,25 @@ PrefabInstance:
       propertyPath: m_Range
       value: 26.8
       objectReference: {fileID: 0}
-    - target: {fileID: 8452819229839789455, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 301641016120365891, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
@@ -14826,22 +14826,22 @@ PrefabInstance:
     - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4219836053185834787, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8, type: 3}
@@ -19220,6 +19220,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: barRoom_01
       objectReference: {fileID: 0}
+    - target: {fileID: 5715287400158440350, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 3715421301076459938, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19385,30 +19390,25 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 23.7
       objectReference: {fileID: 0}
-    - target: {fileID: 5715287400158440350, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 3025659929868014583, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3025659929868014583, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5519971586147231687, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5519971586147231687, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 8955743108147258697, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
@@ -21846,6 +21846,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: barRoom_00
       objectReference: {fileID: 0}
+    - target: {fileID: 4623796957272731658, guid: f66cc65df91444db7a3e7e69af89ae4a,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 5662313346323327809, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22046,30 +22051,25 @@ PrefabInstance:
       propertyPath: m_Range
       value: 28.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4623796957272731658, guid: f66cc65df91444db7a3e7e69af89ae4a,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 8843332530829777291, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8843332530829777291, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2991520301360899795, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2991520301360899795, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 952153112187688654, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
@@ -23029,6 +23029,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: spaRoom (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4291547609151552892, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 5139090619907644328, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -23244,30 +23249,25 @@ PrefabInstance:
       propertyPath: m_Range
       value: 33.36
       objectReference: {fileID: 0}
-    - target: {fileID: 4291547609151552892, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
@@ -26885,6 +26885,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: kitchenRoom (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8773451268414553045, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 368902718738491914, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27150,30 +27155,25 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 9.2
       objectReference: {fileID: 0}
-    - target: {fileID: 8773451268414553045, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
@@ -29137,22 +29137,22 @@ PrefabInstance:
     - target: {fileID: 8903389249225856756, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8903389249225856756, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5242252446326983525, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5242252446326983525, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 8266241681078671735, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
@@ -37687,6 +37687,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: spaRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 4291547609151552892, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 5139090619907644328, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -37902,6 +37907,46 @@ PrefabInstance:
       propertyPath: m_Range
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808455275262642646, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808455275262642646, guid: a8372a795c04547b9a3b4c1ed2e78318,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
     - target: {fileID: 5139090619919736481, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -37941,51 +37986,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4291547609151552892, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 2808455275262642646, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2808455275262642646, guid: a8372a795c04547b9a3b4c1ed2e78318,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5256113404472886307, guid: a8372a795c04547b9a3b4c1ed2e78318, type: 3}
@@ -41382,6 +41382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: kitchenRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 8773451268414553045, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 368902718738491914, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -41632,6 +41637,46 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 6.55
       objectReference: {fileID: 0}
+    - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963022540219299232, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5963022540219299232, guid: ae075e1b28eb643e6bc3f0ee4886d422,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
     - target: {fileID: 368902717294310664, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -41656,51 +41701,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Intensity
       value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8773451268414553045, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
-    - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 5963022540219299232, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 5963022540219299232, guid: ae075e1b28eb643e6bc3f0ee4886d422,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9083699799126628006, guid: ae075e1b28eb643e6bc3f0ee4886d422, type: 3}
@@ -42919,6 +42919,51 @@ PrefabInstance:
       propertyPath: m_Lightmapping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3698570444610385143, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 274369600565967158, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 274369600565967158, guid: d11f62875000e417fa37f6456ae9ea8a,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
     - target: {fileID: 5732205300070824854, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -42968,51 +43013,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Range
       value: 42.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 3698570444610385143, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
-    - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 274369600565967158, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 274369600565967158, guid: d11f62875000e417fa37f6456ae9ea8a,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5011320585677048341, guid: d11f62875000e417fa37f6456ae9ea8a, type: 3}
@@ -43251,6 +43251,51 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2180402388441491629, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080644755438777256, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3080644755438777256, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 9152031503700343941, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9152031503700343941, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
+        type: 3}
+      propertyPath: openSpeed
+      value: 130
+      objectReference: {fileID: 0}
     - target: {fileID: 7105919398930281449, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: m_IsActive
@@ -43400,51 +43445,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 2.897
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180402388441491629, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
-    - target: {fileID: 3080644755438777256, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 3080644755438777256, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 9152031503700343941, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 9152031503700343941, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: openDistance
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: openDistance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
-        type: 3}
-      propertyPath: openSpeed
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7105919398344401700, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8, type: 3}
@@ -43706,6 +43706,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: diningRoom_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8452819229839789455, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
+        type: 3}
+      propertyPath: m_TagString
+      value: VerticalDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 2289187920840683056, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -43821,30 +43826,25 @@ PrefabInstance:
       propertyPath: m_Range
       value: 29.4
       objectReference: {fileID: 0}
-    - target: {fileID: 8452819229839789455, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
-        type: 3}
-      propertyPath: m_TagString
-      value: VerticalDoor
-      objectReference: {fileID: 0}
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openDistance
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 100
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 301641016120365891, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
