@@ -5,12 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class JoinGame : MonoBehaviour {
     List<GameObject> RoomList = new List<GameObject>();
 
     [SerializeField]
-    private Text status;
+    private TextMeshProUGUI status;
 
     [SerializeField]
     private GameObject roomListItemPrefab;
@@ -29,6 +30,7 @@ public class JoinGame : MonoBehaviour {
             cnd = GameObject.Find("NetworkManager").GetComponent<CustomNetworkDiscovery>();
             cnd.Initialize();
             cnd.StartAsClient();
+            status.text = "Click Refresh to Search for a Game";
         }
         else{
 
@@ -59,8 +61,12 @@ public class JoinGame : MonoBehaviour {
                     RoomListItemGO.GetComponent<GameButton>().Setup(ip, name);
 
                     RoomList.Add(RoomListItemGO);
-
+                    status.text = "";
                 }
+            }
+            else
+            {
+                status.text = "No rooms at the moment";
             }
             
         }
@@ -69,7 +75,7 @@ public class JoinGame : MonoBehaviour {
         networkManager.matchMaker.ListMatches(0, 20, "", true, 0, 0, OnMatchList);
 
         }
-        status.text = "No rooms at the moment";
+        
 
     }
 
