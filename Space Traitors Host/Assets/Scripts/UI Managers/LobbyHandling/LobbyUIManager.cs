@@ -22,6 +22,8 @@ public class LobbyUIManager : NetworkBehaviour
 
     public int currentNamePos;
 
+    public GameObject connectedText;
+
     private void Start()
     {
         NetworkManagerObject = GameObject.Find("NetworkManager");
@@ -33,7 +35,7 @@ public class LobbyUIManager : NetworkBehaviour
 
         currentNamePos = 0;
 
-        
+        connectedText.SetActive(false);
 
 
     }
@@ -125,9 +127,11 @@ public class LobbyUIManager : NetworkBehaviour
             if (currentNamePos == counter)
             {
                 entryField.GetChild(0).GetComponent<TextMeshProUGUI>().text = tempPlayername;
+                entryField.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
                 if(counter == GameManager.instance.numPlayers - 1)
                 {
                     //confirmNamesButton.GetComponent<Button>().interactable = true;
+                    connectedText.SetActive(true);
                     StartCoroutine("WaitStartGame");
                 }
                 currentNamePos++;
