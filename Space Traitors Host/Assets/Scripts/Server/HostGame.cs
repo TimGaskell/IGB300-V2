@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class HostGame : MonoBehaviour
 {
@@ -16,9 +17,12 @@ public class HostGame : MonoBehaviour
 
     public Scene NextScene;
 
+    public GameObject roomNameInput;
+    public GameObject errorText;
 
     void Start() {
         networkManager = NetworkManager.singleton;
+        errorText.SetActive(false);
         if (SceneManager.GetActiveScene().name == "LobbyLan")
         {
             return;
@@ -43,6 +47,8 @@ public class HostGame : MonoBehaviour
 
     public void CreateRoom() {
 
+        roomName = roomNameInput.GetComponent<TMP_InputField>().text;
+
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
             //create room
@@ -61,6 +67,10 @@ public class HostGame : MonoBehaviour
             networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "","",0,0,networkManager.OnMatchCreate);
 
             }
+        }
+        else
+        {
+            errorText.SetActive(true);
         }
 
     }

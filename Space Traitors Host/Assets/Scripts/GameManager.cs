@@ -541,7 +541,7 @@ public class GameManager : MonoBehaviour
         playerList = GameObject.FindWithTag("PlayerList");
         playerStartingPostition = GameObject.FindWithTag("StartPosition");
 
-        Vector3 positionOffset = new Vector3(0.0f, 22.5f, 0.0f);
+        Vector3 positionOffset = new Vector3(0.0f, 11f, 0.0f);
 
         
         //Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;

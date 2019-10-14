@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ public class ClientSpawner : MonoBehaviour
     public InputField ipBox;
     public Image mainPortrait;
     public Image[] portraitList;
-    public Text characterLabel;
+    public TextMeshProUGUI characterLabel;
     public GameObject selectButton;
     public GameObject LobbyScene;
 
