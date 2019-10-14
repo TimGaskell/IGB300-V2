@@ -14,7 +14,7 @@ public class PlayerMovement : Navigation
     public bool ServerVersion = false;
 
     //Movement Variables
-    public float moveSpeed = 100.0f;
+    public float moveSpeed = 85.0f;
     public float minDistance = 0.1f;
     public int goalIndex = 0;
     public bool StartMoving = false;
