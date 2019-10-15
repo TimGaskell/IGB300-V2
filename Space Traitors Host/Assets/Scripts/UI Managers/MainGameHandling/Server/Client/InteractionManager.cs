@@ -314,6 +314,7 @@ public class InteractionManager : MonoBehaviour
         PlayerData defendingPlayer = ClientManager.instance.GetPlayerData(selectedTarget);
         AreAttacker = true;
         combatPanel.SetActive(true);
+        standardChoiceUI.SetActive(false);
 
         //Sets the default screen status for the combats
         combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "ATTACKING";
