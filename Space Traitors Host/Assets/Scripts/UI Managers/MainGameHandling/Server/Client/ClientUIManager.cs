@@ -328,6 +328,7 @@ public class ClientUIManager : MonoBehaviour
 
         if (interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
 
+            Debug.Log("this gets called plasssssssss");
             IncrementPhase();
         }
   
