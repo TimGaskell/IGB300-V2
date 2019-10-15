@@ -90,7 +90,7 @@ public class PlayerMovement : Navigation
                 StartMoving = false;
                 GameManager.instance.playerMoving = false;
 
-                Player.transform.eulerAngles = new Vector3(0,0,0);
+                Player.transform.eulerAngles =   new Vector3(0,0,0);
                 
                 
                 

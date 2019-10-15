@@ -1635,7 +1635,8 @@ public class Server : MonoBehaviour
     private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
     {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
-       
+        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+
     }
 
     private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
@@ -1654,7 +1655,9 @@ public class Server : MonoBehaviour
                 //Display to the player that they have too many items equipped
                 ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
                 break;
+
         }
+        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
     }
 
     private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
@@ -1662,7 +1665,13 @@ public class Server : MonoBehaviour
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
         ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Successfully discarded item";
-        StealingManager.instance.UpdateItemButtons();
+
+        if (ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+
+            StealingManager.instance.UpdateItemButtons();
+        }
+        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+
     }
 
     private void GetStealSuccess(int conID, int chanID, int rHostID, StealSuccess stealSuccess)
@@ -2563,15 +2572,14 @@ public class Server : MonoBehaviour
 
                 Item selectedItem = player.items[itemID];
 
-                if (selectedItem.isEquipped)
-                {
+                if (selectedItem.isEquipped) {
                     player.UnequipItem(itemID);
                     PlayerCardManager.instance.UpdateAllCards();
 
                     SyncPlayerData(conID);
                     SendUnequipSuccess(conID);
                 }
-                else
+                else 
                 {
                     Player.EquipErrors equipStatus = player.EquipItem(itemID);
 
