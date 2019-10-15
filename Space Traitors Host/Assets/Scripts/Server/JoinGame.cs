@@ -125,7 +125,6 @@ public class JoinGame : MonoBehaviour {
 
         Debug.Log("Joining " + match.name);
         Server.Instance.match = match;
-        Server.Instance.networkManager = networkManager;
         Server.Instance.DC = true;
 
         networkManager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);

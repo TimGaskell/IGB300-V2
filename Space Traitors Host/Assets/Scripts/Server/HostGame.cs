@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking.Match;
 using UnityEngine.UI;
 using TMPro;
 
@@ -64,7 +65,7 @@ public class HostGame : MonoBehaviour
             }
             else
             {
-            networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "","",0,0,networkManager.OnMatchCreate);
+                networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "","",0,0,networkManager.OnMatchCreate);
 
             }
         }

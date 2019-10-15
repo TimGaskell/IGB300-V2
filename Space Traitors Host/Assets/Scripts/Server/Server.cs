@@ -135,6 +135,8 @@ public class Server : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        networkManager = NetworkManager.singleton;
+
 
     }
 
