@@ -136,7 +136,7 @@ public class SecretPaths : Ability
     public SecretPaths()
     {
         abilityType = AbilityTypes.Secret_Paths;
-        abilityDescription = "On this turn move to any room in the map without spending action points.";
+        abilityDescription = "A player of your choice can move to any room in the map without spending action points on their next turn.";
 
         scrapCost = 6;
         corruptionRequirement = 0;

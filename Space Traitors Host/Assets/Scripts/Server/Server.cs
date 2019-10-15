@@ -1507,7 +1507,7 @@ public class Server : MonoBehaviour
     {
         ClientManager.instance.componentsInstalled = numComponentsInstalled.InstalledComponents;
 
-        GameObject canvas = GameObject.Find("canvas");
+        GameObject canvas = GameObject.Find("Canvas");
         canvas.GetComponent<ClientUIManager>().UpdateComponentTracker();
 
         if (numComponentsInstalled.AllComponentsInstalled)
@@ -1709,7 +1709,8 @@ public class Server : MonoBehaviour
     {
         //Update the UI to display to the player that they have been selected as traitor
         ClientManager.instance.isTraitor = true;
-        ClientUIManager.instance.TraitorSelection.SetActive(true);
+        GameObject.Find("Canvas").GetComponent<ClientUIManager>().basicSurgePanel.GetComponent<ClientBasicSurgeManager>().UpdateSurgeValues();
+        //ClientUIManager.instance.TraitorSelection.SetActive(true);
         ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().TraitorTitle.SetActive(true);
        
     }
