@@ -326,8 +326,8 @@ public class ClientUIManager : MonoBehaviour
     {
         if (interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf == true) {
 
+            Server.Instance.SendNewPhase();
 
-            IncrementPhase();
         }
 
 

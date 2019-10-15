@@ -470,7 +470,12 @@ public class Server : MonoBehaviour
             case NetOP.DiscardItem:
                 GetDiscardItem(conID, chanID, rHostID, (DiscardItem)msg);
                 break;
-
+            case NetOP.ComponentStealSuccess:
+                GetComponentStealSuccess(conID, chanID, rHostID, (ComponentStealSuccess)msg);
+                break;
+            case NetOP.ComponentStolen:
+                ComponentStolen(conID, chanID, rHostID, (ComponentStolen)msg);
+                break;
 
 
         }
@@ -1545,6 +1550,8 @@ public class Server : MonoBehaviour
         List<int> loserItemIDs = combatWinner.LoserInventory;
         List<Item> loserInventory = new List<Item>();
 
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().hasComponent = combatWinner.HasComponent;
+
         foreach (int itemID in loserItemIDs)
         {
             Item item = ClientManager.instance.GetItemInfo(itemID);
@@ -1645,6 +1652,21 @@ public class Server : MonoBehaviour
 
 
 
+
+    }
+
+    private void GetComponentStealSuccess(int conID, int chanID, int rHostID, ComponentStealSuccess success) {
+
+        ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully the Component";
+
+
+    }
+
+    private void ComponentStolen(int conID, int chanID, int rHostID, ComponentStolen component) {
+
+        ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your Component has been stolen";
 
     }
 
