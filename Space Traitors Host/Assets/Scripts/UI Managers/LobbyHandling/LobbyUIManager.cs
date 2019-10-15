@@ -23,6 +23,7 @@ public class LobbyUIManager : NetworkBehaviour
     public int currentNamePos;
 
     public GameObject connectedText;
+    public GameObject numberErrorText;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class LobbyUIManager : NetworkBehaviour
 
         connectedText.SetActive(false);
 
-
+        numberErrorText.SetActive(false);
     }
 
     void Update()
@@ -75,6 +76,8 @@ public class LobbyUIManager : NetworkBehaviour
         }
         else
         {
+            numberErrorText.SetActive(true);
+            textField.GetComponent<TMP_InputField>().text = "";
             Debug.Log("Not a valid player number");
         }
     }
