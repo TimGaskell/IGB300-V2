@@ -51,6 +51,8 @@ public class ClientUIManager : MonoBehaviour
     public GameObject ItemNotificationPanel;
     public GameObject ItemCompletionPanel;
 
+    public GameObject hasComponentTracker;
+
     public static ClientUIManager instance = null;
 
     // Start is called before the first frame update
@@ -84,6 +86,8 @@ public class ClientUIManager : MonoBehaviour
         instructionPanels.SetActive(false);
 
         pauseMenu.SetActive(false);
+
+        hasComponentTracker.SetActive(false);
 
         GameObject[] UIItems = GameObject.FindGameObjectsWithTag("MapItemIcons");
 
@@ -125,6 +129,7 @@ public class ClientUIManager : MonoBehaviour
     public void UpdatePlayerStats()
     {
         UpdateComponentTracker();
+        UpdateHasComponentTracker();
         corruptionBar.GetComponent<CorruptionBarController>().UpdateCorruptionBar();
         scrapTracker.GetComponent<ScrapTrackerController>().UpdateScrapText();
         healthTracker.GetComponent<HealthBarManager>().UpdateHealthPoints();
@@ -453,6 +458,11 @@ public class ClientUIManager : MonoBehaviour
         //}
 
         //componentTracker.objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveText;
+    }
+
+    public void UpdateHasComponentTracker()
+    {
+        hasComponentTracker.SetActive(ClientManager.instance.hasComponent);
     }
 
 
