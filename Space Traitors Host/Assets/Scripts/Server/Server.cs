@@ -1658,7 +1658,7 @@ public class Server : MonoBehaviour
     private void GetComponentStealSuccess(int conID, int chanID, int rHostID, ComponentStealSuccess success) {
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully the Component";
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the Component";
 
 
     }
@@ -1737,7 +1737,7 @@ public class Server : MonoBehaviour
 
             ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
             ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the item";
-          
+            
 
         }
         else
@@ -1755,7 +1755,7 @@ public class Server : MonoBehaviour
         //Prevent them from stealing any more items
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item." ;
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item.";
 
     }
 

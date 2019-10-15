@@ -198,11 +198,11 @@ public class StealingManager : MonoBehaviour
                 //Changes the text of the equip action based on whether or not the item is equipped.
                 if (selectedItem.isEquipped)
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip";
                 }
                 else
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip";
                 }
             }
             //Resets the selected item if it is not
@@ -283,5 +283,4 @@ public class StealingManager : MonoBehaviour
 
         }
     }
-
 }

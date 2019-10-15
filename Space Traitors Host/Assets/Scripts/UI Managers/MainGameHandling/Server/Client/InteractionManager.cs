@@ -456,6 +456,7 @@ public class InteractionManager : MonoBehaviour
             EndAttack();
         }
 
+        combatPanel.SetActive(false);
         stealPanel.SetActive(true);
         stealPanel.GetComponent<StealingManager>().StartStealPanel();
     }
