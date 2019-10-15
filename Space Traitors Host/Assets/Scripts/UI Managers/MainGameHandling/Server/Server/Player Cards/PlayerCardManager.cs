@@ -94,7 +94,7 @@ public class PlayerCardManager : MonoBehaviour
         {
             Color backColour;
 
-            if(i == GameManager.instance.GetActivePlayer().playerID - 1)
+            if (i == GameManager.instance.GetPlayerOrder(GameManager.instance.GetActivePlayer().playerID))
             {
                  backColour = Color.green;
             }

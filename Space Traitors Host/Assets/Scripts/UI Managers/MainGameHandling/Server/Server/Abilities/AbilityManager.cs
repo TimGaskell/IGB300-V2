@@ -309,6 +309,7 @@ public class AbilityManager : MonoBehaviour
 
         string resourceName = ((Ability.ScanResources)resourceType).ToString();
         string roomsFound = Ids.Count.ToString();
+        abilityInfoText.SetActive(true);
         abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} found in {1} adjacent rooms.", resourceName, roomsFound);
 
 
