@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
     /// Update the inventory buttons to show the most up to date information about the player's inventory
     /// 
     /// </summary>
-    private void UpdateItemButtons()
+    public void UpdateItemButtons()
     {
         int counter = 0;
         //Display text in the string which will appear on the relevant button in the inventory
@@ -135,7 +135,7 @@ public class InventoryManager : MonoBehaviour
     {
       
         Server.Instance.EquipItem(selectedID);
-        UpdateItemButtons();
+      
      
        
     }
@@ -149,7 +149,6 @@ public class InventoryManager : MonoBehaviour
     {
         //selectedPlayer.DiscardItem(selectedID);
         Server.Instance.DiscardItem(selectedID);
-        UpdateItemButtons();
     }
 
     /// <summary>
