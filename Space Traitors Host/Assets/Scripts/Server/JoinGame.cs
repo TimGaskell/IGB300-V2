@@ -19,7 +19,7 @@ public class JoinGame : MonoBehaviour {
     [SerializeField]
     private Transform roomListParent;
 
-    private NetworkManager networkManager;
+    public NetworkManager networkManager;
 
     private CustomNetworkDiscovery cnd;
 
@@ -124,6 +124,10 @@ public class JoinGame : MonoBehaviour {
     public void JoinRoom(MatchInfoSnapshot match) {
 
         Debug.Log("Joining " + match.name);
+        Server.Instance.match = match;
+        Server.Instance.networkManager = networkManager;
+        Server.Instance.DC = true;
+
         networkManager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
         ClearRoomList();
         status.text = "Joining...";

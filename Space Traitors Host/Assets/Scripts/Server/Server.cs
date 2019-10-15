@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.Networking.Match;
+using UnityEngine.Networking.Types;
 
 using System.Net;
 using System.Net.NetworkInformation;
@@ -118,6 +120,10 @@ public class Server : MonoBehaviour
     private GameManager.SpecScores attackerSpec;
     private GameManager.SpecScores defenderSpec;
     private int defenderID;
+
+    public bool DC = true;
+    public MatchInfoSnapshot match;
+    public NetworkManager networkManager;
 
 
 
@@ -239,6 +245,8 @@ public class Server : MonoBehaviour
             case NetworkEventType.DisconnectEvent:
                 //Loop through to find player that is disconnecting, based on their ID
 
+
+
                 Debug.Log(connectionID + " has disconnected");
                 break;
 
@@ -285,6 +293,15 @@ public class Server : MonoBehaviour
 
             case NetworkEventType.DisconnectEvent:
                 Debug.Log(string.Format("You were disconnected"));
+
+                if (DC) {
+
+                    networkManager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
+
+                    
+
+                }
+
                 break;
 
             case NetworkEventType.DataEvent:
@@ -301,6 +318,16 @@ public class Server : MonoBehaviour
                 Debug.Log("Unexpected network event type");
                 break;
         }
+    }
+
+    private IEnumerator AttemptReconnect() {
+        NetworkTransport.RemoveHost(NetworkManager.singleton.client.connection.hostId);
+        NetworkManager.singleton.client.Shutdown();
+        NetworkManager.singleton.client = null;
+        yield return new WaitForSeconds(1.0f);
+        NetworkTransport.Shutdown();
+        Debug.Log("Attempting Reconnect");
+        NetworkManager.singleton.StartClient();
     }
 
     #endregion 
@@ -502,6 +529,20 @@ public class Server : MonoBehaviour
         }
 
     }
+
+    public void DisconnectFromServer() {
+
+        DC = false;
+        networkManager.matchMaker.DropConnection(match.networkId, match.hostNodeId,0, OnMatchDropConnection);
+
+
+    }
+
+    public void OnMatchDropConnection(bool success, string extendedInfo) {
+        // ...
+    }
+
+
 
 
     //This needs to be updated
