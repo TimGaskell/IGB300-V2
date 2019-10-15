@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.018980311, g: 0.06350763, b: 0.09141754, a: 1}
+  m_IndirectSpecularColor: {r: 0.01963948, g: 0.06505519, b: 0.093268834, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18278,14 +18278,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1040d70ede28dc04fae53b4eb8d286a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackerName: {fileID: 0}
-  attackerSpecText: {fileID: 0}
-  attackerPortrait: {fileID: 0}
-  defenderName: {fileID: 0}
-  defenderSpecText: {fileID: 0}
-  defenderPortrait: {fileID: 0}
-  successChanceText: {fileID: 0}
-  winnerText: {fileID: 0}
+  attackerName: {fileID: 460233675}
+  attackerSpecText: {fileID: 2003877777}
+  attackerPortrait: {fileID: 641053917}
+  defenderName: {fileID: 720213200}
+  defenderSpecText: {fileID: 1759896902}
+  defenderPortrait: {fileID: 1934128951}
+  successChanceText: {fileID: 1766930520}
+  winnerText: {fileID: 1227890642}
 --- !u!1 &729936304
 GameObject:
   m_ObjectHideFlags: 0
