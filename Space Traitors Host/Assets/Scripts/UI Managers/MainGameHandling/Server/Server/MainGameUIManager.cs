@@ -29,6 +29,8 @@ public class MainGameUIManager : MonoBehaviour
 
     public GameObject sabotagePanel;
 
+    public GameObject exitMenu;
+
     private void Start()
     {
         serverActivePanel.SetActive(true);
@@ -45,6 +47,8 @@ public class MainGameUIManager : MonoBehaviour
         traitorVictoryPanel.SetActive(false);
 
         sabotagePanel.SetActive(false);
+
+        exitMenu.SetActive(false);
 
         playerCards.SetActive(true);
         playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
@@ -200,6 +204,18 @@ public class MainGameUIManager : MonoBehaviour
     public void SetAttackSurgeButton(bool enabled)
     {
         attackSurgePanel.GetComponent<AttackSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
+    }
+
+    public void OpenExitMenu()
+    {
+        if (exitMenu.activeSelf)
+        {
+            exitMenu.SetActive(false);
+        }
+        else
+        {
+            exitMenu.SetActive(true);
+        }
     }
 
     #endregion
