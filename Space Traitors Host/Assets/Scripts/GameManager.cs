@@ -546,25 +546,8 @@ public class GameManager : MonoBehaviour
         foreach (Player player in players)
         {
             //Obtain y offset (unique to each character type)
-            float yOffset;
-            switch (player.Character.CharacterType)
-            {
-                case (Character.CharacterTypes.Butler):
-                    yOffset = 22.0f;
-                    break;
-                case (Character.CharacterTypes.Engineer):
-                    yOffset = 13.0f;
-                    break;
-                case (Character.CharacterTypes.Singer):
-                    yOffset = 17.0f;
-                    break;
-                case (Character.CharacterTypes.Techie):
-                    yOffset = 12.0f;
-                    break;
-                default:
-                    yOffset = 0.0f;
-                    break;
-            }
+            float yOffset = ObtainYOffset(player.Character.CharacterType);
+            
             Vector3 positionOffset = new Vector3(0.0f, yOffset, 0.0f);
 
             GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
@@ -1397,6 +1380,32 @@ public class GameManager : MonoBehaviour
             }
         }
 
+    }
+
+    public static float ObtainYOffset(Character.CharacterTypes characterType)
+    {
+        float yOffset = 0.0f;
+
+        switch (characterType)
+        {
+            case (Character.CharacterTypes.Butler):
+                yOffset = 22.0f;
+                break;
+            case (Character.CharacterTypes.Engineer):
+                yOffset = 13.0f;
+                break;
+            case (Character.CharacterTypes.Singer):
+                yOffset = 17.0f;
+                break;
+            case (Character.CharacterTypes.Techie):
+                yOffset = 12.0f;
+                break;
+            default:
+                yOffset = 0.0f;
+                break;
+        }
+
+        return yOffset;
     }
 
     #endregion

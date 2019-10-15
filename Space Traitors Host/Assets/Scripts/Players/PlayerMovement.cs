@@ -68,8 +68,11 @@ public class PlayerMovement : Navigation
                 Quaternion look = Quaternion.LookRotation(direction);
                 Player.transform.rotation = look;
 
+                float yOffset = GameManager.ObtainYOffset(Player.GetComponent<PlayerObject>().CharacterType);
+                Vector3 objectOffset = new Vector3(0.0f, yOffset, 0.0f);
+
                 //Start Moving towards that Graph Node
-                Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position, moveSpeed * Time.deltaTime);
+                Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position + objectOffset, moveSpeed * Time.deltaTime);
 
                 //Increase path currentNode
                 if (Vector3.Distance(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) <= minDistance) {
