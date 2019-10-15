@@ -69,7 +69,7 @@ public class PlayerMovement : Navigation
                 Player.transform.rotation = look;
 
                 float yOffset = GameManager.ObtainYOffset(Player.GetComponent<PlayerObject>().CharacterType);
-                Vector3 objectOffset = new Vector3(0.0f, yOffset, 0.0f);
+                Vector3 objectOffset = new Vector3(0.0f, yOffset -11.0f, 0.0f);
 
                 //Start Moving towards that Graph Node
                 Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position + objectOffset, moveSpeed * Time.deltaTime);
