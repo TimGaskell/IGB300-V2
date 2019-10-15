@@ -22,6 +22,7 @@ public class MovementManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MoveToRoomPanel.SetActive(false);
         instance = this;
         Movement = GameObject.Find("Players").GetComponent<PlayerMovement>();
         GameManager.instance.playerList = GameObject.FindWithTag("PlayerList");
