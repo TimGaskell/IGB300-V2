@@ -2727,9 +2727,6 @@ public class Server : MonoBehaviour
 
     private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
 
-        GameObject canvas = GameObject.Find("Canvas");
-        canvas.GetComponent<MainGameUIManager>().CloseCombatPanel();
-        Debug.Log("Close Combat Panel");
         SendSurge();
 
     }

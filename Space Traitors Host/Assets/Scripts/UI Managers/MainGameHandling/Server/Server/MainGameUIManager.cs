@@ -89,6 +89,7 @@ public class MainGameUIManager : MonoBehaviour
 
                 break;
             case (GameManager.TurnPhases.Abilities):
+                CloseCombatPanel();
                 aiPowerPanel.SetActive(true);
                 UpdateAIPower();
                 playerCards.SetActive(true);
@@ -122,6 +123,7 @@ public class MainGameUIManager : MonoBehaviour
                     basicSurgePanel.GetComponent<ServerBasicSurgeManager>().UpdateSurgeValues();
                     aiPowerPanel.SetActive(false);
                     interactionPanel.SetActive(false);
+                    CloseCombatPanel();
                 }
 
                 break;
@@ -132,6 +134,7 @@ public class MainGameUIManager : MonoBehaviour
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                 playerCards.SetActive(false);
                 attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
+                CloseCombatPanel();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
