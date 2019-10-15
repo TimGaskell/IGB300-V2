@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.039690875, g: 0.09898927, b: 0.13328794, a: 1}
+  m_IndirectSpecularColor: {r: 0.018980311, g: 0.06350763, b: 0.09141754, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   interactionPanel: {fileID: 1890527028}
   basicSurgePanel: {fileID: 560285019}
   attackSurgePanel: {fileID: 1509444212}
-  combatPanel: {fileID: 0}
+  combatPanel: {fileID: 729012984}
   nonTraitorVictoryPanel: {fileID: 1357184614}
   traitorVictoryPanel: {fileID: 238249556}
   sabotagePanel: {fileID: 1244953654}
