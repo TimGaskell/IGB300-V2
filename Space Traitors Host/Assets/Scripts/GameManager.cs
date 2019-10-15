@@ -541,13 +541,29 @@ public class GameManager : MonoBehaviour
         playerList = GameObject.FindWithTag("PlayerList");
         playerStartingPostition = GameObject.FindWithTag("StartPosition");
 
-        Vector3 positionOffset = new Vector3(0.0f, 11f, 0.0f);
-
-        
         //Quaternion playerRotation = roomList.GetComponent<ChoiceRandomiser>().rooms[Player.STARTING_ROOM_ID].transform.rotation;
         Quaternion playerRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
         foreach (Player player in players)
         {
+            //Obtain y offset (unique to each character type)
+            float yOffset;
+            switch (player.Character.CharacterType)
+            {
+                case (Character.CharacterTypes.Butler):
+                    yOffset = 22.0f;
+                    break;
+                case (Character.CharacterTypes.Engineer):
+                    yOffset = 13.0f;
+                    break;
+                case (Character.CharacterTypes.Singer):
+                    yOffset = 17.0f;
+                    break;
+                case (Character.CharacterTypes.Techie):
+                    yOffset = 12.0f;
+                    break;
+            }
+            Vector3 positionOffset = new Vector3(0.0f, yOffset, 0.0f);
+
             GameObject playerModel = playerPrefabs.Find(x => x.GetComponent<PlayerObject>().CharacterType == player.Character.CharacterType);
             Vector3 playerStart = playerStartingPostition.transform.GetChild(player.playerID - 1).transform.position + positionOffset;
             player.playerObject = Instantiate(playerModel, playerStart, playerRotation, playerList.transform);
