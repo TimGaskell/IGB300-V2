@@ -9,5 +9,4 @@ public class PlayerCardComponents : MonoBehaviour
     public GameObject scrapText;
     public GameObject lifePointsText;
     public GameObject componentMarker;
-
 }
