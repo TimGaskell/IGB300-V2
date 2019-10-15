@@ -7,7 +7,7 @@ public class Room : MonoBehaviour
 {
     public int roomIndex;
 
-    public enum roomTypes { Default, Bar, Dining_Hall, Engineering, Kitchen, Sleeping_Pods, Spa, Escape };
+    public enum roomTypes { Default, Bar, Dining_Hall, Engineering, Kitchen, Sleeping_Pods, Spa, Escape_Shuttle };
     public roomTypes roomType;
 
     public string RoomName { get { return roomType.ToString().Replace('_', ' '); } }

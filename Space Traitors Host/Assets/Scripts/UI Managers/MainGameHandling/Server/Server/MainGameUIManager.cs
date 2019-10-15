@@ -24,10 +24,14 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject basicSurgePanel;
     public GameObject attackSurgePanel;
 
+    public GameObject combatPanel;
+
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
 
     public GameObject sabotagePanel;
+
+    public GameObject exitMenu;
 
     private void Start()
     {
@@ -45,6 +49,10 @@ public class MainGameUIManager : MonoBehaviour
         traitorVictoryPanel.SetActive(false);
 
         sabotagePanel.SetActive(false);
+
+        CloseCombatPanel();
+
+        exitMenu.SetActive(false);
 
         playerCards.SetActive(true);
         playerCards.GetComponent<PlayerCardManager>().InitialisePlayerCards();
@@ -81,6 +89,7 @@ public class MainGameUIManager : MonoBehaviour
 
                 break;
             case (GameManager.TurnPhases.Abilities):
+                CloseCombatPanel();
                 aiPowerPanel.SetActive(true);
                 UpdateAIPower();
                 playerCards.SetActive(true);
@@ -114,6 +123,7 @@ public class MainGameUIManager : MonoBehaviour
                     basicSurgePanel.GetComponent<ServerBasicSurgeManager>().UpdateSurgeValues();
                     aiPowerPanel.SetActive(false);
                     interactionPanel.SetActive(false);
+                    CloseCombatPanel();
                 }
 
                 break;
@@ -124,6 +134,7 @@ public class MainGameUIManager : MonoBehaviour
                 playerCards.GetComponent<PlayerCardManager>().UpdateAllCards();
                 playerCards.SetActive(false);
                 attackSurgePanel.GetComponent<AttackSurgeManager>().UpdateTarget();
+                CloseCombatPanel();
                 break;
             default:
                 throw new NotImplementedException("Not a valid phase");
@@ -200,6 +211,29 @@ public class MainGameUIManager : MonoBehaviour
     public void SetAttackSurgeButton(bool enabled)
     {
         attackSurgePanel.GetComponent<AttackSurgeManager>().confirmButton.GetComponent<Button>().interactable = enabled;
+    }
+
+    public void OpenExitMenu()
+    {
+        if (exitMenu.activeSelf)
+        {
+            exitMenu.SetActive(false);
+        }
+        else
+        {
+            exitMenu.SetActive(true);
+        }
+    }
+
+    public void InitCombatPanel(int attackerID, int defenderID)
+    {
+        combatPanel.SetActive(true);
+        combatPanel.GetComponent<ServerCombatManager>().InitCombatPanel(attackerID, defenderID);
+    }
+
+    public void CloseCombatPanel()
+    {
+        combatPanel.SetActive(false);
     }
 
     #endregion

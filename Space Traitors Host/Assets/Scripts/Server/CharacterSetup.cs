@@ -14,6 +14,7 @@ public class CharacterSetup : MonoBehaviour
     public GameObject[] characterModels = new GameObject[4];
     public TextMeshProUGUI[] PlayerNames = new TextMeshProUGUI[4];
     public TextMeshProUGUI[] descriptionText = new TextMeshProUGUI[4];
+    public Image[] nameBackgroundImages;
     public GameObject[] portraitGroups;
 
     private int playerPos;
@@ -22,6 +23,7 @@ public class CharacterSetup : MonoBehaviour
     {
         playerPos = 0;
         descriptionText[playerPos].text = SELECTING_TEXT;
+        nameBackgroundImages[playerPos].color = Color.green;
 
         for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
         {
@@ -70,11 +72,13 @@ public class CharacterSetup : MonoBehaviour
 
         //Update the character text to show the character's been selected
         descriptionText[playerPos].text = characterType.ToString().ToUpper();
+        nameBackgroundImages[playerPos].color = Color.white;
 
         playerPos++;
         if(playerPos != GameManager.instance.numPlayers)
         {
             descriptionText[playerPos].text = SELECTING_TEXT;
+            nameBackgroundImages[playerPos].color = Color.green;
         }
 
         //Play that character's intro animation

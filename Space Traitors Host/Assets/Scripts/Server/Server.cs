@@ -2463,7 +2463,9 @@ public class Server : MonoBehaviour
         {
             //Need to add display of winner on main screen
 
-            bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec);
+            bool combatOutcome = GameManager.instance.PerformCombat(attackerSpec, defenderID, defenderSpec, out float successChance);
+
+            GameObject canvas = GameObject.Find("Canvas");
 
             //If combat outcome is ture, means that the attacker won
             //Need to add in main screen UI
@@ -2471,11 +2473,15 @@ public class Server : MonoBehaviour
             {
                 SendCombatWinner(activePlayerID, defenderID);
                 SendCombatLoser(defenderID, activePlayerID);
+                canvas.GetComponent<MainGameUIManager>().combatPanel.GetComponent<ServerCombatManager>().UpdateCombatPanel(attackerSpec, defenderSpec, (int)successChance, activePlayerID);
+                SyncPlayerData(defenderID);
             }
             else
             {
                 SendCombatWinner(defenderID, activePlayerID);
                 SendCombatLoser(activePlayerID, defenderID);
+                canvas.GetComponent<MainGameUIManager>().combatPanel.GetComponent<ServerCombatManager>().UpdateCombatPanel(attackerSpec, defenderSpec, (int)successChance, defenderID);
+                SyncPlayerData(activePlayerID);
             }
         }
     }
@@ -2487,12 +2493,13 @@ public class Server : MonoBehaviour
         attackerSpec = GameManager.SpecScores.Default;
         defenderSpec = GameManager.SpecScores.Default;
 
-        //Need to display the state of the combat on the main screen
-        MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
-
         //Stores the target player ID to attack later
         defenderID = attack.TargetPlayer;
 
+        //Need to display the state of the combat on the main screen
+        MusicManager.instance.ChangeMusicClip(MusicManager.instance.aiMusic);
+        GameObject canvas = GameObject.Find("Canvas");
+        canvas.GetComponent<MainGameUIManager>().InitCombatPanel(conID, defenderID);
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++)
         {
@@ -2773,7 +2780,7 @@ public class Server : MonoBehaviour
 
     private void EndAttack(int conID, int chanID, int rHostID, EndAttack turn) {
 
-       SendSurge();
+        SendSurge();
 
     }
 

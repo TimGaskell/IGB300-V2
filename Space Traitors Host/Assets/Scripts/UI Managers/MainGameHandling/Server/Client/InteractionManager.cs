@@ -192,6 +192,7 @@ public class InteractionManager : MonoBehaviour
 
         newString = newString.Replace("Scrap", "<sprite name=\"Scrap\">");
         newString = newString.Replace("Corruption", "<sprite name=\"Corruption\">");
+        newString = newString.Replace("Component", "<sprite name=\"Component\">");
         //newString = newString.Replace("AI Power", "<sprite name=\"Power\">"); No Icon for AI Power yet
         newString = newString.Replace("Health", "<sprite name=\"Health\">");
         newString = newString.Replace("Brawn", "<sprite name=\"Brawn\">");
@@ -313,6 +314,7 @@ public class InteractionManager : MonoBehaviour
         PlayerData defendingPlayer = ClientManager.instance.GetPlayerData(selectedTarget);
         AreAttacker = true;
         combatPanel.SetActive(true);
+        standardChoiceUI.SetActive(false);
 
         //Sets the default screen status for the combats
         combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "ATTACKING";
@@ -424,7 +426,7 @@ public class InteractionManager : MonoBehaviour
         combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = true;
 
         //If perform combat returns true, means the attacker wins
-        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
+        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore, out float successChance))
         {
             combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
             //Sends the IDs of the relevant players to the stealing manager

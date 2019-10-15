@@ -296,7 +296,7 @@ public class ChoiceRandomiser : MonoBehaviour
         foreach (GameObject room in rooms)
         {
             //Escape room should not have choices assigned to it. To prevent getting caught in an infinite loop, ignores escape room and continues
-            if (room.GetComponent<Room>().roomType == Room.roomTypes.Escape)
+            if (room.GetComponent<Room>().roomType == Room.roomTypes.Escape_Shuttle)
             {
                 roomCounter++;
                 continue;
@@ -491,7 +491,7 @@ public class ChoiceRandomiser : MonoBehaviour
                 return choice.inDining;
             case Room.roomTypes.Engineering:
                 return choice.inEngineering;
-            case Room.roomTypes.Escape: //Escape Room does not have any choices in it so will always return false
+            case Room.roomTypes.Escape_Shuttle: //Escape Room does not have any choices in it so will always return false
                 return false;
             case Room.roomTypes.Kitchen:
                 return choice.inKitchen;
