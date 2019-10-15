@@ -23,6 +23,7 @@ public class CharacterSetup : MonoBehaviour
     {
         playerPos = 0;
         descriptionText[playerPos].text = SELECTING_TEXT;
+        nameBackgroundImages[playerPos].color = Color.green;
 
         for (int i = 1; i < GameManager.instance.MAX_PLAYERS + 1; i++)
         {
