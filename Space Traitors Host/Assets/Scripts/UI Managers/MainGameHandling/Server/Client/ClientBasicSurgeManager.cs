@@ -39,11 +39,11 @@ public class ClientBasicSurgeManager : MonoBehaviour
 
         if (ClientManager.instance.isTraitor)
         {
-            objectiveString = "You are a traitor. Eliminate all other players.";
+            objectiveString = "<color=\"red\">You are a traitor. <color=\"white\">Eliminate all other players.";
         }
         else
         {
-            objectiveString = "You are not a traitor. Find the components and return them to the shuttle.";
+            objectiveString = "<color=\"red\">You are not a traitor. <color=\"white\">Find the components and return them to the shuttle.";
         }
 
         objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveString;
