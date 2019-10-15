@@ -10,7 +10,7 @@ public class ClientUiManager : MonoBehaviour
 {
     public GameObject PlayerInput;
     public GameObject errorText;
-    private const int maxChar = 25;
+    private const int maxChar = 10;
 
     public void Start() {
 
