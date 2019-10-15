@@ -38,7 +38,7 @@ public class ServerCombatManager : MonoBehaviour
     {
         attackerSpecText.GetComponent<TextMeshProUGUI>().text = attackerSpec.ToString();
         defenderSpecText.GetComponent<TextMeshProUGUI>().text = defenderSpec.ToString();
-        successChanceText.GetComponent<TextMeshProUGUI>().text = successChance.ToString();
+        successChanceText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", successChance.ToString());
         winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetPlayer(winnerID).playerName;
     }
 }
