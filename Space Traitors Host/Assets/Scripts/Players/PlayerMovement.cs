@@ -72,7 +72,7 @@ public class PlayerMovement : Navigation
                 Vector3 objectOffset = new Vector3(0.0f, yOffset -11.0f, 0.0f);
 
                 //Start Moving towards that Graph Node
-                Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position + objectOffset, moveSpeed * Time.deltaTime);
+                Player.transform.position = Vector3.MoveTowards(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position, moveSpeed * Time.deltaTime);
 
                 //Increase path currentNode
                 if (Vector3.Distance(Player.transform.position, graphNodes.graphNodes[currentPath[currentPathIndex]].transform.position) <= minDistance) {
