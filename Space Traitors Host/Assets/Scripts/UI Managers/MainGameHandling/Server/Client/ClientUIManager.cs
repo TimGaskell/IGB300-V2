@@ -326,10 +326,12 @@ public class ClientUIManager : MonoBehaviour
     {
         interactionPanel.GetComponent<InteractionManager>().CloseCombat();
 
-        if(GameManager.instance.currentPhase == GameManager.TurnPhases.Interaction){
+        if (interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+
             IncrementPhase();
         }
-        else if (GameManager.instance.currentPhase == GameManager.TurnPhases.AttackSurge) {
+  
+        if (GameManager.instance.currentPhase == GameManager.TurnPhases.AttackSurge) {
 
             InteractionManager.instance.EndAttack();
 

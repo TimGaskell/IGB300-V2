@@ -1260,6 +1260,7 @@ public class Server : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "Client GameLevel")
         {
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
+            ClientManager.instance.AmCurrentPlayer = true;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
             SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
@@ -1632,32 +1633,63 @@ public class Server : MonoBehaviour
     }
 
 
-    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
-    {
+    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess) {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
         ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+
+        if (ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+
+            StealingManager.instance.UpdateItemButtons();
+
+        }
+
+
+
 
     }
 
     private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
     {
-        switch ((Player.EquipErrors)equipState.EquipError)
-        {
-            case (Player.EquipErrors.Default):
-                //Update Inventory UI and spec scores (could be done using SyncClientData however)
-                break;
-            case (Player.EquipErrors.AlreadyEquipped):
-                //Display to the player that the item is already equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
-                break;
-            case (Player.EquipErrors.TooManyEquipped):
-                //Display to the player that they have too many items equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
-                break;
+        if (!ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+            switch ((Player.EquipErrors)equipState.EquipError) {
+                case (Player.EquipErrors.Default):
+                    //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                    break;
+                case (Player.EquipErrors.AlreadyEquipped):
+                    //Display to the player that the item is already equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
+                    break;
+                case (Player.EquipErrors.TooManyEquipped):
+                    //Display to the player that they have too many items equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
+                    break;
+
+            }
+            ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
         }
-        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+        else {
+            switch ((Player.EquipErrors)equipState.EquipError) {
+
+                case (Player.EquipErrors.Default):
+                    //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                    break;
+
+                case (Player.EquipErrors.AlreadyEquipped):
+                    //Display to the player that the item is already equipped
+                    StealingManager.instance.errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
+                    break;
+
+                case (Player.EquipErrors.TooManyEquipped):
+                    //Display to the player that they have too many items equipped
+                    StealingManager.instance.errorText.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
+                    break;
+
+            }
+
+            StealingManager.instance.UpdateItemButtons();
+        }
     }
 
     private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
@@ -2688,12 +2720,11 @@ public class Server : MonoBehaviour
 
         Player losingPlayer = GameManager.instance.GetPlayer(loserID);
 
-        losingPlayer.DiscardItem(itemID);
-        PlayerCardManager.instance.UpdateAllCards();
-
-        SyncPlayerData(loserID);
         SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
-        SendStealDiscardSuccess(conID);
+        losingPlayer.DiscardItem(itemID);
+        SyncPlayerData(loserID);    
+        SendStealDiscardSuccess(conID);   
+        PlayerCardManager.instance.UpdateAllCards();
     }
 
     private void GetAISpecSelection(int conID, int chanID, int rHostID, AISpecSelection aISpecSelection)
