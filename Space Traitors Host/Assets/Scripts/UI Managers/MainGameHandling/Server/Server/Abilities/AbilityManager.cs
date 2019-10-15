@@ -54,7 +54,7 @@ public class AbilityManager : MonoBehaviour
 
         abilityInfoText.SetActive(false);
 
-        selectedText.GetComponent<TextMeshProUGUI>().text = "";
+        selectedText.GetComponent<TextMeshProUGUI>().text = "Select an ability for more information";
         descriptionText.GetComponent<TextMeshProUGUI>().text = "";
         selectButton.GetComponent<Button>().interactable = false;
 
