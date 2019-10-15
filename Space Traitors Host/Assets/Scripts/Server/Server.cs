@@ -298,8 +298,6 @@ public class Server : MonoBehaviour
 
                     networkManager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
 
-                    
-
                 }
 
                 break;
@@ -538,8 +536,19 @@ public class Server : MonoBehaviour
 
     }
 
+    public void DisableConnection() {
+
+        networkManager.matchMaker.SetMatchAttributes(match.networkId, false, 0, SetAttributes);
+    }
+    
+
     public void OnMatchDropConnection(bool success, string extendedInfo) {
         // ...
+    }
+
+    public void SetAttributes(bool success, string extendedInfo) {
+
+
     }
 
 

@@ -135,6 +135,7 @@ public class LobbyUIManager : NetworkBehaviour
                 {
                     //confirmNamesButton.GetComponent<Button>().interactable = true;
                     connectedText.SetActive(true);
+                    Server.Instance.DisableConnection();
                     StartCoroutine("WaitStartGame");
                 }
                 currentNamePos++;
