@@ -322,7 +322,7 @@ public class NSInteractionManager : MonoBehaviour
         combatPanel.GetComponent<NSCombatComponents>().continueButton.GetComponent<Button>().interactable = true;
 
         //If perform combat returns true, means the attacker wins
-        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
+        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore, out float successChance))
         {
             combatPanel.GetComponent<NSCombatComponents>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
             //Sends the IDs of the relevant players to the stealing manager

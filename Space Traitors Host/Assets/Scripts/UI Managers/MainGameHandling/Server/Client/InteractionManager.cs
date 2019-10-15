@@ -424,7 +424,7 @@ public class InteractionManager : MonoBehaviour
         combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = true;
 
         //If perform combat returns true, means the attacker wins
-        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore))
+        if (GameManager.instance.PerformCombat(attackerSpecScore, selectedTarget, defenderSpecScore, out float successChance))
         {
             combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
             //Sends the IDs of the relevant players to the stealing manager

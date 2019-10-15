@@ -1129,7 +1129,7 @@ public class GameManager : MonoBehaviour
     /// <param name="defenderID">The playerID of the defender</param>
     /// <param name="defenderSpec">The name of the spec score the attacker is using</param>
     /// <returns>If the attacker wins the combat, returns true. If the defender wins, returns false</returns>
-    public bool PerformCombat(SpecScores attackerSpec, int defenderID, SpecScores defenderSpec)
+    public bool PerformCombat(SpecScores attackerSpec, int defenderID, SpecScores defenderSpec, out float successChance)
     {
         Player attackingPlayer = GetActivePlayer();
         Player defendingPlayer = GetPlayer(defenderID);
@@ -1153,6 +1153,8 @@ public class GameManager : MonoBehaviour
         {
             defenderScore *= COUNTER_MOD;
         }
+
+        successChance = SpecChallengeChance(attackerScore, defenderScore);
 
         //Once the counters have been determined, performs the combat between the two players. If the spec challenge is
         //successful, then the attacker wins, otherwise the defender loses.

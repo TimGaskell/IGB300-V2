@@ -24,6 +24,8 @@ public class MainGameUIManager : MonoBehaviour
     public GameObject basicSurgePanel;
     public GameObject attackSurgePanel;
 
+    public GameObject combatPanel;
+
     public GameObject nonTraitorVictoryPanel;
     public GameObject traitorVictoryPanel;
 
@@ -216,6 +218,17 @@ public class MainGameUIManager : MonoBehaviour
         {
             exitMenu.SetActive(true);
         }
+    }
+
+    public void InitCombatPanel(int attackerID, int defenderID)
+    {
+        combatPanel.SetActive(true);
+        combatPanel.GetComponent<ServerCombatManager>().InitCombatPanel(attackerID, defenderID);
+    }
+
+    public void CloseCombatPanel()
+    {
+        combatPanel.SetActive(false);
     }
 
     #endregion
