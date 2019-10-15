@@ -324,14 +324,16 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void EndCombat()
     {
-        interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+        if (interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf == true) {
 
-        if (interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
 
-            Debug.Log("this gets called plasssssssss");
             IncrementPhase();
         }
-  
+
+
+        interactionPanel.GetComponent<InteractionManager>().CloseCombat();
+
+    
         if (GameManager.instance.currentPhase == GameManager.TurnPhases.AttackSurge) {
 
             InteractionManager.instance.EndAttack();
