@@ -72,8 +72,10 @@ public class CharacterSetup : MonoBehaviour
         descriptionText[playerPos].text = characterType.ToString().ToUpper();
 
         playerPos++;
-
-        descriptionText[playerPos].text = SELECTING_TEXT;
+        if(playerPos != GameManager.instance.numPlayers)
+        {
+            descriptionText[playerPos].text = SELECTING_TEXT;
+        }
 
         //Play that character's intro animation
         characterModels[characterID].GetComponent<AnimationSwitcher>().IntroAnimation(characterType);
