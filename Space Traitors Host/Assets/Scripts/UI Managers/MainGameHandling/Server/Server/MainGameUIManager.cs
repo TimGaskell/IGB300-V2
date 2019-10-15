@@ -50,6 +50,8 @@ public class MainGameUIManager : MonoBehaviour
 
         sabotagePanel.SetActive(false);
 
+        CloseCombatPanel();
+
         exitMenu.SetActive(false);
 
         playerCards.SetActive(true);
