@@ -65,12 +65,13 @@ public class StealingManager : MonoBehaviour
         SetErrorText("");
         ResetSelectedItem();
 
-        if(hasComponent && !ClientManager.instance.hasComponent) {
+        if(hasComponent) {
 
-            stealComponentButton.SetActive(false);
+            stealComponentButton.SetActive(true);
+
         }
         else {
-            stealComponentButton.SetActive(true);
+            stealComponentButton.SetActive(false);
         }
 
         //Loops through all the relevant items
@@ -197,11 +198,11 @@ public class StealingManager : MonoBehaviour
                 //Changes the text of the equip action based on whether or not the item is equipped.
                 if (selectedItem.isEquipped)
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip";
                 }
                 else
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip";
                 }
             }
             //Resets the selected item if it is not
@@ -253,33 +254,7 @@ public class StealingManager : MonoBehaviour
     /// </summary>
     public void EquipItem()
     {
-        //If the item is already equipped, unequips it
-        if (selectedItem.isEquipped)
-        {
-            winner.UnequipItem(selectedID);
-            UpdateItemButtons();
-        }
-        //Otherwise attempts to equip the item
-        else
-        {
-            //Attempts to equip the item and get the error if they cannot, displaying it to the player
-            Player.EquipErrors equipStatus = winner.EquipItem(selectedID);
-
-            switch (equipStatus)
-            {
-                case (Player.EquipErrors.Default):
-                    UpdateItemButtons();
-                    break;
-                case (Player.EquipErrors.AlreadyEquipped):
-                    SetErrorText("Item is already Equipped");
-                    ResetSelectedItem();
-                    break;
-                case (Player.EquipErrors.TooManyEquipped):
-                    SetErrorText("Too Many Items Equipped");
-                    ResetSelectedItem();
-                    break;
-            }
-        }
+        Server.Instance.EquipItem(selectedID);
     }
 
     /// <summary>
@@ -304,14 +279,8 @@ public class StealingManager : MonoBehaviour
         }
         else {
             ClientManager.instance.hasComponent = true;
-            Server.Instance.StealItem(0,loserID,true);
+            Server.Instance.StealItem(0, loserID, true);
 
-            loserItemParent.GetComponent<CanvasGroup>().interactable = false;
-            stealComponentButton.GetComponent<Button>().interactable = false;
-
-            UpdateItemButtons();
         }
     }
-
-
 }

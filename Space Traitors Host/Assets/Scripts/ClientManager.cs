@@ -53,6 +53,8 @@ public class ClientManager : MonoBehaviour
 
     public int componentsInstalled;
 
+    public bool AmCurrentPlayer;
+
     //Object for storing regularly needed information about other players in the game
     public List<PlayerData> playerData;
     public List<int> playerIDS;

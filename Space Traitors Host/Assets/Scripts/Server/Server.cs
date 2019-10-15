@@ -470,7 +470,12 @@ public class Server : MonoBehaviour
             case NetOP.DiscardItem:
                 GetDiscardItem(conID, chanID, rHostID, (DiscardItem)msg);
                 break;
-
+            case NetOP.ComponentStealSuccess:
+                GetComponentStealSuccess(conID, chanID, rHostID, (ComponentStealSuccess)msg);
+                break;
+            case NetOP.ComponentStolen:
+                ComponentStolen(conID, chanID, rHostID, (ComponentStolen)msg);
+                break;
 
 
         }
@@ -1260,6 +1265,7 @@ public class Server : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "Client GameLevel")
         {
             GameManager.instance.currentPhase = GameManager.TurnPhases.Abilities;
+            ClientManager.instance.AmCurrentPlayer = true;
             SendNewPhase();
             ClientUIManager.instance.DisplayCurrentPhase();
             SFXManager.instance.PlaySoundEffect(SFXManager.instance.notificationSound);
@@ -1544,6 +1550,8 @@ public class Server : MonoBehaviour
         List<int> loserItemIDs = combatWinner.LoserInventory;
         List<Item> loserInventory = new List<Item>();
 
+        ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.GetComponent<StealingManager>().hasComponent = combatWinner.HasComponent;
+
         foreach (int itemID in loserItemIDs)
         {
             Item item = ClientManager.instance.GetItemInfo(itemID);
@@ -1632,32 +1640,78 @@ public class Server : MonoBehaviour
     }
 
 
-    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess)
-    {
+    private void GetUnequipSuccess(int conID, int chanID, int rHostID, UnequipSuccess unequipSuccess) {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
         ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+
+        if (ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+
+            StealingManager.instance.UpdateItemButtons();
+
+        }
+
+
+
+
+    }
+
+    private void GetComponentStealSuccess(int conID, int chanID, int rHostID, ComponentStealSuccess success) {
+
+        ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the Component";
+
+
+    }
+
+    private void ComponentStolen(int conID, int chanID, int rHostID, ComponentStolen component) {
+
+        ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your Component has been stolen";
 
     }
 
     private void GetEquipState(int conID, int chanID, int rHostID, EquipState equipState)
     {
-        switch ((Player.EquipErrors)equipState.EquipError)
-        {
-            case (Player.EquipErrors.Default):
-                //Update Inventory UI and spec scores (could be done using SyncClientData however)
-                break;
-            case (Player.EquipErrors.AlreadyEquipped):
-                //Display to the player that the item is already equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
-                break;
-            case (Player.EquipErrors.TooManyEquipped):
-                //Display to the player that they have too many items equipped
-                ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
-                break;
+        if (!ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
+            switch ((Player.EquipErrors)equipState.EquipError) {
+                case (Player.EquipErrors.Default):
+                    //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                    break;
+                case (Player.EquipErrors.AlreadyEquipped):
+                    //Display to the player that the item is already equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
+                    break;
+                case (Player.EquipErrors.TooManyEquipped):
+                    //Display to the player that they have too many items equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
+                    break;
+
+            }
+            ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
         }
-        ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+        else {
+            switch ((Player.EquipErrors)equipState.EquipError) {
+
+                case (Player.EquipErrors.Default):
+                    //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                    break;
+
+                case (Player.EquipErrors.AlreadyEquipped):
+                    //Display to the player that the item is already equipped
+                    StealingManager.instance.errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
+                    break;
+
+                case (Player.EquipErrors.TooManyEquipped):
+                    //Display to the player that they have too many items equipped
+                    StealingManager.instance.errorText.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
+                    break;
+
+            }
+
+            StealingManager.instance.UpdateItemButtons();
+        }
     }
 
     private void GetDiscardSuccess(int conID, int chanID, int rHostID, DiscardSuccess discardSuccess)
@@ -1683,7 +1737,7 @@ public class Server : MonoBehaviour
 
             ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
             ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the item";
-          
+            
 
         }
         else
@@ -1701,7 +1755,7 @@ public class Server : MonoBehaviour
         //Prevent them from stealing any more items
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item." ;
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item.";
 
     }
 
@@ -2695,12 +2749,11 @@ public class Server : MonoBehaviour
 
         Player losingPlayer = GameManager.instance.GetPlayer(loserID);
 
-        losingPlayer.DiscardItem(itemID);
-        PlayerCardManager.instance.UpdateAllCards();
-
-        SyncPlayerData(loserID);
         SendItemStolen(loserID, losingPlayer.items[itemID].ItemName);
-        SendStealDiscardSuccess(conID);
+        losingPlayer.DiscardItem(itemID);
+        SyncPlayerData(loserID);    
+        SendStealDiscardSuccess(conID);   
+        PlayerCardManager.instance.UpdateAllCards();
     }
 
     private void GetAISpecSelection(int conID, int chanID, int rHostID, AISpecSelection aISpecSelection)
