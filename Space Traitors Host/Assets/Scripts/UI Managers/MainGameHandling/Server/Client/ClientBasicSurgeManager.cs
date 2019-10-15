@@ -43,7 +43,7 @@ public class ClientBasicSurgeManager : MonoBehaviour
         }
         else
         {
-            objectiveString = "<color=\"red\">You are not a traitor. <color=\"white\">Find the components and return them to the shuttle.";
+            objectiveString = "<color=\"green\">You are not a traitor. <color=\"white\">Find the components and return them to the shuttle.";
         }
 
         objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveString;
