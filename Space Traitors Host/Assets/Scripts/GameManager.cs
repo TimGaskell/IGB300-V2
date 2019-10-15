@@ -561,6 +561,9 @@ public class GameManager : MonoBehaviour
                 case (Character.CharacterTypes.Techie):
                     yOffset = 12.0f;
                     break;
+                default:
+                    yOffset = 0.0f;
+                    break;
             }
             Vector3 positionOffset = new Vector3(0.0f, yOffset, 0.0f);
 
