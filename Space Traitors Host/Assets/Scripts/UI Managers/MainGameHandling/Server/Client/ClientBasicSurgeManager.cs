@@ -14,6 +14,7 @@ public class ClientBasicSurgeManager : MonoBehaviour
     public GameObject choiceIncrease;
     public GameObject totalIncrease;
     public GameObject confirmButton;
+    public GameObject objectiveText;
 
     public float power;
     public float basepower;
@@ -29,10 +30,23 @@ public class ClientBasicSurgeManager : MonoBehaviour
     public void UpdateSurgeValues()
     {
         powerBar.GetComponent<AIPowerBar>().UpdateAIPower(power);
-        baseIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", basepower.ToString());
-        playerIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", playerpower.ToString());
-        choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", powerchange.ToString());
-        totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", totalIncreaseUnit.ToString());
+        //baseIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", basepower.ToString());
+        //playerIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", playerpower.ToString());
+        //choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", powerchange.ToString());
+        //totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", totalIncreaseUnit.ToString());
+
+        string objectiveString;
+
+        if (ClientManager.instance.isTraitor)
+        {
+            objectiveString = "You are a traitor. Eliminate all other players.";
+        }
+        else
+        {
+            objectiveString = "You are not a traitor. Find the components and return them to the shuttle.";
+        }
+
+        objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveString;
     }
 
     public void EndBasicSurge()
