@@ -81,7 +81,7 @@ public class MovementManager : MonoBehaviour
     public void SetRoom() {
 
         string roomName = GameManager.instance.roomList.transform.GetChild(roomID).GetComponent<Room>().roomType.ToString();
-        roomName.Replace("_", " ");
+        roomName = roomName.Replace("_", " ");
 
         MoveToText.GetComponent<TextMeshProUGUI>().text = "Move to " + roomName;
 
