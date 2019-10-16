@@ -906,6 +906,7 @@ public class GameManager : MonoBehaviour
             if (player.isTraitor)
             {
                 player.Corruption += TRAITOR_CORRUPTION_MOD;
+                Server.Instance.SyncPlayerData(player.playerID);
             }
         }
     }

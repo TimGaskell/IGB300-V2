@@ -43,7 +43,8 @@ public class PlayerCardManager : MonoBehaviour
     public void UpdateActivePlayer()
     {
         activePlayerPanel.SetActive(true);
-        activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;     
+        activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+        ActivePlayerColourSwitch();
     }
 
     /// <summary>
@@ -85,6 +86,25 @@ public class PlayerCardManager : MonoBehaviour
     private string ObtainSpecInfo(float scaledSpec, int modSpec)
     {
         return string.Format("{0} / {1}", scaledSpec, modSpec);
+    }
+
+    private void ActivePlayerColourSwitch()
+    {
+        for (int i = 0; i < playerCards.Count; i++)
+        {
+            Color backColour;
+
+            if (i == GameManager.instance.GetPlayerOrder(GameManager.instance.GetActivePlayer().playerID))
+            {
+                 backColour = Color.green;
+            }
+            else
+            {
+                backColour = Color.white;
+            }
+
+            playerCards[i].GetComponent<Image>().color = backColour;
+        }
     }
 
 }

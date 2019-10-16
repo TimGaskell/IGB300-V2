@@ -54,7 +54,7 @@ public class AbilityManager : MonoBehaviour
 
         abilityInfoText.SetActive(false);
 
-        selectedText.GetComponent<TextMeshProUGUI>().text = "";
+        selectedText.GetComponent<TextMeshProUGUI>().text = "Select an ability for more information";
         descriptionText.GetComponent<TextMeshProUGUI>().text = "";
         selectButton.GetComponent<Button>().interactable = false;
 
@@ -244,13 +244,13 @@ public class AbilityManager : MonoBehaviour
         //Find the rooms which contain the selected resource and display it to the player
         //List<int> scannedRooms = selectedAbility.Activate(selectedResource);
         Server.Instance.SendAbilityUsed(selectedAbility.abilityType, GameManager.DEFAULT_PLAYER_ID, selectedResource);
-        List<string> scannedRoomsString = new List<string>();
-        foreach (int roomID in scannedRooms)
-        {
-            scannedRoomsString.Add(roomID.ToString());
-        }
-        abilityInfoText.SetActive(true);
-        abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Join(" ", scannedRoomsString);
+        //List<string> scannedRoomsString = new List<string>();
+        //foreach (int roomID in scannedRooms)
+        //{
+        //    scannedRoomsString.Add(roomID.ToString());
+        //}
+        //abilityInfoText.SetActive(true);
+        //abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Join(" ", scannedRoomsString);
         DisplayActiveAbility();
     }
 
@@ -281,7 +281,6 @@ public class AbilityManager : MonoBehaviour
 
     public void DisplayMapIcons(List<int> Ids, int resourceType) {
 
-
         foreach(int id in Ids) {
 
             Debug.Log(id);
@@ -307,6 +306,11 @@ public class AbilityManager : MonoBehaviour
 
 
         }
+
+        string resourceName = ((Ability.ScanResources)resourceType).ToString();
+        string roomsFound = Ids.Count.ToString();
+        abilityInfoText.SetActive(true);
+        abilityInfoText.GetComponent<TextMeshProUGUI>().text = string.Format("{0} found in {1} adjacent rooms.", resourceName, roomsFound);
 
 
     }
