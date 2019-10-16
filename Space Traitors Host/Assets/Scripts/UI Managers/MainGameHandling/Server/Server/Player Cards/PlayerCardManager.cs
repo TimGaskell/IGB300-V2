@@ -20,7 +20,7 @@ public class PlayerCardManager : MonoBehaviour
     private void Start() {
 
         instance = this;
-        activePlayerCounter = 0;
+        activePlayerCounter = -1;
     }
 
     public void InitialisePlayerCards()
