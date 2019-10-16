@@ -55,7 +55,7 @@ public class ServerCharacterSelection : MonoBehaviour {
         if (time <= 0)
         {
             //Send message to every player's client to move onto next scene
-            Server.Instance.SendChangeScene("Client Animation Scene");
+            Server.Instance.SendChangeScene("Client Animation Screen");
             //Change to the character select
             SceneManager.LoadScene("ShipAnimation2");
         }
