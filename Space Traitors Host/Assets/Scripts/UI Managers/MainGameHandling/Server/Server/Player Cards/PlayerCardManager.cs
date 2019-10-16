@@ -14,11 +14,13 @@ public class PlayerCardManager : MonoBehaviour
     public GameObject initialPlayerCard;
     public List<GameObject> playerCards;
 
+    private int activePlayerCounter;
+
 
     private void Start() {
 
-
         instance = this;
+        activePlayerCounter = 0;
     }
 
     public void InitialisePlayerCards()
@@ -44,6 +46,14 @@ public class PlayerCardManager : MonoBehaviour
     {
         activePlayerPanel.SetActive(true);
         activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
+        if(activePlayerCounter != GameManager.instance.numPlayers)
+        {
+            activePlayerCounter++;
+        }
+        else
+        {
+            activePlayerCounter = 0;
+        }
         ActivePlayerColourSwitch();
     }
 
@@ -94,7 +104,7 @@ public class PlayerCardManager : MonoBehaviour
         {
             Color backColour;
 
-            if (i == GameManager.instance.GetPlayerOrder(GameManager.instance.GetActivePlayer().playerID))
+            if (i == activePlayerCounter)
             {
                  backColour = Color.green;
             }
