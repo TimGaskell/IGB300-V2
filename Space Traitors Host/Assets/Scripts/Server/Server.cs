@@ -2487,15 +2487,18 @@ public class Server : MonoBehaviour
                 SendCombatWinner(activePlayerID, defenderID);
                 SendCombatLoser(defenderID, activePlayerID);
                 canvas.GetComponent<MainGameUIManager>().combatPanel.GetComponent<ServerCombatManager>().UpdateCombatPanel(attackerSpec, defenderSpec, (int)successChance, activePlayerID);
-                SyncPlayerData(defenderID);
+                
             }
             else
             {
                 SendCombatWinner(defenderID, activePlayerID);
                 SendCombatLoser(activePlayerID, defenderID);
                 canvas.GetComponent<MainGameUIManager>().combatPanel.GetComponent<ServerCombatManager>().UpdateCombatPanel(attackerSpec, defenderSpec, (int)successChance, defenderID);
-                SyncPlayerData(activePlayerID);
+                
             }
+
+            SyncPlayerData(defenderID);
+            SyncPlayerData(activePlayerID);
         }
     }
     private void SpecCombat(int conID, int chanID, int rHostID, CombatAttackingTarget attack)
@@ -2781,7 +2784,7 @@ public class Server : MonoBehaviour
 
         SendAIAttackResult(conID, attackOutcome);
         SendIsTraitor();
-        
+        SyncPlayerData(conID);
     }
 
 
