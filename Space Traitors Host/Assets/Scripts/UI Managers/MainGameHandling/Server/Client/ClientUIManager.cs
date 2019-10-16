@@ -159,7 +159,7 @@ public class ClientUIManager : MonoBehaviour
         if (result)
         {
             SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
-            ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
+            ResultsPanel.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
         }
         else
         {
