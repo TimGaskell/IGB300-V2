@@ -1229,7 +1229,7 @@ public class Server : MonoBehaviour
         else {
 
             ClientUIManager.instance.DeathNotificationPanel.SetActive(true);
-            ClientUIManager.instance.DeathNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(death.PlayerDeathId).PlayerName + " has been eliminated from the game.";
+            ClientUIManager.instance.DeathNotificationPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(death.PlayerDeathId).PlayerName + " has been eliminated from the game.";
 
 
         }
@@ -1658,7 +1658,7 @@ public class Server : MonoBehaviour
     private void GetComponentStealSuccess(int conID, int chanID, int rHostID, ComponentStealSuccess success) {
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the Component";
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the Component";
 
 
     }
@@ -1666,7 +1666,7 @@ public class Server : MonoBehaviour
     private void ComponentStolen(int conID, int chanID, int rHostID, ComponentStolen component) {
 
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your Component has been stolen";
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your Component has been stolen";
 
     }
 
@@ -1718,7 +1718,7 @@ public class Server : MonoBehaviour
     {
         //Need to update the UI for the inventory and spec scores (could be done using SyncClientData however)
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Successfully discarded item";
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Successfully discarded item";
 
         if (ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().stealPanel.activeSelf) {
 
@@ -1736,7 +1736,7 @@ public class Server : MonoBehaviour
             //Prevent them from stealing any more items 
 
             ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-            ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the item";
+            ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully stole the item";
             
 
         }
@@ -1744,7 +1744,7 @@ public class Server : MonoBehaviour
         {
             //Display to player that they cannot hold any more items
             ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-            ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You can't hold anymore items";
+            ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You can't hold anymore items";
 
         }
     }
@@ -1755,7 +1755,7 @@ public class Server : MonoBehaviour
         //Prevent them from stealing any more items
 
         ClientUIManager.instance.ItemCompletionPanel.SetActive(true);
-        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item.";
+        ClientUIManager.instance.ItemCompletionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You successfully discarded their item.";
 
     }
 
@@ -1765,7 +1765,7 @@ public class Server : MonoBehaviour
         //Also need to update the UI for their inventory and spec scores (could be done using SyncClientData however
 
         ClientUIManager.instance.ItemNotificationPanel.SetActive(true);
-        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your " + itemStolen.ItemName + " has been stolen";
+        ClientUIManager.instance.ItemNotificationPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Your " + itemStolen.ItemName + " has been stolen";
     }
 
     private void GetIsTraitor(int conID, int chanID, int rHostID, TraitorSelection traitorSelection)
