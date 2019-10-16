@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking.Match;
 using UnityEngine.UI;
 using System;
 using TMPro;
@@ -118,6 +119,8 @@ public class Server : MonoBehaviour
     private GameManager.SpecScores attackerSpec;
     private GameManager.SpecScores defenderSpec;
     private int defenderID;
+    public NetworkManager networkManager;
+    public MatchInfoSnapshot match;
 
 
 
@@ -128,6 +131,7 @@ public class Server : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        networkManager = NetworkManager.singleton;
 
 
     }
@@ -545,6 +549,12 @@ public class Server : MonoBehaviour
 
         Debug.Log("sent");
         NetworkTransport.Send(hostID, connectionID, reliableChannel, buffer, byteSize, out error);
+
+    }
+
+    public void DisconnectFromServer() {
+
+        networkManager.matchMaker.DropConnection(match.networkId,match.hostNodeId,0,networkManager.OnDropConnection);
 
     }
 
