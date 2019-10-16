@@ -503,7 +503,7 @@ public class GameManager : MonoBehaviour
         activePlayer = 1;
         installedComponents = 0;
 
-        aiPower = 100;
+        aiPower = 0;
         aiTargetScore = BASE_TARGET_SCORE;
         traitorDelay = false;
 
@@ -1411,7 +1411,7 @@ public class GameManager : MonoBehaviour
                 yOffset = 22.0f;
                 break;
             case (Character.CharacterTypes.Engineer):
-                yOffset = 13.0f;
+                yOffset = 15.0f;
                 break;
             case (Character.CharacterTypes.Singer):
                 yOffset = 20.0f;
