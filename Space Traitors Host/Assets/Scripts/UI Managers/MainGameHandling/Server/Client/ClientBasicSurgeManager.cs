@@ -35,18 +35,9 @@ public class ClientBasicSurgeManager : MonoBehaviour
         //choiceIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", powerchange.ToString());
         //totalIncrease.GetComponent<TextMeshProUGUI>().text = string.Format("{0} %", totalIncreaseUnit.ToString());
 
-        string objectiveString;
+        
 
-        if (ClientManager.instance.isTraitor)
-        {
-            objectiveString = "<color=\"red\">You are a traitor. <color=\"white\">Eliminate all other players.";
-        }
-        else
-        {
-            objectiveString = "<color=\"green\">You are not a traitor. <color=\"white\">Find the components and return them to the shuttle.";
-        }
-
-        objectiveText.GetComponent<TextMeshProUGUI>().text = objectiveString;
+        objectiveText.GetComponent<TextMeshProUGUI>().text = GameManager.ObjectiveText(ClientManager.instance.isTraitor);
     }
 
     public void EndBasicSurge()

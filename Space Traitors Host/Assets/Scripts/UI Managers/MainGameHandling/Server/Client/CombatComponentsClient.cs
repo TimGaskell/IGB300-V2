@@ -13,11 +13,10 @@ public class CombatComponentsClient : MonoBehaviour {
 
     public GameObject winnerText;
     public GameObject continueButton;
-
+    public GameObject objectiveText;
 
     public GameObject WinnerPanel;
     public GameObject WinnerText;
     public GameObject LoserPanel;
     public GameObject LoserText;
-
 }

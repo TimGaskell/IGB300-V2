@@ -317,8 +317,10 @@ public class InteractionManager : MonoBehaviour
         standardChoiceUI.SetActive(false);
 
         //Sets the default screen status for the combats
+        combatPanel.GetComponent<CombatComponentsClient>().objectiveText.SetActive(false);
         combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "ATTACKING";
-        combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.PlayerName;      
+        combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = defendingPlayer.PlayerName;
+        combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.SetActive(true);
         combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(defendingPlayer.CharacterType);
         combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
@@ -343,8 +345,10 @@ public class InteractionManager : MonoBehaviour
         combatPanel.SetActive(true);
 
         //Sets the default screen status for the combats
+        combatPanel.GetComponent<CombatComponentsClient>().objectiveText.SetActive(false);
         combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "DEFENDING";
         combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = attackingPlayer.PlayerName;
+        combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.SetActive(true);
         combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.CharacterType);
         combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
@@ -362,9 +366,11 @@ public class InteractionManager : MonoBehaviour
         combatPanel.SetActive(true);
 
         //Sets the default screen status for the combats
+        combatPanel.GetComponent<CombatComponentsClient>().objectiveText.SetActive(true);
+        combatPanel.GetComponent<CombatComponentsClient>().objectiveText.GetComponent<TextMeshProUGUI>().text = GameManager.ObjectiveText(ClientManager.instance.isTraitor);
         combatPanel.GetComponent<CombatComponentsClient>().AttackerOrDefenderTitle.GetComponent<TextMeshProUGUI>().text = "DEFENDING";
         combatPanel.GetComponent<CombatComponentsClient>().attackerName.GetComponent<TextMeshProUGUI>().text = "Rouge AI";
-       // combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.GetComponent<Image>().sprite = GameManager.instance.GetCharacterPortrait(attackingPlayer.CharacterType);
+        combatPanel.GetComponent<CombatComponentsClient>().attackerPortrait.SetActive(false);
         combatPanel.GetComponent<CombatComponentsClient>().attackerSpec.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponentsClient>().winnerText.GetComponent<TextMeshProUGUI>().text = "";
         combatPanel.GetComponent<CombatComponentsClient>().continueButton.GetComponent<Button>().interactable = false;

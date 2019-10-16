@@ -1814,7 +1814,8 @@ public class Server : MonoBehaviour
         {
             //Need to display which player is under attack using aiAttacks.targetID
             ClientUIManager.instance.attackSurgePanel.SetActive(true);
-            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(aiAttacks.TargetID).PlayerName + " is under attack from the AI!";
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = ClientManager.instance.GetPlayerData(aiAttacks.TargetID).PlayerName + " is under attack from the AI!";
+            ClientUIManager.instance.attackSurgePanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.ObjectiveText(ClientManager.instance.isTraitor);
         }
     }
 

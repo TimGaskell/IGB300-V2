@@ -1083,6 +1083,22 @@ public class GameManager : MonoBehaviour
 
         return playerWin;
     }
+
+    public static string ObjectiveText(bool isTraitor)
+    {
+        string objectiveString;
+
+        if (isTraitor)
+        {
+            objectiveString = "<color=\"red\">You are a traitor. <color=\"white\">Eliminate all other players.";
+        }
+        else
+        {
+            objectiveString = "<color=\"green\">You are not a traitor. <color=\"white\">Find the components and return them to the shuttle.";
+        }
+
+        return objectiveString;
+    }
     #endregion
 
     #region Combat Handling and Traitor Victory Conditions
