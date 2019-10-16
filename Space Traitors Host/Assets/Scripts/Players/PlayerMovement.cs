@@ -59,12 +59,13 @@ public class PlayerMovement : Navigation
 
             float yOffset = GameManager.ObtainYOffset(Player.GetComponent<PlayerObject>().CharacterType);
             Vector3 objectOffset = new Vector3(0.0f, yOffset - 11.0f, 0.0f);
-            Player.transform.position -= objectOffset;
+            
 
             //Set moving animation
             if (ServerVersion)
             {
                 Player.GetComponent<AnimationSwitcher>().RunAnimation(Player.GetComponent<PlayerObject>().CharacterType);
+                Player.transform.position -= objectOffset;
             }
 
             //Move player
@@ -129,7 +130,11 @@ public class PlayerMovement : Navigation
 
             }
 
-            Player.transform.position += objectOffset;
+            if (ServerVersion)
+            {
+                Player.transform.position += objectOffset;
+            }
+            
         }
     }
 
