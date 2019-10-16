@@ -38,6 +38,8 @@ public class MainGameUIManager : MonoBehaviour
         serverActivePanel.SetActive(true);
         noServerPanel.SetActive(false);
 
+        abilityPanel.SetActive(true);
+        abilityPanel.GetComponent<AbilityAnimationController>().InitAbilityAnimations();
         abilityPanel.SetActive(false);
         actionPointPanel.SetActive(false);
         movementPanel.SetActive(false);

@@ -2189,6 +2189,7 @@ public class Server : MonoBehaviour
 
                 rooms = new List<int>();
 
+                string targetName = "";
 
                 switch (abilityType)
                 {
@@ -2203,17 +2204,28 @@ public class Server : MonoBehaviour
                         Debug.Log(GameManager.instance.GetActivePlayer().PreviousTarget);
                         GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
                         Debug.Log(GameManager.instance.GetActivePlayer().PreviousAbility);
+                        targetName = GameManager.instance.GetPlayer(ability.TargetID).playerName;
                         break;
                     case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):
                         selectedAbility.Activate(ability.TargetID);
+                        targetName = GameManager.instance.GetPlayer(ability.TargetID).playerName;
                         break;
                     case (Ability.AbilityTypes.Code_Inspection):
                         selectedAbility.Activate(ability.TargetID, out isTraitor);
+                        targetName = GameManager.instance.GetPlayer(ability.TargetID).playerName;
                         break;
                     case (Ability.AbilityTypes.Sensor_Scan):
                         rooms = selectedAbility.Activate((Ability.ScanResources)ability.ScanResource);
                         break;
+                }
+
+                if(abilityType != Ability.AbilityTypes.Sabotage)
+                {
+                    MainGameUIManager uiManager = GameObject.Find("Canvas").GetComponent<MainGameUIManager>();
+                    string playerName = GameManager.instance.GetPlayer(conID).playerName;
+
+                    uiManager.abilityPanel.GetComponent<AbilityAnimationController>().PlayAnimation(selectedAbility, playerName, targetName);
                 }
 
                 
