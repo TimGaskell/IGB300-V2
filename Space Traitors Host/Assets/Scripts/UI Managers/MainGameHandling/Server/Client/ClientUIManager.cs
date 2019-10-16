@@ -360,7 +360,8 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
+        Server.Instance.DisconnectFromServer();
+        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);     
     }
 
     /// <summary>
