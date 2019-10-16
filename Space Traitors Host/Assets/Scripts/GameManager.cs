@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     public const string LobbyScene = "LobbyLan Host";
     public const string CharacterScene = "Server Character Selection";
+    public const string AnimationScene = "ShipAnimation2";
     public const string MainGameScene = "Server GameLevel";
 
     public const string NoServerLobbyScene = "NOSERVER Lobby";
