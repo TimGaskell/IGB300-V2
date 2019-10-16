@@ -1398,7 +1398,7 @@ public class GameManager : MonoBehaviour
                 yOffset = 13.0f;
                 break;
             case (Character.CharacterTypes.Singer):
-                yOffset = 17.0f;
+                yOffset = 20.0f;
                 break;
             case (Character.CharacterTypes.Techie):
                 yOffset = 12.0f;
