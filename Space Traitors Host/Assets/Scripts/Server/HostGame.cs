@@ -69,7 +69,7 @@ public class HostGame : MonoBehaviour
             }
         }
         else
-        {
+        {   
             errorText.SetActive(true);
         }
 

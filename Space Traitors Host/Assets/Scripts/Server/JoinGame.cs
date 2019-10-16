@@ -125,7 +125,6 @@ public class JoinGame : MonoBehaviour {
 
         Debug.Log("Joining " + match.name);
         networkManager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, networkManager.OnMatchJoined);
-        Server.Instance.match = match;
         ClearRoomList();
         status.text = "Joining...";
 

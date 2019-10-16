@@ -120,10 +120,6 @@ public class Server : MonoBehaviour
     private GameManager.SpecScores defenderSpec;
     private int defenderID;
     public NetworkManager networkManager;
-    public MatchInfoSnapshot match;
-
-
-
 
 
     // Use this for initialization
@@ -131,7 +127,7 @@ public class Server : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        networkManager = NetworkManager.singleton;
+       
 
 
     }
@@ -554,7 +550,11 @@ public class Server : MonoBehaviour
 
     public void DisconnectFromServer() {
 
-        networkManager.matchMaker.DropConnection(match.networkId,match.hostNodeId,0,networkManager.OnDropConnection);
+        networkManager = NetworkManager.singleton;
+        MatchInfo matchInfo = networkManager.matchInfo;
+        
+        networkManager.matchMaker.DropConnection(matchInfo.networkId,matchInfo.nodeId,0,networkManager.OnDropConnection);
+        networkManager.StopHost();
 
     }
 
