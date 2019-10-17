@@ -176,6 +176,8 @@ public class Server : MonoBehaviour
 
         Debug.Log(string.Format("Attempting to connect on {0}...", serverIP));
         isStarted = true;
+
+        
     }
 
 
@@ -240,6 +242,21 @@ public class Server : MonoBehaviour
                 //Loop through to find player that is disconnecting, based on their ID
 
                 Debug.Log(connectionID + " has disconnected");
+
+
+                if(connectionID == GameManager.instance.GetActivePlayer().playerID) {
+
+                    GameManager.instance.GetActivePlayer().Disconnect();
+                    GameManager.instance.IncrementTurn();
+
+
+                }
+                else {
+                    GameManager.instance.GetActivePlayer().Disconnect();
+                }
+                
+
+
                 break;
 
             case NetworkEventType.DataEvent:
@@ -550,12 +567,7 @@ public class Server : MonoBehaviour
 
     public void DisconnectFromServer() {
 
-        networkManager = NetworkManager.singleton;
-        MatchInfo matchInfo = networkManager.matchInfo;
-        
-        networkManager.matchMaker.DropConnection(matchInfo.networkId,matchInfo.nodeId,0,networkManager.OnDropConnection);
-        networkManager.StopHost();
-
+        NetworkTransport.Disconnect(hostID, connectionID, out error);
     }
 
     #region Server Sent Messages

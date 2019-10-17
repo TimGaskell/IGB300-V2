@@ -192,11 +192,31 @@ public class Player
             GameManager.instance.numPlayers -= 1;
 
             GameManager.instance.playerOrder.Remove(playerID);
+
+            playerObject.SetActive(false);
+
             GameManager.instance.players.Remove(this);
 
             GameManager.instance.CheckTraitorVictory();
 
         }
+    }
+
+    public void Disconnect() {
+
+        ReturnItems();
+
+        GameManager.instance.numPlayers -= 1;
+
+        GameManager.instance.playerOrder.Remove(playerID);
+
+        playerObject.SetActive(false);
+
+        GameManager.instance.players.Remove(this);
+
+        GameManager.instance.CheckTraitorVictory();
+
+
     }
 
     /// <summary>
