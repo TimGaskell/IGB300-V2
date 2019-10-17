@@ -300,6 +300,14 @@ public class Server : MonoBehaviour
 
             case NetworkEventType.DisconnectEvent:
                 Debug.Log(string.Format("You were disconnected"));
+
+                if(SceneManager.GetActiveScene().name == "Client GameLevel") {
+
+                    ClientUIManager.instance.DisconnectionPanel.SetActive(true);
+                    ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshPro>().text = "Server has gone down, exit game to return to menu";
+
+                }
+
                 break;
 
             case NetworkEventType.DataEvent:
