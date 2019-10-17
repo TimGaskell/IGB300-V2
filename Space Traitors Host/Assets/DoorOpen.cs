@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DoorOpen : MonoBehaviour
 {
-    public float openDistance = 40f;
+    public float openDistance = 25f;
     public float openSpeed = 100f;
     private Vector3 closedPosition;
     private Vector3 openedPosition;

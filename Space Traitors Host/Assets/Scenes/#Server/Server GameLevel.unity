@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.041357316, g: 0.101383306, b: 0.13637805, a: 1}
+  m_IndirectSpecularColor: {r: 0.024416761, g: 0.07532195, b: 0.10481063, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,6 +278,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -975,7 +985,7 @@ RectTransform:
   - {fileID: 2066861654}
   - {fileID: 1671645197}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1797,7 +1807,7 @@ PrefabInstance:
     - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
@@ -1807,7 +1817,7 @@ PrefabInstance:
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
@@ -7153,6 +7163,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: HorizontalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &308542828 stripped
@@ -7796,6 +7816,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: HorizontalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &328158925 stripped
@@ -7901,6 +7931,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -14827,6 +14867,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: HorizontalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &620926605 stripped
@@ -15852,7 +15902,7 @@ PrefabInstance:
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
@@ -15862,7 +15912,7 @@ PrefabInstance:
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 301641016120365891, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
@@ -16145,6 +16195,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -16660,7 +16720,7 @@ PrefabInstance:
     - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
@@ -16670,7 +16730,7 @@ PrefabInstance:
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4219836053185834787, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8, type: 3}
@@ -19278,6 +19338,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: VerticalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &750991855 stripped
@@ -21488,7 +21558,7 @@ PrefabInstance:
     - target: {fileID: 3025659929868014583, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 5519971586147231687, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
@@ -21498,7 +21568,7 @@ PrefabInstance:
     - target: {fileID: 5519971586147231687, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 8955743108147258697, guid: d09e5635b2ae5440a8ce3f194ae7b1f2,
         type: 3}
@@ -24684,7 +24754,7 @@ PrefabInstance:
     - target: {fileID: 8843332530829777291, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2991520301360899795, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
@@ -24694,7 +24764,7 @@ PrefabInstance:
     - target: {fileID: 2991520301360899795, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 952153112187688654, guid: f66cc65df91444db7a3e7e69af89ae4a,
         type: 3}
@@ -25882,7 +25952,7 @@ PrefabInstance:
     - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
@@ -25892,7 +25962,7 @@ PrefabInstance:
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
@@ -27495,6 +27565,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: VerticalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &1125357171 stripped
@@ -27917,6 +27997,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: VerticalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -29304,6 +29394,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: VerticalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &1199672051 stripped
@@ -30249,7 +30349,7 @@ PrefabInstance:
     - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
@@ -30259,7 +30359,7 @@ PrefabInstance:
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
@@ -32242,7 +32342,7 @@ PrefabInstance:
     - target: {fileID: 8903389249225856756, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 5242252446326983525, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
@@ -32252,7 +32352,7 @@ PrefabInstance:
     - target: {fileID: 5242252446326983525, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 8266241681078671735, guid: 84f3d0796e7e74e2d94dc66335ef8830,
         type: 3}
@@ -33927,6 +34027,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: VerticalDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
 --- !u!4 &1387060391 stripped
@@ -34026,6 +34136,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: HorizontalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -36831,6 +36951,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: HorizontalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -41633,7 +41763,7 @@ PrefabInstance:
     - target: {fileID: 1904585463114079660, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
@@ -41643,7 +41773,7 @@ PrefabInstance:
     - target: {fileID: 6392921213175264333, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 1619208419245271548, guid: a8372a795c04547b9a3b4c1ed2e78318,
         type: 3}
@@ -45122,7 +45252,7 @@ PrefabInstance:
     - target: {fileID: 5873719605199779886, guid: c7fba8412fb159e41a354cf3d3ff3efc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5873719605199779886, guid: c7fba8412fb159e41a354cf3d3ff3efc,
         type: 3}
@@ -45872,7 +46002,7 @@ PrefabInstance:
     - target: {fileID: 3762923482500216970, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
@@ -45882,7 +46012,7 @@ PrefabInstance:
     - target: {fileID: 1247718447920769111, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2492164693673628239, guid: ae075e1b28eb643e6bc3f0ee4886d422,
         type: 3}
@@ -47159,7 +47289,7 @@ PrefabInstance:
     - target: {fileID: 4031014301218930126, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
@@ -47169,7 +47299,7 @@ PrefabInstance:
     - target: {fileID: 5765761024954932457, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 2478714005274114417, guid: d11f62875000e417fa37f6456ae9ea8a,
         type: 3}
@@ -47664,7 +47794,7 @@ PrefabInstance:
     - target: {fileID: 5185912243130924076, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
@@ -47674,7 +47804,7 @@ PrefabInstance:
     - target: {fileID: 116726814915000452, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 7105919398930281449, guid: 0cab9f9b88cae4ebfadbf6cd1c4bacd8,
         type: 3}
@@ -48214,7 +48344,7 @@ PrefabInstance:
     - target: {fileID: 1516399667462508240, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
@@ -48224,7 +48354,7 @@ PrefabInstance:
     - target: {fileID: 8472070940388656890, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
       propertyPath: openSpeed
-      value: 130
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: 301641016120365891, guid: 4e96f7e61e9e04fb7a5ea677a48ad15a,
         type: 3}
@@ -48347,6 +48477,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: HorizontalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}
@@ -51969,6 +52109,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: HorizontalDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openDistance
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728748815291031647, guid: 4c725f49bd79e4b20886cb06a09d8b37,
+        type: 3}
+      propertyPath: openSpeed
+      value: 110
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c725f49bd79e4b20886cb06a09d8b37, type: 3}

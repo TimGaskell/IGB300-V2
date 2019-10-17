@@ -1748,6 +1748,7 @@ MonoBehaviour:
   ItemNotificationPanel: {fileID: 193017021}
   ItemCompletionPanel: {fileID: 215270215}
   hasComponentTracker: {fileID: 1427093087}
+  DisconnectionPanel: {fileID: 0}
 --- !u!1 &36143031
 GameObject:
   m_ObjectHideFlags: 0
@@ -5201,7 +5202,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 240
+  orthographic size: 250
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -46250,7 +46251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: -80}
+  m_AnchoredPosition: {x: 25, y: -59}
   m_SizeDelta: {x: 250, y: 150}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1071290748
@@ -60788,7 +60789,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: 40}
+  m_AnchoredPosition: {x: 25, y: 61.000023}
   m_SizeDelta: {x: 250, y: 150}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1427093089
@@ -85813,7 +85814,7 @@ PrefabInstance:
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -721
+      value: -174.27997
       objectReference: {fileID: 0}
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
@@ -85833,7 +85834,7 @@ PrefabInstance:
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
@@ -85843,7 +85844,7 @@ PrefabInstance:
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
@@ -85853,7 +85854,7 @@ PrefabInstance:
     - target: {fileID: 74178931218291480, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
       propertyPath: m_Pivot.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 74178931824080884, guid: d5140aa91220c5a4ebde777beb9dfda2,
         type: 3}
