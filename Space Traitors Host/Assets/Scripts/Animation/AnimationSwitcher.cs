@@ -18,7 +18,7 @@ public class AnimationSwitcher : MonoBehaviour
         animations = gameObject.GetComponent<Animator>();
 
         //Add current animation names- more can be added publicly
-        IdleAnims.Add("Techie-Run-End");
+        IdleAnims.Add("Techie-Idle");
         IdleAnims.Add("Engineer-Idle");
         IdleAnims.Add("Butler-Idle");
         IdleAnims.Add("Punk-Idle");
