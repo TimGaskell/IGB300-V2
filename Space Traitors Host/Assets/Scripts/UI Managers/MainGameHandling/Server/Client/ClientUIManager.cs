@@ -52,6 +52,7 @@ public class ClientUIManager : MonoBehaviour
     public GameObject ItemCompletionPanel;
 
     public GameObject hasComponentTracker;
+    public GameObject DisconnectionPanel;
 
     public static ClientUIManager instance = null;
 

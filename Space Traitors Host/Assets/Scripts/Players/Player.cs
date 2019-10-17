@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Player 
 {
@@ -204,18 +205,32 @@ public class Player
 
     public void Disconnect() {
 
-        ReturnItems();
 
-        GameManager.instance.numPlayers -= 1;
+        if (SceneManager.GetActiveScene().name == "Server GameLevel") {
 
-        GameManager.instance.playerOrder.Remove(playerID);
+            string PlayerName;
 
-        playerObject.SetActive(false);
+            PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
 
-        GameManager.instance.players.Remove(this);
+            Server.Instance.SendPlayerDisconnection(PlayerName);
 
-        GameManager.instance.CheckTraitorVictory();
+            ReturnItems();
 
+            GameManager.instance.numPlayers -= 1;
+
+            GameManager.instance.playerOrder.Remove(playerID);
+
+            playerObject.SetActive(false);
+
+            GameManager.instance.players.Remove(this);
+
+            GameManager.instance.CheckTraitorVictory();
+        }
+        else if(SceneManager.GetActiveScene().name == "ServerLobby") {
+
+            GameManager.instance.players.Remove(this);
+
+        }
 
     }
 

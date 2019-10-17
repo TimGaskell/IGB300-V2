@@ -223,8 +223,7 @@ public class Server : MonoBehaviour
         int dataSize;
 
         NetworkEventType type = NetworkTransport.Receive(out recHostID, out connectionID, out channelID, recBuffer, byteSize, out dataSize, out error);
-        switch (type)
-        {
+        switch (type) {
             case NetworkEventType.Nothing:
                 break;
 
@@ -243,18 +242,17 @@ public class Server : MonoBehaviour
 
                 Debug.Log(connectionID + " has disconnected");
 
+               
 
-                if(connectionID == GameManager.instance.GetActivePlayer().playerID) {
+               if (connectionID == GameManager.instance.GetActivePlayer().playerID) {
 
-                    GameManager.instance.GetActivePlayer().Disconnect();
                     GameManager.instance.IncrementTurn();
-
-
-                }
-                else {
                     GameManager.instance.GetActivePlayer().Disconnect();
-                }
-                
+                       
+               }
+               else {
+                        GameManager.instance.GetPlayer(connectionID).Disconnect();
+               }
 
 
                 break;
@@ -492,6 +490,9 @@ public class Server : MonoBehaviour
                 break;
             case NetOP.ComponentStolen:
                 ComponentStolen(conID, chanID, rHostID, (ComponentStolen)msg);
+                break;
+            case NetOP.SendPlayerDisconnect:
+                PlayerDisconnected(conID, chanID, rHostID, (Disconnection)msg);
                 break;
 
 
@@ -1237,9 +1238,30 @@ public class Server : MonoBehaviour
         SendClient(aiAttackResult);
     }
 
+    public void SendPlayerDisconnection(string PlayerName) {
+
+        Disconnection disconnection = new Disconnection();
+        disconnection.PlayerName = PlayerName;
+
+        for (int i = 1; i < GameManager.instance.numPlayers + 1; i++) {
+
+            tempPlayerID = GameManager.instance.GetPlayer(i).playerID;
+            SendClient(disconnection);
+
+        }
+
+    }
+
     #endregion
 
     #region Client Received Messages
+
+    private void PlayerDisconnected(int conID, int chanID, int rHostID, Disconnection disconnection) {
+
+        ClientUIManager.instance.DisconnectionPanel.SetActive(true);
+        ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshPro>().text = disconnection.PlayerName + " has disconnected from the game";
+
+    }
 
     private void RecievedPlayerDeath(int conID, int chanID, int rHostID, PlayerDeath death) {
 
