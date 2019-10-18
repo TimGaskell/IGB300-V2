@@ -54,6 +54,7 @@ public class PlayerCardManager : MonoBehaviour
         {
             activePlayerCounter = 0;
         }
+        Debug.Log(activePlayerCounter);
         ActivePlayerColourSwitch();
     }
 
