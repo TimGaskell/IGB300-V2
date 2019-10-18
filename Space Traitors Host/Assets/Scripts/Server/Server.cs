@@ -2258,11 +2258,13 @@ public class Server : MonoBehaviour
                         GameManager.instance.GetActivePlayer().PreviousAbility = selectedAbility;
                         Debug.Log(GameManager.instance.GetActivePlayer().PreviousAbility);
                         targetName = GameManager.instance.GetPlayer(ability.TargetID).playerName;
+                        SyncPlayerData(ability.TargetID);
                         break;
                     case (Ability.AbilityTypes.Encouraging_Song):
                     case (Ability.AbilityTypes.Supercharge):
                         selectedAbility.Activate(ability.TargetID);
                         targetName = GameManager.instance.GetPlayer(ability.TargetID).playerName;
+                        SyncPlayerData(ability.TargetID);
                         break;
                     case (Ability.AbilityTypes.Code_Inspection):
                         selectedAbility.Activate(ability.TargetID, out isTraitor);

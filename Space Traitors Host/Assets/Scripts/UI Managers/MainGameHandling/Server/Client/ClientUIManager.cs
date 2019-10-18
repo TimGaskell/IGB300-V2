@@ -13,7 +13,6 @@ public class ClientUIManager : MonoBehaviour
     private ClientManager player;
 
     public GameObject serverActivePanel;
-    public GameObject noServerPanel;
 
     public GameObject componentTrackerPanel;
 
@@ -67,7 +66,6 @@ public class ClientUIManager : MonoBehaviour
         characterPortrait.GetComponent<Image>().sprite = ClientManager.instance.GetCharacterPortrait(ClientManager.instance.PlayerCharacter.CharacterType);
 
         serverActivePanel.SetActive(true);
-        noServerPanel.SetActive(false);
 
         abilityPanel.SetActive(false);
         actionPointPanel.SetActive(false);
@@ -160,12 +158,12 @@ public class ClientUIManager : MonoBehaviour
         if (result)
         {
             SFXManager.instance.PlaySoundEffect(SFXManager.instance.successSound);
-            ResultsPanel.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
+            ResultsPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Success";
         }
         else
         {
             SFXManager.instance.PlaySoundEffect(SFXManager.instance.failureSound);
-            ResultsPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Failed";
+            ResultsPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Failed";
         }
     }
 
