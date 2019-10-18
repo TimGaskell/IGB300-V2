@@ -33,6 +33,7 @@ public class AbilityAnimationController : MonoBehaviour
     public void PlayAnimation(Ability ability, string playerName, string targetName)
     {
         abilityAnimationPanel.SetActive(true);
+        animationPlayer.clip = null;
         string activatedString;
         if (targetName == "")
         {
