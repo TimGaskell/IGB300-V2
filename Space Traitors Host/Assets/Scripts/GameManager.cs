@@ -782,6 +782,7 @@ public class GameManager : MonoBehaviour
                 currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
+                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):

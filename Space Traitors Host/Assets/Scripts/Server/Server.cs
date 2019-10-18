@@ -13,6 +13,7 @@ using TMPro;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Linq;
 
 /* 
 Most if not all networking from the host's (computer's) side is handled within this script,
@@ -2460,7 +2461,10 @@ public class Server : MonoBehaviour
                 GameManager.instance.playerGoalIndex = moveTo.SelectedRoom;
                 GameManager.instance.playerMoving = true;
 
-                CameraSystem.instance.ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+                if (!GameManager.instance.GetActivePlayer().CheckActiveAbility(Ability.AbilityTypes.Muddle_Sensors))
+                {
+                    CameraSystem.instance.ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
+                }
             }
         }
     }
