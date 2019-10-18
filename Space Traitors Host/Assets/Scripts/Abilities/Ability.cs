@@ -136,7 +136,7 @@ public class SecretPaths : Ability
     public SecretPaths()
     {
         abilityType = AbilityTypes.Secret_Paths;
-        abilityDescription = "A player of your choice can move to any room in the map without spending action points on their next turn.";
+        abilityDescription = "A player of your choice gets 1 additional action point on their next turn.";
 
         scrapCost = 6;
         corruptionRequirement = 0;
@@ -457,7 +457,7 @@ public class CodeInspection : Ability
     public CodeInspection()
     {
         abilityType = AbilityTypes.Code_Inspection;
-        abilityDescription = "Inspect a players code to see if they are a traitor or not.";
+        abilityDescription = "Inspect a player's code to see if they are a traitor or not.";
 
         scrapCost = 5;
         corruptionRequirement = 50;
@@ -483,7 +483,7 @@ public class Sabotage : Ability
     public Sabotage()
     {
         abilityType = AbilityTypes.Sabotage;
-        abilityDescription = "Sabotage the escape shuttle so the next player to install a component takes damage.";
+        abilityDescription = "Sabotage the escape shuttle so the next player to install a component fails and takes damaage.";
 
         scrapCost = 10;
         corruptionRequirement = 75;
