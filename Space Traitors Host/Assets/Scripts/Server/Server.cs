@@ -2666,7 +2666,7 @@ public class Server : MonoBehaviour
                         SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
                         CameraSystem.instance.ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
-                        canvas.GetComponent<ClientUIManager>().abilityPanel.GetComponent<AbilityAnimationController>().abilityAnimationPanel.SetActive(false);
+                        canvas.GetComponent<MainGameUIManager>().abilityPanel.GetComponent<AbilityAnimationController>().abilityAnimationPanel.SetActive(false);
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
