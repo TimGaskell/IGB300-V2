@@ -63,7 +63,7 @@ public class InventoryManager : MonoBehaviour
             else
             {
                 //Presents the information about the current item for the player
-                displayText = ClientManager.instance.inventory[counter].ItemName;
+                displayText = ClientManager.instance.inventory[counter].ItemName + "\n" + Item.itemSpriteString(ClientManager.instance.inventory[counter].ItemType);
                 itemButton.GetComponent<ItemButtonComponents>().item = ClientManager.instance.inventory[counter];
                 if (ClientManager.instance.inventory[counter].isEquipped)
                 {
