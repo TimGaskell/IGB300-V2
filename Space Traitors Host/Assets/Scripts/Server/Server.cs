@@ -13,7 +13,6 @@ using TMPro;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Linq;
 
 /* 
 Most if not all networking from the host's (computer's) side is handled within this script,
