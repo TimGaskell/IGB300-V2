@@ -324,8 +324,12 @@ public class MuddleSensors : Ability
 
         if(GameManager.instance.GetPlayer(targetIndex).Character.CharacterType == Character.CharacterTypes.Engineer) {
 
-            GameManager.instance.GetPlayer(targetIndex).playerObject.SetActive(false);
+            Transform engTransform = GameManager.instance.GetPlayer(targetIndex).playerObject.transform;
 
+            foreach (Transform child in engTransform)
+            {
+                child.gameObject.SetActive(false);
+            }                              
         }
 
         if (GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponentsInChildren<MeshRenderer>() != null) {
@@ -340,7 +344,9 @@ public class MuddleSensors : Ability
 
         }
 
-       
+
+        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<BoxCollider>().enabled = false;
+
         GameManager.instance.GetPlayer(targetIndex).AssignActiveAbility(this);
         Debug.Log("Goin invisable");
     }
@@ -374,6 +380,7 @@ public class MuddleSensors : Ability
 
         }
 
+        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<BoxCollider>().enabled = true;
         GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }
