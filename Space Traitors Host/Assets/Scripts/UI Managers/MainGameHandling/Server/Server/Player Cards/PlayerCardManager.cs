@@ -54,7 +54,7 @@ public class PlayerCardManager : MonoBehaviour
         {
             activePlayerCounter = 0;
         }
-        Debug.Log(activePlayerCounter);
+        Debug.Log(string.Format("{0} is the active player counter", activePlayerCounter));
         ActivePlayerColourSwitch();
     }
 
