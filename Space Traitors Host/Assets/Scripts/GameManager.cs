@@ -778,11 +778,9 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case (TurnPhases.Default):
-                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;
             case (TurnPhases.Abilities):
-                CameraSystem.instance.ZoomIn(GetActivePlayer().playerObject);
                 currentPhase += 1;
                 break;               
             case (TurnPhases.Movement):

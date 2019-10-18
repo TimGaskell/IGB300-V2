@@ -2665,6 +2665,7 @@ public class Server : MonoBehaviour
                         PlayerCardManager.instance.UpdateAllCards();
                         SendAbilityInformation(activePlayer.playerID);
                         Debug.Log("sent ability information");
+                        CameraSystem.instance.ZoomIn(GameManager.instance.GetActivePlayer().playerObject);
                         break;
                     case (GameManager.TurnPhases.ActionPoints):
                         //Not sure if needing to send anything here- maybe just a ping to say start rolling action points
