@@ -46,7 +46,7 @@ public class PlayerCardManager : MonoBehaviour
     {
         activePlayerPanel.SetActive(true);
         activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
-        if(activePlayerCounter != GameManager.instance.numPlayers)
+        if(activePlayerCounter != GameManager.instance.numPlayers - 1)
         {
             activePlayerCounter++;
         }
