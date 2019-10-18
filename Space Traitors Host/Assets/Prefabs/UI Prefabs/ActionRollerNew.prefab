@@ -726,8 +726,9 @@ MonoBehaviour:
   rolledText: {fileID: 2132673632262255113}
   initialSpeed: 0.04
   minSpeed: 0.2
-  decelFactor: 0.001
+  decelFactor: 0.002
   waitTime: 3
+  movementDisplayText: {fileID: 0}
 --- !u!1 &3676804642639272868
 GameObject:
   m_ObjectHideFlags: 0
