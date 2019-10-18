@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 765762272}
   - component: {fileID: 765762271}
   - component: {fileID: 765762270}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Shine Effect (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -938,7 +938,7 @@ RectTransform:
   m_Children:
   - {fileID: 1151837719}
   m_Father: {fileID: 1667290402}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1047,7 +1047,7 @@ GameObject:
   - component: {fileID: 1238813463}
   - component: {fileID: 1238813462}
   - component: {fileID: 1238813461}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Shine Effect (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1161,7 +1161,7 @@ RectTransform:
   m_Children:
   - {fileID: 615236661}
   m_Father: {fileID: 1667290402}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1362,7 +1362,7 @@ RectTransform:
   m_Children:
   - {fileID: 33962403}
   m_Father: {fileID: 1667290402}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1471,7 +1471,7 @@ GameObject:
   - component: {fileID: 1381598796}
   - component: {fileID: 1381598795}
   - component: {fileID: 1381598794}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Shine Effect (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1646,7 +1646,7 @@ GameObject:
   - component: {fileID: 1535505719}
   - component: {fileID: 1535505718}
   - component: {fileID: 1535505717}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: ShinePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1668,7 +1668,7 @@ RectTransform:
   - {fileID: 1238813460}
   - {fileID: 765762269}
   - {fileID: 1381598793}
-  m_Father: {fileID: 2094296759}
+  m_Father: {fileID: 1667290402}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1709,7 +1709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1762,6 +1762,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1330341272}
+  - {fileID: 1535505716}
   - {fileID: 1169788179}
   - {fileID: 1371385498}
   - {fileID: 1281017170}
@@ -1892,7 +1893,7 @@ GameObject:
   - component: {fileID: 1752745267}
   - component: {fileID: 1752745266}
   - component: {fileID: 1752745265}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Shine Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2079,7 +2080,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1667290402}
-  - {fileID: 1535505716}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
