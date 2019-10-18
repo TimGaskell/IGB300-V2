@@ -33,7 +33,7 @@ public class AbilityAnimationController : MonoBehaviour
     public void PlayAnimation(Ability ability, string playerName, string targetName)
     {
         abilityAnimationPanel.SetActive(true);
-        animationPlayer.clip = null;
+        animationPlayer.gameObject.SetActive(false);
         string activatedString;
         if (targetName == "")
         {
@@ -77,6 +77,7 @@ public class AbilityAnimationController : MonoBehaviour
 
         animationPlayer.clip = videoClip;
 
+        animationPlayer.gameObject.SetActive(true);
         animationPlayer.Play();
     }
 }
