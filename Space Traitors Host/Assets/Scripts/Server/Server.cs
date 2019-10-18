@@ -1377,6 +1377,9 @@ public class Server : MonoBehaviour
         ClientManager.instance.modTech = playerData.ModTech;
         ClientManager.instance.modCharm = playerData.ModCharm;
 
+        if (SceneManager.GetActiveScene().name == "Client GameLevel") {
+            ClientUIManager.instance.UpdatePlayerStats();
+        }
       
     }
 
