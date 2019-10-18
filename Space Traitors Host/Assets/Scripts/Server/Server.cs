@@ -1732,19 +1732,22 @@ public class Server : MonoBehaviour
             switch ((Player.EquipErrors)equipState.EquipError) {
                 case (Player.EquipErrors.Default):
                     //Update Inventory UI and spec scores (could be done using SyncClientData however)
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
                     break;
                 case (Player.EquipErrors.AlreadyEquipped):
                     //Display to the player that the item is already equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().ResetSelectedItem();
                     ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Item already Equipped";
 
                     break;
                 case (Player.EquipErrors.TooManyEquipped):
                     //Display to the player that they have too many items equipped
+                    ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().ResetSelectedItem();
                     ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().errorText.GetComponent<TextMeshProUGUI>().text = "Too many items Equipped";
                     break;
 
             }
-            ClientUIManager.instance.inventoryPanel.GetComponent<InventoryManager>().UpdateItemButtons();
+            
         }
         else {
             switch ((Player.EquipErrors)equipState.EquipError) {

@@ -110,11 +110,11 @@ public class InventoryManager : MonoBehaviour
                 //Used to tell the player if they are equipping or unequipping the selected item
                 if (selectedItem.isEquipped)
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Unequip";
                 }
                 else
                 {
-                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip Item";
+                    equipButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Equip";
                 }
             }
             //If an item was already selected, deselects it and informs the player
@@ -156,7 +156,7 @@ public class InventoryManager : MonoBehaviour
     /// Resets the selected item as well as all associated variables
     /// 
     /// </summary>
-    private void ResetSelectedItem()
+    public void ResetSelectedItem()
     {
         itemText.GetComponent<TextMeshProUGUI>().text = "";
         selectedItem = new Item();
