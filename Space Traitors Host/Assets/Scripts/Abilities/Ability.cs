@@ -380,7 +380,7 @@ public class MuddleSensors : Ability
 
         }
 
-        GameManager.instance.GetPlayer(targetIndex).playerObject.GetComponent<BoxCollider>().enabled = true;
+        GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).playerObject.GetComponent<BoxCollider>().enabled = true;
         GameManager.instance.GetPlayer(GameManager.instance.GetActivePlayer().PreviousTarget).activeAbilitys.Remove(this);
         Debug.Log("wait can they see me now?");
     }
