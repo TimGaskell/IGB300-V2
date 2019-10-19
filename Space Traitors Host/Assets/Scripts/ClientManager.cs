@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -281,4 +282,59 @@ public class ClientManager : MonoBehaviour
     {
         return componentsInstalled == numPlayers;
     }
+
+    /// <summary>
+    /// 
+    /// Used to detect when a new scene is loaded into, since Game Manager is enabled when this happens
+    /// See 
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    private void OnEnable()
+    {
+        SceneManager.sceneUnloaded += OldSceneUnloaded;
+        SceneManager.sceneLoaded += NewSceneLoaded;
+    }
+
+    /// <summary>
+    /// 
+    /// Used to detect when a scene is loaded out of, since Game Manager is disabled when this happens
+    /// See 
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= NewSceneLoaded;
+        SceneManager.sceneUnloaded -= OldSceneUnloaded;
+    }
+
+    /// <summary>
+    /// 
+    /// Used for detecting when a new scene is loaded into. Customised to detect for the different scenes in the game
+    /// See
+    /// https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html
+    /// for more information
+    /// 
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
+    private void NewSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Client MainMenu")
+        {
+            GameObject server = GameObject.FindGameObjectWithTag("Server");
+            Destroy(server);
+        }
+    }
+
+    private void OldSceneUnloaded(Scene scene)
+    {
+
+    }
+
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 394699478448919156}
   m_Layer: 0
   m_Name: Server
-  m_TagString: Untagged
+  m_TagString: Server
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,21 +50,14 @@ MonoBehaviour:
   connected: 0
   serverIP: 192.168.1.65
   connectSound: {fileID: 394699478448919156}
-  players:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   ScrapTotals: []
   Components: []
-  PlayerObject: {fileID: 0}
   connectText: {fileID: 0}
   portraits: []
   playerIDs: 00000000000000000000000000000000
   playersJoined: 0
   tempPlayerID: 0
+  networkManager: {fileID: 0}
 --- !u!82 &394699478448919156
 AudioSource:
   m_ObjectHideFlags: 0
