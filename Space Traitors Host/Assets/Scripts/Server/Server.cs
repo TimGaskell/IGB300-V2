@@ -185,6 +185,7 @@ public class Server : MonoBehaviour
     public void ShutDown()
     {
         isStarted = false;
+        NetworkTransport.RemoveHost(hostID);
         NetworkTransport.Shutdown();
     }
 
