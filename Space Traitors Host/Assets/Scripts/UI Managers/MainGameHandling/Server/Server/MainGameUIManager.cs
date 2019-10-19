@@ -153,7 +153,7 @@ public class MainGameUIManager : MonoBehaviour
         if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
         {
             nonTraitorVictoryPanel.SetActive(true);
-            traitorVictoryPanel.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetNonTraitorNames();
+            nonTraitorVictoryPanel.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetNonTraitorNames();
         }
         else if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.Traitor)
         {
