@@ -48,8 +48,6 @@ public class HostGame : MonoBehaviour
     public void CreateRoom() {
 
         roomName = roomNameInput.GetComponent<TMP_InputField>().text;
-        SFXManager.instance.PlaySoundEffect(SFXManager.instance.connectSound);
-
         if(roomName != "" && roomName != null) {
             Debug.Log("Creating Room: " + roomName + " with room for " + roomSize);
             //create room
@@ -62,6 +60,7 @@ public class HostGame : MonoBehaviour
                 Server.Instance.HostInitialise();
                 SceneManager.LoadScene("ServerLobby");
                 GameManager.instance.ResetPlayers();
+                SFXManager.instance.PlaySoundEffect(SFXManager.instance.connectSound);
             }
             else
             {
