@@ -323,7 +323,10 @@ public class GameManager : MonoBehaviour
                 MusicManager.instance.ChangeMusicClip(MusicManager.instance.menuMusic);
 
                 GameObject server = GameObject.FindGameObjectWithTag("Server");
-                Server.Instance.ShutDown();
+                if (server != null)
+                {
+                    Server.Instance.ShutDown();
+                }
                 Destroy(server);
             }
             else if (scene.name == LobbyScene)
