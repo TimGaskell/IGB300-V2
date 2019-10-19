@@ -304,7 +304,7 @@ public class Server : MonoBehaviour
                 if(SceneManager.GetActiveScene().name == "Client GameLevel") {
 
                     ClientUIManager.instance.DisconnectionPanel.SetActive(true);
-                    ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshPro>().text = "Server has gone down, exit game to return to menu";
+                    ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Server has gone down, exit game to return to menu";
 
                 }
 
@@ -1267,7 +1267,7 @@ public class Server : MonoBehaviour
     private void PlayerDisconnected(int conID, int chanID, int rHostID, Disconnection disconnection) {
 
         ClientUIManager.instance.DisconnectionPanel.SetActive(true);
-        ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshPro>().text = disconnection.PlayerName + " has disconnected from the game";
+        ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = disconnection.PlayerName + " has disconnected from the game";
 
     }
 
