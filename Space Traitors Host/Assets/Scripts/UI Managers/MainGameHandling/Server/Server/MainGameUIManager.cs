@@ -203,7 +203,7 @@ public class MainGameUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        Application.Quit();
+        SceneManager.LoadScene(GameManager.MainMenuScene);
     }
 
     public void SetBasicSurgeButton(bool enabled)
