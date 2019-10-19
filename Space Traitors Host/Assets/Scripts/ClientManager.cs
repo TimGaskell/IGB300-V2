@@ -332,7 +332,7 @@ public class ClientManager : MonoBehaviour
             {
                 Server.Instance.ShutDown();
             }
-            //Destroy(server);
+            Destroy(server);
         }
     }
 

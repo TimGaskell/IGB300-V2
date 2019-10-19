@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour
                 {
                     Server.Instance.ShutDown();
                 }
-                //Destroy(server);
+                Destroy(server);
             }
             else if (scene.name == LobbyScene)
             {
