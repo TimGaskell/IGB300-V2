@@ -325,15 +325,15 @@ public class ClientManager : MonoBehaviour
     /// <param name="mode"></param>
     private void NewSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Client MainMenu")
-        {
-            GameObject server = GameObject.FindGameObjectWithTag("Server");
-            if(server != null)
-            {
-                Server.Instance.ShutDown();
-            }
-            Destroy(server);
-        }
+        //if (scene.name == "Client MainMenu")
+        //{
+        //    GameObject server = GameObject.FindGameObjectWithTag("Server");
+        //    if(server != null)
+        //    {
+        //        Server.Instance.ShutDown();
+        //    }
+        //    Destroy(server);
+        //}
     }
 
     private void OldSceneUnloaded(Scene scene)
