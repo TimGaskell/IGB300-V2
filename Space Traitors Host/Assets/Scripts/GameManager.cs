@@ -718,10 +718,19 @@ public class GameManager : MonoBehaviour
     public void IncrementTurn()
     {
         activePlayer++;
+        Debug.Log(string.Format("Active Player is {0}", activePlayer));
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
         if (activePlayer == numPlayers + 1) {
             activePlayer = 1;
+
+            while (GetActivePlayer().IsDead)
+            {
+                activePlayer++;
+                Debug.Log(string.Format("Active Player is {0}", activePlayer));
+            } 
+
+
             if (CheckNonTraitorVictory()) {
                 CurrentVictory = VictoryTypes.NonTraitor;
                 Server.Instance.SendNonTraitorVictory();
@@ -731,6 +740,12 @@ public class GameManager : MonoBehaviour
             }
         }
         else {
+
+            while (GetActivePlayer().IsDead)
+            {
+                activePlayer++;
+                Debug.Log(string.Format("Active Player is {0}", activePlayer));
+            } 
 
             Debug.Log("ABILITY TEST " + GetActivePlayer().PreviousTarget + " " + GetActivePlayer().PreviousAbility);
 
@@ -1229,25 +1244,53 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CheckTraitorVictory()
     {
-        foreach (Player player in players) {
-
-            if(traitorWinID == DEFAULT_PLAYER_ID) {
-
-                traitorWinID = player.playerID;
-
+        foreach (Player player in players)
+        {
+            //Checks if the player is alive, skipping players which are dead
+            if (!player.IsDead)
+            {
+                //If the winner ID is the default (which is the case when the loop first begins), then sets the winner
+                //as the current alive player. If the current winner ID is not the default, this means another player has
+                //been set as the winner previously, as such, meaning there is more than one player alive and sets as the
+                //default ID then breaks from the loop (since the condition has already been fulfilled).
+                if (traitorWinID == DEFAULT_PLAYER_ID)
+                {
+                    traitorWinID = player.playerID;
+                }
+                else
+                {
+                    traitorWinID = DEFAULT_PLAYER_ID;
+                    break;
+                }
             }
-            else {
-                traitorWinID = DEFAULT_PLAYER_ID;
-
-            }
-
-            Debug.Log(traitorWinID);
         }
-        if(traitorWinID != DEFAULT_PLAYER_ID) {
 
+        //If the script exits the above loop with the winner ID not being the default ID, this means there is only one player
+        //is alive, as such making them the victor
+        if (traitorWinID != DEFAULT_PLAYER_ID)
+        {
             CurrentVictory = VictoryTypes.Traitor;
         }
-       
+
+        //foreach (Player player in players) {
+
+        //    if(traitorWinID == DEFAULT_PLAYER_ID) {
+
+        //        traitorWinID = player.playerID;
+
+        //    }
+        //    else {
+        //        traitorWinID = DEFAULT_PLAYER_ID;
+
+        //    }
+
+        //    Debug.Log(traitorWinID);
+        //}
+        //if(traitorWinID != DEFAULT_PLAYER_ID) {
+
+        //    CurrentVictory = VictoryTypes.Traitor;
+        //}
+
     }
 
     #endregion

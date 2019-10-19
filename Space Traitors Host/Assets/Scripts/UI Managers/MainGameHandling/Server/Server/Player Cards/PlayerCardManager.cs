@@ -48,11 +48,22 @@ public class PlayerCardManager : MonoBehaviour
         activePlayerPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetActivePlayer().playerName;
         if(activePlayerCounter != GameManager.instance.numPlayers - 1)
         {
-            activePlayerCounter++;
+            do
+            {
+                activePlayerCounter++;
+
+            } while (GameManager.instance.GetActivePlayer().IsDead);
+            
         }
         else
         {
             activePlayerCounter = 0;
+
+            do
+            {
+                activePlayerCounter++;
+
+            } while (GameManager.instance.GetActivePlayer().IsDead);
         }
         Debug.Log(string.Format("{0} is the active player counter", activePlayerCounter));
         ActivePlayerColourSwitch();

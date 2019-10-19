@@ -12,7 +12,7 @@ public class Player
     public const int MAX_ITEMS = 4;
     public const int MAX_EQUIPPED_ITEMS = 2;
 
-    public const int BASE_LIFE_POINTS = 3;
+    public const int BASE_LIFE_POINTS = 1;
 
     private const int MAX_CORRUPTION = 100;
 
@@ -190,13 +190,13 @@ public class Player
             Server.Instance.SendPlayerDeath(playerID);
             ReturnItems();
 
-            GameManager.instance.numPlayers -= 1;
+            //GameManager.instance.numPlayers -= 1;
 
-            GameManager.instance.playerOrder.Remove(playerID);
+            //GameManager.instance.playerOrder.Remove(playerID);
 
             playerObject.SetActive(false);
 
-            GameManager.instance.players.Remove(this);
+            //GameManager.instance.players.Remove(this);
 
             GameManager.instance.CheckTraitorVictory();
 
@@ -205,24 +205,25 @@ public class Player
 
     public void Disconnect() {
 
-
-        if (SceneManager.GetActiveScene().name == "Server GameLevel") {
+        if (SceneManager.GetActiveScene().name == "Server GameLevel" && !IsDead) {
 
             string PlayerName;
 
             PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
 
+            lifePoints = 0;
+
             Server.Instance.SendPlayerDisconnection(PlayerName);
 
             ReturnItems();
 
-            GameManager.instance.numPlayers -= 1;
+            //GameManager.instance.numPlayers -= 1;
 
-            GameManager.instance.playerOrder.Remove(playerID);
+            //GameManager.instance.playerOrder.Remove(playerID);
 
             playerObject.SetActive(false);
 
-            GameManager.instance.players.Remove(this);
+            //GameManager.instance.players.Remove(this);
 
             GameManager.instance.CheckTraitorVictory();
         }
