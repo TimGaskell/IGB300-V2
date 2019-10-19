@@ -328,6 +328,7 @@ public class ClientManager : MonoBehaviour
         if (scene.name == "Client MainMenu")
         {
             GameObject server = GameObject.FindGameObjectWithTag("Server");
+            Server.Instance.ShutDown();
             Destroy(server);
         }
     }
