@@ -1326,6 +1326,21 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public string GetNonTraitorNames()
+    {
+        string nonTraitorNames = "";
+
+        foreach (Player player in players)
+        {
+            if (!player.isTraitor)
+            {
+                nonTraitorNames += string.Format("{0}, ", player.playerName);
+            }
+        }
+
+        return nonTraitorNames;
+    }
+
     #endregion
 
     #region Action Points

@@ -153,11 +153,12 @@ public class MainGameUIManager : MonoBehaviour
         if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.NonTraitor)
         {
             nonTraitorVictoryPanel.SetActive(true);
+            traitorVictoryPanel.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>().text = GameManager.instance.GetNonTraitorNames();
         }
         else if (GameManager.instance.CurrentVictory == GameManager.VictoryTypes.Traitor)
         {
             traitorVictoryPanel.SetActive(true);
-            traitorVictoryPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Format("{0} Wins!", GameManager.instance.GetPlayer(GameManager.instance.traitorWinID).playerName);
+            traitorVictoryPanel.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = string.Format("{0} Wins!", GameManager.instance.GetPlayer(GameManager.instance.traitorWinID).playerName);
         }
         else
         {
