@@ -832,10 +832,10 @@ public class GameManager : MonoBehaviour
         {
             currentPhase = TurnPhases.BasicSurge;
 
-            basePower = BASE_POWER_MOD / numPlayers;
-            playerPower = PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers);
+            basePower = Mathf.Round((BASE_POWER_MOD / numPlayers) * 100.0f) / 100.0f;
+            playerPower = Mathf.Round((PLAYER_POWER_MOD * (TotalCorruption(true) / numPlayers)) * 100.0f) / 100.0f;
 
-            AIPower += AIPowerIncrease();
+            AIPower += Mathf.Round(AIPowerIncrease() * 100.0f) / 100.0f;
 
             Server.Instance.SendSurge();
         }
