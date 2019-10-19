@@ -245,9 +245,9 @@ public class Server : MonoBehaviour
                
 
                if (connectionID == GameManager.instance.GetActivePlayer().playerID) {
-
-                    GameManager.instance.IncrementTurn();
                     GameManager.instance.GetActivePlayer().Disconnect();
+                    GameManager.instance.IncrementTurn();
+                    
                        
                }
                else {
