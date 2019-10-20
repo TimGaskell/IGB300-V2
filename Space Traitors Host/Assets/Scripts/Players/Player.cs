@@ -231,6 +231,8 @@ public class Player
 
                 ReturnItems();
 
+                lifePoints = 0;
+
                 GameManager.instance.numPlayers -= 1;
 
                 GameManager.instance.playerOrder.Remove(playerID);
