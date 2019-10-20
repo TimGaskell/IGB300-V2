@@ -251,16 +251,21 @@ public class ClientUIManager : MonoBehaviour
                 abilityPanel.SetActive(true);
                 break;
             case (GameManager.TurnPhases.ActionPoints):
+                basicSurgePanel.SetActive(false);
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
                 //RollActionPoints.instance.ResetRoll();
                 actionPointPanel.transform.Find("ActionRollerNew").GetComponent<ActionPointRollManager>().ResetRoller();
                 break;
             case (GameManager.TurnPhases.Movement):
+                basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
                 actionPointPanel.SetActive(false);
                 movementPanel.SetActive(true);
                 break;
             case (GameManager.TurnPhases.Interaction):
+                basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
                 movementPanel.SetActive(false);
                 interactionPanel.SetActive(true);
                 interactionPanel.GetComponent<InteractionManager>().InitialiseChoices(GameManager.instance.playerGoalIndex);
