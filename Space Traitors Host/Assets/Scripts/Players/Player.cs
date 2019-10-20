@@ -125,7 +125,7 @@ public class Player
         items = new List<Item>();
 
         hasComponent = false;
-        lifePoints = 1;
+        lifePoints = BASE_LIFE_POINTS;
         maxLifePoints = BASE_LIFE_POINTS;
 
         Character = new Character();
