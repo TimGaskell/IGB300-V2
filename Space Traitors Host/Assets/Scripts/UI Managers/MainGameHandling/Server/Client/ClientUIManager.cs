@@ -252,6 +252,7 @@ public class ClientUIManager : MonoBehaviour
                 break;
             case (GameManager.TurnPhases.ActionPoints):
                 basicSurgePanel.SetActive(false);
+                attackSurgePanel.SetActive(false);
                 abilityPanel.SetActive(false);
                 actionPointPanel.SetActive(true);
                 //RollActionPoints.instance.ResetRoll();
