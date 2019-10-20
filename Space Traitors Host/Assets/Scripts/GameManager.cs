@@ -721,7 +721,13 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i< players.Count;i++) {
 
             if (players[i].IsDead) {
+                Debug.Log(players[i].playerName + " is dead");
+                if (GetActivePlayer().playerID == players[i].playerID) {
+                    activePlayer--;
+                    PlayerCardManager.instance.activePlayerCounter--;
+                }
                 players[i].Disconnect();
+                
             }
 
         }

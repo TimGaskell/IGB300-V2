@@ -192,9 +192,11 @@ public class Player
 
             if (SceneManager.GetActiveScene().name == "Server GameLevel") {
 
-                string PlayerName;
+                string PlayerName;            
 
                 PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
+
+                Debug.Log(playerName);
 
                 Server.Instance.SendPlayerDeath(playerID);
 
@@ -246,7 +248,8 @@ public class Player
             }
         }
 
-           
+        PlayerCardManager.instance.DestroyLastCard();
+
         
     }
 

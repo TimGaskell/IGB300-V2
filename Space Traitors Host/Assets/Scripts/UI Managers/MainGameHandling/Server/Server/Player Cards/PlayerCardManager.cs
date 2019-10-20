@@ -14,7 +14,7 @@ public class PlayerCardManager : MonoBehaviour
     public GameObject initialPlayerCard;
     public List<GameObject> playerCards;
 
-    private int activePlayerCounter;
+    public int activePlayerCounter;
 
 
     private void Start() {
@@ -116,6 +116,12 @@ public class PlayerCardManager : MonoBehaviour
 
             playerCards[i].GetComponent<Image>().color = backColour;
         }
+    }
+
+    public void DestroyLastCard() {
+
+        Destroy(playerCards[playerCards.Count - 1].gameObject);
+        playerCards.Remove(playerCards[playerCards.Count - 1].gameObject);
     }
 
 }

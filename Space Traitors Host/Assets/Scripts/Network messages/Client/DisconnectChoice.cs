@@ -10,4 +10,6 @@ public class DisconnectChoice : NetMessage {
 
     }
 
+    public bool InGame { get; set; }
+
 }

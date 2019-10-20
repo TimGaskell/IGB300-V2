@@ -246,19 +246,6 @@ public class Server : MonoBehaviour
                 Debug.Log(connectionID + " has disconnected");
 
 
-                if (DC) {
-                    if (connectionID == GameManager.instance.GetActivePlayer().playerID) {
-                        GameManager.instance.GetActivePlayer().Disconnect();
-                        GameManager.instance.IncrementTurn();
-
-
-                    }
-                    else {
-                        GameManager.instance.GetPlayer(connectionID).Disconnect();
-                    }
-                }
-
-
                 break;
 
             case NetworkEventType.DataEvent:
@@ -1942,9 +1929,11 @@ public class Server : MonoBehaviour
 
 #region Client Sent Messages
 
-    public void SendDisconnect() {
+    public void SendDisconnect(bool dcChoice) {
 
         DisconnectChoice dc = new DisconnectChoice();
+        dc.InGame = dcChoice;
+
 
         SendServer(dc);
     }
@@ -2176,15 +2165,17 @@ public class Server : MonoBehaviour
 
     private void PlayerDisconnect(int conID, int chanID, int rHostID, DisconnectChoice DC) {
 
-        if (conID == GameManager.instance.GetActivePlayer().playerID) {
-            GameManager.instance.GetActivePlayer().Disconnect();
-            GameManager.instance.IncrementTurn();
+        if (DC.InGame) {
 
-        }
-        else {
-            GameManager.instance.GetPlayer(connectionID).Disconnect();
-        }
+            if (conID == GameManager.instance.GetActivePlayer().playerID) {
+                GameManager.instance.GetActivePlayer().Disconnect();
+                GameManager.instance.IncrementTurn();
 
+            }
+            else {
+                GameManager.instance.GetPlayer(connectionID).Disconnect();
+            }
+        }
     }
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)

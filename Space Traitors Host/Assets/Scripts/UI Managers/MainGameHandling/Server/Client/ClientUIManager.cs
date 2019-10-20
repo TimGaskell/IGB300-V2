@@ -359,9 +359,15 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        Server.Instance.SendDisconnect();
+        Server.Instance.SendDisconnect(true);
         Server.Instance.DisconnectFromServer();
         SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);     
+    }
+
+    public void ExitGameFromElimination() {
+        Server.Instance.SendDisconnect(false);
+        Server.Instance.DisconnectFromServer();
+        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
     }
 
     /// <summary>
