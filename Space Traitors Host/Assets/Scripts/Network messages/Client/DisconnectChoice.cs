@@ -4,6 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class DisconnectChoice : NetMessage {
+
     public DisconnectChoice() {
 
         OperationCode = NetOP.DisconnectChoice;

@@ -54,6 +54,10 @@ public class ClientUIManager : MonoBehaviour
     public GameObject DisconnectionPanel;
 
     public static ClientUIManager instance = null;
+    public bool ExitGameNow = false;
+    public bool ExitGameCombatNow = false;
+    public bool pressed = false;
+    public float time = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -117,7 +121,19 @@ public class ClientUIManager : MonoBehaviour
             }
         }
 
+        if(ExitGameNow == true || ExitGameCombatNow == true) {
 
+            time -= Time.deltaTime;
+
+        }
+
+        if(time <= 0) {
+
+            Server.Instance.DisconnectFromServer();
+            SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
+
+
+        }
 
     }
 
@@ -359,15 +375,21 @@ public class ClientUIManager : MonoBehaviour
     /// </summary>
     public void ExitGame()
     {
-        Server.Instance.SendDisconnect(true);
-        Server.Instance.DisconnectFromServer();
-        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);     
+
+        if (pressed == false) {
+            pressed = true;
+            ExitGameNow = true;
+
+            Server.Instance.SendDisconnect(true);
+        }
     }
 
     public void ExitGameFromElimination() {
-        Server.Instance.SendDisconnect(false);
-        Server.Instance.DisconnectFromServer();
-        SceneManager.LoadScene(ClientManager.MAIN_MENU_SCENE);
+
+        if (pressed == false) {
+            ExitGameCombatNow = true;
+            Server.Instance.SendDisconnect(false);
+        }
     }
 
     /// <summary>
