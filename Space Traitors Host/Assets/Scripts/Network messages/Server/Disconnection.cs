@@ -11,5 +11,6 @@ public class Disconnection: NetMessage {
 
     }
 
+    public int PlayerID { get; set; }
     public string PlayerName { get; set; }
 }

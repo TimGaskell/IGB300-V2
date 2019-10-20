@@ -227,7 +227,7 @@ public class Player
 
                 PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
 
-                Server.Instance.SendPlayerDisconnection(PlayerName);
+                Server.Instance.SendPlayerDisconnection(playerID, PlayerName);
 
                 ReturnItems();
 

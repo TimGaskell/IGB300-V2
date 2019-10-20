@@ -1240,9 +1240,10 @@ public class Server : MonoBehaviour
         SendClient(aiAttackResult);
     }
 
-    public void SendPlayerDisconnection(string PlayerName) {
+    public void SendPlayerDisconnection(int playerID, string PlayerName) {
 
         Disconnection disconnection = new Disconnection();
+        disconnection.PlayerID = playerID;
         disconnection.PlayerName = PlayerName;
 
         for (int i = 1; i < GameManager.instance.numPlayers + 1; i++) {
@@ -1262,7 +1263,9 @@ public class Server : MonoBehaviour
 
         ClientUIManager.instance.DisconnectionPanel.SetActive(true);
         ClientUIManager.instance.DisconnectionPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = disconnection.PlayerName + " has disconnected from the game";
-
+        ClientManager.instance.RemovePlayer(disconnection.PlayerID);
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.interactionPanel.GetComponent<InteractionManager>().targetButtons);
+        ClientUIManager.instance.SetupTargets(ClientUIManager.instance.abilityPanel.GetComponent<AbilityManager>().targetButtons);
     }
 
     private void RecievedPlayerDeath(int conID, int chanID, int rHostID, PlayerDeath death) {

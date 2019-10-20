@@ -230,6 +230,12 @@ public class ClientManager : MonoBehaviour
        return playerData.Find(x => x.CharacterType == characterType);
     }
 
+    public void RemovePlayer(int playerID)
+    {
+        PlayerData removingPlayer = playerData.Find(x => x.PlayerID == playerID);
+        playerData.Remove(removingPlayer);
+    }
+
     /// <summary>
     /// 
     /// Gets a particular scaled spec score from the player
