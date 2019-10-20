@@ -2178,7 +2178,7 @@ public class Server : MonoBehaviour
 
             }
             else {
-                GameManager.instance.GetPlayer(connectionID).Disconnect();
+                GameManager.instance.GetPlayer(conID).Disconnect();
             }
         }
     }
