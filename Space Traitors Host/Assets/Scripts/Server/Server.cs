@@ -493,7 +493,7 @@ public class Server : MonoBehaviour
             case NetOP.SendPlayerDisconnect:
                 PlayerDisconnected(conID, chanID, rHostID, (Disconnection)msg);
                 break;
-            case NetOP.Disconnect:
+            case NetOP.DisconnectChoice:
                 PlayerDisconnect(conID, chanID, rHostID, (DisconnectChoice)msg);
                 break;
 
@@ -1934,7 +1934,6 @@ public class Server : MonoBehaviour
         DisconnectChoice dc = new DisconnectChoice();
         dc.InGame = dcChoice;
 
-
         SendServer(dc);
     }
 
@@ -2165,6 +2164,9 @@ public class Server : MonoBehaviour
 
     private void PlayerDisconnect(int conID, int chanID, int rHostID, DisconnectChoice DC) {
 
+        Debug.Log("RECIEVED");
+        Debug.Log(DC.InGame);
+
         if (DC.InGame) {
 
             if (conID == GameManager.instance.GetActivePlayer().playerID) {
@@ -2190,6 +2192,7 @@ public class Server : MonoBehaviour
 
 
     }
+
     private void AssignCharacterSelection(int conID, int chanID, int rHostID, CharacterSelection character)
     {
 

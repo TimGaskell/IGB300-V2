@@ -6,7 +6,7 @@ using UnityEngine;
 public class DisconnectChoice : NetMessage {
     public DisconnectChoice() {
 
-        OperationCode = NetOP.Disconnect;
+        OperationCode = NetOP.DisconnectChoice;
 
     }
 
