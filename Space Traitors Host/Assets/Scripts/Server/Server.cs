@@ -121,6 +121,8 @@ public class Server : MonoBehaviour
     private int defenderID;
     public NetworkManager networkManager;
 
+    public bool DC = true;
+
 
     // Use this for initialization
     void Start()
@@ -243,17 +245,18 @@ public class Server : MonoBehaviour
 
                 Debug.Log(connectionID + " has disconnected");
 
-               
 
-               if (connectionID == GameManager.instance.GetActivePlayer().playerID) {
-                    GameManager.instance.GetActivePlayer().Disconnect();
-                    GameManager.instance.IncrementTurn();
-                    
-                       
-               }
-               else {
+                if (DC) {
+                    if (connectionID == GameManager.instance.GetActivePlayer().playerID) {
+                        GameManager.instance.GetActivePlayer().Disconnect();
+                        GameManager.instance.IncrementTurn();
+
+
+                    }
+                    else {
                         GameManager.instance.GetPlayer(connectionID).Disconnect();
-               }
+                    }
+                }
 
 
                 break;
@@ -502,6 +505,9 @@ public class Server : MonoBehaviour
                 break;
             case NetOP.SendPlayerDisconnect:
                 PlayerDisconnected(conID, chanID, rHostID, (Disconnection)msg);
+                break;
+            case NetOP.Disconnect:
+                PlayerDisconnect(conID, chanID, rHostID, (DisconnectChoice)msg);
                 break;
 
 
@@ -1936,6 +1942,13 @@ public class Server : MonoBehaviour
 
 #region Client Sent Messages
 
+    public void SendDisconnect() {
+
+        DisconnectChoice dc = new DisconnectChoice();
+
+        SendServer(dc);
+    }
+
     public void SendPlayerInformation(string playerName)
     {
 
@@ -2160,6 +2173,19 @@ public class Server : MonoBehaviour
 #endregion
 
 #region Server Received Messages
+
+    private void PlayerDisconnect(int conID, int chanID, int rHostID, DisconnectChoice DC) {
+
+        if (conID == GameManager.instance.GetActivePlayer().playerID) {
+            GameManager.instance.GetActivePlayer().Disconnect();
+            GameManager.instance.IncrementTurn();
+
+        }
+        else {
+            GameManager.instance.GetPlayer(connectionID).Disconnect();
+        }
+
+    }
 
     private void AssignPlayerDetails(int conID, int chanID, int rHostID, PlayerDetails details)
     {

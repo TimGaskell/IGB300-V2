@@ -125,7 +125,7 @@ public class Player
         items = new List<Item>();
 
         hasComponent = false;
-        lifePoints = BASE_LIFE_POINTS;
+        lifePoints = 1;
         maxLifePoints = BASE_LIFE_POINTS;
 
         Character = new Character();
@@ -182,57 +182,75 @@ public class Player
     public void ChangeLifePoints(int lifePointChange)
     {
         lifePoints += lifePointChange;
-        //To prevent a full check of all players, only checks if the victory condition is met if this player is dead
-        if (IsDead)
-        {
-            Debug.Log("Dead");
-
-            Server.Instance.SendPlayerDeath(playerID);
-            ReturnItems();
-
-            GameManager.instance.numPlayers -= 1;
-
-            GameManager.instance.playerOrder.Remove(playerID);
-
-            playerObject.SetActive(false);
-
-            GameManager.instance.players.Remove(this);
-
-            GameManager.instance.CheckTraitorVictory();
-
-        }
+        
+       
     }
 
     public void Disconnect() {
 
+        if (IsDead) {
 
-        if (SceneManager.GetActiveScene().name == "Server GameLevel") {
+            if (SceneManager.GetActiveScene().name == "Server GameLevel") {
 
-            string PlayerName;
+                string PlayerName;
 
-            PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
+                PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
 
-            Server.Instance.SendPlayerDisconnection(PlayerName);
+                Server.Instance.SendPlayerDeath(playerID);
 
-            ReturnItems();
+                ReturnItems();
 
-            GameManager.instance.numPlayers -= 1;
+                GameManager.instance.numPlayers -= 1;
 
-            GameManager.instance.playerOrder.Remove(playerID);
+                GameManager.instance.playerOrder.Remove(playerID);
 
-            playerObject.SetActive(false);
+                playerObject.SetActive(false);
 
-            GameManager.instance.players.Remove(this);
+                GameManager.instance.players.Remove(this);
 
-            GameManager.instance.CheckTraitorVictory();
+                GameManager.instance.CheckTraitorVictory();
+            }
+            else if (SceneManager.GetActiveScene().name == "ServerLobby") {
+
+                GameManager.instance.players.Remove(this);
+
+            }
+
+
         }
-        else if(SceneManager.GetActiveScene().name == "ServerLobby") {
+        else {
+            if (SceneManager.GetActiveScene().name == "Server GameLevel") {
 
-            GameManager.instance.players.Remove(this);
+                string PlayerName;
 
+                PlayerName = GameManager.instance.GetPlayer(playerID).playerName;
+
+                Server.Instance.SendPlayerDisconnection(PlayerName);
+
+                ReturnItems();
+
+                GameManager.instance.numPlayers -= 1;
+
+                GameManager.instance.playerOrder.Remove(playerID);
+
+                playerObject.SetActive(false);
+
+                GameManager.instance.players.Remove(this);
+
+                GameManager.instance.CheckTraitorVictory();
+            }
+            else if (SceneManager.GetActiveScene().name == "ServerLobby") {
+
+                GameManager.instance.players.Remove(this);
+
+            }
         }
 
+           
+        
     }
+
+  
 
     /// <summary>
     /// 

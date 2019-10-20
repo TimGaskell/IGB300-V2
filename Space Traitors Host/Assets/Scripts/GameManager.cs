@@ -717,10 +717,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void IncrementTurn()
     {
+
+        for(int i = 0; i< players.Count;i++) {
+
+            if (players[i].IsDead) {
+                players[i].Disconnect();
+            }
+
+        }
         activePlayer++;
 
         //If the active player reaches the maximum number of players, the round has ended and a surge will occur
-        if (activePlayer == numPlayers + 1) {
+        if (activePlayer > numPlayers ) {
             activePlayer = 1;
             if (CheckNonTraitorVictory()) {
                 CurrentVictory = VictoryTypes.NonTraitor;
@@ -761,6 +769,8 @@ public class GameManager : MonoBehaviour
     public void EndRound() {
 
         ReadyPlayers++;
+        Debug.Log(ReadyPlayers);
+        Debug.Log(numPlayers);
 
         if(ReadyPlayers == numPlayers) {
 

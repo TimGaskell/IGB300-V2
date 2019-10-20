@@ -71,6 +71,7 @@ public static class NetOP
     public const int SelectRoom = 53;
     public const int NextTurn = 57;
     public const int EndAttack = 58;
+    public const int Disconnect = 62;
     #endregion
 }
 
